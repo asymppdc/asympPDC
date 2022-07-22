@@ -27,8 +27,6 @@ after `startup.m` script execution. If `run_all_examples.m` completes successful
 
 that will spread the figures on the screen. This function does not work in Octave environment.
 
-* ](https://github.com/koisa/asympPDC)
-
 ## License
 
 These routines are distributed under GNU General Public License v3.0 under
