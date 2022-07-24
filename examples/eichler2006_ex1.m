@@ -27,6 +27,7 @@ u = feichler2006_ex1(nPoints, nDiscard, flgManual);
 chLabels = {'X_1';'X_2';'X_3'}; %or %chLabels = [];
 
 [nSegLength,nChannels] = size(u);
+fs = 1;
 
 %% Interaction diagram
 %
@@ -110,12 +111,12 @@ flgColor = [1];
 w_max=fs/2;
 
 strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
-             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
+             int2str(nSegLength) 'pts; IP=' int2str(d.p) ']'];
 strID = 'Eichler(2006) Linear model';
 
 [h1,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',strTitle);
-end;
+
 
 %% Original PDC estimation
 %

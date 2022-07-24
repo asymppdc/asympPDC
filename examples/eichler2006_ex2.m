@@ -113,15 +113,11 @@ flgColor = [1];
 % DTF Matrix Layout Plotting with [0 1] y-axis scale.
 
 w_max=fs/2;
-for kflgColor = flgColor,
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%       'Name', 'Eichler(2006) Linear model')
-   strID = 'Eichler(2006) Linear model';
+
+strID = 'Eichler(2006) Linear model';
 [hxlabel,hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
                                  flgColor,flgScale,flgMax,flgSignifColor);
-   xplot_title(alpha,metric,'dtf',strID);
-end;
+xplot_title(alpha,metric,'dtf',strID);
 
 
 %%
@@ -134,17 +130,9 @@ flgMax = 'tci';
 flgSignifColor = 3;
 
 strTitle1 = ['3-dimension linear VAR[2] Model: '];
-strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(d.p) '; ' ...
-   datestr(now) ']'];
+strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(d.p) ']'];
 strTitle =[strTitle1 strTitle2];
-
-% h=figure;
-% set(h,'NumberTitle','off','MenuBar','none', ...
-%    'Name', 'Eichler(2006) Linear model')
 
 [hxlabel,hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
                                  flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric, 'dtf',strTitle);
-% [ax,hT]=suplabel( strTitle, 't' );
-% set(hT,'FontSize',8)
-
