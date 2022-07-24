@@ -4,9 +4,6 @@ July 22, 2022
 
 The AsympPDC package is MATLAB/Octave routines and functions comprising to analyze time series or biological signals to determine directional interactions between structures through Partial Directed Coherence (PDC) , which is based on the concept of Granger causality, and Directed Transfer Function (DTF) in the frequency domain in their three metrics --- Euclidean, diagonal and informational --- and rigorous asymptotic statistics providing p-values and confidence interval also in the frequency domain. The AsympPDC toolbox implementation is based on the following main articles and books.
 
-* [Luiz A. Baccalá and Koichi Sameshima (2022) ‘Partial Directed Coherence and the Vector Autoregressive Modelling Myth and
-  a Caveat. ](https://www.frontiersin.org/articles/10.3389/fnetp.2022.845327) 
-
 ## Installation and usage
 
 The AsympPDC package contains MATLAB/Octave compatible mfiles and subfolders you may copy into your local preferred working directory to execute them. To begin with you should run the startup.m script in the MATLAB/Octave command line window to set path and check for the requirements.
@@ -27,17 +24,8 @@ after `startup.m` script execution. If `run_all_examples.m` completes successful
 >> tilefigs1
 ```
 
-that will spread the figures on the screen. This function does not work in Octave environment.
+that will spread the figures on the screen. The tilefigs1 or tilefigs2 function will not work in Octave environment.
 
-The figures it generates are similar to those in the [paper](https://www.frontiersin.org/articles/10.3389/fnetp.2022.845327). Differences are due to possibly different random seeds.
-
-To play with the scripts,  you may run each Example script individually
-
-`> Example1 | Example2 | Example3 | Example4`
-
-This material will be incorporated into future releases of the AsympPDC package:
-
-* [Sameshima K, Baccalá LA. Asymp PDC Package (2014).[Click here](https://www.lcs.poli.usp.br/~baccala/pdc/CRCBrainConnectivity/AsympPDC/index.html). [Accessed: 2022-01-29.] and a more recent version [here](https://github.com/koisa/asympPDC)
 
 ## License
 
