@@ -10,7 +10,7 @@ The AsympPDC package contains MATLAB/Octave compatible mfiles and subfolders you
 
 `> startup`
 
-In addition to adding the paths, `startup.m` will also check for the presence of the required MATLAB toolboxes (Control, Signal Processing, and Statistical Toolboxes)/Octave packages (Control, Signal, and Statistics). All other routines, including examples and contributed FileExchange files. This is a standalone version. Most likely it will work in the recent versions of Octave --- 6.3.0, 6.4.0 and 7.1.0  (Please report any issue related to compatibility with Octave ).
+In addition to adding the paths, `startup.m` will also check for the presence of the required MATLAB toolboxes (Control, Signal Processing, and Statistical Toolboxes)/Octave packages (Control, Signal, and Statistics). All other routines, including examples and contributed FileExchange files. This is a standalone version. Most likely it will work in the recent versions of Octave --- 6.3.0, 6.4.0 and 7.1.0  (Please report any issue related to compatibility with Octave).
 
 To run all main examples provide in ./examples subdiretory to verify if your installation is working properly,  execute
 
