@@ -1,0 +1,487 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Schelter et al. (2005)  Five-dimension VAR[4]-process</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-01"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Schelter et al. (2005)  Five-dimension VAR[4]-process</h1><!--introduction--><p>Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking, Dahlhaus &amp; Timmer. Testing for directed influences among neural signals using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.</p><p><a href="http://dx.doi.org/10.1016/j.jneumeth.2005.09.001">http://dx.doi.org/10.1016/j.jneumeth.2005.09.001</a></p><p>Example Eq. (5) Five-dimension VAR[4]-process</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Data sample generation</a></li><li><a href="#6">PDC, threshold and confidence interval calculations.</a></li><li><a href="#10">Remarks:</a></li></ul></div><h2 id="1">Data sample generation</h2><pre class="codeinput">clear; clc
+flgPrintScreen = <span class="string">'screen'</span>;
+
+nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
+N = nDiscard + nPoints; <span class="comment">% number of simulated points</span>
+
+disp(<span class="string">'======================================================================'</span>);
+disp(<span class="string">'       Schelter et al. J Neurosci Methods. 152:210-9, 2005.'</span>)
+disp(<span class="string">'               Linear 5-dimension VAR[4]-process'</span>)
+disp(<span class="string">'       x2==&gt;x1  x3--&gt;x2 x3==&gt;x4 x3--&gt;x5 x4==x2 x5--&gt;x3  x5==x4'</span>);
+disp(<span class="string">'======================================================================'</span>);
+
+randn(<span class="string">'state'</span>, sum(100*clock))
+<span class="comment">% Variables initialization</span>
+ei=randn(5,N);
+x1=zeros(1,N);
+x2=zeros(1,N);
+x3=zeros(1,N);
+x4=zeros(1,N);
+x5=zeros(1,N);
+<span class="keyword">for</span> t=1:4,
+   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
+   x5(t)=randn(1);
+<span class="keyword">end</span>;
+
+<span class="comment">%chLabels = []; % or</span>
+chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>};
+
+<span class="keyword">for</span> t=5:N,
+   x1(t) = 0.6*x1(t-1) + 0.65*x2(t-2) + ei(1,t);
+   x2(t) = 0.5*x2(t-1) - 0.3*x2(t-2) - 0.3*x3(t-4) + 0.6*x4(t-1) + ei(2,t);
+   x3(t) = 0.8*x3(t-1) - 0.7*x3(t-2) - 0.1*x5(t-3) + ei(3,t);
+   x4(t) = 0.5*x4(t-1) + 0.9*x3(t-2) + 0.4*x5(t-2) + ei(4,t);
+   x5(t) = 0.7*x5(t-1) - 0.5*x5(t-2) - 0.2*x3(t-1) + ei(5,t);
+<span class="keyword">end</span>;
+
+y=[x1' x2' x3' x4' x5']; <span class="comment">% data must be organized column-wise</span>
+u=y(nDiscard+1:N,:);
+
+[nSegLength,nChannels]=size(u);
+
+fs = 1;
+</pre><pre class="codeoutput">======================================================================
+       Schelter et al. J Neurosci Methods. 152:210-9, 2005.
+               Linear 5-dimension VAR[4]-process
+       x2==&gt;x1  x3--&gt;x2 x3==&gt;x4 x3--&gt;x5 x4==x2 x5--&gt;x3  x5==x4
+======================================================================
+</pre><p>Data pre-processing: detrending and standardization options</p><pre class="codeinput">flgDetrend = 1;     <span class="comment">% 1: Detrending the data set</span>
+flgStandardize = 0; <span class="comment">% 0: No standardization</span>
+<span class="comment">% Checking data dimension</span>
+[nChannels,nSegLength] = size(u);
+<span class="keyword">if</span> nChannels &gt; nSegLength,
+   u = u.';
+   [nChannels,nSegLength] = size(u);
+<span class="keyword">end</span>;
+<span class="comment">% Detrending</span>
+<span class="keyword">if</span> flgDetrend,
+   <span class="keyword">for</span> i = 1:nChannels, u(i,:) = detrend(u(i,:)); <span class="keyword">end</span>;
+   disp(<span class="string">'Time series were detrended.'</span>);
+<span class="keyword">end</span>;
+<span class="comment">% Standardization</span>
+<span class="keyword">if</span> flgStandardize,
+   <span class="keyword">for</span> i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); <span class="keyword">end</span>;
+   disp(<span class="string">'Time series were scale-standardized.'</span>);
+<span class="keyword">end</span>;
+</pre><pre class="codeoutput">Time series were detrended.
+</pre><p>MVAR model estimation</p><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+alg = 1;            <span class="comment">% 1 = Nutall-Strand MVAR estimation algorithm</span>
+criterion = 1;      <span class="comment">% 1 = AIC, Akaike Information Criteria</span>
+
+disp(<span class="string">'Running MVAR estimation and GCT analysis routines.'</span>)
+
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+
+disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <span class="string">' with '</span> <span class="keyword">...</span>
+    int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
+</pre><pre class="codeoutput">Running MVAR estimation and GCT analysis routines.
+maxOrder limited to 30
+IP=1  vaic=80169.610749
+IP=2  vaic=76128.000764
+IP=3  vaic=76035.113627
+IP=4  vaic=75978.694522
+IP=5  vaic=76011.927061
+ 
+Number of channels = 5 with 2000 data points; MAR model order = 4.
+</pre><pre class="codeinput"><span class="comment">%Testing the adequacy of MAR model fitting through Portmanteau test</span>
+h = 20; <span class="comment">% testing lag value</span>
+MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
+                            <span class="comment">% level</span>
+aValueMVAR = 1 - MVARadequacy_signif; <span class="comment">% Confidence value for the testing</span>
+
+flgPrintResults = 1;
+
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,<span class="keyword">...</span>
+                                           flgPrintResults);
+</pre><pre class="codeoutput">
+====================================================================================================
+                  MVAR RESIDURES TEST FOR WHITENESS
+----------------------------------------------------------------------------------------------------
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.03
+  st = 379.37
+</pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
+igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
+
+metric = <span class="string">'diag'</span>; <span class="comment">% euc  = original PDC or DTF;</span>
+                 <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
+                 <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
+flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
+
+[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, <span class="keyword">...</span>
+                                              igct_signif,flgPrintResults);
+</pre><pre class="codeoutput">
+====================================================================================================
+                         GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Connectivity matrix:
+   NaN     1     0     0     0
+     0   NaN     1     1     0
+     0     0   NaN     0     1
+     0     0     1   NaN     1
+     0     0     1     0   NaN
+
+Granger causality test p-values:
+       NaN         0    0.7551    0.2961    0.2171
+    0.9659       NaN         0         0    0.1709
+    0.3157    0.9599       NaN    0.5387    0.0000
+    0.2289    0.7996         0       NaN         0
+    0.1827    0.7106         0    0.7151       NaN
+
+Elapsed time is 0.008552 seconds.
+====================================================================================================
+                  INSTANTANEOUS GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Instantaneous connectivity matrix:
+   NaN     0     0     0     0
+     0   NaN     0     0     0
+     0     0   NaN     0     0
+     0     0     0   NaN     0
+     0     0     0     0   NaN
+
+Instantaneous Granger Causality test p-values:
+       NaN    0.8048    0.8478    0.5804    0.8051
+    0.8048       NaN    0.2010    0.8805    0.0502
+    0.8478    0.2010       NaN    0.9162    0.7686
+    0.5804    0.8805    0.9162       NaN    0.7127
+    0.8051    0.0502    0.7686    0.7127       NaN
+
+&gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
+
+====================================================================================================
+Elapsed time is 0.014826 seconds.
+</pre><h2 id="6">PDC, threshold and confidence interval calculations.</h2><pre class="codeinput">metric = <span class="string">'diag'</span>; <span class="comment">% Generalized PDC estimation</span>
+nFreqs = 128;   <span class="comment">% Number of frequency points to consider</span>
+alpha  = 0.0001;  <span class="comment">% Significance level for PDC/DTF null hypothesis test</span>
+</pre><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_dtf.m or issue</p><pre class="language-matlab">&gt;&gt; help asymp_pdc
+</pre><p>command for more detail.</p><pre class="codeinput">c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+</pre><p>Plotting options set up, mostly cosmetics, used in xplot.m routine:</p><pre class="codeinput"><span class="keyword">switch</span> lower(flgPrintScreen)
+   <span class="keyword">case</span> <span class="string">'print'</span>
+      flgMax = <span class="string">'TCI'</span>;
+      flgSignifColor = 1; <span class="comment">% black + gray</span>
+      flgScale = 3;       <span class="comment">% [0 max(flgMax)]</span>
+   <span class="keyword">otherwise</span> <span class="comment">% e.g., 'screen'</span>
+      flgMax = <span class="string">'TCI'</span>;
+      flgSignifColor = 3; <span class="comment">% red + green</span>
+      flgScale = 2;       <span class="comment">% [0 1]/[0 .1]/[0 .01]</span>
+<span class="keyword">end</span>;
+flgScale = 3
+</pre><pre class="codeoutput">flgScale =
+     3
+</pre><p>flgColor parameter for PDC matrix-layout plot.</p><pre class="codeinput">flgColor = [0];   <span class="comment">% Plotting option for automatic scaling for small PDC</span>
+                  <span class="comment">% values.</span>
+                  <span class="comment">% if flgColor = 0, y-axis scale = [0 1]</span>
+                  <span class="comment">% elseif flgColor = 1, xplot routine rescale</span>
+                  <span class="comment">% the y-axis automatically according to following rules:</span>
+                  <span class="comment">%   If .001&lt;= max(|PDC(f)|^2) &lt; .01 background-color = light-blue,</span>
+                  <span class="comment">%                          so that y-axis scale = [0 .1]</span>
+                  <span class="comment">%   elseif max(|PDC(f)|^2) &lt; .001 background-color = light-purple</span>
+                  <span class="comment">%                          and y-axis = [0 .01].</span>
+
+<span class="comment">%             [1 2 3 4 5 6 7]</span>
+flgPrinting = [1 1 1 2 2 0 5];
+<span class="comment">%    blue-line | | | | | | 7--Spectra (0: w/o; 1: Linear; 2: Log; 3: PDC2;</span>
+<span class="comment">%              | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)</span>
+<span class="comment">%         gray | | | | | 6--Coh2 (0: w/o Coh2; 1: w Coh2)</span>
+<span class="comment">%  dashed-blue | | | | 5--Plot lower confidence limit (***legacy)</span>
+<span class="comment">%  dashed-blue | | | 4--Plot confidence interval</span>
+<span class="comment">%         red  | | 3--Significant PDC2|DTF2 in red lines (***legacy)</span>
+<span class="comment">% dashed-black | 2--Patnaik threshold level in black dashed-lines</span>
+<span class="comment">%        green 1-- PDC2/DTF2 in green lines or black w/o statistics,</span>
+<span class="comment">%                  See flgSignifColor for line color selection.</span>
+
+w_max=fs/2;
+
+<span class="keyword">for</span> kflgColor = flgColor,
+   <span class="comment">%    h=figure;</span>
+   <span class="comment">%    set(h,'NumberTitle','off','MenuBar','none', ...</span>
+   <span class="comment">%       'Name', 'Schelter et al. J. Neurosci Methods (2005)')</span>
+   <span class="comment">%    [ax,hT]=suplabel(['Linear pentavariate, VAR[4]-process: ' ...</span>
+   <span class="comment">%       int2str(nPoints) ' data points.'],'t');</span>
+   <span class="comment">%    set(hT,'FontSize',12); % Title font size</span>
+   <span class="comment">%   [hxlabel hylabel] = xplot(h,c,...</span>
+   <span class="comment">%                               flgPrinting,fs,w_max,chLabels,kflgColor);</span>
+
+   strID = <span class="string">'Schelter et al. J. Neurosci Methods (2005)'</span>;
+   [hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+                                      kflgColor,flgScale,flgMax,flgSignifColor);
+   xplot_title(alpha,metric,<span class="string">'pdc'</span>,strID);
+<span class="keyword">end</span>;
+</pre><img vspace="5" hspace="5" src="schelter2005_01.png" alt=""> <h2 id="10">Remarks:</h2><div><ul><li>Check the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter   et al., 2005). As you may notice, the power spectrum of x4, as well   as |PDC|2_24, differ significantly.   Our guess is that Schelter et al. may have used slightly different   parameters from what they stated for Eq. 5.</li></ul></div><div><ul><li>Note that, for linear model with balanced innovation, the maximum   of PDC estimates is roughly proportional to the autoregressive   model coefficients. As we are plotting <tt>PDC</tt>^2, amplitude is   roughly proportional to the square of VAR coefficients.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Schelter et al. (2005)  Five-dimension VAR[4]-process 
+%
+% Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking,
+% Dahlhaus & Timmer. Testing for directed influences among neural signals 
+% using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.
+%
+% <http://dx.doi.org/10.1016/j.jneumeth.2005.09.001>
+% 
+% Example Eq. (5) Five-dimension VAR[4]-process 
+%
+
+
+%% Data sample generation
+
+clear; clc
+flgPrintScreen = 'screen';
+
+nDiscard = 5000;    % number of points discarded at beginning of simulation
+nPoints  = 2000;   % number of analyzed samples points
+N = nDiscard + nPoints; % number of simulated points
+
+disp('======================================================================');
+disp('       Schelter et al. J Neurosci Methods. 152:210-9, 2005.')
+disp('               Linear 5-dimension VAR[4]-process')
+disp('       x2==>x1  x3REPLACE_WITH_DASH_DASH>x2 x3==>x4 x3REPLACE_WITH_DASH_DASH>x5 x4==x2 x5REPLACE_WITH_DASH_DASH>x3  x5==x4');
+disp('======================================================================');
+
+randn('state', sum(100*clock))
+% Variables initialization
+ei=randn(5,N);
+x1=zeros(1,N);
+x2=zeros(1,N);
+x3=zeros(1,N);
+x4=zeros(1,N);
+x5=zeros(1,N);
+for t=1:4,
+   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
+   x5(t)=randn(1);
+end;
+
+%chLabels = []; % or 
+chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+
+for t=5:N,
+   x1(t) = 0.6*x1(t-1) + 0.65*x2(t-2) + ei(1,t);
+   x2(t) = 0.5*x2(t-1) - 0.3*x2(t-2) - 0.3*x3(t-4) + 0.6*x4(t-1) + ei(2,t);
+   x3(t) = 0.8*x3(t-1) - 0.7*x3(t-2) - 0.1*x5(t-3) + ei(3,t);
+   x4(t) = 0.5*x4(t-1) + 0.9*x3(t-2) + 0.4*x5(t-2) + ei(4,t);
+   x5(t) = 0.7*x5(t-1) - 0.5*x5(t-2) - 0.2*x3(t-1) + ei(5,t);
+end;
+
+y=[x1' x2' x3' x4' x5']; % data must be organized column-wise
+u=y(nDiscard+1:N,:);
+
+[nSegLength,nChannels]=size(u);
+
+fs = 1;
+
+%%
+% Data pre-processing: detrending and standardization options
+
+flgDetrend = 1;     % 1: Detrending the data set
+flgStandardize = 0; % 0: No standardization
+% Checking data dimension
+[nChannels,nSegLength] = size(u);
+if nChannels > nSegLength, 
+   u = u.'; 
+   [nChannels,nSegLength] = size(u);
+end;
+% Detrending 
+if flgDetrend,
+   for i = 1:nChannels, u(i,:) = detrend(u(i,:)); end;
+   disp('Time series were detrended.');
+end;
+% Standardization 
+if flgStandardize,
+   for i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); end;
+   disp('Time series were scale-standardized.');
+end;
+
+%%
+% MVAR model estimation
+
+maxIP = 30;         % maximum model order to consider.
+alg = 1;            % 1 = Nutall-Strand MVAR estimation algorithm
+criterion = 1;      % 1 = AIC, Akaike Information Criteria
+
+disp('Running MVAR estimation and GCT analysis routines.')
+
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+
+disp(['Number of channels = ' int2str(nChannels) ' with ' ...
+    int2str(nSegLength) ' data points; MAR model order = ' int2str(IP) '.']);
+
+%%
+%Testing the adequacy of MAR model fitting through Portmanteau test
+h = 20; % testing lag value
+MVARadequacy_signif = 0.05; % VAR model estimation adequacy significance
+                            % level
+aValueMVAR = 1 - MVARadequacy_signif; % Confidence value for the testing
+
+flgPrintResults = 1;
+
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
+                                           flgPrintResults);
+
+%%
+% Granger causality test (GCT) and instantaneous GCT
+
+gct_signif  = 0.01;  % Granger causality test significance level
+igct_signif = 0.01;  % Instantaneous GCT significance level
+
+metric = 'diag'; % euc  = original PDC or DTF;
+                 % diag = generalized PDC (gPDC) or DC;
+                 % info = information PDC (iPDC) or iDTF.
+flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
+
+[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
+                                              igct_signif,flgPrintResults);
+                                                       
+%% PDC, threshold and confidence interval calculations.
+%
+metric = 'diag'; % Generalized PDC estimation
+nFreqs = 128;   % Number of frequency points to consider
+alpha  = 0.0001;  % Significance level for PDC/DTF null hypothesis test
+
+%%
+% PDC analysis results are saved in *c* data structure.
+% See asymp_dtf.m or issue 
+%
+%   >> help asymp_pdc 
+%
+% command for more detail.
+
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+
+%% 
+% Plotting options set up, mostly cosmetics, used in xplot.m routine:
+%
+switch lower(flgPrintScreen)
+   case 'print'
+      flgMax = 'TCI';
+      flgSignifColor = 1; % black + gray
+      flgScale = 3;       % [0 max(flgMax)]
+   otherwise % e.g., 'screen'
+      flgMax = 'TCI';
+      flgSignifColor = 3; % red + green
+      flgScale = 2;       % [0 1]/[0 .1]/[0 .01]
+end;
+flgScale = 3
+%%
+% flgColor parameter for PDC matrix-layout plot.
+flgColor = [0];   % Plotting option for automatic scaling for small PDC
+                  % values.
+                  % if flgColor = 0, y-axis scale = [0 1]
+                  % elseif flgColor = 1, xplot routine rescale 
+                  % the y-axis automatically according to following rules:
+                  %   If .001<= max(|PDC(f)|^2) < .01 background-color = light-blue,
+                  %                          so that y-axis scale = [0 .1]
+                  %   elseif max(|PDC(f)|^2) < .001 background-color = light-purple
+                  %                          and y-axis = [0 .01].
+
+%             [1 2 3 4 5 6 7]
+flgPrinting = [1 1 1 2 2 0 5];
+%    blue-line | | | | | | 7REPLACE_WITH_DASH_DASHSpectra (0: w/o; 1: Linear; 2: Log; 3: PDC2; 
+%              | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)
+%         gray | | | | | 6REPLACE_WITH_DASH_DASHCoh2 (0: w/o Coh2; 1: w Coh2)
+%  dashed-blue | | | | 5REPLACE_WITH_DASH_DASHPlot lower confidence limit (***legacy)
+%  dashed-blue | | | 4REPLACE_WITH_DASH_DASHPlot confidence interval
+%         red  | | 3REPLACE_WITH_DASH_DASHSignificant PDC2|DTF2 in red lines (***legacy)
+% dashed-black | 2REPLACE_WITH_DASH_DASHPatnaik threshold level in black dashed-lines
+%        green 1REPLACE_WITH_DASH_DASH PDC2/DTF2 in green lines or black w/o statistics,
+%                  See flgSignifColor for line color selection.
+
+w_max=fs/2;
+
+for kflgColor = flgColor,
+   %    h=figure;
+   %    set(h,'NumberTitle','off','MenuBar','none', ...
+   %       'Name', 'Schelter et al. J. Neurosci Methods (2005)')
+   %    [ax,hT]=suplabel(['Linear pentavariate, VAR[4]-process: ' ...
+   %       int2str(nPoints) ' data points.'],'t');
+   %    set(hT,'FontSize',12); % Title font size
+   %   [hxlabel hylabel] = xplot(h,c,...
+   %                               flgPrinting,fs,w_max,chLabels,kflgColor);
+   
+   strID = 'Schelter et al. J. Neurosci Methods (2005)';
+   [hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
+                                      kflgColor,flgScale,flgMax,flgSignifColor);
+   xplot_title(alpha,metric,'pdc',strID);
+end;
+
+%% Remarks:
+% 
+% * Check the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter
+%   et al., 2005). As you may notice, the power spectrum of x4, as well 
+%   as |PDC|2_24, differ significantly.
+%   Our guess is that Schelter et al. may have used slightly different
+%   parameters from what they stated for Eq. 5.
+%
+% * Note that, for linear model with balanced innovation, the maximum
+%   of PDC estimates is roughly proportional to the autoregressive 
+%   model coefficients. As we are plotting |PDC|^2, amplitude is 
+%   roughly proportional to the square of VAR coefficients.
+
+##### SOURCE END #####
+--></body></html>

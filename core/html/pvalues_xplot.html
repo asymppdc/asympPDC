@@ -1,0 +1,450 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>PVALUES_XPLOT</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-08-29"><meta name="DC.source" content="pvalues_xplot.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>PVALUES_XPLOT</h1><!--introduction--><pre>    Connectivity plot in matrix layout with power spectra in the main
+    diagonal.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Results: graphics</a></li><li><a href="#4">Examples:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>    [hxlabel,hylabel] = PVALUES_XPLOT(c, ...
+                                      flgPrinting,fs,w_max,chLabels,flgColors)</pre><h2 id="2">Input Arguments:</h2><pre class="language-matlab">c.{SS,Coh,L,Lpatnaik,LTra,L2vinf,L2vsup,metric}- data structure
+     flgPrinting= [1 1 1 1 1 0 1]; <span class="comment">%Not used</span>
+      blue-line    | | | | | | 7 Spectra (0: w/o; 1: Linear; 2: Log)
+      gray         <span class="string">|</span> <span class="string">|</span> <span class="string">|</span> <span class="string">|</span> <span class="string">|</span> <span class="string">6</span> <span class="string">Coherence</span>
+      dashed-blue  | | | | 5 Plot <span class="string">lower</span> <span class="string">confidence</span> <span class="string">limit</span>
+      dashed-blue  | | | 4 Plot <span class="string">upper</span> <span class="string">confidence</span> <span class="string">limit</span>
+      red          <span class="string">|</span> <span class="string">|</span> <span class="string">3</span> <span class="string">Significant</span> <span class="string">PDC</span> <span class="string">in</span> <span class="string">red</span> <span class="string">line</span>
+      dashed-black | 2 Patnaik <span class="string">threshold</span> <span class="string">level</span> <span class="string">in</span> <span class="string">black</span> <span class="string">dashed-line</span>
+      green        <span class="string">1</span> <span class="string">PDC</span> <span class="string">in</span> <span class="string">green</span> <span class="string">line</span> <span class="string">or</span> <span class="string">black</span> <span class="string">w/o</span> <span class="string">statistics</span>
+</pre><pre>      fs - sampling frequency
+      w_max - frequency scale upper-limit
+      chLabels - channel identification labels
+      flgColors - 0 or 1 for PDC 0.1 and 0.01 y-axis rescaling</pre><h2 id="3">Output Results: graphics</h2><pre>       hxlabel, hylabel = graphic label's handles</pre><h2 id="4">Examples:</h2><pre class="language-matlab">Calculate <span class="string">c</span> <span class="string">using</span> <span class="string">alg_pdc.</span>
+</pre><pre>         pvalue_xplot(c); % Defaults flgPrinting, fs, w_max and flgColor</pre><pre>         pvalue_xplot(c,[1 1 1 0 0 1 1],200,100,[],0);
+                      % PDC, threshold, power spectra, coherence
+                      % plotted. fs=200 Hz; default channel label;
+                      % flgColor=0 =&gt; no color or rescalling is used.</pre><pre class="codeinput"><span class="keyword">function</span> [hxlabel,hylabel] = pvalues_xplot(c,<span class="keyword">...</span>
+                                       flgPrinting,fs,w_max,chLabels,flgColor)
+knargin = 6;     <span class="comment">% Number of input arguments</span>
+
+
+<span class="keyword">if</span> isfield(c,<span class="string">'dtf2'</span>)
+   L = c.dtf2;       <span class="comment">% DTF^2 (N x N x freq)</span>
+   <span class="keyword">if</span> isfield(c,<span class="string">'dtf2_th'</span>)
+      LTra   = c.dtf2_th; <span class="comment">% Significant |DTF|^2 on freq range, otherwise = NaN.</span>
+   <span class="keyword">end</span>
+   flgType = <span class="string">'DTF'</span>;
+<span class="keyword">elseif</span> isfield(c,<span class="string">'pdc2'</span>)
+   L = c.pdc2;       <span class="comment">% |PDC|^2 (N x N x freq)</span>
+   <span class="keyword">if</span> isfield(c,<span class="string">'pdc2_th'</span>)
+      LTra   = c.pdc2_th; <span class="comment">% Significant PDC^2 on freq range, otherwise = NaN.</span>
+   <span class="keyword">end</span>
+   flgType = <span class="string">'PDC'</span>;
+<span class="keyword">else</span>
+   error(<span class="string">'Variable c does not hold PDC/DTF analysis results.'</span>)
+<span class="keyword">end</span>
+
+
+SS = c.SS;       <span class="comment">% Spectra</span>
+Coh2 = c.coh2;     <span class="comment">% Coh^2</span>
+<span class="comment">%L = c.pdc2;       % PDC^2 (N x N x freq)</span>
+Lpatnaik = c.th; <span class="comment">% Patnaik threshold values for alpha</span>
+pvalues = c.pvalues;
+L2vinf = c.ic1;
+L2vsup = c.ic2;
+<span class="comment">%LTra   = c.pdc2_th; % Significant PDC^2 on freq range, otherwise = NaN.</span>
+metric = c.metric; <span class="comment">% Valid optons: "euc", "diag" or "info"</span>
+alpha = c.alpha;
+
+<span class="comment">%pdc_th = c.pdc2_th;</span>
+
+
+[N,q,nFreqs] = size(L); <span class="comment">% N=q = Number of channels/time series;</span>
+<span class="comment">%                     % nFreqs = number of points on frequency scale</span>
+nodesett = 1:N;
+
+<span class="keyword">if</span> nargin &lt;  (knargin-4),  flgPrinting = [1 1 1 0 0 0 1]; <span class="keyword">end</span>
+<span class="keyword">if</span> nargin &lt;= (knargin-4),  fs = 1; <span class="keyword">end</span>
+<span class="keyword">if</span> nargin &lt; (knargin-2),   w_max = fs/2; <span class="keyword">end</span>
+<span class="keyword">if</span> nargin &lt; knargin,       flgColor = 0; <span class="keyword">end</span>
+
+<span class="keyword">if</span> w_max &gt; fs/2 + eps
+    error([<span class="string">'The parameter w_max should be =&lt; Nyquist frequency,'</span> <span class="keyword">...</span>
+        <span class="string">'i.e, w_max &lt;= fs/2.'</span>])
+<span class="keyword">end</span>
+
+<span class="comment">%flgPrinting = [1 1 1 0 0 0 0];</span>
+
+w = 0:fs/(2*nFreqs):w_max-fs/(2*nFreqs);
+nPlotPoints = length(w);
+w_min = w(1);
+
+<span class="keyword">if</span> nargin &lt; (knargin-1) || isempty(chLabels)
+    <span class="keyword">if</span> isfield(c,<span class="string">'chLabels'</span>)
+        chLabels = c.chLabels;
+    <span class="keyword">else</span>
+        chLabels = [];
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> ~isempty(chLabels) &amp;&amp; max(size(chLabels)) &lt; N
+        error(<span class="string">'1 NOT ENOUGH CHANNEL LABELS.'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">elseif</span> max(size(chLabels)) &lt; N
+    <span class="keyword">if</span> isfield(c,<span class="string">'chLabels'</span>)
+        chLabels = c.chLabels
+    <span class="keyword">else</span>
+        chLabels = [];
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> ~isempty(chLabels) &amp;&amp; max(size(chLabels)) &lt; N
+        error(<span class="string">'2 NOT ENOUGH CHANNEL LABELS 2.'</span>);
+    <span class="keyword">else</span>
+        disp(<span class="string">'3 NOT ENOUGH CHANNEL LABELS. Default labels assumed.'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+hxlabel=0; <span class="comment">% x-axis labels' handles</span>
+hylabel=0; <span class="comment">% y-axis labels' handles</span>
+<span class="keyword">for</span> j = 1:N
+    s=nodesett(j);
+    <span class="keyword">for</span> i=1:N
+        r=nodesett(i);
+        <span class="keyword">if</span> j ~= i || ( j == i &amp;&amp; flgPrinting(7) ~= 0)
+            h=subplot2(N,N,(i-1)*N+j);
+
+            hold <span class="string">on</span>
+
+            atrib=<span class="string">'g-'</span>; <span class="comment">% Patnaik significance level in green line</span>
+
+            pvalues_tmp = getCij(pvalues,r,s,nPlotPoints);
+            index = pvalues_tmp &gt;= alpha;
+            plot(w,pvalues_tmp, atrib, <span class="string">'LineWidth'</span>,2);
+            axis([0 max(w) 0 1])
+            hold <span class="string">on</span>
+
+            pvalues_tmp(index) = NaN;
+
+            <span class="keyword">if</span> (sum(isnan(pvalues_tmp)) ~= nPlotPoints)
+                plot(w,pvalues_tmp,<span class="string">'r-'</span>,<span class="string">'LineWidth'</span>,2);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> j == 1
+            hylabel(i)=labelity(i,chLabels);
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> i == N
+            hxlabel(j)=labelitx(j,chLabels);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+supAxes=[.08 .08 .84 .84];
+
+[ax2,h2]=suplabel([<span class="string">'p-values_{'</span> flgType <span class="string">'}'</span>],<span class="string">'t'</span>);
+
+[ax1,h1]=suplabel(<span class="string">'Frequency'</span>,<span class="string">'x'</span>,supAxes);
+
+set(h1, <span class="string">'FontSize'</span>,[14],<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>)
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> [hxlabel]=labelitx(j,chLabels) <span class="comment">% Labels x-axis plottings</span>
+<span class="keyword">if</span> isempty(chLabels)
+   <span class="keyword">if</span> is_octave()
+      hxlabel=xlabel([<span class="string">'j = '</span> int2str(j)]);
+   <span class="keyword">else</span>
+      hxlabel=xlabel([<span class="string">'\bf{\it{j}} \rm{\bf{ = '</span> int2str(j) <span class="string">'}}'</span>]);
+   <span class="keyword">end</span>
+   set(hxlabel,<span class="string">'FontSize'</span>,[14],<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+        <span class="string">'FontName'</span>,<span class="string">'Times'</span>)
+<span class="keyword">else</span>
+    <span class="comment">% hxlabel=xlabel(chLabels{j});</span>
+
+    <span class="comment">%   hxlabel=xlabel(['$' chLabels{j} '$'],'interpreter','LaTeX');</span>
+    hxlabel=xlabel([chLabels{j}]);
+    set(hxlabel,<span class="string">'FontSize'</span>,[12],<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontName'</span>, <span class="string">'Arial'</span>)
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> [hylabel]=labelity(i,chLabels) <span class="comment">% Labels y-axis plottings</span>
+<span class="keyword">if</span> isempty(chLabels)
+   <span class="keyword">if</span> is_octave()
+      hylabel=ylabel([<span class="string">'i = '</span> int2str(i)],<span class="keyword">...</span>
+        <span class="string">'Rotation'</span>,90);
+   <span class="keyword">else</span>
+      hylabel=ylabel([<span class="string">'\bf{\it{i}} \rm{\bf{ = '</span> int2str(i) <span class="string">'}}'</span>],<span class="keyword">...</span>
+        <span class="string">'Rotation'</span>,90);
+   <span class="keyword">end</span>
+   set(hylabel,<span class="string">'FontSize'</span>,[14],<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+        <span class="string">'FontName'</span>,<span class="string">'Times'</span>)
+<span class="keyword">else</span>
+    <span class="comment">% hylabel=ylabel(chLabels{i});</span>
+
+    hylabel=ylabel([chLabels{i}]);
+    <span class="comment">%   hylabel=ylabel(['$' chLabels{i} '$']);</span>
+    set(hylabel,<span class="string">'FontSize'</span>,[12],<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'FontName'</span>, <span class="string">'Arial'</span>,<span class="string">'Color'</span>,[0 0 0])
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+</pre><pre class="codeoutput error">Not enough input arguments.
+Error in pvalues_xplot (line 43)
+if isfield(c,'dtf2')</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% PVALUES_XPLOT
+%      Connectivity plot in matrix layout with power spectra in the main
+%      diagonal.
+%
+%% Syntax:
+%      [hxlabel,hylabel] = PVALUES_XPLOT(c, ...
+%                                        flgPrinting,fs,w_max,chLabels,flgColors)
+%
+%% Input Arguments: 
+%   c.{SS,Coh,L,Lpatnaik,LTra,L2vinf,L2vsup,metric}- data structure
+%        flgPrinting= [1 1 1 1 1 0 1]; %Not used
+%         blue-line    | | | | | | 7 Spectra (0: w/o; 1: Linear; 2: Log)
+%         gray         | | | | | 6 Coherence
+%         dashed-blue  | | | | 5 Plot lower confidence limit
+%         dashed-blue  | | | 4 Plot upper confidence limit
+%         red          | | 3 Significant PDC in red line
+%         dashed-black | 2 Patnaik threshold level in black dashed-line
+%         green        1 PDC in green line or black w/o statistics
+%
+%        fs - sampling frequency
+%        w_max - frequency scale upper-limit
+%        chLabels - channel identification labels
+%        flgColors - 0 or 1 for PDC 0.1 and 0.01 y-axis rescaling
+%
+%% Output Results: graphics
+%         hxlabel, hylabel = graphic label's handles
+%
+%% Examples: 
+%   Calculate c using alg_pdc.
+%
+%           pvalue_xplot(c); % Defaults flgPrinting, fs, w_max and flgColor
+%
+%           pvalue_xplot(c,[1 1 1 0 0 1 1],200,100,[],0);
+%                        % PDC, threshold, power spectra, coherence
+%                        % plotted. fs=200 Hz; default channel label;
+%                        % flgColor=0 => no color or rescalling is used.
+
+function [hxlabel,hylabel] = pvalues_xplot(c,...
+                                       flgPrinting,fs,w_max,chLabels,flgColor)
+knargin = 6;     % Number of input arguments
+
+
+if isfield(c,'dtf2')
+   L = c.dtf2;       % DTF^2 (N x N x freq)
+   if isfield(c,'dtf2_th')
+      LTra   = c.dtf2_th; % Significant |DTF|^2 on freq range, otherwise = NaN.
+   end
+   flgType = 'DTF';
+elseif isfield(c,'pdc2')
+   L = c.pdc2;       % |PDC|^2 (N x N x freq)
+   if isfield(c,'pdc2_th')
+      LTra   = c.pdc2_th; % Significant PDC^2 on freq range, otherwise = NaN.
+   end
+   flgType = 'PDC';
+else
+   error('Variable c does not hold PDC/DTF analysis results.')
+end
+
+
+SS = c.SS;       % Spectra
+Coh2 = c.coh2;     % Coh^2
+%L = c.pdc2;       % PDC^2 (N x N x freq)
+Lpatnaik = c.th; % Patnaik threshold values for alpha
+pvalues = c.pvalues;
+L2vinf = c.ic1;
+L2vsup = c.ic2;
+%LTra   = c.pdc2_th; % Significant PDC^2 on freq range, otherwise = NaN.
+metric = c.metric; % Valid optons: "euc", "diag" or "info"
+alpha = c.alpha;
+
+%pdc_th = c.pdc2_th;
+
+
+[N,q,nFreqs] = size(L); % N=q = Number of channels/time series;
+%                     % nFreqs = number of points on frequency scale
+nodesett = 1:N;
+
+if nargin <  (knargin-4),  flgPrinting = [1 1 1 0 0 0 1]; end
+if nargin <= (knargin-4),  fs = 1; end
+if nargin < (knargin-2),   w_max = fs/2; end
+if nargin < knargin,       flgColor = 0; end
+
+if w_max > fs/2 + eps
+    error(['The parameter w_max should be =< Nyquist frequency,' ...
+        'i.e, w_max <= fs/2.'])
+end
+
+%flgPrinting = [1 1 1 0 0 0 0];
+
+w = 0:fs/(2*nFreqs):w_max-fs/(2*nFreqs);
+nPlotPoints = length(w);
+w_min = w(1);
+
+if nargin < (knargin-1) || isempty(chLabels)
+    if isfield(c,'chLabels')
+        chLabels = c.chLabels;
+    else
+        chLabels = [];
+    end
+    if ~isempty(chLabels) && max(size(chLabels)) < N
+        error('1 NOT ENOUGH CHANNEL LABELS.');
+    end
+elseif max(size(chLabels)) < N
+    if isfield(c,'chLabels')
+        chLabels = c.chLabels
+    else
+        chLabels = [];
+    end
+    if ~isempty(chLabels) && max(size(chLabels)) < N
+        error('2 NOT ENOUGH CHANNEL LABELS 2.');
+    else
+        disp('3 NOT ENOUGH CHANNEL LABELS. Default labels assumed.');
+    end
+end
+
+hxlabel=0; % x-axis labels' handles
+hylabel=0; % y-axis labels' handles
+for j = 1:N
+    s=nodesett(j);
+    for i=1:N
+        r=nodesett(i);
+        if j ~= i || ( j == i && flgPrinting(7) ~= 0)
+            h=subplot2(N,N,(i-1)*N+j);
+            
+            hold on
+           
+            atrib='g-'; % Patnaik significance level in green line
+
+            pvalues_tmp = getCij(pvalues,r,s,nPlotPoints);
+            index = pvalues_tmp >= alpha;
+            plot(w,pvalues_tmp, atrib, 'LineWidth',2);
+            axis([0 max(w) 0 1])
+            hold on
+
+            pvalues_tmp(index) = NaN;
+            
+            if (sum(isnan(pvalues_tmp)) ~= nPlotPoints)
+                plot(w,pvalues_tmp,'r-','LineWidth',2);
+            end
+        end
+        
+        if j == 1
+            hylabel(i)=labelity(i,chLabels);
+        end
+        if i == N
+            hxlabel(j)=labelitx(j,chLabels);
+        end       
+    end
+end
+
+supAxes=[.08 .08 .84 .84];
+
+[ax2,h2]=suplabel(['p-values_{' flgType '}'],'t');
+
+[ax1,h1]=suplabel('Frequency','x',supAxes);
+
+set(h1, 'FontSize',[14],'FontWeight','bold')
+
+%==========================================================================
+function [hxlabel]=labelitx(j,chLabels) % Labels x-axis plottings
+if isempty(chLabels)
+   if is_octave()
+      hxlabel=xlabel(['j = ' int2str(j)]);
+   else
+      hxlabel=xlabel(['\bf{\it{j}} \rm{\bf{ = ' int2str(j) '}}']);
+   end
+   set(hxlabel,'FontSize',[14],'FontWeight','bold', ...
+        'FontName','Times')
+else
+    % hxlabel=xlabel(chLabels{j});
+    
+    %   hxlabel=xlabel(['$' chLabels{j} '$'],'interpreter','LaTeX');
+    hxlabel=xlabel([chLabels{j}]);
+    set(hxlabel,'FontSize',[12],'FontWeight','bold','FontName', 'Arial')
+end
+
+%==========================================================================
+function [hylabel]=labelity(i,chLabels) % Labels y-axis plottings
+if isempty(chLabels)
+   if is_octave()
+      hylabel=ylabel(['i = ' int2str(i)],...
+        'Rotation',90);
+   else
+      hylabel=ylabel(['\bf{\it{i}} \rm{\bf{ = ' int2str(i) '}}'],...
+        'Rotation',90);
+   end
+   set(hylabel,'FontSize',[14],'FontWeight','bold', ...
+        'FontName','Times')
+else
+    % hylabel=ylabel(chLabels{i});
+    
+    hylabel=ylabel([chLabels{i}]);
+    %   hylabel=ylabel(['$' chLabels{i} '$']);
+    set(hylabel,'FontSize',[12],'FontWeight','bold','FontName', 'Arial','Color',[0 0 0])
+end
+
+%==========================================================================
+
+##### SOURCE END #####
+--></body></html>

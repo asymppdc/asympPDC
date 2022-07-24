@@ -1,0 +1,480 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>guo2008_linear_test</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-01"><meta name="DC.source" content="guo2008_linear_test.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</a></li><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#11">Result from Figure 1 (bottom) Guo et al.(2006)</a></li><li><a href="#12">Information PDC estimation</a></li><li><a href="#14">Original DTF estimation</a></li><li><a href="#16">Concluding remarkds;</a></li></ul></div><h2 id="1">GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</h2><p>Guo, Wu, Ding &amp; Feng. Uncovering interactions in frequency domains.         PLoS Computational Biology, 4(5):1-10, February 8, 2008.           [http://dx.plos.org/10.1371/journal.pcbi.1000087]</p><p>Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input</p><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+</pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_guo2008_graph.png" alt=""> </p><h2 id="3">Equation system</h2><p><img vspace="5" hspace="5" src="fig_guo2008_eq.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 50000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+nPoints  = 10000;   <span class="comment">% number of analyzed samples points</span>
+
+u = fguo2008_linear(nPoints, nDiscard);
+
+chLabels = []; <span class="comment">% or = {'x_1';'x_2';'x_3';'x_4';'x_5'};</span>
+fs = 1;
+
+alpha = 0.0001;
+</pre><pre class="codeoutput">====================================================================================================
+                   Five dimensional linear VAR[3] Model
+                    with large common exogenous input
+                      Guo et al. February 8, 2008.
+                 x1==&gt;x2  x1--&gt;x3 x1==&gt;x4 x4--&gt;x5 x5--&gt;x4 
+             Instantaneous causality in between all variables.
+====================================================================================================
+Assigned "sum(100*clock)" initial state.2
+Model parameters:
+a1=0.097540; a2=0.278498; a3=0.546882; a4=0.957507; a5=0.964889;
+b1 = b2 = b3 = b4 = b5 = 2;
+c1 = c2 = c3 = c4 = c5 = 5;
+ 
+====================================================================================================
+</pre><p>Data pre-processing: detrending and standardization options</p><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
+flgStandardize = 0; <span class="comment">% No standardization</span>
+[nChannels,nSegLength] =size(u);
+<span class="keyword">if</span> nChannels &gt; nSegLength
+   u = u.';
+   [nChannels,nSegLength]=size(u);
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
+   disp(<span class="string">'Time series were detrended.'</span>);
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>
+   disp(<span class="string">'Time series were scale-standardized.'</span>);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Time series were detrended.
+</pre><p>MVAR model estimation</p><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm</span>
+criterion = 1;      <span class="comment">% 1: AIC, Akaike Information Criteria</span>
+
+disp(<span class="string">'Running MVAR estimation routine.'</span>)
+
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+
+disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <span class="string">' with '</span> <span class="keyword">...</span>
+    int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
+</pre><pre class="codeoutput">Running MVAR estimation routine.
+maxOrder limited to 30
+IP=1  vaic=529369.844368
+IP=2  vaic=514320.649136
+IP=3  vaic=513563.089528
+IP=4  vaic=513584.113267
+ 
+Number of channels = 5 with 10000 data points; MAR model order = 3.
+</pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
+MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
+                            <span class="comment">% level</span>
+aValueMVAR = 1 - MVARadequacy_signif; <span class="comment">% Confidence value for the testing</span>
+
+flgPrintResults = 1;
+
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,<span class="keyword">...</span>
+                                           flgPrintResults);
+</pre><pre class="codeoutput">
+====================================================================================================
+                  MVAR RESIDURES TEST FOR WHITENESS
+----------------------------------------------------------------------------------------------------
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.026
+  st = 423.224
+</pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
+igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
+
+flgPrintResults = 1;
+
+[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, <span class="keyword">...</span>
+                                              igct_signif,flgPrintResults);
+</pre><pre class="codeoutput">
+====================================================================================================
+                         GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Connectivity matrix:
+   NaN     0     0     0     0
+     1   NaN     0     0     0
+     1     0   NaN     0     0
+     1     0     0   NaN     1
+     1     0     0     1   NaN
+
+Granger causality test p-values:
+       NaN    0.8164    0.0010    0.8632    0.8465
+         0       NaN    0.0040    0.7427    0.7997
+         0    0.7352       NaN    0.6223    0.7717
+         0    0.6773    0.0003       NaN    0.0000
+    0.0000    0.4898    0.0011         0       NaN
+
+Elapsed time is 0.006696 seconds.
+====================================================================================================
+                  INSTANTANEOUS GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Instantaneous connectivity matrix:
+   NaN     1     1     1     1
+     1   NaN     1     1     1
+     1     1   NaN     1     1
+     1     1     1   NaN     1
+     1     1     1     1   NaN
+
+Instantaneous Granger Causality test p-values:
+   NaN     0     0     0     0
+     0   NaN     0     0     0
+     0     0   NaN     0     0
+     0     0     0   NaN     0
+     0     0     0     0   NaN
+
+&gt;&gt;&gt;&gt; There are 10 pairs of channels with
+      significant Instantaneous Granger Causality.
+
+====================================================================================================
+Elapsed time is 0.012965 seconds.
+</pre><h2 id="9">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_dtf.m or issue   &gt;&gt; help asymp_pdc command for more detail.</p><pre class="codeinput">nFreqs = 128;
+metric = <span class="string">'euc'</span>; <span class="comment">% euc  = original PDC or DTF;</span>
+                 <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
+                 <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
+</pre><p>$|PDC(\lambda)|^2 Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 3 0 0 1]; <span class="comment">% overriding default setting</span>
+flgColor = 1;
+w_max = fs/2;
+
+<span class="keyword">for</span> kflgColor = flgColor
+<span class="comment">%    h=figure;</span>
+<span class="comment">%    set(h,'NumberTitle','off','MenuBar','none', ...</span>
+<span class="comment">%       'Name', 'Guo et al.(2008) Linear model with large common exogenous inputs')</span>
+   strID = <span class="string">'Guo et al.(2008) Linear model with large common exogenous inputs'</span>;
+   [hxlabel hylabel] = xplot(strID,c,<span class="keyword">...</span>
+      flgPrinting,fs,w_max,chLabels,kflgColor);
+   xplot_title(alpha,metric,<span class="string">'pdc'</span>,strID);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="guo2008_linear_test_01.png" alt=""> <h2 id="11">Result from Figure 1 (bottom) Guo et al.(2006)</h2><p>Figure 1, page 2.</p><p><img vspace="5" hspace="5" src="fig_guo2008_pdc_wrong_results.png" alt=""> </p><p>Guo et al. (2006) argued that PDC was not able to correctly estimate the right connectivity pattern as their partial Granger causality (PGC) was (see top half of figure above).</p><p>However the PDC estimates shown on bottom of Figure 1 are completely wrong, as easily one can perceive by simple one-to-one comparison. It is easy to see that the PDC estimates are very similar to PGC results.</p><h2 id="12">Information PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_dtf.m or issue   &gt;&gt; help asymp_pdc command for more detail.</p><pre class="codeinput">metric = <span class="string">'info'</span>;
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
+c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
+</pre><p>iPDC Matrix Layout Plotting=======================</p><pre class="codeinput">flgScale = 2;
+flgMax= <span class="string">'TCI'</span>;
+flgSignifColor = 2;
+<span class="keyword">for</span> kflgColor = flgColor
+   strID = <span class="string">'Guo et al.(2008) Linear model with large common exogenous inputs'</span>;
+
+   [hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+                                    kflgColor,flgScale,flgMax,flgSignifColor);
+   xplot_title(alpha,metric,<span class="string">'pdc'</span>,strID);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="guo2008_linear_test_02.png" alt=""> <h2 id="14">Original DTF estimation</h2><p>DTF analysis results are saved in <b>e</b> structure. See asymp_dtf.m or issue   &gt;&gt; help asymp_pdc command for more detail.</p><pre class="codeinput">nFreqs = 128;
+metric = <span class="string">'euc'</span>;
+<span class="comment">% alpha = 0.01;</span>
+e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate DTF and asymptotic statistics</span>
+</pre><p>DTF Matrix Layout Plotting</p><pre class="codeinput">w_max=fs/2;
+<span class="keyword">for</span> kflgColor = flgColor
+<span class="comment">%    h=figure;</span>
+<span class="comment">%    set(h,'NumberTitle','off','MenuBar','none', ...</span>
+<span class="comment">%       'Name', 'Guo et al.(2008) Linear model with large common exogenous inputs')</span>
+
+   strID = <span class="string">'Guo et al.(2008) Linear model with large common exogenous inputs'</span>;
+   [hxlabel hylabel] = xplot(strID,e,<span class="keyword">...</span>
+      flgPrinting,fs,w_max,chLabels,kflgColor);
+   xplot_title(alpha,metric,<span class="string">'dtf'</span>,strID);
+<span class="keyword">end</span>
+
+<span class="comment">% PDC p-values matrix layout plots</span>
+flgPrinting  =   [1 1 1 2 3 0 0];
+flgScale = 2;
+[hxlabel hylabel] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+                                                             flgColor,flgScale);
+xplot_title(alpha,metric,[<span class="string">'p-value_{iPDC}'</span>],strID);
+</pre><img vspace="5" hspace="5" src="guo2008_linear_test_03.png" alt=""> <img vspace="5" hspace="5" src="guo2008_linear_test_04.png" alt=""> <h2 id="16">Concluding remarkds;</h2><div><ul><li>Guo et al. (2008)''s five-dimension VAR[3] process with large common exogenous inputs, a modified version of a example from Baccala &amp; Sameshima (2001). The exogenous inputs introduce large common variance that overpower the magnitude of directed interactions. As you may have noticed, there are significant instantaneous Granger causality between all pair of variables. Due to large common exogenous white noise probably one may see false-positive and false-negative connectivity in some simulations, which will depend on your choice of alpha.</li></ul></div><div><ul><li>The PDC and gPDC figures do not resemble PDC plot in Fig.1 in Guo et al. (2008). Our best guess is that Guo &amp; colleagues used an incorrect PDC estimator. Actually you may notice that PDC and gPDC estimates are very similar to PGC in Guo et al (2008).</li></ul></div><div><ul><li>In all three PDC formulations, the significant PDC frequency range is similar. iPDC gives a measure of size effect, which is very small in this case. Even so iPDC is significant in the same frequency range as PDC and gPDC.</li></ul></div><pre class="codeinput"><span class="comment">% * In conclusion: the statement by Guo and collaborators that PDC can not</span>
+<span class="comment">% uncover the connectivity pattern in large common noise does not hold. For</span>
+<span class="comment">% nonlinear systems, in some cases PDC and other linear methods can uncover</span>
+<span class="comment">% correct connectivity pattern, but in other models PDC and GCT will simply</span>
+<span class="comment">% fail.</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%This completes Guo et al. (2008) example. ;</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input
+%
+% Guo, Wu, Ding & Feng. Uncovering interactions in frequency domains.
+%         PLoS Computational Biology, 4(5):1-10, February 8, 2008.
+%           [http://dx.plos.org/10.1371/journal.pcbi.1000087] 
+% 
+% Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input
+
+clear; clc; format compact; format short
+
+%% Interaction diagram
+%
+%
+% <<fig_guo2008_graph.png>>
+%
+
+%% Equation system  
+%
+% <<fig_guo2008_eq.png>>
+%
+
+%% Data sample generation
+%
+
+nDiscard = 50000;    % number of points discarded at beginning of simulation
+nPoints  = 10000;   % number of analyzed samples points
+
+u = fguo2008_linear(nPoints, nDiscard);
+
+chLabels = []; % or = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+fs = 1;
+
+alpha = 0.0001;
+
+%%
+% Data pre-processing: detrending and standardization options
+
+flgDetrend = 1;     % Detrending the data set
+flgStandardize = 0; % No standardization
+[nChannels,nSegLength] =size(u);
+if nChannels > nSegLength
+   u = u.'; 
+   [nChannels,nSegLength]=size(u);
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
+   disp('Time series were detrended.');
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
+   disp('Time series were scale-standardized.');
+end
+
+%% 
+% MVAR model estimation
+
+maxIP = 30;         % maximum model order to consider.
+alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm
+criterion = 1;      % 1: AIC, Akaike Information Criteria
+
+disp('Running MVAR estimation routine.')
+
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+
+disp(['Number of channels = ' int2str(nChannels) ' with ' ...
+    int2str(nSegLength) ' data points; MAR model order = ' int2str(IP) '.']);
+
+%%
+% Testing for adequacy of MAR model fitting through Portmanteau test
+
+h = 20; % testing lag
+MVARadequacy_signif = 0.05; % VAR model estimation adequacy significance
+                            % level
+aValueMVAR = 1 - MVARadequacy_signif; % Confidence value for the testing
+
+flgPrintResults = 1;
+
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
+                                           flgPrintResults);
+
+%%
+% Granger causality test (GCT) and instantaneous GCT
+
+gct_signif  = alpha;  % Granger causality test significance level
+igct_signif = alpha;  % Instantaneous GCT significance level
+
+flgPrintResults = 1;
+
+[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
+                                              igct_signif,flgPrintResults);
+
+%% Original PDC estimation
+%
+% PDC analysis results are saved in *c* structure.
+% See asymp_dtf.m or issue 
+%   >> help asymp_pdc 
+% command for more detail.
+%
+nFreqs = 128;
+metric = 'euc'; % euc  = original PDC or DTF;
+                 % diag = generalized PDC (gPDC) or DC;
+                 % info = information PDC (iPDC) or iDTF.
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+
+%%
+% $|PDC(\lambda)|^2 Matrix Layout Plotting
+
+flgPrinting = [1 1 1 3 0 0 1]; % overriding default setting
+flgColor = 1;
+w_max = fs/2;
+
+for kflgColor = flgColor
+%    h=figure;
+%    set(h,'NumberTitle','off','MenuBar','none', ...
+%       'Name', 'Guo et al.(2008) Linear model with large common exogenous inputs')
+   strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
+   [hxlabel hylabel] = xplot(strID,c,...
+      flgPrinting,fs,w_max,chLabels,kflgColor);
+   xplot_title(alpha,metric,'pdc',strID);
+end
+
+%% Result from Figure 1 (bottom) Guo et al.(2006) 
+% Figure 1, page 2.
+%
+% <<fig_guo2008_pdc_wrong_results.png>>
+% 
+% Guo et al. (2006) argued that PDC was not able to correctly estimate the right
+% connectivity pattern as their partial Granger causality (PGC) was (see top
+% half of figure above).
+% 
+% However the PDC estimates shown on bottom of Figure 1 are completely wrong, as
+% easily one can perceive by simple one-to-one comparison. It is easy to see
+% that the PDC estimates are very similar to PGC results.
+%
+
+%% Information PDC estimation
+%
+% PDC analysis results are saved in *c* structure.
+% See asymp_dtf.m or issue 
+%   >> help asymp_pdc 
+% command for more detail.
+%
+
+metric = 'info';
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
+%%
+% iPDC Matrix Layout Plotting=======================
+
+flgScale = 2;
+flgMax= 'TCI';
+flgSignifColor = 2;
+for kflgColor = flgColor
+   strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
+
+   [hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
+                                    kflgColor,flgScale,flgMax,flgSignifColor);   
+   xplot_title(alpha,metric,'pdc',strID);
+end
+
+
+%% Original DTF estimation
+%
+% DTF analysis results are saved in *e* structure.
+% See asymp_dtf.m or issue 
+%   >> help asymp_pdc 
+% command for more detail.
+%
+
+nFreqs = 128;
+metric = 'euc';
+% alpha = 0.01;
+e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
+
+%%
+% DTF Matrix Layout Plotting
+%
+w_max=fs/2;
+for kflgColor = flgColor
+%    h=figure;
+%    set(h,'NumberTitle','off','MenuBar','none', ...
+%       'Name', 'Guo et al.(2008) Linear model with large common exogenous inputs')
+
+   strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
+   [hxlabel hylabel] = xplot(strID,e,...
+      flgPrinting,fs,w_max,chLabels,kflgColor);
+   xplot_title(alpha,metric,'dtf',strID);
+end
+
+% PDC p-values matrix layout plots
+flgPrinting  =   [1 1 1 2 3 0 0];
+flgScale = 2;
+[hxlabel hylabel] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
+                                                             flgColor,flgScale);
+xplot_title(alpha,metric,['p-value_{iPDC}'],strID);
+
+%% Concluding remarkds;
+%
+% * Guo et al. (2008)''s five-dimension VAR[3] process with large common
+% exogenous inputs, a modified version of a example from Baccala & Sameshima
+% (2001). The exogenous inputs introduce large common variance that overpower
+% the magnitude of directed interactions. As you may have noticed, there are
+% significant instantaneous Granger causality between all pair of variables. Due
+% to large common exogenous white noise probably one may see false-positive and
+% false-negative connectivity in some simulations, which will depend on your
+% choice of alpha.
+% 
+% * The PDC and gPDC figures do not resemble PDC plot in Fig.1 in Guo et al.
+% (2008). Our best guess is that Guo & colleagues used an incorrect PDC
+% estimator. Actually you may notice that PDC and gPDC estimates are very
+% similar to PGC in Guo et al (2008).
+%
+% * In all three PDC formulations, the significant PDC frequency range is
+% similar. iPDC gives a measure of size effect, which is very small in this
+% case. Even so iPDC is significant in the same frequency range as PDC and gPDC.
+
+% * In conclusion: the statement by Guo and collaborators that PDC can not
+% uncover the connectivity pattern in large common noise does not hold. For
+% nonlinear systems, in some cases PDC and other linear methods can uncover
+% correct connectivity pattern, but in other models PDC and GCT will simply
+% fail.
+%
+%
+%This completes Guo et al. (2008) example. ;
+
+##### SOURCE END #####
+--></body></html>

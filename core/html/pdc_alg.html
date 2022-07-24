@@ -1,0 +1,220 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>PDC_ALG</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-12"><meta name="DC.source" content="pdc_alg.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>PDC_ALG</h1><!--introduction--><pre>      Compute partial directed coherence measure given by metric "option"
+      from series j--&gt; i.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input arguments</a></li><li><a href="#3">Output arguments</a></li><li><a href="#4">Example:</a></li></ul></div><h2 id="1">Syntax</h2><pre>      c = pdc_alg(u,alg,criterion,nFreqs,metric,maxIP,alpha)</pre><h2 id="2">Input arguments</h2><pre>      x         - data
+      alg       - algorithm (1: Nutall-Strand),(2: mlsm) ,
+                            (3: Vieira Morf),  (4: QR artfit)
+      criterion - AR order selection criteria =&gt;
+                                 1: AIC; 2: Hanna-Quinn; 3: Schwarz;
+                                 4: FPE, 5: fixed order in MaxIP
+      nFreqs - number of point in [0,fs/2] frequency scale
+      metric   'euc'  - Euclidean ==&gt; original PDC
+               'diag' - diagonal ==&gt; gPDC (generalized )
+               'info' - information ==&gt; iPDC
+      maxIP - externally defined maximum IP
+      alpha - Significance level for null hypothesis testing
+              alpha = .05 is default;
+              if alpha = zero, no asymptotic statistics is computed.</pre><h2 id="3">Output arguments</h2><pre>      c structure variable with following fields:
+      |-- .pdc       - complex PDC estimates
+      |-- .pdc2      - |PDC(f)|^2 estimate
+      |-- .pdc2_th   - above threshold PDC(f) otherwise PDC(f) = NaN.
+      |-- .pvalues   - p-values associated to DTF2 estimates.
+      |-- .th        - |DTF|^2 threshold value with (1-avalue) significance level.
+      |-- .{ic1,ic2} - upper and lower (1 - alpha) confidence interval of |DTF|^2 estimates
+      |-- .metric    - metric used for DTF calculation
+      |-- .alpha     - significance level
+      |-- .criterion - AR order selection criterion
+      |-- .alg       - AR estimation algorithm
+      |-- .A         - AR coefficient matrix estimate
+      |-- .pf        - covariance matrix estimate
+      |-- .p         - VAR model order
+      |-- .patdenr   -
+      |-- .patdfr    - degree of freedom
+      |-- .SS        - power spectra
+      +-- .coh2      - squared spectral coherence
+  or
+      c.{pdc,pdc2,pvalues,th,pdc2_th,ic1,ic2,metric,alpha,p,patdenr,patdfr,SS,coh2}</pre><h2 id="4">Example:</h2><pre>               u=sunmeladat([4 3]);  % Andrews &amp; Herzberg 1936-1972
+                                     % sunspot-melanoma series
+               u=detrend(u);         % Detrend the series
+               c=pdc_alg(u,64,'diag',1,1,30,0.01);
+               figure; xplot(c); %pretty plot</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% PDC_ALG
+%        Compute partial directed coherence measure given by metric "option"
+%        from series jREPLACE_WITH_DASH_DASH> i.
+%
+%% Syntax
+%        c = pdc_alg(u,alg,criterion,nFreqs,metric,maxIP,alpha)
+%
+%% Input arguments
+%        x         - data
+%        alg       - algorithm (1: Nutall-Strand),(2: mlsm) ,
+%                              (3: Vieira Morf),  (4: QR artfit)
+%        criterion - AR order selection criteria =>
+%                                   1: AIC; 2: Hanna-Quinn; 3: Schwarz;
+%                                   4: FPE, 5: fixed order in MaxIP
+%        nFreqs - number of point in [0,fs/2] frequency scale
+%        metric   'euc'  - Euclidean ==> original PDC
+%                 'diag' - diagonal ==> gPDC (generalized )
+%                 'info' - information ==> iPDC
+%        maxIP - externally defined maximum IP
+%        alpha - Significance level for null hypothesis testing
+%                alpha = .05 is default;
+%                if alpha = zero, no asymptotic statistics is computed.
+%
+%% Output arguments
+%        c structure variable with following fields:
+%        |REPLACE_WITH_DASH_DASH .pdc       - complex PDC estimates
+%        |REPLACE_WITH_DASH_DASH .pdc2      - |PDC(f)|^2 estimate
+%        |REPLACE_WITH_DASH_DASH .pdc2_th   - above threshold PDC(f) otherwise PDC(f) = NaN.
+%        |REPLACE_WITH_DASH_DASH .pvalues   - p-values associated to DTF2 estimates. 
+%        |REPLACE_WITH_DASH_DASH .th        - |DTF|^2 threshold value with (1-avalue) significance level.
+%        |REPLACE_WITH_DASH_DASH .{ic1,ic2} - upper and lower (1 - alpha) confidence interval of |DTF|^2 estimates
+%        |REPLACE_WITH_DASH_DASH .metric    - metric used for DTF calculation 
+%        |REPLACE_WITH_DASH_DASH .alpha     - significance level
+%        |REPLACE_WITH_DASH_DASH .criterion - AR order selection criterion
+%        |REPLACE_WITH_DASH_DASH .alg       - AR estimation algorithm
+%        |REPLACE_WITH_DASH_DASH .A         - AR coefficient matrix estimate
+%        |REPLACE_WITH_DASH_DASH .pf        - covariance matrix estimate
+%        |REPLACE_WITH_DASH_DASH .p         - VAR model order
+%        |REPLACE_WITH_DASH_DASH .patdenr   - 
+%        |REPLACE_WITH_DASH_DASH .patdfr    - degree of freedom 
+%        |REPLACE_WITH_DASH_DASH .SS        - power spectra
+%        +REPLACE_WITH_DASH_DASH .coh2      - squared spectral coherence
+%    or
+%        c.{pdc,pdc2,pvalues,th,pdc2_th,ic1,ic2,metric,alpha,p,patdenr,patdfr,SS,coh2}
+%
+%% Example:
+%                 u=sunmeladat([4 3]);  % Andrews & Herzberg 1936-1972
+%                                       % sunspot-melanoma series
+%                 u=detrend(u);         % Detrend the series 
+%                 c=pdc_alg(u,64,'diag',1,1,30,0.01); 
+%                 figure; xplot(c); %pretty plot     
+
+
+function c = pdc_alg(u,nFreqs,metric,alg,criterion,maxIP,alpha)
+
+% If the number of input parameters is smaller than seven, following default
+% values are assumed for PDC calculation.
+if nargin < 7, alpha = 0; end;      % do not calculate asymptotic statistics
+if nargin < 6, maxIP = 30; end;     % defaults value 
+if nargin < 5, criterion =  1; end; % AIC order choice
+if nargin < 4, alg = 1;  end;       % Nutall-Strand is default AR estimator
+if nargin < 3, metric = 'diag'; end;% gPDC estimation
+if nargin < 2, nFreqs = 128; end;   % 128 points on freq scale.
+ 
+[m,n] = size(u);
+if m > n,
+   u = u.';
+end;
+
+nSegLength = length(u);
+
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+
+%==========================================================================
+%    Testing for adequacy of MAR model fitting through Portmanteau test
+%==========================================================================
+h = 20; % testing lag
+VARadequacy_signif = 0.05;
+aValueVAR = 1 - VARadequacy_signif;
+flgPrintResults = 1;
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueVAR,h,...
+                                                          flgPrintResults);
+%==========================================================================
+%            PDC, threshold and confidence interval calculation.
+%==========================================================================
+
+% if alpha == 0, no asymptotic statistics calculation is performed. ASYMP_PDC
+% returns only the PDC. This option is much faster!!
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+
+c.A = A; 
+c.pf = pf; 
+c.nfreqs = nFreqs;
+c.criterion = criterion; 
+c.alg = alg;
+c.Pass = Pass; 
+c.Portmanteau = Portmanteau; 
+
+% Power spectra and coherence calculation
+c.SS = ss_alg(A, pf, nFreqs);
+c.coh = coh_alg(c.SS);
+
+% Statistically significant PDC on frequency scale
+if alpha ~= 0
+   pdc2_temp = ((abs(c.pdc2)-c.th) > 0).*c.pdc2 + ((abs(c.pdc2)-c.th) <= 0)*(-1);
+   pdc2_temp(ind2sub(size(pdc2_temp),find(pdc2_temp == -1))) = NaN;
+   c.pdc2_th = pdc2_temp;
+else
+   c.pdc2_th = [];
+end
+
+##### SOURCE END #####
+--></body></html>
