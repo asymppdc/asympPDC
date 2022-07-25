@@ -188,7 +188,7 @@ flgPrintResults = 1;                  % Print results in the Command Window
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to print gct_alg.m results on Command Window.
-[Tr_gct, pValue_gct,]  = gct_alg2(u,A,pf,gct_signif,flgPrintResults);
+[Tr_gct, pValue_gct,]  = gct_alg(u,A,pf,gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
 %% Original definition of PDC estimation
@@ -227,7 +227,7 @@ flgMax = 'PDC';
 flgScale = 2;
 vBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to see GCT p-values
 
-[hxlabel hylabel] = xplot(vBarTitle,c,...
+[h1,~, ~] = xplot(vBarTitle,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor, ...
                           flgScale,flgMax,flgSignifColor);
 xplot_title(alpha_c,metric,'pdc',vBarTitle);
@@ -256,7 +256,7 @@ flgScale = 2;
 flgMax = 'all';
 flgSignifColor = 3;
 vBarTitle = 'Sunspot-Melanoma Series (1936-1972)';
-[h3,hxlabel,hylabel] = xplot(vBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
+[h2,hxlabel,hylabel] = xplot(vBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
                           flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha_c,metric,'pdc',vBarTitle);
 shg; pause(3)
@@ -287,7 +287,7 @@ d.pvaluesgct = pValue_gct;
 %
 
 flgColor = 0;
-[h4,hxlabel hylabel] = xplot(vBarTitle,d,...
+[h3,hxlabel hylabel] = xplot(vBarTitle,d,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha_d,metric,'pdc',vBarTitle);
 shg; pause(3)

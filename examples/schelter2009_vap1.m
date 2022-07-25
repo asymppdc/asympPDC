@@ -100,9 +100,10 @@ flgPrintResults = 1;
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
-                                           
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* struct variable.
@@ -119,10 +120,12 @@ metric = 'info';  % euc  = original PDC or DTF;
 alpha = 0.01; % Significance level for iPDC null hypothesis test
 
 c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
+c.pvaluesgct = pValue_gct;
 
 %% iPDC Matrix-Layout Plotting
 
-flgPrinting = [1 1 1 2 2 0 1]; % overriding default setting
+flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 0;
 w_max = fs/2; % Max frequency equals Nyquist frequency.
 alphastr = int2str(100*alpha);

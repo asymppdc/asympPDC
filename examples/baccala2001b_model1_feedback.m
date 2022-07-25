@@ -102,9 +102,11 @@ metric = 'diag'; % euc  = original PDC or DTF;
                  % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1;
 
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
-                                                       
+% [Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
+%                                               igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct]   = gct_alg (u,A,pf,gct_signif, flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* structure.

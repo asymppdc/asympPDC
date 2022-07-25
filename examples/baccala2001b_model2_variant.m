@@ -96,17 +96,15 @@ metric = 'euc';  % euc  = original PDC or DTF;
                  % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1;
 
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
-                                                       
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* structure.
-% See asymp_pdc.m or issue 
-%
-%   >> help asymp_pdc 
-%
-% command for more detail.
+% See asymp_pdc.m.
+
 nFreqs = 128;
 alpha = 0.001;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
@@ -114,7 +112,7 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statist
 %%
 % $|PDC(\lambda)|^2 Matrix Layout Plotting
 
-flgPrinting = [1 1 1 2 2 1 5]; % overriding default setting
+flgPrinting = [1 1 1 2 2 1 2]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
@@ -131,85 +129,4 @@ strTitle = 'Baccala & Sameshima (2001) Model II Variant';
 [hxlabel hylabel] = xplot(strTitle,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor,2,'all');
 xplot_title(alpha,metric,'pdc', strTitle);
-% [ax,hT]=suplabel( strTitle, 't' );
-% set(hT,'FontSize',10)
 
-% %% Generalized PDC estimation
-% %
-% % PDC analysis results are saved in *d* structure.
-% % See asymp_pdc.m or issue 
-% %
-% %   >> help asymp_pdc 
-% %
-% % command for more detail.
-% nFreqs = 128;
-% metric = 'info';
-% alpha = 0.01;
-% d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-% 
-% %%
-% % PDCn Matrix Layout Plotting
-% 
-% flgPrinting = [1 1 1 2 2 0 2];
-% flgColor = [1];
-% w_max=fs/2;
-% flgScale = 2; % y-axis = [0 1]
-% flgMax = 'TCI';
-% flgSignifColor = 3; % red = significant, gree = nonsignificant
-% 
-% for kflgColor = flgColor,
-%    %    h=figure;
-%    %    set(h,'NumberTitle','off','MenuBar','none', ...
-%    %       'Name', 'Baccala & Sameshima (2001) Model II Variant')
-%    
-%    strTitle = 'Baccala & Sameshima (2001) Model II Variant';
-%    [hxlabel,hylabel] = xplot(strTitle,d,flgPrinting,fs,w_max,chLabels, ...
-%                                       kflgColor,flgScale,flgMax,flgSignifColor);
-%    xplot_title(alpha,metric, 'pdc', ...
-%                             ['Linear model ' int2str(nPoints) ' data points.']);
-%    
-%    %    [ax,hT]=suplabel(['Linear model ' ...
-%    %       int2str(nPoints) ' data points.'],'t');
-%    %    set(hT,'FontSize',10); % Title font size
-%    
-% end;
-% 
-% 
-% %% Generalized DTF = DC estimation
-% %
-% % DC analysis results are saved in *e* structure.
-% % See asymp_pdc.m or issue 
-% %
-% %   >> help asymp_pdc 
-% %
-% % command for more detail.
-% nFreqs = 128;
-% metric = 'info';
-% alpha = 0.01;
-% e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-% 
-% %%
-% % PDCn Matrix Layout Plotting
-% 
-% flgPrinting = [1 1 1 2 2 1 2];
-% flgColor = [0];
-% w_max=fs/2;
-% flgScale = 1; % y-axis = [0 1]
-% flgMax = 'TCI';
-% flgSignifColor = 3; % red = significant, gree = nonsignificant
-% for kflgColor = flgColor,
-% %    h=figure;
-% %    set(h,'NumberTitle','off','MenuBar','none', ...
-% %       'Name', 'Baccala & Sameshima (2001) Model II Variant')
-% 
-%    strTitle = 'Baccala & Sameshima (2001) Model II Variant';
-%    [hxlabel,hylabel] = xplot(strTitle,e,flgPrinting,fs,w_max,chLabels, ...
-%                                       kflgColor,flgScale,flgMax,flgSignifColor);
-%                                    
-%    id = ['Linear model ' int2str(nPoints) ' data points.'];
-%    xplot_title(alpha,metric,'dtf',id);
-% %    [ax,hT]=suplabel(['Linear model ' ...
-% %       int2str(nPoints) ' data points.'],'t');
-% %    set(hT,'FontSize',10); % Title font size
-% 
-% end;

@@ -86,8 +86,9 @@ igct_signif = alpha;  % Instantaneous GCT significance level
 
 flgPrintResults = 1;
 
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+    
 
 %% Original PDC estimation
 %
@@ -101,23 +102,19 @@ metric = 'euc'; % euc  = original PDC or DTF;
                  % diag = generalized PDC (gPDC) or DC;
                  % info = information PDC (iPDC) or iDTF.
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
+c.pvaluesgct = pValue_gct;
 
 %%
 % $|PDC(\lambda)|^2 Matrix Layout Plotting
 
-flgPrinting = [1 1 1 3 0 0 1]; % overriding default setting
+flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 1;
 w_max = fs/2;
 
-for kflgColor = flgColor
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%       'Name', 'Guo et al.(2008) Linear model with large common exogenous inputs')
    strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
-   [hxlabel hylabel] = xplot(strID,c,...
-      flgPrinting,fs,w_max,chLabels,kflgColor);
+   [h1,~, ~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
    xplot_title(alpha,metric,'pdc',strID);
-end
 
 %% Result from Figure 1 (bottom) Guo et al.(2006) 
 % Figure 1, page 2.
@@ -136,35 +133,31 @@ end
 %% Information PDC estimation
 %
 % PDC analysis results are saved in *c* structure.
-% See asymp_dtf.m or issue 
-%   >> help asymp_pdc 
-% command for more detail.
+% See asymp_pdc.m
 %
 
 metric = 'info';
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 %%
-% iPDC Matrix Layout Plotting=======================
+% iPDC Matrix Layout Plotting
 
 flgScale = 2;
 flgMax= 'TCI';
 flgSignifColor = 2;
-for kflgColor = flgColor
-   strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
+flgPrinting = [1 1 1 2 0 0 1];
 
-   [hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
-                                    kflgColor,flgScale,flgMax,flgSignifColor);   
-   xplot_title(alpha,metric,'pdc',strID);
-end
+strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
+
+[h2,~, ~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
+                                    flgColor,flgScale,flgMax,flgSignifColor);   
+xplot_title(alpha,metric,'pdc',strID);
 
 
 %% Original DTF estimation
 %
 % DTF analysis results are saved in *e* structure.
-% See asymp_dtf.m or issue 
-%   >> help asymp_pdc 
-% command for more detail.
+% See asymp_dtf.m.
 %
 
 nFreqs = 128;
@@ -176,23 +169,21 @@ e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statist
 % DTF Matrix Layout Plotting
 %
 w_max=fs/2;
-for kflgColor = flgColor
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%       'Name', 'Guo et al.(2008) Linear model with large common exogenous inputs')
 
-   strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
-   [hxlabel hylabel] = xplot(strID,e,...
-      flgPrinting,fs,w_max,chLabels,kflgColor);
-   xplot_title(alpha,metric,'dtf',strID);
-end
+strID = 'Guo et al.(2008) Linear model with large common exogenous inputs';
+[h3,~, ~] = xplot(strID,e,flgPrinting,fs,w_max,chLabels,flgColor);
+xplot_title(alpha,metric,'dtf',strID);
 
+%%
 % PDC p-values matrix layout plots
+%
+
 flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
-[hxlabel hylabel] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
+[h4,~, ~] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
                                                              flgColor,flgScale);
 xplot_title(alpha,metric,['p-value_{iPDC}'],strID);
+
 
 %% Concluding remarkds;
 %
@@ -214,11 +205,11 @@ xplot_title(alpha,metric,['p-value_{iPDC}'],strID);
 % similar. iPDC gives a measure of size effect, which is very small in this
 % case. Even so iPDC is significant in the same frequency range as PDC and gPDC.
 
-% * In conclusion: the statement by Guo and collaborators that PDC can not
-% uncover the connectivity pattern in large common noise does not hold. For
-% nonlinear systems, in some cases PDC and other linear methods can uncover
-% correct connectivity pattern, but in other models PDC and GCT will simply
-% fail.
+% * In conclusion: the statement by Guo and collaborators (2008) that PDC can
+% not uncover the connectivity pattern in large common noise does not hold i.e.
+% *they are wrong*. For nonlinear systems, in some cases PDC and other linear
+% methods can uncover correct connectivity pattern, but in other models PDC and
+% GCT will simply fail.
 %
 %
 %This completes Guo et al. (2008) example. ;

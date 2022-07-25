@@ -86,9 +86,11 @@ flgPrintResults = 1; % Print results on Command Window
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1;
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                                   igct_signif,flgPrintResults);
-                                             
+
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* struct.
@@ -144,81 +146,3 @@ xplot_title(alpha,metric,'dtf', strTitle);
 % <<fig_gif_baccala2001b_escalp_eeg_pdc.gif>>
 
 
-
-% %% Generalized PDC estimation
-% %
-% % PDC analysis results are saved in *d* structure.
-% % See asymp_pdc.m or issue 
-% %
-% %   >> help asymp_pdc 
-% %
-% % command for more detail.
-% nFreqs = 128;
-% metric = 'info';
-% alpha = 0.01;
-% d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-% 
-% %%
-% % PDCn Matrix Layout Plotting
-% 
-% flgPrinting = [1 1 1 2 2 0 2];
-% flgColor = [1];
-% w_max=fs/2;
-% flgScale = 1; % y-axis = [0 1]
-% flgMax = 'TCI';
-% flgSignifColor = 3; % red = significant, gree = nonsignificant
-% for kflgColor = flgColor,
-% %    h=figure;
-% %    set(h,'NumberTitle','off','MenuBar','none', ...
-% %       'Name', 'Baccala & Sameshima (2001) Model II')
-%    strID = 'Baccala & Sameshima (2001) Model II';
-%    [hxlabel,hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
-%       kflgColor,flgScale,flgMax,flgSignifColor);
-%    xplot_title(alpha,metric,'pdc',['Linear model ' int2str(nPoints) ...
-%                                                               ' data points.']);
-% %    [ax,hT]=suplabel(['Linear model ' ...
-% %       int2str(nPoints) ' data points.'],'t');
-% %    set(hT,'FontSize',10); % Title font size
-% end;
-% 
-% 
-% %% Generalized DTF = DC estimation
-% %
-% % DC analysis results are saved in *e* structure.
-% % See asymp_pdc.m or issue 
-% %
-% %   >> help asymp_pdc 
-% %
-% % command for more detail.
-% nFreqs = 128;
-% metric = 'info';
-% alpha = 0.01;
-% e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-% 
-% %%
-% % PDCn Matrix Layout Plotting
-% 
-% flgPrinting = [1 1 1 2 2 0 2];
-% flgColor = [0];
-% w_max=fs/2;
-% flgScale = 1; % y-axis = [0 1]
-% flgMax = 'TCI';
-% flgSignifColor = 3; % red = significant, gree = nonsignificant
-% for kflgColor = flgColor,
-% %    h=figure;
-% %    set(h,'NumberTitle','off','MenuBar','none', ...
-% %       'Name', 'Baccala & Sameshima (2001) Model II')
-% %    
-%    strID = 'Baccala & Sameshima (2001) Model II';
-%    [hxlabel,hylabel] = xplot(strID,e,flgPrinting,fs,w_max,chLabels, ...
-%       kflgColor,flgScale,flgMax,flgSignifColor);
-%    xplot_title(alpha,metric,'dtf',['Linear model ' int2str(nPoints) ...
-%                                                                ' data points.']);
-% %    [ax,hT]=suplabel(['Linear model ' ...
-% %       int2str(nPoints) ' data points.'],'t');
-% %    set(hT,'FontSize',10); % Title font size
-% end;
-% 
-% %%
-% % * In the original article the amplitude PDC has been plotted.
-% % Here we chose squared PDC.

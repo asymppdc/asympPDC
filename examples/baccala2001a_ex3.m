@@ -82,9 +82,10 @@ igct_signif = 0.01;  % Instantaneous GCT significance level
 
 flgPrintResults = 1;
 
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
-                                                       
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
+                                           
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* struct variable.
@@ -107,8 +108,8 @@ flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
-strTitle = ['HIpo x FPC'];  %'; '  datestr(now) ']'];
-vTitleBar = 'Ruggiero R20';
+strTitle = ['Linear 5-dim VAR(3) model w feedback'];  %'; '  datestr(now) ']'];
+vTitleBar = 'Baccala & Sameshima (2001A) Example 3';
 
 [h1,~, ~] = xplot(vTitleBar,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);

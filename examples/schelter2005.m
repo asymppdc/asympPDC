@@ -63,20 +63,20 @@ flgDetrend = 1;     % 1: Detrending the data set
 flgStandardize = 0; % 0: No standardization
 % Checking data dimension
 [nChannels,nSegLength] = size(u);
-if nChannels > nSegLength, 
+if nChannels > nSegLength
    u = u.'; 
    [nChannels,nSegLength] = size(u);
-end;
+end
 % Detrending 
-if flgDetrend,
-   for i = 1:nChannels, u(i,:) = detrend(u(i,:)); end;
+if flgDetrend
+   for i = 1:nChannels, u(i,:) = detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 % Standardization 
-if flgStandardize,
-   for i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %%
 % MVAR model estimation
@@ -100,7 +100,6 @@ MVARadequacy_signif = 0.05; % VAR model estimation adequacy significance
 aValueMVAR = 1 - MVARadequacy_signif; % Confidence value for the testing
 
 flgPrintResults = 1;
-
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
@@ -115,8 +114,9 @@ metric = 'diag'; % euc  = original PDC or DTF;
                  % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
                                                        
 %% PDC, threshold and confidence interval calculations.
 %
@@ -126,13 +126,11 @@ alpha  = 0.0001;  % Significance level for PDC/DTF null hypothesis test
 
 %%
 % PDC analysis results are saved in *c* data structure.
-% See asymp_dtf.m or issue 
-%
-%   >> help asymp_pdc 
-%
-% command for more detail.
+% See asymp_dtf.m,
 
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
+c.pvaluesgct = pValue_gct;
 
 %% 
 % Plotting options set up, mostly cosmetics, used in xplot.m routine:
@@ -146,8 +144,8 @@ switch lower(flgPrintScreen)
       flgMax = 'TCI';
       flgSignifColor = 3; % red + green
       flgScale = 2;       % [0 1]/[0 .1]/[0 .01]
-end;
-flgScale
+end
+
 %%
 % flgColor parameter for PDC matrix-layout plot.
 flgColor = [0];   % Plotting option for automatic scaling for small PDC
@@ -160,35 +158,30 @@ flgColor = [0];   % Plotting option for automatic scaling for small PDC
                   %   elseif max(|PDC(f)|^2) < .001 background-color = light-purple
                   %                          and y-axis = [0 .01].
 
-%             [1 2 3 4 5 6 7]
-flgPrinting = [1 1 1 2 2 0 5];
-%    blue-line | | | | | | 7--Spectra (0: w/o; 1: Linear; 2: Log; 3: PDC2; 
-%              | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)
-%         gray | | | | | 6--Coh2 (0: w/o Coh2; 1: w Coh2)
-%  dashed-blue | | | | 5--Plot lower confidence limit (***legacy)
-%  dashed-blue | | | 4--Plot confidence interval
-%         red  | | 3--Significant PDC2|DTF2 in red lines (***legacy)
-% dashed-black | 2--Patnaik threshold level in black dashed-lines
-%        green 1-- PDC2/DTF2 in green lines or black w/o statistics,
-%                  See flgSignifColor for line color selection.
+%                 1 2 3 4 5 6 7
+flgPrinting   =  [1 1 1 2 3 0 2]; % Example: Plot everything, except coh2.
+%           blue  | | | | | | 7-- {0:5} Spectra (0: w/o; 1: Linear; 2: Log;
+%                 | | | | | |           3: PDC2; 4: Linear normalized;
+%                 | | | | | |           5: Log spectra + PDC2)
+%           gray  | | | | | 6-- {0:1} Coh2 (0: w/o Coh2; 1: w Coh2)
+%    dark-purple  | | | | 5-- {0:3} Print GCT p-values and dot-mark significant
+%  or dark-green  | | | |           connectivity channel-pair (0: w/o;
+%                 | | | |           1: p-values; 2: dot-mark +GCT;
+%                 | | | |           3: p-values + dot-mark significant GCT)
+%    dashed-blue  | | | 4-- {0:4} Confidence interval (0:w/o; 1: Dashed-lines;
+%                 | | |           2: Shaded-plot; 3: Error-bar 1; 4: Error-bar 2
+%            red  | | 3-- {0:1} Significant PDC2|DTF2 in red lines
+%   dashed-black  | 2-- {0:1} Patnaik threshold level in black dashed-lines
+%          green  1-- {0:1} PDC2/DTF2 in green lines or black w/o statistics,
+%                           see flgSignifColor bellow for line color selection.
 
 w_max=fs/2;
 
-for kflgColor = flgColor,
-   %    h=figure;
-   %    set(h,'NumberTitle','off','MenuBar','none', ...
-   %       'Name', 'Schelter et al. J. Neurosci Methods (2005)')
-   %    [ax,hT]=suplabel(['Linear pentavariate, VAR[4]-process: ' ...
-   %       int2str(nPoints) ' data points.'],'t');
-   %    set(hT,'FontSize',12); % Title font size
-   %   [hxlabel hylabel] = xplot(h,c,...
-   %                               flgPrinting,fs,w_max,chLabels,kflgColor);
-   
-   strID = 'Schelter et al. J. Neurosci Methods (2005)';
-   [hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
-                                      kflgColor,flgScale,flgMax,flgSignifColor);
-   xplot_title(alpha,metric,'pdc',strID);
-end;
+strID = 'Schelter et al. J. Neurosci Methods (2005)';
+[h,hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
+                                flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,'pdc',strID);
+
 
 %% Remarks:
 % 

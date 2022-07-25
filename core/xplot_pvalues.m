@@ -784,36 +784,28 @@ end
 % X-LABEL 
 %
 
-[~,h1] = suplabel(strXsuplabel,'x',supAxes);
-pos = get(h1,'Position');
+[ax1,h1] = suplabel(strXsuplabel,'x',supAxes);
+pos = get(ax1,'Position');
 
 switch computer
    case 'PCWIN64'
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
-      pos(2) = -0.03;
+      pos(2) = pos(2) + 0.035;
    case {'GLNXA64','x86_64-pc-linux-gnu'}
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
-      dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
-      pos(2) = -0.03; %pos(2) + dpos2;           % 0.0545 % 0.025
+      pos(2) = pos(2) + 0.035; %pos(2) + dpos2;           % 0.0545 % 0.025
    case 'MACI64'
       set(h1,'FontWeight','bold', 'FontSize',16,'FontName','Arial');
-%       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
-%      pos2 = pos(2)
-       pos(2) = pos(2) + 0.025;
-%      pos(2) = pos2 - 0.01;
-    %  pos(2) = pos(2) - .025; % dpos2/3;
-     % save maci64_suplabelx h1 pos 
+      pos(2) = pos(2) + 0.010;
    otherwise
       disp('otherwise')
-      %nop
 end
 
-% pos = get(h1,'Position');
-% pos2 = 0.021*(30 - nChannels)/25; % y shift correctionn constant
-% pos(2) = pos(2) + pos2;   % 0.0545 % 0.025
-% 
-
-set(h1,'Position',pos);    % Adjust xlabel position
+if ~isOctave()   
+   set(ax1,'Position',pos);    % Adjust xlabel position
+else
+   set(ax1,'Position',pos);    % Actually suplabel did not work in Octave   
+end
 
 % ==============================================================================
 % Fine adjustment of axis channel labels positions.

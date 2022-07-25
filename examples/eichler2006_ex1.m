@@ -27,7 +27,7 @@ u = feichler2006_ex1(nPoints, nDiscard, flgManual);
 chLabels = {'X_1';'X_2';'X_3'}; %or %chLabels = [];
 
 [nSegLength,nChannels] = size(u);
-fs = 1;
+fs = 1; % Normalized frequency
 
 %% Interaction diagram
 %
@@ -93,8 +93,8 @@ metric = 'info'; % euc  = original PDC or DTF;
                  % diag = generalized PDC (gPDC) or DC;
                  % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
 %% Original DTF estimation
 %
@@ -102,7 +102,7 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 % See asymp_dtf.m for detail.
 
 nFreqs = 64;
-d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
+c = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 
 %%
 % $|DTF(\lambda)|^2$ Matrix Layout Plotting
@@ -111,12 +111,11 @@ flgColor = [1];
 w_max=fs/2;
 
 strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
-             int2str(nSegLength) 'pts; IP=' int2str(d.p) ']'];
+             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 strID = 'Eichler(2006) Linear model';
 
-[h1,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
+[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',strTitle);
-
 
 %% Original PDC estimation
 %
@@ -125,17 +124,18 @@ xplot_title(alpha,metric,'dtf',strTitle);
 nFreqs = 128;
 metric = 'euc';
 alpha = 0.01;
-c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-c.Tragct = Tr_gct;
-c.pvaluesgct = pValue_gct;
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+d.Tragct = Tr_gct;
+d.pvaluesgct = pValue_gct;
 
 %%
 % $|PDC(\lambda)|^2 Matrix Layout Plotting
+
 flgColor = [1];
 w_max=fs/2;
 flgPrinting = [1 1 1 2 3 0 1]; % plot auto PDC on main diagonal
 
-[h2,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc',strTitle);
 
 

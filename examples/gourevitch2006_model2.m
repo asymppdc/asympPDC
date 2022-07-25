@@ -110,8 +110,12 @@ alpha = 0.01;
 
 gct_signif  = alpha;  % Granger causality test significance level
 igct_signif = alpha;  % Instantaneous GCT significance level
+
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct] = gct_alg2(u,A,pf,gct_signif,igct_signif,flgPrintResults);
+
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+% [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
  
 %% Original PDC estimation
 %
@@ -126,6 +130,36 @@ metric = 'euc';  % euc  = original PDC or DTF;
                  % info = information PDC (iPDC) or iDTF.
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
+
+%%
+% PDC Matrix Layout Plotting
+
+flgPrinting = [1 1 1 2 2 0 1]; % overriding default setting
+flgColor = 1;
+w_max=fs/2;
+chLabels={'x_1';'x_2'}; %Optional channel labels;
+
+strID = 'Gourevitch et al.(Biol Cybern, 2006)';
+strTitle = ['Model 2: Linear bivariate model with common source: ' ...
+   int2str(nPoints) ' data points.'];
+
+[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
+
+
+%% Generalized PDC estimation
+%
+% gPDC analysis results are saved in *d* structure.
+% See asymp_pdc.m.
+
+metric = 'diag';  % euc  = original PDC or DTF;
+                  % diag = generalized PDC (gPDC) or DC;
+                  % info = information PDC (iPDC) or iDTF.
+
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+d.Tragct = Tr_gct;  d.pvaluesgct = pValue_gct;
+
+
 %%
 % PDC Matrix Layout Plotting
 
@@ -133,53 +167,14 @@ flgPrinting = [1 1 1 2 2 0 1]; % overriding default setting
 flgColor = 1;
 w_max=fs/2;
 chLabels={'X_1';'X_2'}; %Optional channel labels;
-
-
-for kflgColor = flgColor,
-   %    h=figure;
-   %    set(h,'NumberTitle','off','MenuBar','none', ...
-   %          'Name', 'Gourevitch et al.(Biol Cybern, 2006)')
    
-   strID = 'Gourevitch et al.(Biol Cybern, 2006)';
-   [hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,kflgColor);
-   strTitle = ['Model 2: Linear bivariate model with common source: ' ...
-               int2str(nPoints) ' data points.'];
-   xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
-end;
+strID = 'Gourevitch et al.(Biol Cybern, 2006)';
+[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 
-%% Generalized PDC estimation
-%
-% gPDC analysis results are saved in *d* structure.
-% See asymp_dtf.m or issue 
-%   >> help asymp_pdc 
-% command for more detail.
+strTitle = ['Model 2: Linear bivariate model with common source: ' ...
+             int2str(nPoints) ' data points.'];
+xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
 
-metric = 'diag';  % euc  = original PDC or DTF;
-                  % diag = generalized PDC (gPDC) or DC;
-                  % info = information PDC (iPDC) or iDTF.
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-d.Tragct = Tr_gct;  d.pvaluesgct = pValue_gct;
-%%
-% PDC Matrix Layout Plotting
-
-flgPrinting = [1 1 1 2 2 0 3]; % overriding default setting
-flgColor = 1;
-w_max=fs/2;
-chLabels={'X_1';'X_2'}; %Optional channel labels;
-
-   
-for kflgColor = flgColor,
-   %    h=figure;
-   %    set(h,'NumberTitle','off','MenuBar','none', ...
-   %          'Name', 'Gourevitch et al.(Biol Cybern, 2006)')
-   
-   strID = 'Gourevitch et al.(Biol Cybern, 2006)';
-   [hxlabel hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,kflgColor);
-   %
-   strTitle = ['Model 2: Linear bivariate model with common source: ' ...
-                                              int2str(nPoints) ' data points.'];
-   xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
-end;
 
 %% Result from the original article, Gourevitch (2006) 
 %
@@ -196,10 +191,10 @@ end;
 
 flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
-[hxlabel hylabel] = xplot_pvalues([],d,flgPrinting,fs,w_max,chLabels, ...
-                                                             flgColor,flgScale);
+[h3,~,~] = xplot_pvalues([],d,flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
 
 xplot_title(alpha,metric,['p-value gPDC'],'Gourevitch et al.(Biol Cybern, 2006)');
+
 
 %%
 % gPDC's p-values in the frequency domain, which, in this case, are < 1.0e-15.
@@ -216,22 +211,18 @@ e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statist
 %%
 % DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range
 %
-flgPrinting = [1 1 1 2 2 0 3]; % Plot auto-DTF on main-diagonal
+flgPrinting = [1 1 1 2 2 0 1]; % Plot auto-DTF on main-diagonal
 flgColor = 1; w_max=fs/2; flgMax = 'TCI'; flgScale = 1; flgSignifColor = 1;  
 
 w_max=fs/2;
-chLabels={'X_1';'X_2'}; %Optional channel labels;
-for kflgColor = flgColor,
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%          'Name', 'Gourevitch et al.(Biol Cybern, 2006)')
-   strID = 'Gourevitch et al.(Biol Cybern, 2006)';
-   [hxlabel hylabel] = xplot(strID,e,flgPrinting,fs,w_max,chLabels,kflgColor);
-   strTitle = ['Model 2: Linear bivariate model with common source: ' ...
-               int2str(nPoints) ' data points.'];
-   xplot_title(alpha,metric,'dtf',strTitle);
-end;
+chLabels={'x_1';'x_2'}; %Optional channel labels;
 
+strID = 'Gourevitch et al.(Biol Cybern, 2006)';
+strTitle    = ['Model 2: Linear bivariate model with common source: ' ...
+               int2str(nPoints) ' data points.'];
+
+[h4,~,~] = xplot(strID,e,flgPrinting,fs,w_max,chLabels,flgColor);
+xplot_title(alpha,metric,'dtf',strTitle);
 
 
 %%

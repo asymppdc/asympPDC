@@ -22,7 +22,7 @@ nPoints  = 2000;      % number of analyzed samples points
 
 flgManual  = 0;
 
-chLabels = {'X_1';'X_2'}; %or %chLabels = [];
+chLabels = {'x_1';'x_2'}; %or %chLabels = [];
 
 u = feichler2006_ex2(nPoints, nDiscard, flgManual);
 
@@ -93,9 +93,11 @@ igct_signif = 0.01;  % Instantaneous GCT significance level
 metric = 'info'; % euc  = original PDC or DTF;
                  % diag = generalized PDC (gPDC) or DC;
                  % info = information PDC (iPDC) or iDTF.
+                 
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
 
 %% Original DTF estimation as in Eichler (2006)
@@ -113,15 +115,19 @@ flgColor = [1];
 % DTF Matrix Layout Plotting with [0 1] y-axis scale.
 
 w_max=fs/2;
-
-strID = 'Eichler(2006) Linear model';
-[hxlabel,hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
+for kflgColor = flgColor,
+%    h=figure;
+%    set(h,'NumberTitle','off','MenuBar','none', ...
+%       'Name', 'Eichler(2006) Linear model')
+   strID = 'Eichler(2006) Linear model';
+[h1,~, ~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
                                  flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,'dtf',strID);
+   xplot_title(alpha,metric,'dtf',strID);
+end;
 
 
 %%
-% DTF Matrix Layout Plotting with adjusted y-axis to max DTF+IC
+% DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI
 
 flgPrinting=[1 1 1 2 2 0 1]; % overriding default setting
 flgColor = 1;
@@ -133,6 +139,7 @@ strTitle1 = ['3-dimension linear VAR[2] Model: '];
 strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(d.p) ']'];
 strTitle =[strTitle1 strTitle2];
 
-[hxlabel,hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
+[h2,~, ~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
                                  flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric, 'dtf',strTitle);
+

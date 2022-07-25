@@ -101,7 +101,7 @@ if flgVerbose
    fprintf('\n')
    disp(repmat('=',1,100))
 end
-
+end
 % =========================================================================
 % % function [Tr,Va,v,th,pValue]=granmatx(b,G,SU,significance)
 % % 
@@ -183,6 +183,7 @@ for i=1:n
       end
    end
 end
+end
 
 %==========================================================================
 function [y,value,v,th,pValue]=instata(CO,pf,N,significance)
@@ -218,6 +219,8 @@ v = 1; %2; Chi-square distribution degree of freedom. C.S. Changed to v = 1.
 th = chi2inv(significance,v);
 y = value >= th;
 pValue = 1-chi2cdf(value,v); % p-value of instantaneous Granger causality test
+end
+
 
 %==========================================================================
 %
@@ -248,6 +251,8 @@ for i=1:m*m
       end
    end
 end
+end
+
 
 %==========================================================================
 % VECH or VEC is matrix column stacking operator function
@@ -265,6 +270,8 @@ y = [ ];
 for i = 1:m
    y = [y ;Y(i:n,i)];
 end
+end
+
 
 %==========================================================================
 % Computation of Z - data structure (no estimation of the mean)
@@ -286,3 +293,5 @@ for i = 0:T-1
    Z(:,i+1) = flipud(y1(1+K*i:K*i+K*p));
 end
 %Z=[ones(1,T);Z];
+end
+

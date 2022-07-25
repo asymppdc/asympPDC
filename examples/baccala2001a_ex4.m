@@ -85,9 +85,13 @@ metric = 'diag'; % euc  = original PDC or DTF;
                  % diag = generalized PDC (gPDC) or DC;
                  % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
- 
+
+% [Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
+%                                               igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* structure.
@@ -111,7 +115,7 @@ flgPrinting = [1 1 1 0 0 0 3]; % plot auto PDC on main diagonal
 % set(h,'NumberTitle','off','MenuBar','none', ...
 %     'Name', 'Baccala & Sameshima (2001): Example 4')
 
-[hxlabel hylabel] = xplot('Baccala & Sameshima (2001): Example 4',c,...
+[h1,~, ~] = xplot('Baccala & Sameshima (2001A) - Example 4',c,...
     flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc');
 
@@ -135,8 +139,7 @@ w_max=fs/2;
 % set(h,'NumberTitle','off','MenuBar','none', ...
 %     'Name', 'Baccala & Sameshima (2001): Example 4')
 vBarTitle = 'Baccala & Sameshima (2001): Example 4';
-[hxlabel hylabel] = xplot(vBarTitle,d,...
-    flgPrinting,fs,w_max,chLabels,flgColor);
+[h2,~, ~] = xplot(vBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',vBarTitle);
 
 %%

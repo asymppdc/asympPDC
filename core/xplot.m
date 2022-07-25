@@ -471,7 +471,7 @@ set(hfigure,'units','centimeters','position',[0 0 width height]);
 switch computer
    case 'PCWIN64'
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-rheight) rwidth rheight]); % -0.03
+         'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]); % -0.03
 
    case {'GLNXA64','x86_64-pc-linux-gnu'}
       set(hfigure,'units','normalized', ...
@@ -1460,22 +1460,23 @@ else
    strXsuplabel = 'Frequency (Hz)';
 end
 
-[~,h1] = suplabel(strXsuplabel,'x'); %,supAxes);
-pos = get(h1,'Position');
+[ax1,h1] = suplabel(strXsuplabel,'x'); %,supAxes);
+pos = get(ax1,'Position');
 
 switch computer
    case 'PCWIN64'
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
-      pos(2) = -0.03;
+%       pos(2) = -0.03;
+      pos(2) = pos(2) + 0.035; %dpos2           % 0.0545 % 0.025
    case {'GLNXA64','x86_64-pc-linux-gnu'}
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
-      %       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
-      pos(2) = -0.03; %pos(2) + dpos2           % 0.0545 % 0.025
+%       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
+      pos(2) = pos(2) + 0.035; %dpos2           % 0.0545 % 0.025
    case 'MACI64'
       set(h1,'FontWeight','bold', 'FontSize',14,'FontName','Arial');
       %        dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
       %      pos2 = pos(2)
-      pos(2) = -0.03;
+      pos(2) = pos(2) + 0.010;
       %       pos(2) = pos(2) + 0.025;
       %  pos(2) = pos(2) - .025; % dpos2/3;
       % save maci64_suplabelx h1 pos
@@ -1485,7 +1486,9 @@ switch computer
 end
 
 if ~isOctave()   
-   set(h1,'Position',pos);    % Adjust xlabel position
+   set(ax1,'Position',pos);    % Adjust xlabel position
+else
+   set(ax1,'Position',pos);    % Actually suplabel does not work in Octave   
 end
 % ------------------------------------------------------------------------------
 if flgPrinting(1) % PDC2 or DTF2
@@ -1503,7 +1506,7 @@ if flgPrinting(1) % PDC2 or DTF2
             pType = '_{i}DTF';
          case 'ratio'
             pType = 'Ratio';
-         pxheight_max
+%          pxheight_max
             error('Unknown metric.')
       end
    else
@@ -1517,7 +1520,7 @@ if flgPrinting(1) % PDC2 or DTF2
             pType = '_{i}PDC';
          case 'ratio'
             pType = 'iPDC/gPDC Ratio';
-         pxheight_max
+%          pxheight_max
             error('Unknown metric.')
       end
    end
@@ -1526,49 +1529,49 @@ if flgPrinting(1) % PDC2 or DTF2
       case 'screen'
          switch metric
             case 'euc'
-               [~,h2] = suplabel(['{\mid\' gType ...
+               [ax2,h2] = suplabel(['{\mid\' gType ...
                              '_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'],'y',supAxes);
             case 'diag'
-               [~,h2] = suplabel(['{\mid{_{\it{g}}}\' gType ...
+               [ax2,h2] = suplabel(['{\mid{_{\it{g}}}\' gType ...
                              '_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'],'y',supAxes);
             case 'info'
-               [~,h2] = suplabel(['{\mid{_i}\' gType ...
+               [ax2,h2] = suplabel(['{\mid{_i}\' gType ...
                              '_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'],'y',supAxes);
             case 'ratio'
-               [~,h2] = suplabel(['i' flgType ' to g' flgType ' Ratio'],...
+               [ax2,h2] = suplabel(['i' flgType ' to g' flgType ' Ratio'],...
                                   'y',supAxes);
             otherwise
                error('Unknown metric.')
          end
       otherwise %Print
-         [~,h2] = suplabel(['{|' pType '(\lambda)|}^{2}'],'y',supAxes);
+         [ax2,h2] = suplabel(['{|' pType '(\lambda)|}^{2}'],'y',supAxes);
          set(h2,'FontWeight','bold', 'FontSize',12);
-         pos = get(h2,'Position');
-         pos(1) = pos(1) + 0.020;   % 0.0545
-         set(h2,'Position',pos);    % Adjust ylabel position
+         pos = get(ax2,'Position');
+         pos(1) = pos(1) + 0.030;   % 0.0545
+         set(ax2,'Position',pos);    % Adjust ylabel position
    end
 elseif flgPrinting(6)
    switch lower(flgPrint)
       case 'screen'
-         [~,h2] = suplabel(['{|\textbf{Coh}_{\it{{i}{j}}}{(\lambda)|}^{2}}'],...
+         [ax2,h2] = suplabel(['{|\textbf{Coh}_{\it{{i}{j}}}{(\lambda)|}^{2}}'],...
                             'y',supAxes);
       otherwise %Print
-         [~,h2] = suplabel(['{|Coh(\lambda)|}^{2}'],'y',supAxes);
+         [ax2,h2] = suplabel(['{|Coh(\lambda)|}^{2}'],'y',supAxes);
          set(h2,'FontWeight','bold', 'FontSize',12);
-         pos = get(h2,'Position');
+         pos = get(ax2,'Position');
          pos(1) = pos(1) + 0.020;   % 0.0545
-         set(h2,'Position',pos);    % Adjust ylabel position
+         set(ax2,'Position',pos);    % Adjust ylabel position
    end
 elseif flgPrinting(7)
    switch lower(flgPrint)
       case 'screen'
-         [~,h2] = suplabel(['{|SS(\lambda)|}'],'y',supAxes);
+         [ax2,h2] = suplabel(['{|SS(\lambda)|}'],'y',supAxes);
       otherwise %Print
-         [~,h2] = suplabel(['SS(\lambda)|'],'y',supAxes);
+         [ax2,h2] = suplabel(['SS(\lambda)|'],'y',supAxes);
          set(h2,'FontWeight','bold', 'FontSize',12);
-         pos = get(h2,'Position');
+         pos = get(ax2,'Position');
          pos(1) = pos(1) + 0.020;   % 0.0545
-         set(h2,'Position',pos);    % Adjust ylabel position
+         set(ax2,'Position',pos);    % Adjust ylabel position
    end
 end
 

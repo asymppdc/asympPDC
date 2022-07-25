@@ -93,8 +93,8 @@ metric = 'diag'; % euc  = original PDC or DTF;
                  
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
                                                        
 %% PDC, threshold and confidence interval calculations.
 %
@@ -166,24 +166,20 @@ end;
 w_max=fs/2;
 
 strID = 'Winterhalder et al. Signal Processing 85:2137?60, 2005';
-% [hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
-
 strTitle = [' Independent Gaussian Noise: \sigma_1=\sigma_3=500;' ...
                            ' \sigma_2 = \sigma_4 = \sigma_5 = 1'];
-% xplot_title(alpha,metric,'pdc',strTitle)
 
 
 flgPrinting  =   [1 1 1 2 3 0 2];
 flgScale = 1;
 
-[hxlabel hylabel] = xplot(strID, c, ...
+[h,hxlabel hylabel] = xplot(strID, c, ...
                                flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
-
 xplot_title(alpha,metric,'PDC',strTitle);
 
-[hxlabel hylabel] = xplot_pvalues(strID, c, ...
+flgPrinting  =   [1 1 1 2 3 0 0];
+[hp,hxlabel hylabel] = xplot_pvalues(strID, c, ...
                                flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
-
 xplot_title(alpha,metric,'p-value PDC',strTitle);
 
 

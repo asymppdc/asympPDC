@@ -98,17 +98,14 @@ flgPrintResults = 1;
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
  
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* structure.
-% See asymp_dtf.m or issue 
-%
-%   >> help asymp_pdc 
-%
-% command for more detail.
+% See asymp_pdc.m.
 
 nFreqs = 128;
 metric = 'info';  % euc  = original PDC or DTF;
@@ -120,37 +117,27 @@ c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 %%
 % PDCn Matrix Layout Plotting
+
 flgPrinting = [1 1 1 2 2 0 1];
-%flgPrinting = [1 1 1 1 1 0 2]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf('%0.3g',100*alpha);
-   
-for kflgColor = flgColor,
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%       'Name', 'Schelter et al. J Physiology - Paris 99:37-46, 2006.')
-%    
-   strID = 'Schelter et al. J Physiology - Paris 99:37-46, 2006.';
-   
-   [hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,kflgColor);
-   %    [ax,hT]=suplabel(['Linear pentavariate Model II: ' ...
-   %       int2str(nPoints) ' data points.'],'t');
-   %    set(hT,'FontSize',12); % Title font size
-   
-   strTitle = ['Linear pentavariate Model II: ' int2str(nPoints) ...
-               ' data points.'];
-   xplot_title(alpha,metric,'pdc',strTitle);
-end;
 
+strID = 'Schelter et al. J Physiology - Paris 99:37-46, 2006.';
+
+[h,hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+strTitle = ['Linear pentavariate Model II: ' int2str(nPoints) ...
+              ' data points.'];
+xplot_title(alpha,metric,'pdc',strTitle);
+
+%%
 % PDC p-values matrix layout plots
+
 flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 
-
-[hxlabel hylabel] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
+[hp,~,~] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
                                                              flgColor,flgScale);
-
 xplot_title(alpha,metric,['p-value PDC'],strTitle);
 
 

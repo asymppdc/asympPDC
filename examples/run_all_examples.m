@@ -1,59 +1,59 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Sunspot and melanoma data 1936 - 1972
-%     sunspot --> melanoma 
-
-more off
-warning off
-
-tic;
-
-andrews_herzberg
-shg
-pause(2)
-
-%==========================================================================
-% Baccala & Sameshima. Partial directed coherence: a new concept in neural
-% structure determination. Biol. Cybern. 84:463-474, 2001.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %Sunspot and melanoma data 1936 - 1972
+% %     sunspot --> melanoma 
 % 
-% Example VAR(5) with loop and feedback 4<=>5 Example 3
-baccala2001a_ex3
-shg
-pause(2)
-
-% Example VAR(5) with loop and feedback  (4<=>5) Example 4
-baccala2001a_ex4
-shg
-pause(2)
-
-% Example VAR(5) with loop and feedback
-baccala2001a_ex5
-shg
-pause(2)
-
-%==========================================================================
-% Baccala, L. A. & Sameshima, K. (2001b) Overcoming the limitations of
-% correlation analysis for many simultaneously processed neural structures.
-% Progress in Brain Research, 130, pp. 33--47. 
-%
-% Example Model I - (VAR(5) + feedback) + independent VAR(2)
-
-baccala2001b_model1_feedback
-shg
-pause(2)
-
-% Example Model II Left and Right Hemispheres EEG emulation
-baccala2001b_model2
-pause(2)
-
-% Example Modified Model II Left and Right Hemispheres EEG emulation
-
-baccala2001b_model2_variant
-pause(2)
-
-% Eichler. On the evaluation of information flow in multivariate systems 
-% by the directed transfer function.
-%            Biol Cybern (2006) 94: 469?482
-%  Example - Three-dimensional VAR[2].
+% more off
+% warning off
+% 
+% tic;
+% 
+% andrews_herzberg
+% shg
+% pause(2)
+% 
+% %==========================================================================
+% % Baccala & Sameshima. Partial directed coherence: a new concept in neural
+% % structure determination. Biol. Cybern. 84:463-474, 2001.
+% % 
+% % Example VAR(5) with loop and feedback 4<=>5 Example 3
+% baccala2001a_ex3
+% shg
+% pause(2)
+% 
+% % Example VAR(5) with loop and feedback  (4<=>5) Example 4
+% baccala2001a_ex4
+% shg
+% pause(2)
+% 
+% % Example VAR(5) with loop and feedback
+% baccala2001a_ex5
+% shg
+% pause(2)
+% 
+% %==========================================================================
+% % Baccala, L. A. & Sameshima, K. (2001b) Overcoming the limitations of
+% % correlation analysis for many simultaneously processed neural structures.
+% % Progress in Brain Research, 130, pp. 33--47. 
+% %
+% % Example Model I - (VAR(5) + feedback) + independent VAR(2)
+% 
+% baccala2001b_model1_feedback
+% shg
+% pause(2)
+% 
+% % Example Model II Left and Right Hemispheres EEG emulation
+% baccala2001b_model2
+% pause(2)
+% 
+% % Example Modified Model II Left and Right Hemispheres EEG emulation
+% 
+% baccala2001b_model2_variant
+% pause(2)
+% 
+% % Eichler. On the evaluation of information flow in multivariate systems 
+% % by the directed transfer function.
+% %            Biol Cybern (2006) 94: 469?482
+% %  Example - Three-dimensional VAR[2].
 eichler2006_ex1              
 pause(2)
 

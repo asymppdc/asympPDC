@@ -77,9 +77,11 @@ flgPrintResults = 1;
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
- 
+% [Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
+%                                               igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
 %% Information PDC estimation
 % PDC analysis results are saved in *c* struct variable.
 % See asymp_pdc.m for details.
@@ -97,9 +99,9 @@ c.Tragct = Tr_gct;
 flgPrinting = [1 1 1 0 3 0 2]; % With GCT and log-spectra on main diagonal
 flgColor = 0;
 w_max=fs/2;
-vTitle = 'Baccala & Sameshima (2001) Example 5';
+vTitle = 'Baccala & Sameshima (2001A) - Example 5';
 [hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
-                           % With default flgScale, flgMax, flgSignifColor
+
 xplot_title(alpha,metric,'pdc',['Linear model Example 5: ' ...
                                              int2str(nPoints) ' data points.']);
 
@@ -119,7 +121,7 @@ flgColor = 1;
 w_max=fs/2;
 flgMax = 'TCI';
 flgScale = 1;
-flgSignifColor = 3;  
+flgSignifColor = 3;
 
 [hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);

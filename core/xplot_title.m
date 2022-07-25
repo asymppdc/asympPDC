@@ -104,7 +104,31 @@ else
 end
 
 if isOctave()
-   set(h,'FontSize',14)   
+   set(h,'FontSize',10)   
+   pos = get(ax,'Position')
 else
-   set(h,'FontSize',10)
+   
+   switch computer
+      case 'PCWIN64'
+         set(h,'FontSize',8)
+      case {'GLNXA64','x86_64-pc-linux-gnu'}
+         set(h,'FontSize',8)
+      case 'MACI64'
+         set(h,'FontSize',10)
+      otherwise
+         set(h,'FontSize',8)
+   end   
+   set(ax,'Units','normalized')
+   pos = get(ax,'Position');
+   pos(4) = pos(4) + 0.0125;
+   set(ax,'Position',pos);
 end
+
+% ax : Axes (suplabel) with properties:
+%              XLim: [0 1]
+%              YLim: [0 1]
+%            XScale: 'linear'
+%            YScale: 'linear'
+%     GridLineStyle: '-'
+%          Position: [0.0900 0.0700 0.8550 0.8950]
+%             Units: 'normalized'
