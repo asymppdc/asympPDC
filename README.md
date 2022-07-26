@@ -59,10 +59,10 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
 [7] S.L. Marple Jr (1987). Digital Spectral Analysis with Application.
                          Prentice-Hall, Englewood-Cliffs. 
                          
-[8] T. Schneider and A. Neumaier (2001): Algorithm 808: ARfit - A Matlab package
+[8] T. Schneider and A. Neumaier (2001). Algorithm 808: ARfit - A Matlab package
                          for the estimation of parameters and eigenmodes of
                          multivariate autoregressive models. *ACM Trans Math
-                         Softw **27**:58-–65.
+                         Softw* **27**:58-–65. <https://doi.org/10.1145/382043.382316>
 
 [9] K. Sameshima and L.A. Baccalá Eds. (2014). Methods in Brain Connectivity 
     Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton
