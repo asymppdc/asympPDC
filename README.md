@@ -12,7 +12,7 @@ The AsympPDC package contains MATLAB/Octave mfiles and subfolders that you may c
 >> startup
 ```
 
-In addition to adding the paths, `startup.m` will also check for the presence of the required MATLAB toolboxes (Control, Signal Processing, and Statistical Toolboxes)/Octave packages (Control, Signal, and Statistics). All other routines, including examples and contributed FileExchange files. This is a standalone version. Most likely it will work in the recent versions of Octave --- 6.3.0, 6.4.0 and 7.1.0  (Please report or suggest correction to any issue related to compatibility with Octave).
+In addition to adding the paths, `startup.m` will also check for the presence of the required MATLAB toolboxes (Control, Signal Processing, and Statistical Toolboxes) or Octave packages (Control, Signal, and Statistics). This is a standalone version. Most likely it will work in the recent versions of Octave --- 6.3.0, 6.4.0 and 7.1.0  (Please report or suggest correction to any issue related to compatibility with Octave).
 
 To run all main examples provided in ./examples subdiretory and verify if your installation is working properly, execute
 
@@ -32,25 +32,25 @@ that will spread the figures on the screen. The tilefigs1 or tilefigs2 function 
 
 The AsympPDC toolbox implementation is based mainly on the following articles and books:
 
- [1] L.A. Baccala and K. Sameshima. Partial directed coherence: a new concept
-     in neural structure determination. Biol Cybern 84:463--474,2001.
+ [1] L.A. Baccala and K. Sameshima (2001). Partial directed coherence: a new concept
+     in neural structure determination. *Biol Cybern* **84**:463--474.
      <https://doi.org/10.1007/PL00007990>
 
- [2] D.Y. Takahashi, L.A.B. Baccala and K. Sameshima, Connectivity inference
-     between neural structures via partial directed coherence. J Appl Stat
-     34:1259--1273, 2007. <https://doi.org/10.1080/02664760701593065>
+ [2] D.Y. Takahashi, L.A.B. Baccala and K. Sameshima (2007), Connectivity inference
+     between neural structures via partial directed coherence. *J Appl Stat*
+     **34**:1259--1273. <https://doi.org/10.1080/02664760701593065>
 
  [3] L.A. Baccala, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima (2013). Unified
-     asymptotic theory for all partial directed coherence forms. Philos T Roy
-     Soc A 371(1997):1--13. <https://doi.org/10.1098/rsta.2012.0158>
+     asymptotic theory for all partial directed coherence forms. *Philos T Roy
+     Soc A* **371**:1--13. <https://doi.org/10.1098/rsta.2012.0158>
      
  [4] M.J. Kaminski and K.J. Blinowska (1991). A new method of the description of the
-    information flow in the brain structures. __Biol Cybern__ **65**:203--210.
+    information flow in the brain structures. *Biol Cybern* **65**:203--210.
     <https://doi.org/10.1007/bf00198091>
 
 [5] L.A. Baccala, D.Y. Takahashi and K. Sameshima (2016). Directed transfer
-    function: unified asymptotic theory and some of its implications. IEEE T
-    Bio-Med Eng 63:2450--2460. 
+    function: unified asymptotic theory and some of its implications. *IEEE T
+    Bio-Med Eng* **63**:2450--2460. 
     <https://doi.org/10.1109/TBME.2016.2550199>
     
 [6] H. Lutkepohl (2005). New Introduction to Multiple Time Series Analysis. 
@@ -61,8 +61,8 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
                          
 [8] T. Schneider and A. Neumaier (2001): Algorithm 808: ARfit - A Matlab package
                          for the estimation of parameters and eigenmodes of
-                         multivariate autoregressive models. ACM Trans. Math.
-                         Softw., 27:58-–65.
+                         multivariate autoregressive models. *ACM Trans Math
+                         Softw **27**:58-–65.
 
 [9] K. Sameshima and L.A. Baccalá Eds. (2014). Methods in Brain Connectivity 
     Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton
