@@ -12,27 +12,27 @@
 %%
 clear; clc
 
-nDiscard = 1000;    % number of points discarded at beginning of simulation
-nPoints  = 1000;   % number of analyzed samples points
-
-%chLabels = []; % or 
-chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-
-
 disp(repmat('=',1,100));
 disp('       Schelter et al. J Neurosci Methods. 179:121-130, 2009.')
 disp('               Linear 5-dimension VAR[2]-process')
 disp('       x1==>x4  x1-->x3 x2-->x1 x2==>x3 x4-->x1 x5-->x4');
 disp(repmat('=',1,100));
 
-u = fschelter2009_vap1(nPoints, nDiscard);
-fs = 1;
 
 %% Equation Model I with feedback
 % 3.1 Vector autoregressive process I (Eqs. 11-15, page 124)
 %
 % <<fig_schelter2009_vap1_equations.png>>
 %
+
+%% Data sample generation
+
+nDiscard = 1000;    % number of points discarded at beginning of simulation
+nPoints  = 1000;   % number of analyzed samples points
+chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+u = fschelter2009_vap1(nPoints, nDiscard);
+fs = 1;
+
 
 %% Renormalized PDC expected results
 %
@@ -104,7 +104,7 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
 
-%% Original PDC estimation
+%% Information PDC estimation
 %
 % PDC analysis results are saved in *c* struct variable.
 % See asymp_pdc.m or issue following command
@@ -123,7 +123,7 @@ c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
 c.pvaluesgct = pValue_gct;
 
-%% iPDC Matrix-Layout Plotting
+%% iPDC2 Matrix-Layout Plotting
 
 flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 0;

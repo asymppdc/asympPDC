@@ -17,17 +17,6 @@
 %%
 clc; format compact
 
-nDiscard = 5000;      % number of points discarded at beginning of simulation
-nPoints  = 2000;      % number of analyzed samples points
-
-flgManual  = 0;
-
-chLabels = {'x_1';'x_2'}; %or %chLabels = [];
-
-u = feichler2006_ex2(nPoints, nDiscard, flgManual);
-
-[nSegLength,nChannels]=size(u);
-
 %% Interaction
 %
 % <<fig_eichler2006_2dim_graph.png>>
@@ -37,6 +26,18 @@ u = feichler2006_ex2(nPoints, nDiscard, flgManual);
 %
 % <<fig_eichler2006b_eq26.png>>
 %
+
+%% Data sample generation
+%
+
+nDiscard = 5000;      % number of points discarded at beginning of simulation
+nPoints  = 2000;      % number of analyzed samples points
+
+flgManual  = 0;
+
+u = feichler2006_ex2(nPoints, nDiscard, flgManual);
+chLabels = {'x_1';'x_2'}; %or %chLabels = [];
+
 
 %%
 % Data pre-processing: detrending and normalization options
@@ -57,8 +58,7 @@ if flgStandardize,
    disp('Time series were scale-standardized.');
 end;
 
-%%
-% MVAR model estimation
+%% MVAR model estimation
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm
@@ -84,8 +84,8 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 alpha = 0.05;
 gct_signif  = 0.01;  % Granger causality test significance level
@@ -102,34 +102,31 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 
 %% Original DTF estimation as in Eichler (2006)
 %
-d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % DTF and asymptotic statistics
 
+d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % DTF and asymptotic statistics
+d.Tragct = Tr_gct;
+d.pvaluesgct = pValue_gct;
 %=======Overriding some default parameters for plotting and analysis=======
-flgPrinting = [1 1 1 2 2 0 1]; % overriding default setting
+flgPrinting = [1 1 1 2 3 0 1];
 flgScale = 1;
 flgMax = 'tci';
 flgSignifColor = 3;
 flgColor = [1];
 
-%%
-% DTF Matrix Layout Plotting with [0 1] y-axis scale.
+%% DTF Matrix Layout Plotting with [0 1] y-axis scale.
 
 w_max=fs/2;
-for kflgColor = flgColor,
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%       'Name', 'Eichler(2006) Linear model')
-   strID = 'Eichler(2006) Linear model';
+strID = 'Eichler(2006) Linear model';
+
 [h1,~, ~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
-                                 flgColor,flgScale,flgMax,flgSignifColor);
-   xplot_title(alpha,metric,'dtf',strID);
-end;
+                    flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,'dtf',strID);
 
 
-%%
-% DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI
+%% DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI
+%
 
-flgPrinting=[1 1 1 2 2 0 1]; % overriding default setting
+flgPrinting=[1 1 1 2 2 0 1];
 flgColor = 1;
 flgScale = 3;
 flgMax = 'tci';

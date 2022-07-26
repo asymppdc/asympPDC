@@ -54,8 +54,7 @@ if flgStandardize
    disp('Time series were scale-standardized.');
 end
 
-%% 
-% MVAR model estimation
+%% MVAR model estimation
 %
 
 disp('Running MVAR estimation routine.')
@@ -80,8 +79,8 @@ flgPrintResults = 1; % Print results on Command Window
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
@@ -105,8 +104,7 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statist
 c.Tragct = Tr_gct;
 c.pvaluesgct = pValue_gct;
 
-%%
-% $|PDC(\lambda)|^2 Matrix Layout Plotting
+%% $|PDC(\lambda)|^2$ Matrix-Layout Plotting
 
 flgPrinting = [1 1 1 2 3 1 2];
 flgColor = 1;
@@ -130,10 +128,14 @@ xplot_title(alpha,metric,'pdc', strTitle);
 % <<fig_baccala2001b_model2_pdc_result.png>>
 % 
 
-%%
-% $|DTF(\lambda)|^2 Matrix Layout Plotting
+%% Original DTF estimation
+% DTF analysis results are saved in *d* struct.
+%
 
 d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
+
+%% $|DTF(\lambda)|^2$ Matrix-Layout Plotting
+%
 
 flgPrinting = [1 0 1 2 0 1 2]; % not plotting threshold and coherence
 [h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
@@ -141,7 +143,7 @@ flgPrinting = [1 0 1 2 0 1 2]; % not plotting threshold and coherence
 xplot_title(alpha,metric,'dtf', strTitle);
 
 
-%%
+%% Animation
 % Gif
 % <<fig_gif_baccala2001b_escalp_eeg_pdc.gif>>
 

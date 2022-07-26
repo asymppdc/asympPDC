@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-01"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
+      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,7 +68,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>Schelter 2006 5-dimension VAR[4]</h1><!--introduction--><p>An example taken from Schelter et al. (2006)</p><p>==========================================================================      Schelter, Winterhalder, Hellwig, Guschlbauer, L?cking, Timmer       Direct or indirect? Graphical models for neural oscillators               J Physiology - Paris 99:37-46, 2006.         <a href="http://dx.doi.org/10.1016/j.jphysparis.2005.06.006">http://dx.doi.org/10.1016/j.jphysparis.2005.06.006</a></p><pre>    Example 5-dimension VAR[4]
-==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate data sample using fschelter2006 function</a></li><li><a href="#5">Original PDC estimation</a></li><li><a href="#7">Result from Schelter et al.(2006)</a></li><li><a href="#9">Some remarks</a></li></ul></div><h2 id="1">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
+==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate data sample using fschelter2006 function</a></li><li><a href="#5">Original PDC estimation</a></li><li><a href="#8">Result from Schelter et al.(2006)</a></li><li><a href="#10">Some remarks</a></li></ul></div><h2 id="1">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
 
 nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 5000;   <span class="comment">% number of analyzed samples points</span>
@@ -144,11 +145,11 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=226948.134334
-IP=2  vaic=218884.084474
-IP=3  vaic=213573.764262
-IP=4  vaic=213160.636134
-IP=5  vaic=213195.183712
+IP=1  vaic=226845.409830
+IP=2  vaic=218570.638706
+IP=3  vaic=213411.657314
+IP=4  vaic=213027.362916
+IP=5  vaic=213055.531859
  
 Number of channels = 5 with 5000 data points; MAR model order = 4.
 
@@ -156,32 +157,31 @@ Number of channels = 5 with 5000 data points; MAR model order = 4.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.034
-  st = 369.174
+Pass = 0.022
+  st = 390.318
 </pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, <span class="keyword">...</span>
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 </pre><pre class="codeoutput">
 ====================================================================================================
                          GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
    NaN     0     0     0     1
-     1   NaN     0     0     1
-     0     0   NaN     1     1
+     1   NaN     0     1     1
+     0     0   NaN     0     1
      1     1     0   NaN     0
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.7262    0.5171    0.5118         0
-         0       NaN    0.2291    0.7125         0
-    0.4519    0.6297       NaN    0.0063         0
-         0         0    0.3434       NaN    0.3167
-    0.0497    0.1491    0.6021         0       NaN
+       NaN    0.1125    0.1092    0.2036         0
+         0       NaN    0.2940    0.0097         0
+    0.7307    0.8812       NaN    0.3016         0
+         0         0    0.1289       NaN    0.6232
+    0.7054    0.2922    0.9987         0       NaN
 
-Elapsed time is 0.007568 seconds.
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
@@ -193,18 +193,16 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.9924    0.3997    0.3585    0.5844
-    0.9924       NaN    0.5275    0.1951    0.2935
-    0.3997    0.5275       NaN    0.4749    0.3920
-    0.3585    0.1951    0.4749       NaN    0.9862
-    0.5844    0.2935    0.3920    0.9862       NaN
+       NaN    0.2232    0.0823    0.4640    0.9940
+    0.2232       NaN    0.1759    0.4147    0.1107
+    0.0823    0.1759       NaN    0.6079    0.3681
+    0.4640    0.4147    0.6079       NaN    0.6983
+    0.9940    0.1107    0.3681    0.6983       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-Elapsed time is 0.012550 seconds.
-</pre><h2 id="5">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_dtf.m or issue</p><pre class="language-matlab">&gt;&gt; help asymp_pdc
-</pre><p>command for more detail.</p><pre class="codeinput">nFreqs = 128;
+</pre><h2 id="5">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_pdc.m.</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'info'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
                  <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
                  <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
@@ -212,41 +210,24 @@ alpha = 0.01;
 
 c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
-</pre><p>PDCn Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 2 2 0 1];
-<span class="comment">%flgPrinting = [1 1 1 1 1 0 2]; % overriding default setting</span>
+</pre><p>PDCn Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 2 2 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf(<span class="string">'%0.3g'</span>,100*alpha);
 
-<span class="keyword">for</span> kflgColor = flgColor,
-<span class="comment">%    h=figure;</span>
-<span class="comment">%    set(h,'NumberTitle','off','MenuBar','none', ...</span>
-<span class="comment">%       'Name', 'Schelter et al. J Physiology - Paris 99:37-46, 2006.')</span>
-<span class="comment">%</span>
-   strID = <span class="string">'Schelter et al. J Physiology - Paris 99:37-46, 2006.'</span>;
+strID = <span class="string">'Schelter et al. J Physiology - Paris 99:37-46, 2006.'</span>;
 
-   [hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,kflgColor);
-   <span class="comment">%    [ax,hT]=suplabel(['Linear pentavariate Model II: ' ...</span>
-   <span class="comment">%       int2str(nPoints) ' data points.'],'t');</span>
-   <span class="comment">%    set(hT,'FontSize',12); % Title font size</span>
-
-   strTitle = [<span class="string">'Linear pentavariate Model II: '</span> int2str(nPoints) <span class="keyword">...</span>
-               <span class="string">' data points.'</span>]
-   xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
-<span class="keyword">end</span>;
-
-<span class="comment">% PDC p-values matrix layout plots</span>
-flgPrinting  =   [1 1 1 2 3 0 0];
+[h,hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+strTitle = [<span class="string">'Linear pentavariate Model II: '</span> int2str(nPoints) <span class="keyword">...</span>
+              <span class="string">' data points.'</span>];
+xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="schelter2006_01.png" alt=""> <p>PDC p-values matrix layout plots</p><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 
-
-[hxlabel hylabel] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+[hp,~,~] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                                              flgColor,flgScale);
-
 xplot_title(alpha,metric,[<span class="string">'p-value PDC'</span>],strTitle);
-</pre><pre class="codeoutput">strTitle =
-    'Linear pentavariate Model II: 5000 data points.'
-</pre><img vspace="5" hspace="5" src="schelter2006_01.png" alt=""> <img vspace="5" hspace="5" src="schelter2006_02.png" alt=""> <h2 id="7">Result from Schelter et al.(2006)</h2><p>Figure 3, page 41.</p><p><img vspace="5" hspace="5" src="fig_schelter2006_result.png" alt=""> </p><p>Figure shows the results from Schelter et al. (2006) that is in agreement with the present simulation.</p><h2 id="9">Some remarks</h2><div><ul><li>Compare this plot with Fig.3, page 41,in Schelter et al. (2006),   depicting PDC''s amplitude plots, while this example plots squared   PDC.</li></ul></div><div><ul><li>Note that, for linear model, the mean amplitude of PDC estimates   is roughly proportional to relative coefficient values of   the autoregressive model.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="schelter2006_02.png" alt=""> <h2 id="8">Result from Schelter et al.(2006)</h2><p>Figure 3, page 41.</p><p><img vspace="5" hspace="5" src="fig_schelter2006_result.png" alt=""> </p><p>Figure shows the results from Schelter et al. (2006) in agreement with the present simulation.</p><h2 id="10">Some remarks</h2><div><ul><li>Compare this plot with Fig.3, page 41,in Schelter et al. (2006),   depicting PDC''s amplitude plots, while this example plots squared   PDC.</li></ul></div><div><ul><li>Note that, for linear model, the mean amplitude of PDC estimates   is roughly proportional to relative coefficient values of   the autoregressive model.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Schelter 2006 5-dimension VAR[4]
 %
@@ -348,17 +329,14 @@ flgPrintResults = 1;
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
  
+
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* structure.
-% See asymp_dtf.m or issue 
-%
-%   >> help asymp_pdc 
-%
-% command for more detail.
+% See asymp_pdc.m.
 
 nFreqs = 128;
 metric = 'info';  % euc  = original PDC or DTF;
@@ -370,37 +348,27 @@ c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 %%
 % PDCn Matrix Layout Plotting
-flgPrinting = [1 1 1 2 2 0 1];
-%flgPrinting = [1 1 1 1 1 0 2]; % overriding default setting
+
+flgPrinting = [1 1 1 2 2 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf('%0.3g',100*alpha);
-   
-for kflgColor = flgColor,
-%    h=figure;
-%    set(h,'NumberTitle','off','MenuBar','none', ...
-%       'Name', 'Schelter et al. J Physiology - Paris 99:37-46, 2006.')
-%    
-   strID = 'Schelter et al. J Physiology - Paris 99:37-46, 2006.';
-   
-   [hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,kflgColor);
-   %    [ax,hT]=suplabel(['Linear pentavariate Model II: ' ...
-   %       int2str(nPoints) ' data points.'],'t');
-   %    set(hT,'FontSize',12); % Title font size
-   
-   strTitle = ['Linear pentavariate Model II: ' int2str(nPoints) ...
-               ' data points.']
-   xplot_title(alpha,metric,'pdc',strTitle);
-end;
 
+strID = 'Schelter et al. J Physiology - Paris 99:37-46, 2006.';
+
+[h,hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+strTitle = ['Linear pentavariate Model II: ' int2str(nPoints) ...
+              ' data points.'];
+xplot_title(alpha,metric,'pdc',strTitle);
+
+%%
 % PDC p-values matrix layout plots
+
 flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 
-
-[hxlabel hylabel] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
+[hp,~,~] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, ...
                                                              flgColor,flgScale);
-
 xplot_title(alpha,metric,['p-value PDC'],strTitle);
 
 
@@ -411,9 +379,8 @@ xplot_title(alpha,metric,['p-value PDC'],strTitle);
 % 
 
 %%
-% Figure shows the results from Schelter et al. (2006) that is in agreement
+% Figure shows the results from Schelter et al. (2006) in agreement
 % with the present simulation.
-
 
 
 %% Some remarks

@@ -24,16 +24,6 @@
 
 clear; clc
 
-%% Data sample generation
-% 
-nDiscard = 1000;    % number of points discarded at beginning of simulation
-nPoints  = 800;     % number of analyzed samples points
-
-u = fgourevitch2006_model2( nPoints, nDiscard );
-
-chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-fs = 1; % normalized frequency
-
 %% Interaction diagram
 %
 % <<fig_gourevitch2006_model2_graph.png>>
@@ -47,6 +37,17 @@ fs = 1; % normalized frequency
 
 %%
 % Equations (38) and (39), Gourevitch et al. (2006)
+
+
+%% Data sample generation
+% 
+nDiscard = 1000;    % number of points discarded at beginning of simulation
+nPoints  = 800;     % number of analyzed samples points
+
+u = fgourevitch2006_model2( nPoints, nDiscard );
+
+chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+fs = 1; % normalized frequency
 
 
 %%
@@ -68,8 +69,7 @@ if flgStandardize
    disp('Time series were scale-standardized.');
 end
 
-%%
-% MVAR model estimation
+%% MVAR model estimation
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm;
@@ -103,10 +103,10 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-alpha = 0.01;
 
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+
+alpha = 0.01;
 
 gct_signif  = alpha;  % Granger causality test significance level
 igct_signif = alpha;  % Instantaneous GCT significance level
@@ -163,7 +163,7 @@ d.Tragct = Tr_gct;  d.pvaluesgct = pValue_gct;
 %%
 % PDC Matrix Layout Plotting
 
-flgPrinting = [1 1 1 2 2 0 1]; % overriding default setting
+flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 1;
 w_max=fs/2;
 chLabels={'X_1';'X_2'}; %Optional channel labels;
@@ -205,11 +205,11 @@ xplot_title(alpha,metric,['p-value gPDC'],'Gourevitch et al.(Biol Cybern, 2006)'
 % See asymp_dtf.m or issue 
 %   >> help asymp_dtf 
 % command for more detail.
+
 metric = 'diag';
 e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
 
-%%
-% DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range
+%% DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range
 %
 flgPrinting = [1 1 1 2 2 0 1]; % Plot auto-DTF on main-diagonal
 flgColor = 1; w_max=fs/2; flgMax = 'TCI'; flgScale = 1; flgSignifColor = 1;  

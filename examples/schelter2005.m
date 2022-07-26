@@ -1,5 +1,8 @@
 %% Schelter et al. (2005)  Five-dimension VAR[4]-process 
 %
+% Description:
+% 
+% Example from:
 % Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking,
 % Dahlhaus & Timmer. Testing for directed influences among neural signals 
 % using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.
@@ -9,21 +12,20 @@
 % Example Eq. (5) Five-dimension VAR[4]-process 
 %
 
+clear; clc
 
 %% Data sample generation
 
-clear; clc
 flgPrintScreen = 'screen';
-
 nDiscard = 5000;    % number of points discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
 N = nDiscard + nPoints; % number of simulated points
 
-disp('======================================================================');
+repmat('=',1,100)
 disp('       Schelter et al. J Neurosci Methods. 152:210-9, 2005.')
 disp('               Linear 5-dimension VAR[4]-process')
-disp('       x2==>x1  x3-->x2 x3==>x4 x3-->x5 x4==x2 x5-->x3  x5==x4');
-disp('======================================================================');
+disp('       x2==>x1  x3-->x2  x3==>x4  x3<-->x5  x4==x2 x5==x4');
+repmat('=',1,100)
 
 randn('state', sum(100*clock))
 % Variables initialization
@@ -33,21 +35,21 @@ x2=zeros(1,N);
 x3=zeros(1,N);
 x4=zeros(1,N);
 x5=zeros(1,N);
-for t=1:4,
+for t=1:4
    x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
    x5(t)=randn(1);
-end;
+end
 
 %chLabels = []; % or 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 
-for t=5:N,
+for t=5:N
    x1(t) = 0.6*x1(t-1) + 0.65*x2(t-2) + ei(1,t);
    x2(t) = 0.5*x2(t-1) - 0.3*x2(t-2) - 0.3*x3(t-4) + 0.6*x4(t-1) + ei(2,t);
    x3(t) = 0.8*x3(t-1) - 0.7*x3(t-2) - 0.1*x5(t-3) + ei(3,t);
    x4(t) = 0.5*x4(t-1) + 0.9*x3(t-2) + 0.4*x5(t-2) + ei(4,t);
    x5(t) = 0.7*x5(t-1) - 0.5*x5(t-2) - 0.2*x3(t-1) + ei(5,t);
-end;
+end
 
 y=[x1' x2' x3' x4' x5']; % data must be organized column-wise
 u=y(nDiscard+1:N,:);
@@ -78,8 +80,8 @@ if flgStandardize
    disp('Time series were scale-standardized.');
 end
 
-%%
-% MVAR model estimation
+%% MVAR model estimation
+%
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1 = Nutall-Strand MVAR estimation algorithm
@@ -103,15 +105,12 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 
-metric = 'diag'; % euc  = original PDC or DTF;
-                 % diag = generalized PDC (gPDC) or DC;
-                 % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
@@ -119,21 +118,19 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 
                                                        
 %% PDC, threshold and confidence interval calculations.
+% PDC analysis results are saved in *c* data structure.
+% See asymp_pdc.m,
 %
+
 metric = 'diag'; % Generalized PDC estimation
 nFreqs = 128;   % Number of frequency points to consider
 alpha  = 0.0001;  % Significance level for PDC/DTF null hypothesis test
-
-%%
-% PDC analysis results are saved in *c* data structure.
-% See asymp_dtf.m,
 
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
 c.pvaluesgct = pValue_gct;
 
-%% 
-% Plotting options set up, mostly cosmetics, used in xplot.m routine:
+%% Plotting options set up, mostly cosmetics, used in xplot.m routine:
 %
 switch lower(flgPrintScreen)
    case 'print'
@@ -185,13 +182,13 @@ xplot_title(alpha,metric,'pdc',strID);
 
 %% Remarks:
 % 
-% * Check the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter
-%   et al., 2005). As you may notice, the power spectrum of x4, as well 
-%   as |PDC|2_24, differ significantly.
-%   Our guess is that Schelter et al. may have used slightly different
-%   parameters from what they stated for Eq. 5.
+% * Compare the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter
+%   et al., 2005). As you may notice, the power spectrum of $x_4$, as well 
+%   as $|PDC|^2_{24}$, differ significantly.
+%   Our guess is that Schelter and collaborators may have used slightly different
+%   parameters from what they stated in Eq. 5.
 %
 % * Note that, for linear model with balanced innovation, the maximum
 %   of PDC estimates is roughly proportional to the autoregressive 
-%   model coefficients. As we are plotting |PDC|^2, amplitude is 
+%   model coefficients. As we are plotting $|PDC|^2$, amplitude is 
 %   roughly proportional to the square of VAR coefficients.

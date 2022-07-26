@@ -11,22 +11,8 @@
 % 
 % 6-dimensional VAR(4) Scalp variant Model II 
 
-%% Data sample generation
-
 clear; clc; format compact; format short
 
-nDiscard = 5000;    % number of points discarded at beginning of simulation
-nPoints  = 1000;    % number of analyzed samples points
-N=nDiscard+nPoints; % number of simulated points
-
-u = fbaccala2001b_model2_variant( nPoints, nDiscard );
-
-[nSegLength,nChannels]=size(u);
-
-chLabels = []; % or 
-%chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5';'x_6'};
-
-fs = 200;
 %% Interaction diagram
 %
 % <<fig_baccala2001b_model2_variant_graph.png>>
@@ -38,8 +24,20 @@ fs = 200;
 % <<fig_baccala2001b_model2_variant_eq.png>>
 %
 
-%%
-% Data pre-processing: detrending and normalization options
+%% Data sample generation
+
+nDiscard = 5000;    % number of points discarded at beginning of simulation
+nPoints  = 1000;    % number of analyzed samples points
+N=nDiscard+nPoints; % number of simulated points
+
+u = fbaccala2001b_model2_variant( nPoints, nDiscard );
+
+chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5';'x_6'};
+
+fs = 1;
+
+%% Data pre-processing: detrending and normalization options
+%
 
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
@@ -57,9 +55,8 @@ if flgStandardize,
    disp('Time series were scale-standardized.');
 end;
 
-%% 
-% MVAR model estimation
-
+%% MVAR model estimation
+%
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm
@@ -79,21 +76,17 @@ h = 20; % testing lag
 MVARadequacy_signif = 0.05; % VAR model estimation adequacy significance
                             % level
 aValueMVAR = 1 - MVARadequacy_signif; % Confidence value for the testing
-
 flgPrintResults = 1;
 
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.001;  % Granger causality test significance level
 igct_signif = 0.001;  % Instantaneous GCT significance level
 
-metric = 'euc';  % euc  = original PDC or DTF;
-                 % diag = generalized PDC (gPDC) or DC;
-                 % info = information PDC (iPDC) or iDTF.
 flgPrintResults = 1;
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
@@ -105,25 +98,23 @@ flgPrintResults = 1;
 % PDC analysis results are saved in *c* structure.
 % See asymp_pdc.m.
 
+metric = 'euc';  % euc  = original PDC or DTF;
+                 % diag = generalized PDC (gPDC) or DC;
+                 % info = information PDC (iPDC) or iDTF.
 nFreqs = 128;
 alpha = 0.001;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
 
-%%
-% $|PDC(\lambda)|^2 Matrix Layout Plotting
+%% $|PDC(\lambda)|^2$ Matrix Layout Plotting
+%
 
 flgPrinting = [1 1 1 2 2 1 2]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
 strTitle1 = ['6-dimensional linear VAR[4] Variant Model II: '];
-strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) '; ' ...
-   datestr(now) ']'];
+strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 strTitle =[strTitle1 strTitle2];
-
-% h=figure;
-% set(h,'NumberTitle','off','MenuBar','none', ...
-%    'Name', 'Baccala & Sameshima (2001) Model II Variant')
 
 strTitle = 'Baccala & Sameshima (2001) Model II Variant';
 [hxlabel hylabel] = xplot(strTitle,c,...

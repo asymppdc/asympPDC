@@ -17,14 +17,14 @@ close all; clear; clc
 
 %% Data sample generation
 % 
-nDiscard = 10000;    % number of points discarded at beginning of simulation
-nPoints  = 2000;    % number of analyzed samples points
+nDiscard = 10000;   % number of points discarded at beginning of simulation
+nPoints  = 5000;    % number of analyzed samples points
 u = fbaccala2001a_ex5( nPoints, nDiscard );
-chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1; 
 
-%%
-% Data pre-processing: detrending and normalization options
+%% Data pre-processing: detrending and normalization options
+%
 
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
@@ -39,8 +39,8 @@ for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
 disp('Time series were detrended,');
 disp('                 and not scale-standardized.');
 
-%%
-% MVAR model estimation
+%% MVAR model estimation
+%
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm;
@@ -71,14 +71,13 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-% [Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-%                                               igct_signif,flgPrintResults);
+
 [Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
@@ -93,20 +92,18 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statist
 c.pvaluesgct = pValue_gct; % Necessary as flgPrinting(5) = 3, i.e. printing GCT
 c.Tragct = Tr_gct;
 
-%%
-% PDCn Matrix Layout Plotting
+%% iPDC2 Matrix-Layout Plotting
 
 flgPrinting = [1 1 1 0 3 0 2]; % With GCT and log-spectra on main diagonal
 flgColor = 0;
 w_max=fs/2;
 vTitle = 'Baccala & Sameshima (2001A) - Example 5';
-[hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
+[h1,hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
 
 xplot_title(alpha,metric,'pdc',['Linear model Example 5: ' ...
                                              int2str(nPoints) ' data points.']);
 
 %% Original/Information DTF estimation
-%
 % DTF analysis results will be saved in *d* struct variable.
 % See asymp_dtf.m for further details.
 
@@ -114,8 +111,7 @@ metric = 'info';
 d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
 
 
-%%
-% DTF Matrix Layout Plotting with fixed y-axis scale
+%% DTF2 Matrix Layout Plotting with fixed y-axis scale
 flgPrinting = [1 1 1 0 0 0 2]; % Plot log-spectra on main-diagonal
 flgColor = 1;
 w_max=fs/2;
@@ -123,7 +119,7 @@ flgMax = 'TCI';
 flgScale = 1;
 flgSignifColor = 3;
 
-[hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
+[h2,hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'dtf',['Linear model Example 5: ' ...
                                              int2str(nPoints) ' data points.']);
@@ -142,7 +138,7 @@ flgMax = 'TCI';
 flgScale = 3;
 flgSignifColor = 3;  
 
-[hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
+[h3,hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
                                flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'dtf',['Linear model Example 5: ' ...
                                             int2str(nPoints) ' data points.']);

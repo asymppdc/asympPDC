@@ -1,7 +1,7 @@
 %% WINTERHALDER ET AL. (2005) 7-DIMENSION UNBALANCED RANDOM INDEPENDENT VARIABLES
 % Description:
 %
-% Modified example taken from:
+% Expanded to seven variables and modified to consider unbalanced variances example taken from:
 %  Winterhalder et al. Comparison of linear signal processing techniques to
 %  infer directed interactions in multivariate neural systems. 
 %  _Signal Processing_ 85:2137--2160, 2005.
@@ -11,6 +11,10 @@
 % <http://dx.doi.org/10.1016/j.sigpro.2005.07.011>
 %
 % Example: Seven random independent variables with unbalanced variances.
+% Variant of Random Independent Process with 7 variables') with following
+% variances:
+%
+% $\sigma_1^2=\sigma_3^2=250000; \sigma_2^2=\sigma_4^2=\sigma_5^2=\sigma_6^2=\sigma_7^2=1$
 
 %% Data sample generation
 
@@ -113,18 +117,13 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
     c.Tragct = Tr_gct;
     c.pvaluesgct = pValue_gct;
 
-%% Plotting options set up, mostly cosmetic, used in xplot.m routine:
-%  
-switch lower(flgPrintScreen)
-   case 'print'
-      flgMax = 'all';
-      flgSignifColor = 3; % black + gray
-      flgScale = 3;       % [0 max(flgMax)]
-   otherwise % e.g., 'screen'
-      flgMax = 'all';
-      flgSignifColor = 3; % red + green
-      flgScale = 3;       % [0 1]/[0 .1]/[0 .01]
-end;
+    
+%% Plotting options set up, mostly cosmetic for xplot.m routine:
+%
+
+flgMax = 'all';
+flgSignifColor = 4; % red + green
+flgScale = 3;       % [0 1]/[0 .1]/[0 .01]
 
 %%
 % flgColor parameter for PDC matrix-layout plot.
@@ -139,7 +138,7 @@ flgColor = [0];   % Plotting option for automatic scaling for small PDC
                   %                          and y-axis = [0 .01].
 
 %                [1 2 3 4 5 6 7]
-flgPrinting  =   [1 1 1 0 3 0 0];
+flgPrinting  =   [1 0 1 0 0 0 0];
 %       blue-line | | | | | | 7--Spectra (0: w/o; 1: Linear; 2: Log; 3: PDC2; 
 %                 | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)
 %            gray | | | | | 6--Coh2 (0: w/o Coh2; 1: w Coh2)
@@ -150,31 +149,15 @@ flgPrinting  =   [1 1 1 0 3 0 0];
 %           green 1-- PDC2/DTF2 in green lines or black w/o statistics,
 %                     See flgSignifColor bellow for line color selection.
 
-strTitle = [];
-%strTitle = ['|PDC|^2 (' '{\alpha = ' int2str(100*alpha) '%}' ')'];
-switch metric
-   case 'euc'
-      %nop
-   case 'diag'
-      strTitle = ['g' strTitle];
-   case 'info'
-      strTitle = ['i' strTitle];
-   otherwise
-      error('Unknown metric.')
-end;
-
 w_max=fs/2;
-
 strID = 'Winterhalder et al. Signal Processing 85:2137?60, 2005';
 strTitle = [' Independent Gaussian Noise: \sigma_1=\sigma_3=500;' ...
                            ' \sigma_2 = \sigma_4 = \sigma_5 = 1'];
 
-
-flgPrinting  =   [1 1 1 2 3 0 2];
 flgScale = 1;
 
 [h,hxlabel hylabel] = xplot(strID, c, ...
-                               flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
+                               flgPrinting,fs,w_max,chLabels,flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'PDC',strTitle);
 
 flgPrinting  =   [1 1 1 2 3 0 0];
@@ -209,41 +192,6 @@ xplot_title(alpha,metric,'p-value PDC',strTitle);
 %
 % for more detail.
 
-% % % % metric = 'info';
-% % % % d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
-% % % %     d.Tragct = Tr_gct;
-% % % %     d.pvaluesgct = pValue_gct;
-%%
-% iDTF Matrix Layout Plotting
-% % % w_max = fs/2;
-% % % flgColor = [1];      % Colored background 
-% % % 
-% % % strTitle = ['DTF (' '{\alpha = ' sprintf('%0.3g',100*alpha) '%}' ')'];
-% % % switch metric
-% % %    case 'euc'
-% % %       %nop
-% % %    case 'diag'
-% % %       strTitle = ['g' strTitle];
-% % %    case 'info'
-% % %       strTitle = ['i' strTitle];
-% % %    otherwise
-% % %       error('Unknown metric.')
-% % % end;
-% % % 
-% % % for kflgColor = flgColor,
-% % %    %    h=figure;
-% % %    %    set(h,'NumberTitle','off','MenuBar','none', ...
-% % %    %       'Name', 'Winterhalder et al. Signal Processing 85:2137?60, 2005')
-% % %    strID = 'Winterhalder et al. Signal Processing 85:2137?60, 2005';
-% % %    [hxlabel hylabel] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, ...
-% % %       flgColor,flgScale,flgMax,flgSignifColor);
-% % %    %    [ax,hT]=suplabel([strTitle ' Independent Gaussian Noise: \sigma_1=\sigma_3=500;' ...
-% % %    %                   ' \sigma_2 = \sigma_4 = \sigma_5 = \sigma_6 = \sigma_7 = 1'],'t');
-% % %    %    set(hT,'FontSize',10); % Title font size
-% % %    strTitle = ['Independent Gaussian Noise: \sigma_1=\sigma_3=500;' ...
-% % %                ' \sigma_2 = \sigma_4 = \sigma_5 = \sigma_6 = \sigma_7 = 1'];
-% % %    xplot_title(alpha,metric,'dtf',strTitle)
-% % % end;
 
 %%
 % When *flgColor=1* parameter option is used in the xplot.m routine, the

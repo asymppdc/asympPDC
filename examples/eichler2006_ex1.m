@@ -17,18 +17,6 @@
 %%
 clc; format compact
 
-nDiscard = 5000;    % number of points discarded at beginning of simulation
-nPoints  = 2000;   % number of analyzed samples points
-
-flgManual = 0;
-
-u = feichler2006_ex1(nPoints, nDiscard, flgManual);
-
-chLabels = {'X_1';'X_2';'X_3'}; %or %chLabels = [];
-
-[nSegLength,nChannels] = size(u);
-fs = 1; % Normalized frequency
-
 %% Interaction diagram
 %
 % <<fig_eichler2006_3dim_graph.png>>
@@ -39,6 +27,19 @@ fs = 1; % Normalized frequency
 %
 % <<fig_eichler2006_eq25.png>>
 %
+
+%% Data generation
+%
+
+nDiscard = 5000;    % number of points discarded at beginning of simulation
+nPoints  = 2000;   % number of analyzed samples points
+
+flgManual = 0;
+u = feichler2006_ex1(nPoints, nDiscard, flgManual);
+
+chLabels = {'X_1';'X_2';'X_3'}; %or %chLabels = [];
+fs = 1; % Normalized frequency
+
 
 %%
 % Data pre-processing: detrending and normalization options
@@ -59,8 +60,8 @@ if flgStandardize,
    disp('Time series were scale-standardized.');
 end;
 
-%%
-% MVAR model estimation
+%% MVAR model estimation
+%
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm
@@ -76,6 +77,7 @@ disp(['Number of channels = ' int2str(nChannels) ' with ' ...
 
 %%
 % Testing for adequacy of MAR model fitting through Portmanteau test
+
 h = 20; % testing lag
 MVARadequacy_signif = 0.05; % VAR model estimation adequacy significance
                             % level
@@ -84,38 +86,16 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
-metric = 'info'; % euc  = original PDC or DTF;
-                 % diag = generalized PDC (gPDC) or DC;
-                 % info = information PDC (iPDC) or iDTF.
+
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
-%% Original DTF estimation
-%
-% DTF analysis results are saved in *d* structure.
-% See asymp_dtf.m for detail.
-
-nFreqs = 64;
-c = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
-
-%%
-% $|DTF(\lambda)|^2$ Matrix Layout Plotting
-flgPrinting = [1 1 1 2 0 0 1]; % plot auto PDC on main diagonal
-flgColor = [1];
-w_max=fs/2;
-
-strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
-             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
-strID = 'Eichler(2006) Linear model';
-
-[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,'dtf',strTitle);
 
 %% Original PDC estimation
 %
@@ -128,9 +108,8 @@ d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statist
 d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
 
-%%
-% $|PDC(\lambda)|^2 Matrix Layout Plotting
-
+%% $|PDC(\lambda)|^2$  Matrix-Layout Plot
+%
 flgColor = [1];
 w_max=fs/2;
 flgPrinting = [1 1 1 2 3 0 1]; % plot auto PDC on main diagonal
@@ -138,6 +117,28 @@ flgPrinting = [1 1 1 2 3 0 1]; % plot auto PDC on main diagonal
 [h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc',strTitle);
 
+
+%% Original DTF estimation
+%
+% DTF analysis results are saved in *d* structure.
+% See asymp_dtf.m for detail.
+
+nFreqs = 64;
+c = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
+
+%% $|DTF(\lambda)|^2$ Matrix Layout Plot
+%
+
+flgPrinting = [1 1 1 2 0 0 1]; % plot auto PDC on main diagonal
+flgColor = [1];
+w_max=fs/2;
+
+strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
+             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
+strID = 'Eichler(2006) Linear model';
+
+[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+xplot_title(alpha,metric,'dtf',strTitle);
 
 %% Result from the original article, Eichler (2006)
 % Figure 5, page 476.

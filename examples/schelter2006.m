@@ -118,7 +118,7 @@ c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 %%
 % PDCn Matrix Layout Plotting
 
-flgPrinting = [1 1 1 2 2 0 1];
+flgPrinting = [1 1 1 2 2 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf('%0.3g',100*alpha);
@@ -148,9 +148,8 @@ xplot_title(alpha,metric,['p-value PDC'],strTitle);
 % 
 
 %%
-% Figure shows the results from Schelter et al. (2006) that is in agreement
+% Figure shows the results from Schelter et al. (2006) in agreement
 % with the present simulation.
-
 
 
 %% Some remarks

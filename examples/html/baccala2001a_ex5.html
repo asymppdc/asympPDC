@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>baccala2001a_ex5</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-18"><meta name="DC.source" content="baccala2001a_ex5.m"><style type="text/css">
+      --><title>baccala2001a_ex5</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-25"><meta name="DC.source" content="baccala2001a_ex5.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,18 +67,18 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">BACCALA &amp; SAMESHIMA (2001A) EXAMPLE 5</a></li><li><a href="#2">Data sample generation</a></li><li><a href="#7">Information PDC estimation</a></li><li><a href="#9">Original/Information DTF estimation</a></li><li><a href="#14">Concluding remarks</a></li></ul></div><h2 id="1">BACCALA &amp; SAMESHIMA (2001A) EXAMPLE 5</h2><p>DESCRIPTION:</p><p>Five-dimensional linear VAR[2] Model Example 4</p><pre>  x1==&gt;x2  x2--&gt;x3 x3--&gt;x4 x4&lt;--&gt;x5 x5--&gt;x1</pre><p>Example borrowed from:       Baccala &amp; Sameshima (2001). Partial directed coherence: a new concept in neural       structure determination. <i>Biol. Cybern.</i> <b>84</b>:463--474.</p><p><a href="http://dx.doi.org/10.1007/PL00007990">http://dx.doi.org/10.1007/PL00007990</a></p><p>Example Five-dimensional VAR[2] with loop and feedback</p><pre class="codeinput">close <span class="string">all</span>; clear; clc
-</pre><h2 id="2">Data sample generation</h2><pre class="codeinput">nDiscard = 10000;    <span class="comment">% number of points discarded at beginning of simulation</span>
-nPoints  = 2000;    <span class="comment">% number of analyzed samples points</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">BACCALA &amp; SAMESHIMA (2001A) EXAMPLE 5</a></li><li><a href="#2">Data sample generation</a></li><li><a href="#3">Data pre-processing: detrending and normalization options</a></li><li><a href="#4">MVAR model estimation</a></li><li><a href="#6">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#7">Information PDC estimation</a></li><li><a href="#8">iPDC2 Matrix-Layout Plotting</a></li><li><a href="#9">Original/Information DTF estimation</a></li><li><a href="#10">DTF2 Matrix Layout Plotting with fixed y-axis scale</a></li><li><a href="#14">Concluding remarks</a></li></ul></div><h2 id="1">BACCALA &amp; SAMESHIMA (2001A) EXAMPLE 5</h2><p>DESCRIPTION:</p><p>Five-dimensional linear VAR[2] Model Example 4</p><pre>  x1==&gt;x2  x2--&gt;x3 x3--&gt;x4 x4&lt;--&gt;x5 x5--&gt;x1</pre><p>Example borrowed from:       Baccala &amp; Sameshima (2001). Partial directed coherence: a new concept in neural       structure determination. <i>Biol. Cybern.</i> <b>84</b>:463--474.</p><p><a href="http://dx.doi.org/10.1007/PL00007990">http://dx.doi.org/10.1007/PL00007990</a></p><p>Example Five-dimensional VAR[2] with loop and feedback</p><pre class="codeinput">close <span class="string">all</span>; clear; clc
+</pre><h2 id="2">Data sample generation</h2><pre class="codeinput">nDiscard = 10000;   <span class="comment">% number of points discarded at beginning of simulation</span>
+nPoints  = 5000;    <span class="comment">% number of analyzed samples points</span>
 u = fbaccala2001a_ex5( nPoints, nDiscard );
-chLabels = []; <span class="comment">% or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};</span>
+chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>};
 fs = 1;
 </pre><pre class="codeoutput">======================================================================
         Pentavariate linear VAR[2] Model Example 5 - closed-loop
          Baccala &amp; Sameshima. Biol. Cybern. 84:463-474, 2001.
            x1==&gt;x2  x2--&gt;x3 x3--&gt;x4 x4--&gt;x5 x5--&gt;x4 x5--&gt;x1
 ======================================================================
-</pre><p>Data pre-processing: detrending and normalization options</p><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
+</pre><h2 id="3">Data pre-processing: detrending and normalization options</h2><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
 flgStandardize = 0; <span class="comment">% No standardization</span>
 [nChannels,nSegLength] =size(u);
 <span class="keyword">if</span> nChannels &gt; nSegLength
@@ -91,7 +92,7 @@ disp(<span class="string">'Time series were detrended,'</span>);
 disp(<span class="string">'                 and not scale-standardized.'</span>);
 </pre><pre class="codeoutput">Time series were detrended,
                  and not scale-standardized.
-</pre><p>MVAR model estimation</p><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+</pre><h2 id="4">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm;</span>
 <span class="comment">%                   % 2: minimum least squares methods;</span>
 <span class="comment">%                   % 3: Vieira Morf algorithm;</span>
@@ -111,11 +112,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
        int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=78699.738652
-IP=2  vaic=76056.475377
-IP=3  vaic=76080.350456
+IP=1  vaic=220130.018052
+IP=2  vaic=213102.937110
+IP=3  vaic=213139.109763
  
-Number of channels = 5 with 2000 data points; MAR model order = 2.
+Number of channels = 5 with 5000 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
 MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
                             <span class="comment">% level</span>
@@ -128,13 +129,14 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.026
-  st = 395.094
-</pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
+Pass = 0.028
+  st = 390.968
+</pre><h2 id="6">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, <span class="keyword">...</span>
-                                              igct_signif,flgPrintResults);
+
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 </pre><pre class="codeoutput">
 ====================================================================================================
                          GRANGER CAUSALITY TEST
@@ -147,13 +149,12 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.4609    0.8759    0.0424         0
-         0       NaN    0.3364    0.2228    0.3942
-    0.5325         0       NaN    0.0437    0.7844
-    0.1237    0.3218         0       NaN         0
-    0.5934    0.6884    0.3894         0       NaN
+       NaN    0.2096    0.9970    0.1459         0
+         0       NaN    0.4044    0.0155    0.9958
+    0.7102         0       NaN    0.0970    0.4560
+    0.1540    0.0166         0       NaN         0
+    0.3566    0.2393    0.9152         0       NaN
 
-Elapsed time is 0.004677 seconds.
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
@@ -165,40 +166,39 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.9291    0.6119    0.6679    0.2925
-    0.9291       NaN    0.5076    0.0101    0.9898
-    0.6119    0.5076       NaN    0.3686    0.8429
-    0.6679    0.0101    0.3686       NaN    0.3452
-    0.2925    0.9898    0.8429    0.3452       NaN
+       NaN    0.0374    0.3915    0.8271    0.2348
+    0.0374       NaN    0.6838    0.8997    0.0877
+    0.3915    0.6838       NaN    0.8804    0.3976
+    0.8271    0.8997    0.8804       NaN    0.0785
+    0.2348    0.0877    0.3976    0.0785       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-Elapsed time is 0.012296 seconds.
 </pre><h2 id="7">Information PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> struct variable. See asymp_pdc.m for details.</p><pre class="codeinput">nFreqs = 256;
 metric = <span class="string">'info'</span>;  <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
 alpha = 0.01;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
 c.pvaluesgct = pValue_gct; <span class="comment">% Necessary as flgPrinting(5) = 3, i.e. printing GCT</span>
 c.Tragct = Tr_gct;
-</pre><p>PDCn Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 0 3 0 2]; <span class="comment">% With GCT and log-spectra on main diagonal</span>
+</pre><h2 id="8">iPDC2 Matrix-Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 0 3 0 2]; <span class="comment">% With GCT and log-spectra on main diagonal</span>
 flgColor = 0;
 w_max=fs/2;
-vTitle = <span class="string">'Baccala &amp; Sameshima (2001) Example 5'</span>;
-[hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
-                           <span class="comment">% With default flgScale, flgMax, flgSignifColor</span>
+vTitle = <span class="string">'Baccala &amp; Sameshima (2001A) - Example 5'</span>;
+[h1,hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
+
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,[<span class="string">'Linear model Example 5: '</span> <span class="keyword">...</span>
                                              int2str(nPoints) <span class="string">' data points.'</span>]);
 </pre><img vspace="5" hspace="5" src="baccala2001a_ex5_01.png" alt=""> <h2 id="9">Original/Information DTF estimation</h2><p>DTF analysis results will be saved in <b>d</b> struct variable. See asymp_dtf.m for further details.</p><pre class="codeinput">metric = <span class="string">'info'</span>;
 d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate DTF and asymptotic statistics</span>
-</pre><p>DTF Matrix Layout Plotting with fixed y-axis scale</p><pre class="codeinput">flgPrinting = [1 1 1 0 0 0 2]; <span class="comment">% Plot log-spectra on main-diagonal</span>
+</pre><h2 id="10">DTF2 Matrix Layout Plotting with fixed y-axis scale</h2><pre class="codeinput">flgPrinting = [1 1 1 0 0 0 2]; <span class="comment">% Plot log-spectra on main-diagonal</span>
 flgColor = 1;
 w_max=fs/2;
 flgMax = <span class="string">'TCI'</span>;
 flgScale = 1;
 flgSignifColor = 3;
 
-[hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+[h2,hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                        flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,[<span class="string">'Linear model Example 5: '</span> <span class="keyword">...</span>
                                              int2str(nPoints) <span class="string">' data points.'</span>]);
@@ -209,11 +209,11 @@ flgMax = <span class="string">'TCI'</span>;
 flgScale = 3;
 flgSignifColor = 3;
 
-[hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+[h3,hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,[<span class="string">'Linear model Example 5: '</span> <span class="keyword">...</span>
                                             int2str(nPoints) <span class="string">' data points.'</span>]);
-</pre><img vspace="5" hspace="5" src="baccala2001a_ex5_03.png" alt=""> <p>Note that theoretically any node or strutucture is reachable from all other structures. If sufficiently large sample size is used, all DTF will be significant.</p><p><i>Suggestion</i>: try  playing with different values of sample size, i.e. changing <b>nPoints</b> parameter.</p><h2 id="14">Concluding remarks</h2><div><ul><li>Check &amp; compare with Fig.4b, page 469 in Baccala &amp; Sameshima (2001).</li><li>In the original article the amplitude PDC has been plotted.   Here we preferred to graph squared-PDC and DTF.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="baccala2001a_ex5_03.png" alt=""> <p>Note that theoretically any node or strutucture is reachable from all other structures. If sufficiently large sample size is used, all DTF will be significant.</p><p><i>Suggestion</i>: try  playing with different sample sizes, i.e. changing <b>nPoints</b> parameter.</p><h2 id="14">Concluding remarks</h2><div><ul><li>Check &amp; compare with Fig.4b, page 469 in Baccala &amp; Sameshima (2001).</li><li>In the original article the amplitude PDC has been plotted.   Here we preferred to graph squared-PDC and DTF.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% BACCALA & SAMESHIMA (2001A) EXAMPLE 5
 % DESCRIPTION:
@@ -234,14 +234,14 @@ close all; clear; clc
 
 %% Data sample generation
 % 
-nDiscard = 10000;    % number of points discarded at beginning of simulation
-nPoints  = 2000;    % number of analyzed samples points
+nDiscard = 10000;   % number of points discarded at beginning of simulation
+nPoints  = 5000;    % number of analyzed samples points
 u = fbaccala2001a_ex5( nPoints, nDiscard );
-chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1; 
 
-%%
-% Data pre-processing: detrending and normalization options
+%% Data pre-processing: detrending and normalization options
+%
 
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
@@ -256,8 +256,8 @@ for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
 disp('Time series were detrended,');
 disp('                 and not scale-standardized.');
 
-%%
-% MVAR model estimation
+%% MVAR model estimation
+%
 
 maxIP = 30;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm;
@@ -288,15 +288,16 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                              igct_signif,flgPrintResults);
- 
+
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
 %% Information PDC estimation
 % PDC analysis results are saved in *c* struct variable.
 % See asymp_pdc.m for details.
@@ -308,20 +309,18 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statist
 c.pvaluesgct = pValue_gct; % Necessary as flgPrinting(5) = 3, i.e. printing GCT
 c.Tragct = Tr_gct;
 
-%%
-% PDCn Matrix Layout Plotting
+%% iPDC2 Matrix-Layout Plotting
 
 flgPrinting = [1 1 1 0 3 0 2]; % With GCT and log-spectra on main diagonal
 flgColor = 0;
 w_max=fs/2;
-vTitle = 'Baccala & Sameshima (2001) Example 5';
-[hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
-                           % With default flgScale, flgMax, flgSignifColor
+vTitle = 'Baccala & Sameshima (2001A) - Example 5';
+[h1,hxlabel hylabel] = xplot(vTitle,c,flgPrinting,fs,w_max,chLabels,flgColor);
+
 xplot_title(alpha,metric,'pdc',['Linear model Example 5: ' ...
                                              int2str(nPoints) ' data points.']);
 
 %% Original/Information DTF estimation
-%
 % DTF analysis results will be saved in *d* struct variable.
 % See asymp_dtf.m for further details.
 
@@ -329,16 +328,15 @@ metric = 'info';
 d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
 
 
-%%
-% DTF Matrix Layout Plotting with fixed y-axis scale
+%% DTF2 Matrix Layout Plotting with fixed y-axis scale
 flgPrinting = [1 1 1 0 0 0 2]; % Plot log-spectra on main-diagonal
 flgColor = 1;
 w_max=fs/2;
 flgMax = 'TCI';
 flgScale = 1;
-flgSignifColor = 3;  
+flgSignifColor = 3;
 
-[hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
+[h2,hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'dtf',['Linear model Example 5: ' ...
                                              int2str(nPoints) ' data points.']);
@@ -357,7 +355,7 @@ flgMax = 'TCI';
 flgScale = 3;
 flgSignifColor = 3;  
 
-[hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
+[h3,hxlabel,hylabel] = xplot(vTitle,d,flgPrinting,fs,w_max,chLabels, ...
                                flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'dtf',['Linear model Example 5: ' ...
                                             int2str(nPoints) ' data points.']);
@@ -367,7 +365,7 @@ xplot_title(alpha,metric,'dtf',['Linear model Example 5: ' ...
 % structures. If sufficiently large sample size is used, all DTF will be
 % significant.
 %
-% _Suggestion_: try  playing with different values of sample size, i.e. changing
+% _Suggestion_: try  playing with different sample sizes, i.e. changing
 % *nPoints* parameter.
 
 %% Concluding remarks 

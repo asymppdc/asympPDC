@@ -13,16 +13,16 @@
 % Example 3 (pag.468)
 %                       VAR(3) with feedback between x4 and x5
 %
-%     x1-->x2  x1-->x3 x1-->x4 x4-->x5 x5-->x4
-%    spacing
+%     $x1-->x2  x1-->x3 x1-->x4 x4<-->x5$
+%
 
 clear; clc; format compact; format short
 
 %% Data sample generation
 %
-nDiscard = 5000;    % number of points discarded at beginning of simulation
+nDiscard = 5000;   % number of points discarded at beginning of simulation
 nPoints  = 1000;   % number of analyzed samples points
-u = fbaccala2001a_ex3(nPoints, nDiscard);
+u = fbaccala2001a_ex3(nPoints, nDiscard); % Model function
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'}; % or = []; 
 fs = 1; % Normalized frequency.
 
@@ -49,10 +49,9 @@ end
 for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
 disp('Time series were detrended.');
 
-%% 
-% MVAR model estimation
+%% MVAR model estimation
 
-maxIP = 30;         % maximum model order to consider.
+maxIP = 30;         % maximum model order to be considered.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm
 criterion = 1;      % 1: AIC, Akaike Information Criteria
 
@@ -74,8 +73,8 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
@@ -89,7 +88,7 @@ flgPrintResults = 1;
 %% Original PDC estimation
 %
 % PDC analysis results are saved in *c* struct variable.
-% See asymp_dtf.m or issue 
+% See asymp_pdc.m or issue 
 %   >> help asymp_pdc 
 % command for more detail.
 
@@ -102,7 +101,7 @@ c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
 c.pvaluesgct = pValue_gct;
     
 %%
-% $|PDC(\lambda)|^2 Matrix Layout Plotting
+% $|PDC(\lambda)|^2$ Matrix-Layout Plot
 
 flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 0;
@@ -114,6 +113,7 @@ vTitleBar = 'Baccala & Sameshima (2001A) Example 3';
 [h1,~, ~] = xplot(vTitleBar,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc', strTitle);
+
 
 %% information PDC estimation
 %
@@ -127,17 +127,18 @@ d = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 
 d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
-    
+
+
 %%
-% |_iPDC(\lambda)|^2 Matrix Layout Plotting
+% $|_iPDC(\lambda)|^2$ Matrix Layout Plotting
 
 %                 1 2 3 4 5 6 7
    flgPrinting = [1 1 1 2 3 0 2]; % GCT and power spectra selection.
 %                 | | | | |   |     
 %           blue  | | | | |   7-- 2: Log spoectra;
 %    dark-purple  | | | | 5-- Print GCT p-values and dot-mark significant
-%  or dark-green  | | | |     connectivity channel-pair 3: p-values + 
-%                 | | | |     dot-mark significant GCT)
+%  or dark-green  | | | |     connectivity channel-pair 3: p-values + dot-mark 
+%                 | | | |     significant GCT
 %    dashed-blue  | | | 4-- Confidence interval 2: shaded-plot
 %            red  | | 3-- Significant PDC2 3: in red lines
 %   dashed-black  | 2-- Patnaik threshold level in black dashed-lines
