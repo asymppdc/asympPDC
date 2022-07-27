@@ -65,7 +65,8 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
                          Softw* **27**:58-–65. <https://doi.org/10.1145/382043.382316>
 
 [9] K. Sameshima and L.A. Baccalá Eds. (2014). Methods in Brain Connectivity 
-    Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton
+    Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton.
+    <https://doi.org/10.1201/b16550>
 
 
 ## License
