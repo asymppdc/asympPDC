@@ -4,13 +4,12 @@
 %
 % Three dimension linear VAR[2] Model
 %
-%            x1-->x2  x2-->x1 x2-->x3
+%            x1<-->x2   x2-->x3
 %
-% Eichler. On the evaluation of information flow in multivariate systems
-% by the directed transfer function.
-%            Biol Cybern (2006) 94: 469?482
+%       Eichler et al. 2006) On the evaluation of information flow in multivariate systems
+%       by the directed transfer function. Biol Cybern *94*: 469--482
 %
-% <http://dx.doi.org/10.1007/s00422-006-0062-z>
+%       <http://dx.doi.org/10.1007/s00422-006-0062-z>
 %
 %  Example - Three-dimension VAR[2].
 
@@ -104,17 +103,21 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 nFreqs = 128;
 metric = 'euc';
 alpha = 0.01;
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-d.Tragct = Tr_gct;
-d.pvaluesgct = pValue_gct;
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.Tragct = Tr_gct;
+c.pvaluesgct = pValue_gct;
 
 %% $|PDC(\lambda)|^2$  Matrix-Layout Plot
 %
 flgColor = [1];
 w_max=fs/2;
-flgPrinting = [1 1 1 2 3 0 1]; % plot auto PDC on main diagonal
+flgPrinting = [1 1 1 2 3 0 1]; % plot spectra main diagonal and print GCT p-values
 
-[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
+strID = 'Eichler(2006) Linear model';
+strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
+             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
+
+[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc',strTitle);
 
 
@@ -124,20 +127,16 @@ xplot_title(alpha,metric,'pdc',strTitle);
 % See asymp_dtf.m for detail.
 
 nFreqs = 64;
-c = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
+d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 
 %% $|DTF(\lambda)|^2$ Matrix Layout Plot
 %
 
-flgPrinting = [1 1 1 2 0 0 1]; % plot auto PDC on main diagonal
+flgPrinting = [1 1 1 2 0 0 1]; % plot linear spectra on main diagonal
 flgColor = [1];
 w_max=fs/2;
 
-strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
-             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
-strID = 'Eichler(2006) Linear model';
-
-[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',strTitle);
 
 %% Result from the original article, Eichler (2006)

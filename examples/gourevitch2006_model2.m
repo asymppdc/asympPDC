@@ -4,14 +4,15 @@
 % Example Model 2: Linear bivariate model with bidirectional influence 
 %                          with common source
 %
-%     *x1<==>x2* (feedback)  *x1==x2* (instantaneous causality)
+%     x1<==>x2 (feedback)  x1==x2 (instantaneous Granger causality)
 %
-%     *x1 <== _S_ ==>x2*, which gives x1==x2 (iGC) from hidden source
+%     x1<==S==>x2, which gives x1==x2 (iGC) from hidden source
 %
-% Example *Model 2* borrowed from:
-% *Gourevitch, Bouquin-Jeannes & Faucon*. Linear and nonlinear casuality between 
+% Example Model 2 borrowed from:  
+%
+%  Gourevitch, Bouquin-Jeannes & Faucon. Linear and nonlinear casuality between 
 %     signals: methods, examples and neurophysiological applications. 
-%     _Biol Cybern_ *95*:349--369, 2006.
+%     Biol Cybern 95:349--369, 2006.
 %
 % <http://dx.doi.org/10.1007/s00422-006-0098-0>
 %
@@ -28,7 +29,7 @@ clear; clc
 %
 % <<fig_gourevitch2006_model2_graph.png>>
 %
-% Figure 4 from Gourevitch. _Biol. Cybern._ *95*:349-369, 2006.
+% Figure 4 from Gourevitch et al. _Biol. Cybern._ *95*:349-369, 2006.
 
 %% Equation
 %
@@ -114,7 +115,7 @@ igct_signif = alpha;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
-% [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
  
 %% Original PDC estimation

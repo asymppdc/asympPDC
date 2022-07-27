@@ -371,7 +371,7 @@ else
          f0 = 10; N0 = 4;   % FontSize = 10   for nChannels = 4
          f1 = 6.5; N1 = 20; % FontSize =  6.5 for nChannels = 20
          vTickLabelGapOffset = -1.5; % YTickLabel distance from y-axis  =1.5
-      case 'GLNXA64'
+      case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
          f0 = 9; N0 = 4;    % FontSize = 9   for nChannels = 4
          f1 = 5.5; N1 = 20; % FontSize = 6.5 for nChannels = 20
          vTickLabelGapOffset = -1.0; % YTickLabel distance from y-axis -2.5
@@ -473,7 +473,7 @@ switch computer
       set(hfigure,'units','normalized', ...
          'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]); % -0.03
 
-   case {'GLNXA64','x86_64-pc-linux-gnu'}
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
       set(hfigure,'units','normalized', ...
          'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
 
@@ -1468,10 +1468,10 @@ switch computer
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
 %       pos(2) = -0.03;
       pos(2) = pos(2) + 0.035; %dpos2           % 0.0545 % 0.025
-   case {'GLNXA64','x86_64-pc-linux-gnu'}
-      set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
+      set(h1,'FontWeight','bold', 'FontSize',10,'FontName','Arial');
 %       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
-      pos(2) = pos(2) + 0.035; %dpos2           % 0.0545 % 0.025
+      pos(2) = pos(2) + 0.025; %dpos2           % 0.0545 % 0.025
    case 'MACI64'
       set(h1,'FontWeight','bold', 'FontSize',14,'FontName','Arial');
       %        dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
@@ -1506,7 +1506,7 @@ if flgPrinting(1) % PDC2 or DTF2
             pType = '_{i}DTF';
          case 'ratio'
             pType = 'Ratio';
-%          pxheight_max
+         otherwise
             error('Unknown metric.')
       end
    else
@@ -1520,7 +1520,7 @@ if flgPrinting(1) % PDC2 or DTF2
             pType = '_{i}PDC';
          case 'ratio'
             pType = 'iPDC/gPDC Ratio';
-%          pxheight_max
+        otherwise
             error('Unknown metric.')
       end
    end
@@ -1586,7 +1586,7 @@ end
 switch computer
    case 'PCWIN64'
       %nop
-   case {'GLNXA64','x86_64-pc-linux-gnu'}
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
 
    case 'MACI64'
       set(h2,'FontSize',16)
@@ -1615,11 +1615,8 @@ end
 end
 
 
-% ==============================================================================
-%              Local functions
-% ==============================================================================
-
-% x-axis labeling function
+%% LABELITX
+%      x-axis labeling function
 %
 function [hxlabel] = labelitx(j,chLabels) % Labels x-axis plottings
 if isOctave()
@@ -1628,7 +1625,7 @@ else
    switch computer
       case 'PCWIN64'
          vFontSize = 10;
-      case 'GLNXA64'
+      case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
          vFontSize = 10;
       case 'MACI64'
          vFontSize = 12;
@@ -1651,7 +1648,7 @@ set(hxlabel,'Position',pos);
 
 end
 
-% ==============================================================================
+%% LABELITY 
 % y-axis labeling function
 %
 function [hylabel] = labelity(i,chLabels) % Labels y-axis plottings
@@ -1661,7 +1658,7 @@ else
    switch computer
       case 'PCWIN64'
          vFontSize = 10;
-      case 'GLNXA64'
+      case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
          vFontSize = 10;
       case 'MACI64'
          vFontSize = 12;
@@ -1686,8 +1683,8 @@ end
 set(hylabel,'Position',pos)
 end
 
-% ==============================================================================
-% Confidence Interval plot limits
+%% PLOTCI
+%      Plot upper and lower confidence interval limits
 %
 function plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, ...
                nPlotPoints,indexNotSignif,vPatnaikLineWidth,versionNumberMatlab)

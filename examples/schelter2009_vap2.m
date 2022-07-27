@@ -1,6 +1,10 @@
-% Schelter, Timmer, Eichler. 
-% Assessing the strength of directed influences among neural signals using
-% renormalized PDC. J Neurosci Methods, 179:121-130, 2009.
+%% Schelter2009 VAP II 5-dimension VAR[3] process
+%
+% An example borrowed from Schelter et al. (2009) 
+%
+% Schelter, Timmer, Eichler. Assessing the strength of directed influences
+% among neural signals using renormalized PDC. J Neurosci Methods,
+% 179:121-130, 2009.
 %   [http://dx.doi.org/10.1016/j.jneumeth.2009.01.006]
 % 
 % 3.2 Vector autoregressive process II (Eqs. 16-20, page 124)
@@ -113,7 +117,7 @@ w_max=fs/2;
 alphastr = int2str(100*alpha);
 
 strID = 'Schelter et al. (2009)';
-strTitle = ['Schelter et al. (2009) linear model: ' ...
+strTitle = ['Schelter et al. (2009) linear model II: ' ...
                                int2str(nPoints) ' data points.'];
 [h,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor,2,'pdc');
 xplot_title(alpha,metric,'pdc',strTitle);

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>guo2008_linear</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="guo2008_linear.m"><style type="text/css">
+      --><title>guo2008_linear</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="guo2008_linear.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -86,7 +86,7 @@ alpha = 0.0001; <span class="comment">% = 0.01%  !</span>
 ====================================================================================================
 Assigned "sum(100*clock)" initial state.2
 Model parameters:
-a1=0.706046; a2=0.031833; a3=0.276923; a4=0.046171; a5=0.097132;
+a1=0.438744; a2=0.381558; a3=0.765517; a4=0.795200; a5=0.186873;
 b1 = b2 = b3 = b4 = b5 = 2;
 c1 = c2 = c3 = c4 = c5 = 5;
  
@@ -119,10 +119,10 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=525507.252710
-IP=2  vaic=512628.597272
-IP=3  vaic=511779.538987
-IP=4  vaic=511798.908637
+IP=1  vaic=525027.920824
+IP=2  vaic=511701.997767
+IP=3  vaic=510986.518357
+IP=4  vaic=511012.400027
  
 Number of channels = 5 with 10000 data points; MAR model order = 3.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -138,10 +138,9 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-(**) Poor MAR model fitting:
-                   Residues white noise hypothesis was rejected.
-Pass = 0.016
-  st = 484.217
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.064
+  st = 443.927
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -161,11 +160,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.2937    0.0940    0.1238    0.0136
-         0       NaN    0.1146    0.1479    0.0039
-    0.0000    0.3107       NaN    0.2211    0.0082
-         0    0.3902    0.1090       NaN         0
-    0.6276    0.2547    0.2126    0.0000       NaN
+       NaN    0.7765    0.0035    0.0038    0.0125
+         0       NaN    0.0034    0.0017    0.0230
+    0.0000    0.8892       NaN    0.0015    0.0268
+         0    0.8929    0.0108       NaN         0
+    0.0330    0.8050    0.0014    0.0000       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST

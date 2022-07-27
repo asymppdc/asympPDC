@@ -112,14 +112,14 @@ flgColor = [0];
 w_max=fs/2;
 flgPrinting = [1 1 1 0 0 0 3]; % plot auto PDC on main diagonal
 
-[h1,~, ~] = xplot('Baccala & Sameshima (2001A) - Example 4',c,...
+[h1,~, ~] = xplot('Baccala & Sameshima (2001a) - Example 4',c,...
     flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc');
 
 
 %% Original DTF definition estimation
 %
-% PDC analysis results are saved in *d* structure.
+% DTF analysis results are saved in *d* structure.
 % See asymp_dtf.m.
 
 metric = 'euc';
@@ -131,7 +131,7 @@ d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 flgColor = [0];
 w_max=fs/2;
 
-vBarTitle = 'Baccala & Sameshima (2001): Example 4';
+vBarTitle = 'Baccala & Sameshima (2001) - Example 4';
 [h2,~, ~] = xplot(vBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',vBarTitle);
 

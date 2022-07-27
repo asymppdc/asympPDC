@@ -103,24 +103,26 @@ else
                       obs], 't');
 end
 
+set(ax,'Units','normalized')
+pos = get(ax,'Position');
+
 if isOctave()
-   set(h,'FontSize',10)   
-   pos = get(ax,'Position')
+   set(h,'FontSize',10)
 else
    
    switch computer
       case 'PCWIN64'
          set(h,'FontSize',8)
+         pos(4) = pos(4) + 0.0125;
       case {'GLNXA64','x86_64-pc-linux-gnu'}
          set(h,'FontSize',8)
+         pos(4) = pos(4) + 0.0100;
       case 'MACI64'
          set(h,'FontSize',10)
+         pos(4) = pos(4) + 0.0080;
       otherwise
          set(h,'FontSize',8)
-   end   
-   set(ax,'Units','normalized')
-   pos = get(ax,'Position');
-   pos(4) = pos(4) + 0.0125;
+   end
    set(ax,'Position',pos);
 end
 

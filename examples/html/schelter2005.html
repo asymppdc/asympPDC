@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>schelter2005</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
+      --><title>schelter2005</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -147,11 +147,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation and GCT analysis routines.
 maxOrder limited to 30
-IP=1  vaic=80329.294552
-IP=2  vaic=76164.469089
-IP=3  vaic=76145.015287
-IP=4  vaic=76040.666376
-IP=5  vaic=76058.707712
+IP=1  vaic=80379.510033
+IP=2  vaic=76333.644549
+IP=3  vaic=76309.960731
+IP=4  vaic=76251.049619
+IP=5  vaic=76282.588568
  
 Number of channels = 5 with 2000 data points; MAR model order = 4.
 </pre><pre class="codeinput"><span class="comment">%Testing the adequacy of MAR model fitting through Portmanteau test</span>
@@ -168,8 +168,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.044
-  st = 412.9
+Pass = 0.028
+  st = 336.628
 </pre><h2 id="6">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -183,17 +183,17 @@ flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m 
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
    NaN     1     0     0     0
-     0   NaN     1     1     1
+     0   NaN     1     1     0
      0     0   NaN     0     1
      0     0     1   NaN     1
      0     0     1     0   NaN
 
 Granger causality test p-values:
-       NaN         0    0.6125    0.4928    0.2830
-    0.6245       NaN         0         0    0.0028
-    0.9619    0.8557       NaN    0.2117    0.0000
-    0.8934    0.6262         0       NaN         0
-    0.0409    0.4420         0    0.6767       NaN
+       NaN         0    0.3885    0.9844    0.7105
+    0.0922       NaN         0         0    0.8700
+    0.3378    0.1864       NaN    0.3242    0.0000
+    0.1427    0.3390         0       NaN         0
+    0.6360    0.4870         0    0.0857       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -206,11 +206,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.8903    0.1946    0.4612    0.6156
-    0.8903       NaN    0.4689    0.3901    0.3923
-    0.1946    0.4689       NaN    0.0801    0.6624
-    0.4612    0.3901    0.0801       NaN    0.7269
-    0.6156    0.3923    0.6624    0.7269       NaN
+       NaN    0.5022    0.5667    0.5001    0.8674
+    0.5022       NaN    0.7745    0.7455    0.9050
+    0.5667    0.7745       NaN    0.6164    0.1344
+    0.5001    0.7455    0.6164       NaN    0.9941
+    0.8674    0.9050    0.1344    0.9941       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 

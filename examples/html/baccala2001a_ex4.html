@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>baccala2001a_ex4</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-25"><meta name="DC.source" content="baccala2001a_ex4.m"><style type="text/css">
+      --><title>baccala2001a_ex4</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="baccala2001a_ex4.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -109,9 +109,9 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=78492.702390
-IP=2  vaic=76028.680815
-IP=3  vaic=76061.955437
+IP=1  vaic=78242.251634
+IP=2  vaic=76092.131561
+IP=3  vaic=76127.690743
  
 Number of channels = 5 with 2000 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -126,8 +126,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.026
-  st = 459.875
+Pass = 0.038
+  st = 478.929
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -150,11 +150,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.5213    0.7472    0.8699    0.2364
-         0       NaN    0.5158    0.0803    0.9069
-    0.8910         0       NaN    0.5118    0.7777
-    0.8745    0.7776         0       NaN         0
-    0.6126    0.1917    0.0895         0       NaN
+       NaN    0.2752    0.8454    0.8809    0.8802
+         0       NaN    0.9337    0.9960    0.8440
+    0.7659         0       NaN    0.1470    0.4711
+    0.4211    0.3625         0       NaN         0
+    0.0780    0.3563    0.1061         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -167,11 +167,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.0892    0.7495    0.3778    0.0984
-    0.0892       NaN    0.4353    0.0969    0.7525
-    0.7495    0.4353       NaN    0.8656    0.3177
-    0.3778    0.0969    0.8656       NaN    0.5252
-    0.0984    0.7525    0.3177    0.5252       NaN
+       NaN    0.0338    0.3997    0.7826    0.8316
+    0.0338       NaN    0.0799    0.6160    0.9480
+    0.3997    0.0799       NaN    0.7591    0.8068
+    0.7826    0.6160    0.7591       NaN    0.7895
+    0.8316    0.9480    0.8068    0.7895       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -185,15 +185,15 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC 
 w_max=fs/2;
 flgPrinting = [1 1 1 0 0 0 3]; <span class="comment">% plot auto PDC on main diagonal</span>
 
-[h1,~, ~] = xplot(<span class="string">'Baccala &amp; Sameshima (2001A) - Example 4'</span>,c,<span class="keyword">...</span>
+[h1,~, ~] = xplot(<span class="string">'Baccala &amp; Sameshima (2001a) - Example 4'</span>,c,<span class="keyword">...</span>
     flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>);
-</pre><img vspace="5" hspace="5" src="baccala2001a_ex4_01.png" alt=""> <h2 id="11">Original DTF definition estimation</h2><p>PDC analysis results are saved in <b>d</b> structure. See asymp_dtf.m.</p><pre class="codeinput">metric = <span class="string">'euc'</span>;
+</pre><img vspace="5" hspace="5" src="baccala2001a_ex4_01.png" alt=""> <h2 id="11">Original DTF definition estimation</h2><p>DTF analysis results are saved in <b>d</b> structure. See asymp_dtf.m.</p><pre class="codeinput">metric = <span class="string">'euc'</span>;
 d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 </pre><h2 id="12"><img src="baccala2001a_ex4_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$">  Matrix Layout Plotting</h2><pre class="codeinput">flgColor = [0];
 w_max=fs/2;
 
-vBarTitle = <span class="string">'Baccala &amp; Sameshima (2001): Example 4'</span>;
+vBarTitle = <span class="string">'Baccala &amp; Sameshima (2001) - Example 4'</span>;
 [h2,~, ~] = xplot(vBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,vBarTitle);
 </pre><img vspace="5" hspace="5" src="baccala2001a_ex4_02.png" alt=""> <div><ul><li>Check &amp; compare this results with Fig. 3b, page 469, Baccala &amp; Sameshima (2001).</li><li>Note that in the article the amplitude, <img src="baccala2001a_ex4_eq12264329191379926643.png" alt="$|PDC|$">, has been depicted.   While here we preferred to plot <img src="baccala2001a_ex4_eq06563705797252587072.png" alt="$|PDC|^2$"> and <img src="baccala2001a_ex4_eq15465123740211846091.png" alt="$|DTF|^2$">.</li></ul></div><h2 id="14">Result from the original article, Baccala &amp; Sameshima (2001)</h2><p>In the original article the results is as follow for comparison.</p><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex4ab.png" alt=""> </p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
@@ -312,14 +312,14 @@ flgColor = [0];
 w_max=fs/2;
 flgPrinting = [1 1 1 0 0 0 3]; % plot auto PDC on main diagonal
 
-[h1,~, ~] = xplot('Baccala & Sameshima (2001A) - Example 4',c,...
+[h1,~, ~] = xplot('Baccala & Sameshima (2001a) - Example 4',c,...
     flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc');
 
 
 %% Original DTF definition estimation
 %
-% PDC analysis results are saved in *d* structure.
+% DTF analysis results are saved in *d* structure.
 % See asymp_dtf.m.
 
 metric = 'euc';
@@ -331,7 +331,7 @@ d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 flgColor = [0];
 w_max=fs/2;
 
-vBarTitle = 'Baccala & Sameshima (2001): Example 4';
+vBarTitle = 'Baccala & Sameshima (2001) - Example 4';
 [h2,~, ~] = xplot(vBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',vBarTitle);
 

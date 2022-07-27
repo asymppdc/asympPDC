@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="gourevitch2006_model2.m"><style type="text/css">
+      --><title>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="gourevitch2006_model2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,10 +67,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</h1><!--introduction--><p>DESCRIPTION:</p><p>Example Model 2: Linear bivariate model with bidirectional influence                          with common source</p><pre>   *x1&lt;==&gt;x2* (feedback)  *x1==x2* (instantaneous causality)</pre><pre>   *x1 &lt;== _S_ ==&gt;x2*, which gives x1==x2 (iGC) from hidden source</pre><p>Example <b>Model 2</b> borrowed from: <b>Gourevitch, Bouquin-Jeannes &amp; Faucon</b>. Linear and nonlinear casuality between     signals: methods, examples and neurophysiological applications.     <i>Biol Cybern</i> <b>95</b>:349--369, 2006.</p><p><a href="http://dx.doi.org/10.1007/s00422-006-0098-0">http://dx.doi.org/10.1007/s00422-006-0098-0</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Other routines</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">Data sample generation</a></li><li><a href="#8">MVAR model estimation</a></li><li><a href="#10">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#11">Original PDC estimation</a></li><li><a href="#13">Generalized PDC estimation</a></li><li><a href="#15">Result from the original article, Gourevitch (2006)</a></li><li><a href="#17">gPDC p-values matrix layout plots</a></li><li><a href="#19">gDTF = DC estimation</a></li><li><a href="#20">DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range</a></li><li><a href="#22">Concluding remarks</a></li></ul></div><h2 id="1">Other routines</h2><pre>See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
+  </style></head><body><div class="content"><h1>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</h1><!--introduction--><p>DESCRIPTION:</p><p>Example Model 2: Linear bivariate model with bidirectional influence                          with common source</p><pre>   x1&lt;==&gt;x2 (feedback)  x1==x2 (instantaneous Granger causality)</pre><pre>   x1&lt;==S==&gt;x2, which gives x1==x2 (iGC) from hidden source</pre><p>Example Model 2 borrowed from:</p><pre>Gourevitch, Bouquin-Jeannes &amp; Faucon. Linear and nonlinear casuality between
+   signals: methods, examples and neurophysiological applications.
+   Biol Cybern 95:349--369, 2006.</pre><p><a href="http://dx.doi.org/10.1007/s00422-006-0098-0">http://dx.doi.org/10.1007/s00422-006-0098-0</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Other routines</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">Data sample generation</a></li><li><a href="#8">MVAR model estimation</a></li><li><a href="#10">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#11">Original PDC estimation</a></li><li><a href="#13">Generalized PDC estimation</a></li><li><a href="#15">Result from the original article, Gourevitch (2006)</a></li><li><a href="#17">gPDC p-values matrix layout plots</a></li><li><a href="#19">gDTF = DC estimation</a></li><li><a href="#20">DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range</a></li><li><a href="#22">Concluding remarks</a></li></ul></div><h2 id="1">Other routines</h2><pre>See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
           xplot_pvalues
 &lt; gourevitch2006_model2.html |gourevitch2006_model2|&gt; |</pre><pre class="codeinput">clear; clc
-</pre><h2 id="3">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_graph.png" alt=""> </p><p>Figure 4 from Gourevitch. <i>Biol. Cybern.</i> <b>95</b>:349-369, 2006.</p><h2 id="4">Equation</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_eq.png" alt=""> </p><p>Equations (38) and (39), Gourevitch et al. (2006)</p><h2 id="6">Data sample generation</h2><pre class="codeinput">nDiscard = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+</pre><h2 id="3">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_graph.png" alt=""> </p><p>Figure 4 from Gourevitch et al. <i>Biol. Cybern.</i> <b>95</b>:349-369, 2006.</p><h2 id="4">Equation</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_eq.png" alt=""> </p><p>Equations (38) and (39), Gourevitch et al. (2006)</p><h2 id="6">Data sample generation</h2><pre class="codeinput">nDiscard = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 800;     <span class="comment">% number of analyzed samples points</span>
 
 u = fgourevitch2006_model2( nPoints, nDiscard );
@@ -122,11 +124,12 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=11758.450633
-IP=2  vaic=9387.787593
-IP=3  vaic=9394.687385
+IP=1  vaic=12068.109798
+IP=2  vaic=9370.759248
+IP=3  vaic=9368.973306
+IP=4  vaic=9369.247230
  
-Number of channels = 2 with 800 data points; MAR model order = 2.
+Number of channels = 2 with 800 data points; MAR model order = 3.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
 MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
                             <span class="comment">% level</span>
@@ -139,8 +142,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.05
-  st = 81.2294
+Pass = 0.0375
+  st = 70.9879
 </pre><h2 id="10">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">alpha = 0.01;
 
 gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
@@ -149,7 +152,7 @@ igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance lev
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
-<span class="comment">% [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);</span>
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 </pre><pre class="codeoutput">
 ====================================================================================================
                          GRANGER CAUSALITY TEST
@@ -162,6 +165,21 @@ Granger causality test p-values:
    NaN     0
      0   NaN
 
+====================================================================================================
+                  INSTANTANEOUS GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Instantaneous connectivity matrix:
+   NaN     1
+     1   NaN
+
+Instantaneous Granger Causality test p-values:
+   NaN     0
+     0   NaN
+
+&gt;&gt;&gt;&gt; There is a pair of channels with significant Instantaneous 
+     Granger Causality.
+
+====================================================================================================
 </pre><h2 id="11">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_pdc.m or issue   &gt;&gt; help asymp_pdc command for more detail.</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'euc'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
                  <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
@@ -223,14 +241,15 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 % Example Model 2: Linear bivariate model with bidirectional influence 
 %                          with common source
 %
-%     *x1<==>x2* (feedback)  *x1==x2* (instantaneous causality)
+%     x1<==>x2 (feedback)  x1==x2 (instantaneous Granger causality)
 %
-%     *x1 <== _S_ ==>x2*, which gives x1==x2 (iGC) from hidden source
+%     x1<==S==>x2, which gives x1==x2 (iGC) from hidden source
 %
-% Example *Model 2* borrowed from:
-% *Gourevitch, Bouquin-Jeannes & Faucon*. Linear and nonlinear casuality between 
+% Example Model 2 borrowed from:  
+%
+%  Gourevitch, Bouquin-Jeannes & Faucon. Linear and nonlinear casuality between 
 %     signals: methods, examples and neurophysiological applications. 
-%     _Biol Cybern_ *95*:349REPLACE_WITH_DASH_DASH369, 2006.
+%     Biol Cybern 95:349REPLACE_WITH_DASH_DASH369, 2006.
 %
 % <http://dx.doi.org/10.1007/s00422-006-0098-0>
 %
@@ -247,7 +266,7 @@ clear; clc
 %
 % <<fig_gourevitch2006_model2_graph.png>>
 %
-% Figure 4 from Gourevitch. _Biol. Cybern._ *95*:349-369, 2006.
+% Figure 4 from Gourevitch et al. _Biol. Cybern._ *95*:349-369, 2006.
 
 %% Equation
 %
@@ -333,7 +352,7 @@ igct_signif = alpha;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
-% [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
  
 %% Original PDC estimation

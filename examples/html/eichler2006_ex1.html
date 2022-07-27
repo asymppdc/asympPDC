@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>EICHLER (2006) 3-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="eichler2006_ex1.m"><style type="text/css">
+      --><title>EICHLER (2006) 3-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="eichler2006_ex1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>EICHLER (2006) 3-dimension VAR[2]</h1><!--introduction--><p>DESCRIPTION:</p><p>Three dimension linear VAR[2] Model</p><pre>          x1--&gt;x2  x2--&gt;x1 x2--&gt;x3</pre><p>Eichler. On the evaluation of information flow in multivariate systems by the directed transfer function.            Biol Cybern (2006) 94: 469?482</p><p><a href="http://dx.doi.org/10.1007/s00422-006-0062-z">http://dx.doi.org/10.1007/s00422-006-0062-z</a></p><pre>Example - Three-dimension VAR[2].</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation (25) of Eichler (2006)</a></li><li><a href="#4">Data generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="eichler2006_ex1_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$">  Matrix-Layout Plot</a></li><li><a href="#11">Original DTF estimation</a></li><li><a href="#12"><img src="eichler2006_ex1_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$"> Matrix Layout Plot</a></li><li><a href="#13">Result from the original article, Eichler (2006)</a></li></ul></div><pre class="codeinput">clc; format <span class="string">compact</span>
+  </style></head><body><div class="content"><h1>EICHLER (2006) 3-dimension VAR[2]</h1><!--introduction--><p>DESCRIPTION:</p><p>Three dimension linear VAR[2] Model</p><pre>          x1&lt;--&gt;x2   x2--&gt;x3</pre><pre>     Eichler et al. 2006) On the evaluation of information flow in multivariate systems
+     by the directed transfer function. Biol Cybern *94*: 469--482</pre><pre>     &lt;http://dx.doi.org/10.1007/s00422-006-0062-z&gt;</pre><pre>Example - Three-dimension VAR[2].</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation (25) of Eichler (2006)</a></li><li><a href="#4">Data generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="eichler2006_ex1_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$">  Matrix-Layout Plot</a></li><li><a href="#11">Original DTF estimation</a></li><li><a href="#12"><img src="eichler2006_ex1_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$"> Matrix Layout Plot</a></li><li><a href="#13">Result from the original article, Eichler (2006)</a></li></ul></div><pre class="codeinput">clc; format <span class="string">compact</span>
 </pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_eichler2006_3dim_graph.png" alt=""> </p><p>Reproduced from Figure 4 in Eichler (2006) (<i>Biol Cybern</i> (2006) <b>94</b>:469--482, 2006).</p><h2 id="3">Equation (25) of Eichler (2006)</h2><p><img vspace="5" hspace="5" src="fig_eichler2006_eq25.png" alt=""> </p><h2 id="4">Data generation</h2><pre class="codeinput">nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
 
@@ -112,9 +113,9 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=45941.155136
-IP=2  vaic=45578.432456
-IP=3  vaic=45584.159153
+IP=1  vaic=45972.413711
+IP=2  vaic=45635.606742
+IP=3  vaic=45645.559607
  
 Number of channels = 3 with 2000 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -128,9 +129,10 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.0222222
-  st = 136.354
+(**) Poor MAR model fitting:
+                   Residues white noise hypothesis was rejected.
+Pass = 0.0777778
+  st = 210.603
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -147,9 +149,9 @@ Connectivity matrix:
      0     1   NaN
 
 Granger causality test p-values:
-       NaN         0    0.6048
-         0       NaN    0.6035
-    0.2867         0       NaN
+       NaN         0    0.4514
+         0       NaN    0.8269
+    0.9187         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -160,9 +162,9 @@ Instantaneous connectivity matrix:
      0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.6340    0.6891
-    0.6340       NaN    0.3105
-    0.6891    0.3105       NaN
+       NaN    0.5393    0.2190
+    0.5393       NaN    0.1593
+    0.2190    0.1593       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -170,26 +172,26 @@ Instantaneous Granger Causality test p-values:
 </pre><h2 id="9">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure.</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'euc'</span>;
 alpha = 0.01;
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
-d.Tragct = Tr_gct;
-d.pvaluesgct = pValue_gct;
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
+c.Tragct = Tr_gct;
+c.pvaluesgct = pValue_gct;
 </pre><h2 id="10"><img src="eichler2006_ex1_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$">  Matrix-Layout Plot</h2><pre class="codeinput">flgColor = [1];
 w_max=fs/2;
-flgPrinting = [1 1 1 2 3 0 1]; <span class="comment">% plot auto PDC on main diagonal</span>
+flgPrinting = [1 1 1 2 3 0 1]; <span class="comment">% plot spectra main diagonal and print GCT p-values</span>
 
-[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
+strID = <span class="string">'Eichler(2006) Linear model'</span>;
+strTitle = [<span class="string">'Eichler (2006), 3-dimension linear VAR[2] Model: [N='</span> <span class="keyword">...</span>
+             int2str(nSegLength) <span class="string">'pts; IP='</span> int2str(c.p) <span class="string">']'</span>];
+
+[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="eichler2006_ex1_01.png" alt=""> <h2 id="11">Original DTF estimation</h2><p>DTF analysis results are saved in <b>d</b> structure. See asymp_dtf.m for detail.</p><pre class="codeinput">nFreqs = 64;
-c = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
-</pre><h2 id="12"><img src="eichler2006_ex1_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$"> Matrix Layout Plot</h2><pre class="codeinput">flgPrinting = [1 1 1 2 0 0 1]; <span class="comment">% plot auto PDC on main diagonal</span>
+d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
+</pre><h2 id="12"><img src="eichler2006_ex1_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$"> Matrix Layout Plot</h2><pre class="codeinput">flgPrinting = [1 1 1 2 0 0 1]; <span class="comment">% plot linear spectra on main diagonal</span>
 flgColor = [1];
 w_max=fs/2;
 
-strTitle = [<span class="string">'Eichler (2006), 3-dimension linear VAR[2] Model: [N='</span> <span class="keyword">...</span>
-             int2str(nSegLength) <span class="string">'pts; IP='</span> int2str(c.p) <span class="string">']'</span>];
-strID = <span class="string">'Eichler(2006) Linear model'</span>;
-
-[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="eichler2006_ex1_02.png" alt=""> <h2 id="13">Result from the original article, Eichler (2006)</h2><p>Figure 5, page 476.</p><p><img vspace="5" hspace="5" src="fig_eichler2006_3dim_result.png" alt=""> </p><p>This completes Eichler (2006) VAR[3] Example 1.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -199,13 +201,12 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 %
 % Three dimension linear VAR[2] Model
 %
-%            x1REPLACE_WITH_DASH_DASH>x2  x2REPLACE_WITH_DASH_DASH>x1 x2REPLACE_WITH_DASH_DASH>x3
+%            x1<REPLACE_WITH_DASH_DASH>x2   x2REPLACE_WITH_DASH_DASH>x3
 %
-% Eichler. On the evaluation of information flow in multivariate systems
-% by the directed transfer function.
-%            Biol Cybern (2006) 94: 469?482
+%       Eichler et al. 2006) On the evaluation of information flow in multivariate systems
+%       by the directed transfer function. Biol Cybern *94*: 469REPLACE_WITH_DASH_DASH482
 %
-% <http://dx.doi.org/10.1007/s00422-006-0062-z>
+%       <http://dx.doi.org/10.1007/s00422-006-0062-z>
 %
 %  Example - Three-dimension VAR[2].
 
@@ -299,17 +300,21 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 nFreqs = 128;
 metric = 'euc';
 alpha = 0.01;
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
-d.Tragct = Tr_gct;
-d.pvaluesgct = pValue_gct;
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.Tragct = Tr_gct;
+c.pvaluesgct = pValue_gct;
 
 %% $|PDC(\lambda)|^2$  Matrix-Layout Plot
 %
 flgColor = [1];
 w_max=fs/2;
-flgPrinting = [1 1 1 2 3 0 1]; % plot auto PDC on main diagonal
+flgPrinting = [1 1 1 2 3 0 1]; % plot spectra main diagonal and print GCT p-values
 
-[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
+strID = 'Eichler(2006) Linear model';
+strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
+             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
+
+[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc',strTitle);
 
 
@@ -319,20 +324,16 @@ xplot_title(alpha,metric,'pdc',strTitle);
 % See asymp_dtf.m for detail.
 
 nFreqs = 64;
-c = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
+d = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 
 %% $|DTF(\lambda)|^2$ Matrix Layout Plot
 %
 
-flgPrinting = [1 1 1 2 0 0 1]; % plot auto PDC on main diagonal
+flgPrinting = [1 1 1 2 0 0 1]; % plot linear spectra on main diagonal
 flgColor = [1];
 w_max=fs/2;
 
-strTitle = ['Eichler (2006), 3-dimension linear VAR[2] Model: [N=' ...
-             int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
-strID = 'Eichler(2006) Linear model';
-
-[h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
+[h2,~,~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',strTitle);
 
 %% Result from the original article, Eichler (2006)

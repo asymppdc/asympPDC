@@ -4,10 +4,11 @@
 %
 %
 % ==========================================================================
-%      Schelter, Winterhalder, Hellwig, Guschlbauer, L?cking, Timmer
+%  
+%      Schelter, Winterhalder, Hellwig, Guschlbauer, Lucking, Timmer
 %       Direct or indirect? Graphical models for neural oscillators
 %               J Physiology - Paris 99:37-46, 2006.
-%         http://dx.doi.org/10.1016/j.jphysparis.2005.06.006
+%         <http://dx.doi.org/10.1016/j.jphysparis.2005.06.006>
 %
 %      Example 5-dimension VAR[4]
 % ==========================================================================

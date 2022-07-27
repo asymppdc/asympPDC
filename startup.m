@@ -188,7 +188,7 @@ if ~isempty(which('suplabel')) && ~isempty(which('suptitle'))
    end
    fprintf(1,'\n')
 if ~isempty(which('shadedplot')) && ~isempty(which('boundedline'))
-   fprintf('                   And, also if required,   shadedplot.m (Dave Van Tol, 2008), and\n');
+   fprintf('                   And, also, if required,  shadedplot.m (Dave Van Tol, 2008), and\n');
    fprintf('                                            boundedline.m (Kelly Kearney, 2012).\n');
    fprintf(1,'\n')
 end

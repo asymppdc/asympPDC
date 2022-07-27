@@ -16,7 +16,7 @@
 %   flgPrinting: [1 1 1 1 1 0 1];
 %           blue  | | | | | | 7-- {0:2} Spectra (0: wo; 1: Linear; 2: Log) 
 %                 | | | | | 6-- {} Not used
-%    dark-purple  | | | | 5-- {0:3} Mark significant GCT pairs + print p-values 
+%   dark-purple   | | | | 5-- {0:3} Mark significant GCT pairs + print p-values 
 %  or dark-green  | | | |          (0: w/o; 1: print p-values; 2: mark +GCT; 
 %                 | | | |           3: print p-values + mark significant GCT)
 %    dashed-blue  | | | 4-- {0:2} Scale of p-values plots 1:linear; 2:log10
@@ -28,7 +28,10 @@
 %    w_max:     frequency scale upper-limit
 %    chLabels:  channel identification labels
 %    flgColor:  [NOT USED]
-%    flgScale:  y-axis scale for Power spectra on main diagonal
+%    flgScale:  y-axis scale for p-values: 1: linear [0 1] and log [0 -15];
+%                                          2: log y-axis according to 
+%                                             max(abs(pvalues_log10)) value
+%                                             [0 -5], [0 -10] or [0 -15]
 %
 %% Output
 %     Pretty matrix-layout plots of p-values of |PDC|^2 | |DTF|^2
@@ -759,7 +762,7 @@ supAxes = [.08 .075 .84 .84]; % [.12 .11 .84 .80];
 %
 
 %[ax3,h3] = suplabel(['log_{10}\textit{p} (\lambda)'],'y',supAxes);
-[~,h3] = suplabel(['log_{10}p'],'y',supAxes);
+[ax3,h3] = suplabel(['log_{10}p'],'y',supAxes);
 
 switch computer
    case 'PCWIN64'
@@ -770,9 +773,9 @@ switch computer
       set(h3,'FontSize',16,'FontWeight','bold','FontName','Arial')
 end
 
-pos = get(h3,'Position');
-pos(1) = pos(1) + 0.020;   % 0.0545
-set(h3,'Position',pos);    % Adjust ylabel position
+pos = get(ax3,'Position');
+pos(1) = pos(1) + 0.030;   % 0.0545
+set(ax3,'Position',pos);    % Adjust ylabel position
 
 if fs == 1
    strXsuplabel = 'Frequency';
@@ -791,9 +794,9 @@ switch computer
    case 'PCWIN64'
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
       pos(2) = pos(2) + 0.035;
-   case {'GLNXA64','x86_64-pc-linux-gnu'}
-      set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
-      pos(2) = pos(2) + 0.035; %pos(2) + dpos2;           % 0.0545 % 0.025
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
+      set(h1,'FontWeight','bold', 'FontSize',10,'FontName','Arial');
+      pos(2) = pos(2) + 0.025; %pos(2) + dpos2;           % 0.0545 % 0.025
    case 'MACI64'
       set(h1,'FontWeight','bold', 'FontSize',16,'FontName','Arial');
       pos(2) = pos(2) + 0.010;
@@ -826,13 +829,9 @@ for k = 1:nChannels
    set(hxlabel(k),'Position',pos);
 end
 
-%%
-% ==============================================================================
-% Local Functions
-% ==============================================================================
 
-% x-axis labeling function
-%
+%% LABELITX 
+%          x-axis labeling function
 function [hxlabel] = labelitx(j,chLabels) % Labels x-axis plottings
 if isOctave()
    vFontSize = 12;
@@ -873,8 +872,9 @@ pos = get(hxlabel,'Position');
 pos(2) = pos(2) + 0.055;   % 0.0545
 set(hxlabel,'Position',pos);
 
-% ==============================================================================
-% y-axis labeling function
+
+%% LABELITY
+%   y-axis labeling function
 %
 function [hylabel] = labelity(i,chLabels) % Labels y-axis plottings
 if isOctave()

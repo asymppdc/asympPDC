@@ -90,7 +90,7 @@ flgPrintResults = 1;
 % PDC analysis results are saved in *c* struct variable.
 % See asymp_pdc.m or issue 
 %   >> help asymp_pdc 
-% command for more detail.
+% to see more detail.
 
 nFreqs = 128;
 metric = 'euc'; % Euclidean metric = original PDC definition
@@ -100,15 +100,14 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
 c.pvaluesgct = pValue_gct;
     
-%%
-% $|PDC(\lambda)|^2$ Matrix-Layout Plot
+%% $|PDC(\lambda)|^2$ Matrix-Layout Plot
 
 flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
 strTitle = ['Linear 5-dim VAR(3) model w feedback'];  %'; '  datestr(now) ']'];
-vTitleBar = 'Baccala & Sameshima (2001A) Example 3';
+vTitleBar = 'Baccala & Sameshima (2001a) Example 3';
 
 [h1,~, ~] = xplot(vTitleBar,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
@@ -129,8 +128,7 @@ d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
 
 
-%%
-% $|_iPDC(\lambda)|^2$ Matrix Layout Plotting
+%% $|_iPDC(\lambda)|^2$ Matrix Layout Plotting
 
 %                 1 2 3 4 5 6 7
    flgPrinting = [1 1 1 2 3 0 2]; % GCT and power spectra selection.
@@ -159,8 +157,9 @@ xplot_title(alpha,metric,'pdc', strTitle);
 metric = 'euc'; % Original DTF
 e = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 
-%%
-% $|DTF(\lambda)|^2$ Matrix Layout Plotting
+
+%% $|{DTF}(\lambda)|^2$ Matrix-Layout Plot
+%
 
 flgColor = 0; flgScale = 1; flgMax = 'dtf'; flgSignifColor = 3;
 

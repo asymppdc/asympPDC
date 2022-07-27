@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
+      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Schelter 2006 5-dimension VAR[4]</h1><!--introduction--><p>An example taken from Schelter et al. (2006)</p><p>==========================================================================      Schelter, Winterhalder, Hellwig, Guschlbauer, L?cking, Timmer       Direct or indirect? Graphical models for neural oscillators               J Physiology - Paris 99:37-46, 2006.         <a href="http://dx.doi.org/10.1016/j.jphysparis.2005.06.006">http://dx.doi.org/10.1016/j.jphysparis.2005.06.006</a></p><pre>    Example 5-dimension VAR[4]
+  </style></head><body><div class="content"><h1>Schelter 2006 5-dimension VAR[4]</h1><!--introduction--><p>An example taken from Schelter et al. (2006)</p><p>==========================================================================</p><pre>    Schelter, Winterhalder, Hellwig, Guschlbauer, Lucking, Timmer
+     Direct or indirect? Graphical models for neural oscillators
+             J Physiology - Paris 99:37-46, 2006.
+       &lt;http://dx.doi.org/10.1016/j.jphysparis.2005.06.006&gt;</pre><pre>    Example 5-dimension VAR[4]
 ==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate data sample using fschelter2006 function</a></li><li><a href="#5">Original PDC estimation</a></li><li><a href="#8">Result from Schelter et al.(2006)</a></li><li><a href="#10">Some remarks</a></li></ul></div><h2 id="1">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
 
 nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
@@ -145,20 +148,21 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=226845.409830
-IP=2  vaic=218570.638706
-IP=3  vaic=213411.657314
-IP=4  vaic=213027.362916
-IP=5  vaic=213055.531859
+IP=1  vaic=226607.201352
+IP=2  vaic=218337.390623
+IP=3  vaic=213196.841616
+IP=4  vaic=212738.841188
+IP=5  vaic=212755.649607
  
 Number of channels = 5 with 5000 data points; MAR model order = 4.
 
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.022
-  st = 390.318
+(**) Poor MAR model fitting:
+                   Residues white noise hypothesis was rejected.
+Pass = 0.042
+  st = 448.753
 </pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -170,17 +174,17 @@ flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m 
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
    NaN     0     0     0     1
-     1   NaN     0     1     1
+     1   NaN     0     0     1
      0     0   NaN     0     1
      1     1     0   NaN     0
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.1125    0.1092    0.2036         0
-         0       NaN    0.2940    0.0097         0
-    0.7307    0.8812       NaN    0.3016         0
-         0         0    0.1289       NaN    0.6232
-    0.7054    0.2922    0.9987         0       NaN
+       NaN    0.9866    0.7010    0.1763         0
+         0       NaN    0.2267    0.1215         0
+    0.2065    0.2780       NaN    0.0565         0
+         0         0    0.4731       NaN    0.1358
+    0.2357    0.3305    0.0370         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -193,11 +197,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.2232    0.0823    0.4640    0.9940
-    0.2232       NaN    0.1759    0.4147    0.1107
-    0.0823    0.1759       NaN    0.6079    0.3681
-    0.4640    0.4147    0.6079       NaN    0.6983
-    0.9940    0.1107    0.3681    0.6983       NaN
+       NaN    0.5401    0.3435    0.3868    0.7216
+    0.5401       NaN    0.9157    0.3380    0.8285
+    0.3435    0.9157       NaN    0.3949    0.9495
+    0.3868    0.3380    0.3949       NaN    0.6157
+    0.7216    0.8285    0.9495    0.6157       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -235,10 +239,11 @@ xplot_title(alpha,metric,[<span class="string">'p-value PDC'</span>],strTitle);
 %
 %
 % ==========================================================================
-%      Schelter, Winterhalder, Hellwig, Guschlbauer, L?cking, Timmer
+%  
+%      Schelter, Winterhalder, Hellwig, Guschlbauer, Lucking, Timmer
 %       Direct or indirect? Graphical models for neural oscillators
 %               J Physiology - Paris 99:37-46, 2006.
-%         http://dx.doi.org/10.1016/j.jphysparis.2005.06.006
+%         <http://dx.doi.org/10.1016/j.jphysparis.2005.06.006>
 %
 %      Example 5-dimension VAR[4]
 % ==========================================================================

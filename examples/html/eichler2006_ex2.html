@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>EICHLER (2006) Two-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="eichler2006_ex2.m"><style type="text/css">
+      --><title>EICHLER (2006) Two-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="eichler2006_ex2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -113,11 +113,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=31696.077885
-IP=2  vaic=31515.270342
-IP=3  vaic=30927.998944
-IP=4  vaic=30382.739815
-IP=5  vaic=30386.829927
+IP=1  vaic=31853.634149
+IP=2  vaic=31676.609769
+IP=3  vaic=31081.201440
+IP=4  vaic=30461.493134
+IP=5  vaic=30468.745497
  
 Number of channels = 2 with 2000 data points; MAR model order = 4.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -132,8 +132,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.025
-  st = 65.0341
+Pass = 0.0375
+  st = 66.5081
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">alpha = 0.05;
 gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
@@ -154,7 +154,7 @@ Connectivity matrix:
      1   NaN
 
 Granger causality test p-values:
-       NaN    0.3356
+       NaN    0.8728
     0.0000       NaN
 
 ====================================================================================================
@@ -165,8 +165,8 @@ Instantaneous connectivity matrix:
      0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.8636
-    0.8636       NaN
+       NaN    0.3406
+    0.3406       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 

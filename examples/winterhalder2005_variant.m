@@ -138,12 +138,12 @@ flgColor = [0];   % Plotting option for automatic scaling for small PDC
                   %                          and y-axis = [0 .01].
 
 %                [1 2 3 4 5 6 7]
-flgPrinting  =   [1 0 1 0 0 0 0];
+flgPrinting  =   [1 0 1 0 3 0 0];
 %       blue-line | | | | | | 7--Spectra (0: w/o; 1: Linear; 2: Log; 3: PDC2; 
 %                 | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)
 %            gray | | | | | 6--Coh2 (0: w/o Coh2; 1: w Coh2)
-%     dashed-blue | | | | 5--Print GCT results
-%     dashed-blue | | | 4--Plot confidence interval
+% green or purple | | | | 5--Print GCT results
+%                 | | | 4--Plot confidence interval
 %            red  | | 3--Significant PDC2|DTF2 in red lines
 %    dashed-black | 2--Patnaik threshold level in black dashed-lines
 %           green 1-- PDC2/DTF2 in green lines or black w/o statistics,
@@ -154,7 +154,7 @@ strID = 'Winterhalder et al. Signal Processing 85:2137?60, 2005';
 strTitle = [' Independent Gaussian Noise: \sigma_1=\sigma_3=500;' ...
                            ' \sigma_2 = \sigma_4 = \sigma_5 = 1'];
 
-flgScale = 1;
+flgScale = 2;
 
 [h,hxlabel hylabel] = xplot(strID, c, ...
                                flgPrinting,fs,w_max,chLabels,flgColor,flgScale,flgMax,flgSignifColor);
@@ -170,7 +170,7 @@ xplot_title(alpha,metric,'p-value PDC',strTitle);
 % 
 % * Note that in this example the time series were not standardized.
 % * As a consequence, due to the high variance/power of channels
-%   $X_1$ and $X_3$, $|PDC(\lambda)|^2$ from other channels reaching these channels are 
+%   $x_1$ and $x_3$, $|{PDC}(\lambda)|^2$ from other channels reaching these channels are 
 %   high, but
 %   still in most cases not significant (represented by green lines).
 % * The Patnaik thresholds plotted in dashed-lines may not be visible in these 
@@ -185,34 +185,34 @@ xplot_title(alpha,metric,'p-value PDC',strTitle);
 % the information DTF calculation results shown
 % bellow. Same consideration would apply for information PDC.
 %
-% PDC analysis results are saved in *d* structure.
+% PDC analysis results are saved in *d* struct variable.
+%
 % See asymp_dtf.m or issue 
-%
 %   >> help asymp_dtf 
-%
 % for more detail.
 
 
 %%
-% When *flgColor=1* parameter option is used in the xplot.m routine, the
+% When `flgColor=1` parameter option is used in the xplot.m routine, the
 % y-axis intervals: (a) [0 .01] background is colored in *LIGHT-PURPLE*; (b) (.01 .1] in
 % *LIGHT-BLUE*; and (c) (.1 1] is *WHITE*.
+%
 % If the y-axis is scaled according to the maximum amplitude of the measures, 
 % this color coding may help easily getting clue about the magnitude 
-% $|DTF|^2$ or $|PDC|^2$ estimates.
+% $|{DTF}|^2$ or $|{PDC}|^2$ estimates.
 %
 % If the background is *LIGHT-PURPLE*  one would know the maximum amplitude is
 % smaller than 1/100, while with *LIGHT-BLUE* background is smaller than 1/10.
 
 %% Remarks on false-positive connectivity detection ratio:
 % 
-% * As 42 combinations of DTF/GC are tested, chances are that you
-%     will see significant $|DTF(\lambda)|^2$ (red lines), also in the case of 
-%     $|PDC(\lambda)|^2$ (see above), in some plottings. The 
-%     significant DTF probability depends on significance level you 
+% * As 42 combinations of *DTF* and *GC* are tested, chances are that you
+%     will see significant $|{DTF}(\lambda)|^2$ (red lines), also in the case of 
+%     $|{PDC}(\lambda)|^2$ (see above), in some plottings. The 
+%     significant *DTF* probability depends on significance level you 
 %     choose for null hypothesis DTF testing.
 % * The false-positive rate is approximately equal to the chosen $\alpha$ value.
 % * The similar argument applies to "instantaneous Granger causality"
 %     outcomes, and combination of 21 pairs of variables are considered
-%     as iGC is a symmetric relation.
+%     as *iGC* is a symmetric relation.
 %
