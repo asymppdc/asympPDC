@@ -36,7 +36,7 @@ The measures inside the yellow area have been implemented in the asympPDC packag
 
 
 
-![](/home/koichi/Documents/asympPDC-main/connectivity_measures_in_asymppdc.png)
+![](./connectivity_measures_in_asymppdc.png)
 
 ## References
 
