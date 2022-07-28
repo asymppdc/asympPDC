@@ -28,11 +28,21 @@ If `run_all_examples.m` completes successfully, congratulation, you should see 2
 
 that will spread the figures on the screen. The tilefigs1 or tilefigs2 function does not work so far in the Octave environment.
 
+
+
+## Our diagramatic view of connectivity measures
+
+The measures inside the yellow area have been implemented in the asympPDC packages
+
+
+
+![](/home/koichi/Documents/asympPDC-main/connectivity_measures_in_asymppdc.png)
+
 ## References
 
 The AsympPDC toolbox implementation is based mainly on the following articles and books:
 
- [1] L.A. Baccala and K. Sameshima (2001). Partial directed coherence: a new concept
+ [1] L.A. Baccala and K. Sameshima (2001a). Partial directed coherence: a new concept
      in neural structure determination. *Biol Cybern* **84**:463--474.
      <https://doi.org/10.1007/PL00007990>
 
@@ -43,7 +53,7 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
  [3] L.A. Baccala, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima (2013). Unified
      asymptotic theory for all partial directed coherence forms. *Philos T Roy
      Soc A* **371**:1--13. <https://doi.org/10.1098/rsta.2012.0158>
-     
+
  [4] M.J. Kaminski and K.J. Blinowska (1991). A new method of the description of the
     information flow in the brain structures. *Biol Cybern* **65**:203--210.
     <https://doi.org/10.1007/bf00198091>
@@ -52,13 +62,13 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
     function: unified asymptotic theory and some of its implications. *IEEE T
     Bio-Med Eng* **63**:2450--2460. 
     <https://doi.org/10.1109/TBME.2016.2550199>
-    
+
 [6] H. Lutkepohl (2005). New Introduction to Multiple Time Series Analysis. 
                          Springer-Verlag, New York. 
 
 [7] S.L. Marple Jr (1987). Digital Spectral Analysis with Application.
                          Prentice-Hall, Englewood-Cliffs. 
-                         
+
 [8] T. Schneider and A. Neumaier (2001). Algorithm 808: ARfit - A Matlab package
                          for the estimation of parameters and eigenmodes of
                          multivariate autoregressive models. *ACM Trans Math
@@ -67,7 +77,6 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
 [9] K. Sameshima and L.A. Baccalá Eds. (2014). Methods in Brain Connectivity 
     Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton.
     <https://doi.org/10.1201/b16550>
-
 
 ## License
 
