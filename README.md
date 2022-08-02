@@ -38,7 +38,7 @@ The measures inside the yellow area have been implemented in the asympPDC packag
 
 ## Getting started road map
 
-To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be help to deal with your data set. The basic steps to set up and analyze a data set using **asympPDC Package** are:
+To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be of help to deal with your own data sets. The basic steps to set up and analyze a data set using **the asympPDC Package** are:
 
 1. Import or open row-vectors data file;
 
@@ -52,17 +52,11 @@ To get started, modify  the `analysis_template.m` script file to adapt it to you
 
 6. To visualize analysis results, use `xplot`, `xplot_pvalues` and `xplot_title` functions to properly format and plot PDC/DTF and corresponding p-values results in `struct variable` obtained in the previous step in the frequency domain, by choosing `xplot` and `xplot_pvalues` plotting parameters, i.e.  `flgPrinting`, `w_max`,  `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`.  See further details in `xplot` function.
 
-
-
 ### Examples
 
 A number of examples from the literature are provided in `./examples directory`  with complete m-files similar to the `analysis_template.m` script  with the hope that they will help the readers and users to understand and/or gain insight into the Granger causality, instantaneous Granger causality, PDC, and DTF concepts. Issue a help command to look up more detail of each function or scripts, which will also provide link to the corresponding literature materials.  
 
-
-
 We hope you enjoy it and good luck.
-
-
 
 ## References
 
