@@ -25,6 +25,12 @@
 %         c.p - VAR model order
 %         c.SS - Power spectrum
 %         c.coh2 - coherece function
+%
+%% asympPDC analysis functions 
+%  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
+%            xplot, xplot_pvalues, xplot_title
+%
+%%
 
 
 %===========================#
@@ -402,7 +408,7 @@ for kflgColor = flgColor
    [h2,~,~] = xplot(strWindowName,c,flgPrinting,fs,w_max,chLabels, ...
                                  kflgColor,flgScale,flgMax,flgSignifColor);
    xplot_title(alpha,metric,'pdc',strTitle);
-   drawnow; shg; pause(3)
+   pause(3)
 
    flgPrinting   =  [1 1 1 2 3 0 0];   
    %           blue  | | | | | | 7-- {0} No plotting on main diagonal
@@ -416,7 +422,7 @@ for kflgColor = flgColor
     [h2,~,~] = xplot(strWindowName,c,flgPrinting,fs,w_max,chLabels, ...
                                  kflgColor,flgScale,flgMax,flgSignifColor);
    xplot_title(alpha,metric,'pdc',strTitle);
-   drawnow; shg; pause(3) % Pause to allow figure visualization during analysis
+   pause(3) % Pause to allow figure visualization during analysis
    
 end
 

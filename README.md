@@ -28,15 +28,35 @@ If `run_all_examples.m` completes successfully, congratulation, you should see 2
 
 that will spread the figures on the screen. The tilefigs1 or tilefigs2 function does not work so far in the Octave environment.
 
-
-
 ## Our diagrammatic view of connectivity measures
 
 The measures inside the yellow area have been implemented in the asympPDC packages
 
-
-
 ![](./connectivity_measures_in_asymppdc.png)
+
+## 
+
+## Getting started road map
+
+To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be help to deal with you data set. The basic steps to set up and analyze a data set are:
+
+1. Import or open row-vectors data file;
+
+2. Choose proper label for your data, assigning a value to `chLabels`  variable;
+
+3. Data pre-processing, filtering, detrending and standardization (unnecessary);
+
+4. Multivariate autoregressive (MAR) model estimation, first choosing parameters, estimation algorithm and model order selection criterion;
+
+5. PDC or DTF estimation, choosing analysis parameters such as significance levels for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , metric for PDC/DTF,  and number of frequency points, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for your further analysis, or plot them; 
+
+6. To visualize analysis results, use `xplot`, `xplot_pvalues` and `xplot_title` functions to properly format and plot PDC/DTF and corresponding p-values results in `struct variable` obtained in the previous step in the frequency domain, by choosing `xplot` and `xplot_pvalues` plotting parameters, i.e.  `flgPrinting`, `w_max`,  `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`.  See further details in `xplot` function.
+
+
+
+Good luck.
+
+
 
 ## References
 
