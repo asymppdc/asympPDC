@@ -16,8 +16,8 @@
 %   flgPrinting: [1 1 1 1 1 0 1];
 %           blue  | | | | | | 7-- {0:2} Spectra (0: wo; 1: Linear; 2: Log) 
 %                 | | | | | 6-- {} Not used
-%   dark-purple   | | | | 5-- {0:3} Mark significant GCT pairs + print p-values 
-%  or dark-green  | | | |          (0: w/o; 1: print p-values; 2: mark +GCT; 
+%   dark-purple   | | | | 5-- {0:3} Mark significant GCT pairs + print p-values   
+%  or dark-green | | | |          (0: w/o; 1: print p-values; 2: mark +GCT;
 %                 | | | |           3: print p-values + mark significant GCT)
 %    dashed-blue  | | | 4-- {0:2} Scale of p-values plots 1:linear; 2:log10
 %                 | | 3-- {} Not used
@@ -39,7 +39,7 @@
 %     hxlabel,hylabel: label's handles
 %
 %% Examples: 
-%   Calculate c struct results using alg_pdc/asymp_dtf and gct_alg2 functions.
+%   Calculate c struct results using alg_pdc/asymp_dtf and gct_alg functions.
 %
 %           xplot_pvalues([],c); % Defaults flgPrinting, fs, w_max and flgColor
 %
@@ -194,7 +194,7 @@ end
 set(0,'units','pixels');
 sz = get(0,'ScreenSize');
 
-screenratio = sz(3)/sz(4);
+skreenfactor = 2.4; % Ad hoc factor that should 
 
 if ~isOctave()
    % This code is more accurate to get the correct screen size (REF <URL>)
@@ -204,19 +204,22 @@ if ~isOctave()
    
    sz(3) = screensize(1); % width in pixels
    sz(4) = screensize(2); % height in pixels
+else
+   sz = get(0,'ScreenSize');
 end
 
-% Ad hoc checking for the presence of multiple monitors in Octave.
-khmon = round(sz(3)/1920); % Guessed # of horizontally tiled screens
+% Ad hoc check for the presence of multiple monitors in Octave.
+khmon = ceil(sz(3)/sz(4)/skreenfactor); % Guessed # of horizontally tiled screens
 if khmon < 1, khmon = 1; end
 
 kvmon = round(sz(4)/1000); % Guessed # of stacked screens
 if kvmon < 1, kvmon = 1; end
+screenratio = sz(3)/sz(4)/khmon;
 
 % Scale figure size on screen according to the monitor resolution
 % This has been implemented particularly for Octave.
 % Reference monitor has width=sz(3)=1920 pxls
-pxwidthscreen = sz(3); pxheightscreen = sz(4);
+pxwidthscreen = sz(3)/khmon; pxheightscreen = sz(4)/kvmon;
 
 % What follow is a kludge solution to determine figure size in normalized units
 % that might allow handling the cases of multiple monitors set up in Octave.
@@ -242,33 +245,23 @@ else
 end
 
 % Relative figure size on screen scale keeping A4 paper proportion .
-rwidth = width/A4width * pxwidth_max/pxwidthscreen;
+rwidth = width/A4width * pxwidth_max/pxwidthscreen/khmon;
 rheight = height/A4height * pxheight_max/pxheightscreen;
 
 set(hfigure,'units','centimeters','position',[0 0 width height]);
 
 switch computer
    case 'PCWIN64'
-%       rwidth = rwidth * width/A4width;
-%       rheight = rheight * height/A4height;
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-rheight - 0.03) rwidth rheight]);
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
 
    case {'GLNXA64','x86_64-pc-linux-gnu'}
-%       rwidth = rwidth * width/A4width;
-%       rheight = 1.087*rheight * height/A4height;
-% 
-%       set(hfigure,'units','centimeters','position',[0 0 width height]);
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
 
    case 'MACI64'
-%       rwidth = rwidth * width/A4width;
-%       rheight = 1.087*rheight * height/A4height;
-% 
-%       set(hfigure,'units','centimeters','position',[0 0 width height]);
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
 
    otherwise
       error('computer function not working properly.')
@@ -711,7 +704,7 @@ for j = 1:nChannels
              h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
          end
 % ==============================================================================
-% Print GCT p-values just above each subplot
+% Print GCT p-values right above each subplot
 % ==============================================================================
 %
          if r ~= s
@@ -795,7 +788,7 @@ switch computer
       set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
       pos(2) = pos(2) + 0.035;
    case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
-      set(h1,'FontWeight','bold', 'FontSize',10,'FontName','Arial');
+      set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
       pos(2) = pos(2) + 0.025; %pos(2) + dpos2;           % 0.0545 % 0.025
    case 'MACI64'
       set(h1,'FontWeight','bold', 'FontSize',16,'FontName','Arial');
@@ -827,6 +820,10 @@ for k = 1:nChannels
    pos = get(hxlabel(k),'Position');
    pos(2) = -0.145*nChannels/4;
    set(hxlabel(k),'Position',pos);
+end
+
+drawnow
+
 end
 
 
@@ -871,7 +868,7 @@ end
 pos = get(hxlabel,'Position');
 pos(2) = pos(2) + 0.055;   % 0.0545
 set(hxlabel,'Position',pos);
-
+end
 
 %% LABELITY
 %   y-axis labeling function
@@ -903,5 +900,6 @@ end
 pos = get(hylabel,'Position');
 pos(1) = pos(1) + 0.0545;   % 0.0545
 set(hylabel,'Position',pos)
+end
 %==========================================================================
 

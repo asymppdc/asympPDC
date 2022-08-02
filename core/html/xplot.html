@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>XPLOT</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-06-22"><meta name="DC.source" content="xplot.m"><style type="text/css">
+      --><title>XPLOT</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-01"><meta name="DC.source" content="xplot.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,9 +67,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>XPLOT</h1><!--introduction--><pre>      Pretty plot of PDC2 or DTF2 (squared PDC or DTF) connectivity measure
+  </style></head><body><div class="content"><h1>XPLOT</h1><!--introduction--><pre>      Pretty plot PDC2 / DTF2 (squared-PDC / DTF) connectivity measure
       and  Coh2 in the frequency domain using matrix layout, optionally with
-      power spectra (and/or auto-PDC2/DTF2) plots on the main diagonal.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output</a></li><li><a href="#4">Description</a></li><li><a href="#5">Examples</a></li><li><a href="#6">Other routines</a></li></ul></div><h2 id="1">Syntax</h2><pre>      [hxlabel,hylabel] = XPLOT(strBarTitle,c,flgPrinting,fs,w_max, ...
+      power spectra (and/or auto-PDC2/DTF2) plots along the main diagonal.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output</a></li><li><a href="#4">Description</a></li><li><a href="#5">Examples</a></li><li><a href="#6">Other routines</a></li><li><a href="#14">labelitx</a></li><li><a href="#15">latelity</a></li><li><a href="#16">plotci</a></li></ul></div><h2 id="1">Syntax</h2><pre>      [hfigure,hxlabel,hylabel] = XPLOT(strBarTitle,c,flgPrinting,fs,w_max, ...
                             chLabels,flgColor,flgScale,flgMax,flgSignifColor)</pre><h2 id="2">Input Arguments</h2><pre class="language-matlab">strBarTitle:  Title <span class="keyword">for</span> the figure <span class="string">window</span> <span class="string">bar</span>
 </pre><pre class="language-matlab">c: struct variable <span class="string">with</span> <span class="string">the</span> <span class="string">following</span> <span class="string">fields:</span>
 |
@@ -80,25 +81,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
                | | | | | |           3: PDC2; 4: Linear normalized;
                | | | | | |           5: Log spectra + PDC2)
          gray  | | | | | 6-- {0:1} Coh2 (0: w/o Coh2; 1: w Coh2)
-  dark-purple  | | | | 5-- {0:3} Mark significant GCT pairs and print p-values
-or dark-green  | | | |          (0: w/o; 1: print p-values; 2: mark +GCT;
-               | | | |            3: print p-values + mark significant GCT)
+  dark-purple  | | | | 5-- {0:3} Print GCT p-values and dot-mark significant
+or dark-green  | | | |           connectivity channel-pair (0: w/o;
+               | | | |           1: p-values; 2: dot-mark +GCT;
+               | | | |           3: p-values + dot-mark significant GCT)
   dashed-blue  | | | 4-- {0:4} Confidence interval (0:w/o; 1: Dashed-lines;
                | | |           2: Shaded-plot; 3: Error-bar 1; 4: Error-bar 2
           red  | | 3-- {0:1} Significant PDC2|DTF2 in red lines
  dashed-black  | 2-- {0:1} Patnaik threshold level in black dashed-lines
         green  1-- {0:1} PDC2/DTF2 in green lines or black w/o statistics,
                          see flgSignifColor bellow for line color selection.</pre><pre class="language-matlab">fs:         sampling frequency
-</pre><pre class="language-matlab">w_max:      frequency scale <span class="string">upper-limit</span> <span class="string">(w_max &lt;= fs/2 = Nyquist frequency)</span>
+</pre><pre class="language-matlab">w_max:      frequency scale <span class="string">upper-limit</span> <span class="string">(&lt;= fs/2, i.e. Nyquist frequency)</span>
 </pre><pre class="language-matlab">chLabels:   channels id <span class="string">labels</span> <span class="string">(if ==[], channels will be enumerated)</span>
 </pre><pre class="language-matlab">flgColor:   0: white background;
             1: white [.1 1], light-blue [.01 .1], purple <span class="string">[0 .01]</span>
             2: white [.1 1], light-gray [.01 .1], gray <span class="string">[0 .01]</span>
 </pre><pre class="language-matlab">flgScale:   1: [0 1] / {<span class="keyword">if</span> max(PDC2/DTF2) &gt; 1}:[0 max(PDC2/DTF2)]
             2: [0 {<span class="keyword">if</span> max(PDC/DTF2) &gt; 1}:max(PDC/DTF2)]/[0 1]/[0 .1]/[0 .01]
-                                       based <span class="string">on</span> <span class="string">flgMax(PDC2/DTF2/Thr/CI/all)</span>
+                                      based <span class="string">on</span> <span class="string">flgMax</span> <span class="string">(PDC2/DTF2/Thr/CI/all)</span>
             3: [0 max(PDC2/DTF2/Thr/CI/all)]
-                                       based <span class="string">on</span> <span class="string">flgMax(PDC2/DTF2/Thr/CI/all)</span>
+                                      based <span class="string">on</span> <span class="string">flgMax</span> <span class="string">(PDC2/DTF2/Thr/CI/all)</span>
             4: [0 {max(PDC2/DTF2/Thr/CI/all) or round to {0.01 0.1 1.0}]
 </pre><pre class="language-matlab">flgMax:     {<span class="string">'PDC'</span>|<span class="string">'DTF'</span>|<span class="string">'Thr'</span>|<span class="string">'CI'</span>|<span class="string">'TCI'</span>|<span class="string">'all'</span>} measure <span class="string">used</span> <span class="string">as</span> <span class="string">upper</span> <span class="string">limit</span>
             <span class="keyword">for</span> y-axis scales:
@@ -115,11 +117,10 @@ or dark-green  | | | |          (0: w/o; 1: print p-values; 2: mark +GCT;
             3: red   / green =&gt;      <span class="untermstring">"</span>
             4: red   / black =&gt;      <span class="untermstring">"</span>
             5: black / green =&gt;      <span class="untermstring">"</span>
-</pre><h2 id="3">Output</h2><pre class="language-matlab">Pretty <span class="string">matrix-layout</span> <span class="string">plots</span> <span class="string">and</span> <span class="string">optionally</span> <span class="string">p-values</span> <span class="string">of</span> <span class="string">GCT</span>
-hxlabel,hylabel: label's handles
-</pre><h2 id="4">Description</h2><pre class="language-matlab">Cosmetic <span class="string">script</span> <span class="string">to</span> <span class="string">visualize</span> <span class="string">results</span> <span class="string">from</span> <span class="string">'asymp_pdc.m'</span> <span class="string">or</span> <span class="string">'asymp_dtf.m'</span>
-or <span class="string">FastAsympAlg0.m</span> <span class="string">routines</span> <span class="string">in</span> <span class="string">a</span> <span class="string">"standard"</span> <span class="string">matrix-layout.</span>
-</pre><h2 id="5">Examples</h2><pre class="language-matlab"><span class="comment">%Calculate c = asymp_pdc() or asymp_dtf(), then:</span>
+</pre><h2 id="3">Output</h2><pre>   Pretty matrix-layout plots and optionally p-values of GCT
+   hfigure: figure handle
+   hxlabel,hylabel: label's handles</pre><h2 id="4">Description</h2><pre>   Cosmetic script to visualize results from 'asymp_pdc.m' or 'asymp_dtf.m'
+   or FastAsympAlg0.m routines in a "standard" matrix-layout.</pre><h2 id="5">Examples</h2><pre class="language-matlab"><span class="comment">%Try the following example:</span>
 </pre><pre class="language-matlab"><span class="comment">% -------- Example script start here----------------------------------------</span>
 N = 7;
 u = randn(2000,N)'; <span class="comment">% generate 10 Gaussian random processes.</span>
@@ -127,32 +128,1676 @@ maxIP = 30; alg = 1; criterion = 1; <span class="comment">% using Nutall-Strand 
 [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
 nFreqs = 128; metric = <span class="string">'info'</span>; alpha = 0.05;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
-xplot([],c); shg; <span class="comment">% Defaults flgPrinting, fs, w_max and flgColor</span>
+xplot([],c); shg; <span class="comment">% Defaults flgPrinting, fs, w_hmax and flgColor</span>
 <span class="comment">% -------- End here---------------------------------------------------------</span>
-</pre><pre class="language-matlab"><span class="comment">% You might see on average in between 4 and 5 suplots with red lines, i.e.</span>
+</pre><pre class="language-matlab"><span class="comment">% You might see on average  4 or 5 suplots with red lines, i.e.</span>
 <span class="comment">% significat iPDC at alpha = 0.05, which is the number of analyzed pairs</span>
 <span class="comment">% times alpha, or N(N-1)*alpha = 10(10-1)*0.05 = 4.5 cases or connections</span>
 </pre><pre class="language-matlab"><span class="comment">% Then try the following option:</span>
 xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
-                     <span class="comment">% PDC2/DTF2, threshold, power spectra, coherence plots</span>
-                     <span class="comment">% with normalized fs=1 Hz; default channel label;</span>
-                     <span class="comment">% flgColor=0 =&gt; no color or rescalling is used.</span>
-</pre><h2 id="6">Other routines</h2><pre>See also  xplot_title, asymp_pdc, asymp_dtf, FastAsympAlg0, subplot2, xstats,
+<span class="comment">% which will plot PDC2/DTF2, threshold, power spectra, coherence plots</span>
+<span class="comment">% with normalized fs=1 Hz; default channel label;</span>
+<span class="comment">% flgColor=0 =&gt; no color or rescalling is used.</span>
+</pre><h2 id="6">Other routines</h2><pre>   See also  xplot_title, asymp_pdc, asymp_dtf, FastAsympAlg0, subplot2, xstats,
           xplot_pvalues
-&lt; xplot.html |xplot|&gt; |</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+   &lt;xplot.html |xplot|&gt; |</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala', 2022. See file license.txt in</span>
+<span class="comment">%     installation directory for licensing terms.</span>
+
+<span class="keyword">function</span> [hfigure,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max, <span class="keyword">...</span>
+                               chLabels,flgColor,flgScale,flgMax,flgSignifColor)
+</pre><pre class="codeinput">msgID = <span class="string">'all'</span>;
+warning(<span class="string">'OFF'</span>,msgID);
+
+<span class="keyword">while</span> 0
+   <span class="keyword">if</span> isOctave()
+      disp(<span class="string">'Output of ''get(0,''MonitorPositions'') command:'</span>)
+      get(0, <span class="string">'MonitorPositions'</span>)
+      disp(<span class="string">'Output of ''get(0,''ScreenSize'''</span>)
+      get(0, <span class="string">'ScreenSize'</span>)
+   <span class="keyword">else</span>
+      disp(<span class="string">'1. Output of ''get(0,''MonitorPositions'') command:'</span>)
+      sz = get(0, <span class="string">'MonitorPositions'</span>);
+      [m n] = size(sz);
+      <span class="keyword">if</span> m &gt;= 2,
+         fprintf([<span class="string">' a. Multiple-monitor detected.\n'</span>])
+         fprintf([<span class="string">' b. Screens resolutions are: \n'</span>])
+         disp(sz)
+      <span class="keyword">elseif</span> m == 1
+         fprintf([<span class="string">' a. Single monitor detected.\n'</span>])
+         fprintf([<span class="string">' b. Screen resolution is: \n'</span>])
+         disp(sz)
+      <span class="keyword">else</span>
+         error(<span class="string">'*** No monitor detected.'</span>)
+      <span class="keyword">end</span>
+
+      fprintf(<span class="string">'\n2. Output of ''get(0,''ScreenSize''): '</span>)
+      sz = get(0, <span class="string">'ScreenSize'</span>);
+      disp(sz)
+      <span class="keyword">if</span> m &gt;= 2
+         fprintf(<span class="string">'\n *** This command can only detect the primary monitor.\n\n'</span>)
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+   pause(5)
+   <span class="keyword">break</span>
+<span class="keyword">end</span>
+</pre><p><a href="https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size">https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size</a> by   <a href="https://www.mathworks.com/matlabcentral/profile/authors/770850">https://www.mathworks.com/matlabcentral/profile/authors/770850</a></p><pre class="codeinput"><span class="keyword">while</span> 0
+   ScreenPixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution()
+   ScreenDevices = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+   MainScreen = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getScreen()+1;
+   MainBounds = ScreenDevices(MainScreen).getDefaultConfiguration().getBounds();
+   MonitorPositions = zeros(numel(ScreenDevices),4);
+   <span class="keyword">for</span> n = 1:numel(ScreenDevices)
+      Bounds = ScreenDevices(n).getDefaultConfiguration().getBounds();
+      MonitorPositions(n,:) = [Bounds.getLocation().getX() + 1, <span class="keyword">...</span>
+                    -Bounds.getLocation().getY() + 1 - Bounds.getHeight() + <span class="keyword">...</span>
+                   MainBounds.getHeight(),Bounds.getWidth(),Bounds.getHeight()];
+   <span class="keyword">end</span>
+   disp(<span class="string">'MonitorPositions parameter:'</span>)
+   disp(MonitorPositions)
+   pause(5)
+   <span class="keyword">break</span>
+<span class="keyword">end</span>
+
+<span class="comment">% ------------------------------------------------------------------------------</span>
+<span class="comment">% To deal with errobar CapSize option compatibility along different</span>
+<span class="comment">% MATLAB version R2016b or later (9.1)</span>
+<span class="keyword">if</span> ~isOctave()
+   v = ver(<span class="string">'MATLAB'</span>);
+   versionNumberMatlab = str2double(v.Version);
+<span class="keyword">else</span>
+   versionNumberMatlab = 8.4; <span class="comment">% Does Octave have same behavior as Matlab 2014b?!</span>
+<span class="keyword">end</span>
+flgPrint = <span class="string">'Print'</span>;
+knargin = 10;     <span class="comment">% Number of input arguments</span>
+kylim  = [-0.05  1.075]; <span class="comment">% y-axis scaling factors at lower and upper limits.</span>
+<span class="comment">%             kylim1 = [-0.05   1.10]; % Previous values</span>
+<span class="comment">%             kylim2 = [-0.02   1.05]; % Previous previous values</span>
+
+<span class="keyword">if</span> nargin &lt; 7, flgColor = 0; <span class="keyword">end</span> <span class="comment">% 0: white background;</span>
+<span class="keyword">if</span> nargin &lt; 8 || isempty(flgScale), flgScale = 1; <span class="keyword">end</span>
+<span class="comment">%                        % 1: [0 1] / {if max(PDC2/DTF2) &gt; 1}:[0 max(PDC2/DTF2)]</span>
+<span class="keyword">if</span> nargin &lt; 9, flgMax = <span class="string">'TCI'</span>; <span class="keyword">end</span>   <span class="comment">% {'PDC'; 'DTF'; 'Thr'; 'CI'; 'TCI'; 'all'}</span>
+<span class="keyword">if</span> nargin &lt; 10, flgSignifColor = 3; <span class="keyword">end</span> <span class="comment">% 3: red/green: signif/~signif PDC2/DTF2</span>
+<span class="keyword">if</span> flgSignifColor &lt; 0 || flgSignifColor &gt; 5, flgSignifColor = 3; <span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &lt;  3,  flgPrinting = [1 0 1 0 0 0 1]; <span class="keyword">end</span>
+<span class="keyword">if</span> nargin &lt; 4,  fs = 1; <span class="keyword">end</span>
+<span class="keyword">if</span> nargin &lt;  5,  w_max = fs/2; <span class="keyword">end</span>
+
+<span class="keyword">if</span> isfield(c,<span class="string">'dtf2'</span>)
+   L = c.dtf2;       <span class="comment">% |DTF|^2 (nChannels x nChannels x freq)</span>
+   <span class="keyword">if</span> isfield(c,<span class="string">'dtf2_th'</span>)
+      LTra = c.dtf2_th; <span class="comment">% Significant |DTF|^2 on freq range, otherwise NaN.</span>
+   <span class="keyword">end</span>
+   flgType = <span class="string">'DTF'</span>;
+<span class="keyword">elseif</span> isfield(c,<span class="string">'pdc2'</span>)
+   L = c.pdc2;       <span class="comment">% |PDC|^2 (nChannels x nChannels x freq)</span>
+   <span class="keyword">if</span> isfield(c,<span class="string">'pdc2_th'</span>)
+      LTra = c.pdc2_th; <span class="comment">% Significant |PDC|^2 on freq range, otherwise NaN.</span>
+   <span class="keyword">end</span>
+   flgType = <span class="string">'PDC'</span>;
+<span class="keyword">else</span>
+   error(<span class="string">'Struct variable c does not hold PDC2/DTF2 analysis results.'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> isfield(c,<span class="string">'Tragct'</span>)
+   Tragct = c.Tragct;
+<span class="keyword">end</span>
+<span class="keyword">if</span> isfield(c,<span class="string">'pvaluesgct'</span>)
+   pvaluesgct = c.pvaluesgct;
+<span class="keyword">end</span>
+
+SS = c.SS;       <span class="comment">% Spectra</span>
+Coh2 = c.coh2;   <span class="comment">% |Coh|^2</span>
+colorCoh2 = [.7 .7 .7];
+Lpatnaik = c.th; <span class="comment">% Patnaik threshold values for alpha (level of significance)</span>
+
+<span class="keyword">if</span> isempty(c.ci1) || isempty(c.ci2)
+   flgPrinting(4) = 0;
+<span class="keyword">else</span>
+   L2vlower = c.ci1;
+   L2vupper = c.ci2;
+<span class="keyword">end</span>
+
+metric = c.metric;      <span class="comment">% Valid options: "euc", "diag" or "info"</span>
+[nChannels,~,nFreqs] = size(L); <span class="comment">% nChannels = ~ dummy = # of channels/time series;</span>
+<span class="comment">%                       % nFreqs = # of points calculated on frequency scale</span>
+
+nodesett = 1:nChannels;
+
+<span class="comment">% ------------------------------------------------------------------------------</span>
+<span class="comment">% figure scaling parameter adjustment</span>
+vChannels = max([10, nChannels]);
+
+<span class="comment">% Formatting parameters for p-values plotting above each subplot.</span>
+N1 = 1; N30 = 30; V1 = 25; V30 = 10; <span class="comment">% was 10,5</span>
+vMarkerSize = V1 + (vChannels - N1)*(V30 - V1)/(N30 - N1);
+
+vMarkerColor = [ 1       0         1]; <span class="comment">% Purple</span>
+N1 = 10; N30 = 24; V1 = 8; V30 = 5; <span class="comment">% was 10,5</span>
+pValuesFontSize = V1 + (vChannels - N1)*(V30 - V1)/(N30 - N1);
+
+<span class="comment">% if nChannels &gt;20</span>
+<span class="comment">%    pValuesFontSize = 4;</span>
+<span class="comment">% elseif nChannels &gt; 15</span>
+<span class="comment">%    pValuesFontSize = 5;</span>
+<span class="comment">% else</span>
+<span class="comment">%    pValuesFontSize = 7;</span>
+<span class="comment">% end</span>
+
+<span class="keyword">if</span> w_max &gt; fs/2 + eps
+   error([<span class="string">'The parameter w_max should be &lt;= Nyquist frequency,'</span> <span class="keyword">...</span>
+                                                        <span class="string">'i.e, w_max &lt;= fs/2.'</span>])
+<span class="keyword">end</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%          Check flgPrinting choices and availabitiy of proper measures</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%   flgPrinting: [X X X X X X X];</span>
+<span class="comment">%       blue-line | | | | | | 7--Spectra (0: w/o; 1: Linear; 2: Log; 3: PDC2;</span>
+<span class="comment">%                 | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)</span>
+<span class="comment">%            gray | | | | | 6--Coh2 (0: w/o Coh2; 1: with Coh2)</span>
+<span class="comment">%     dark-purple | | | | 5--Mark GCT significant pairs and p-values printing</span>
+<span class="comment">%                 | | | |      (0:w/o; 1: p-values print; 2: dot plot +GCT;</span>
+<span class="comment">%                 | | | |      3: p-values print + dot plot for significant GCT)</span>
+<span class="comment">%     dashed-blue | | | 4--Confidence interval (0:w/o; 1: Dashed-lines;</span>
+<span class="comment">%                 | | |          2: Shaded-plot; 3: Error-bar 1; 4: Error-bar 2</span>
+<span class="comment">%            red  | | 3--{0:1} Significant PDC2|DTF2 in red lines</span>
+<span class="comment">%    dashed-black | 2--{0:1} Patnaik threshold level in black dashed-lines</span>
+<span class="comment">%           green 1-- {0:1} PDC2/DTF2 in green lines or black w/o statistics.</span>
+
+<span class="keyword">if</span> (flgPrinting(1) == 1) &amp;&amp; (flgPrinting(5) == 1) &amp;&amp; ~isfield(c,<span class="string">'Tragct'</span>)
+   fprintf(2,[<span class="string">'\n*** Warning: to print GCT p-values, assign ''gct_alg()'''</span> <span class="keyword">...</span>
+                                               <span class="string">'results to c structure. ***\n'</span>])
+   fprintf(2,[<span class="string">'\n    Tr_gct, pValue_gct, Tr_igct, pValue_igct] ='</span> <span class="keyword">...</span>
+                               <span class="string">'gct_alg(u,A,pf,gct_signif,flgPrintResults);'</span>])
+   fprintf(2,[<span class="string">'\n   then, before calling xplot(), execute:'</span>])
+   fprintf(2,[<span class="string">'\n    c.Tragct = Tr_gct;'</span>])
+   fprintf(2,[<span class="string">'\n    c.pvaluesgct = pValue_gct;\n\n'</span>])
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> sum(flgPrinting([1 6 7])) == 0
+   error([<span class="string">'''xplot.m'' requires at least one measure to plot: PDC/DTF, '</span> <span class="keyword">...</span>
+          <span class="string">'Coh2 and/or SS. flgPrinting=['</span> int2str(flgPrinting) <span class="string">']'</span>])
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> c.alpha &lt;= 0
+   <span class="keyword">if</span> isfield(c,<span class="string">'pdc2'</span>) || isfield(c,<span class="string">'dtf2'</span>)
+      <span class="keyword">if</span> flgPrinting(1)
+         flgPrinting = [1 0 0 0 0 1 1] .* flgPrinting;
+      <span class="keyword">else</span>
+         flgPrinting(6) = 1;
+         flgPrinting = [0 0 0 0 0 1 1] .* flgPrinting;
+      <span class="keyword">end</span>
+      L2vupper = [];
+      L2vlower = [];
+   <span class="keyword">else</span>
+      error(<span class="string">'No PDC2 or DTF2 measure available in result struct variable.'</span>)
+   <span class="keyword">end</span>
+<span class="keyword">else</span>  <span class="comment">% alpha &gt; 0. For fast routine asymp_pdc routine and flgPrinting(4)==0</span>
+   <span class="keyword">if</span> isfield(c,<span class="string">'pdc2'</span>)
+      <span class="keyword">if</span> isempty(c.ci1)
+         flgPrinting = [1 1 1 0 1 1 1] .* flgPrinting;
+         L2vupper = [];
+         L2vlower = [];
+      <span class="keyword">end</span>
+   <span class="keyword">elseif</span> isfield(c,<span class="string">'dtf2'</span>)
+      <span class="comment">%nop</span>
+   <span class="keyword">else</span>
+      error(<span class="string">'No PDC2 or DTF2 measures available in result struct variable.'</span>)
+   <span class="keyword">end</span>
+   <span class="keyword">if</span> flgPrinting(1) == 0
+      flgPrinting = flgPrinting .* [0 0 0 0 0 1 1];
+      <span class="keyword">if</span> flgPrinting(7) == 4, flgPrinting(7) = 1; <span class="keyword">end</span>
+      <span class="keyword">if</span> flgPrinting(7) == 5, flgPrinting(7) = 2; <span class="keyword">end</span>
+      <span class="keyword">if</span> flgPrinting(7) &gt;  5, flgPrinting(7) = 1; <span class="keyword">end</span>
+      <span class="keyword">if</span> flgPrinting(7) == 3, flgPrinting(7) = 1; <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> exist(<span class="string">'shadedplot.m'</span>,<span class="string">'file'</span>) ~= 2, flgColor = 0; <span class="keyword">end</span>
+</pre><p>Figure setting</p><pre class="codeinput">hfigure = figure;
+
+set(hfigure,<span class="string">'PaperOrientation'</span>,<span class="string">'landscape'</span>, <span class="keyword">...</span>
+            <span class="string">'renderer'</span>,<span class="string">'painters'</span>); <span class="comment">% To get vector figure</span>
+
+<span class="keyword">if</span> isempty(strBarTitle)
+   set(hfigure,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>);
+<span class="keyword">else</span>
+   set(hfigure,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>,<span class="string">'Name'</span>, strBarTitle);
+<span class="keyword">end</span>
+
+w = 0:fs/(2*nFreqs):w_max-fs/(2*nFreqs);
+nPlotPoints = length(w);
+w_min = w(1);
+
+<span class="comment">% ------------------------------------------------------------------------------</span>
+<span class="comment">% % adjust ticklabels away from axes</span>
+<span class="comment">% https://www.mathworks.com/matlabcentral/answers/2318-set-position-of-tick-labels</span>
+<span class="comment">%</span>
+<span class="comment">% a=gca;</span>
+<span class="comment">% a.XRuler.TickLabelGapOffset = -8;</span>
+<span class="comment">% % negative numbers move the ticklabels down (positive -&gt; up)</span>
+<span class="comment">% a.YRuler.TickLabelGapOffset = -8;</span>
+<span class="comment">% % negative numbers move the ticklabels right (negative -&gt; left)</span>
+
+<span class="keyword">if</span> isOctave()
+   f0 = 10; N0 = 4;   <span class="comment">% FontSize = 10  for nChannels = 4</span>
+   f1 = 6.5; N1 = 20; <span class="comment">% FontSize = 6.5 for nChannels = 20</span>
+   vTickLabelGapOffset = 0; <span class="comment">% YTickLabel distance from y-axis</span>
+<span class="keyword">else</span>
+   <span class="keyword">switch</span> computer <span class="comment">%                               ISPC ISUNIX ISMAC ARCHSTR</span>
+   <span class="comment">%     64-Bit Platforms</span>
+   <span class="comment">%       PCWIN64  - Microsoft Windows on x64       1     0     0   win64</span>
+   <span class="comment">%       GLNXA64  - Linux on x86_64                0     1     0   glnxa64</span>
+   <span class="comment">%       MACI64   - Apple Mac OS X on x86_64       0     1     1   maci64</span>
+      <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+         f0 = 10; N0 = 4;   <span class="comment">% FontSize = 10   for nChannels = 4</span>
+         f1 = 6.5; N1 = 20; <span class="comment">% FontSize =  6.5 for nChannels = 20</span>
+         vTickLabelGapOffset = -1.5; <span class="comment">% YTickLabel distance from y-axis  =1.5</span>
+      <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>,<span class="string">'i686-pc-linux-gnu'</span>}
+         f0 = 9; N0 = 4;    <span class="comment">% FontSize = 9   for nChannels = 4</span>
+         f1 = 5.5; N1 = 20; <span class="comment">% FontSize = 6.5 for nChannels = 20</span>
+         vTickLabelGapOffset = -1.0; <span class="comment">% YTickLabel distance from y-axis -2.5</span>
+      <span class="keyword">case</span> <span class="string">'MACI64'</span>
+         f0 = 10; N0 = 4;   <span class="comment">% FontSize = 10  for nChannels = 4</span>
+         f1 = 8;  N1 = 20;  <span class="comment">% FontSize =  8  for nChannels = 20</span>
+         vTickLabelGapOffset = -0.5; <span class="comment">% YTickLabel distance from y-axis  -0.5</span>
+      <span class="keyword">otherwise</span>
+         error(<span class="string">'computer function not working properly.'</span>)
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%               FontSize scaling parameter adjustment</span>
+<span class="comment">% ==============================================================================</span>
+
+vFontSize = (vChannels - N0)*(f1 - f0)/(N1 - N0) + f0; <span class="comment">% YTickLabel Font Size</span>
+
+<span class="keyword">if</span> vChannels &gt;15
+   vLineWidth = 1.25;
+   vPatnaikLineWidth = 0.75;
+<span class="keyword">else</span>
+   vLineWidth = 1.75;
+   vPatnaikLineWidth = 1.25;
+<span class="keyword">end</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%              Set figures size for subplot layout</span>
+<span class="comment">% ==============================================================================</span>
+
+<span class="comment">% Screen dimension in pixel.</span>
+<span class="comment">% Read the following:</span>
+<span class="comment">% &lt;https://undocumentedmatlab.com/articles/working-with-non-standard-dpi-displays&gt;</span>
+
+set(0,<span class="string">'units'</span>,<span class="string">'pixels'</span>);
+sz = get(0,<span class="string">'ScreenSize'</span>);
+
+skreenfactor = 2.4; <span class="comment">% Ad hoc factor that should</span>
+
+<span class="keyword">if</span> ~isOctave()
+<span class="comment">%    https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size</span>
+   <span class="comment">% This code is more accurate to get the correct screen size (REF &lt;URL&gt;)</span>
+   ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
+   gd = ge.getDefaultScreenDevice;
+   screensize = [gd.getDisplayMode.getWidth gd.getDisplayMode.getHeight];
+
+   sz(3) = screensize(1); <span class="comment">% width in pixels</span>
+   sz(4) = screensize(2); <span class="comment">% height in pixels</span>
+<span class="keyword">else</span>
+   sz = get(0,<span class="string">'ScreenSize'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Ad hoc check for the presence of multiple monitors in Octave.</span>
+khmon = ceil(sz(3)/sz(4)/skreenfactor); <span class="comment">% Guessed # of horizontally tiled screens</span>
+<span class="keyword">if</span> khmon &lt; 1, khmon = 1; <span class="keyword">end</span>
+
+kvmon = round(sz(4)/1000); <span class="comment">% Guessed # of stacked screens</span>
+<span class="keyword">if</span> kvmon &lt; 1, kvmon = 1; <span class="keyword">end</span>
+screenratio = sz(3)/sz(4)/khmon;
+
+<span class="comment">% Scale figure size on screen according to the monitor resolution</span>
+<span class="comment">% This has been implemented particularly for Octave.</span>
+<span class="comment">% Reference monitor has width=sz(3)=1920 pxls</span>
+pxwidthscreen = sz(3)/khmon; pxheightscreen = sz(4)/kvmon;
+</pre><p>Let's adopt printing paper size proportion as A4</p><pre class="codeinput">A4width = 29.7; A4height = 21.0; <span class="comment">% A4 landscape paper orientation size in centimeterw</span>
+A4ratio = sqrt(2);
+
+<span class="comment">% Real figure size for printing or publication in centimeters</span>
+width = min([A4width * vChannels/25  A4width]);
+height = min([A4height * vChannels/25 A4height]);
+
+<span class="comment">% What follow is a kludge solution to determine figure size in normalized units</span>
+<span class="comment">% that might allow handling the cases of multiple monitors set up in Octave.</span>
+<span class="comment">% % % rwidth  = pxwidthscreen/sz(3)/khmon/kvmon;</span>
+<span class="comment">% % % rheight = pxheightscreen/sz(4)/khmon/kvmon*screenratio1/screenratio0;</span>
+
+<span class="comment">% rwidth = rwidth * width/A4width;</span>
+<span class="comment">% rheight = rheight * height/A4height - 0.03;</span>
+</pre><p>Determine max figure size in pixels that fit the monitor, which will correspond to the A4 max figure size;</p><pre class="codeinput"><span class="keyword">if</span> screenratio &gt;= A4ratio <span class="comment">% Wider screen than A4 proportion</span>
+   pxwidth_max = round(A4ratio * pxheightscreen);
+   pxheight_max = pxheightscreen;
+<span class="keyword">else</span>
+   pxwidth_max = pxwidthscreen;
+   pxheight_max = round(pxwidthscreen/A4ratio);
+<span class="keyword">end</span>
+
+<span class="comment">% Relative figure size on screen scale keeping A4 paper proportion .</span>
+rwidth = width/A4width * pxwidth_max/pxwidthscreen/khmon;
+rheight = height/A4height * pxheight_max/pxheightscreen;
+
+set(hfigure,<span class="string">'units'</span>,<span class="string">'centimeters'</span>,<span class="string">'position'</span>,[0 0 width height]);
+
+<span class="keyword">switch</span> computer
+   <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+      set(hfigure,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+         <span class="string">'position'</span>,[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]); <span class="comment">% -0.03</span>
+
+   <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>,<span class="string">'i686-pc-linux-gnu'</span>}
+      set(hfigure,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+         <span class="string">'position'</span>,[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+
+   <span class="keyword">case</span> <span class="string">'MACI64'</span>
+      set(hfigure,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+         <span class="string">'position'</span>,[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+
+   <span class="keyword">otherwise</span>
+      error(<span class="string">'computer function not working properly.'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> fs == 1
+   str_w_max = <span class="string">'.5'</span>;
+<span class="keyword">elseif</span> fs &lt; 1
+   str_w_max = sprintf(<span class="string">'%0.5g'</span>, w_max);
+<span class="keyword">elseif</span> fs &lt; 20
+   str_w_max = sprintf(<span class="string">'%1.2f'</span>, w_max);
+<span class="keyword">elseif</span> fs &lt; 200
+   <span class="keyword">if</span> mod(fs,2)
+      str_w_max = sprintf(<span class="string">'%3.1f'</span>, w_max);
+   <span class="keyword">else</span>
+      str_w_max = sprintf(<span class="string">'%2.0f'</span>, w_max);
+   <span class="keyword">end</span>
+<span class="keyword">elseif</span> fs &lt;= 10000
+   str_w_max = sprintf(<span class="string">'%5.0f'</span>, w_max);
+<span class="keyword">else</span>
+   str_w_max = <span class="string">'fs/2'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargin &lt; (knargin-4) || isempty(chLabels)
+   <span class="keyword">if</span> isfield(c,<span class="string">'chLabels'</span>)
+      chLabels = c.chLabels;
+   <span class="keyword">else</span>
+      chLabels = [];
+   <span class="keyword">end</span>
+   <span class="keyword">if</span> ~isempty(chLabels) &amp;&amp; max(size(chLabels)) &lt; nChannels
+      error(<span class="string">'1 NOT ENOUGH CHANNEL LABELS.'</span>);
+   <span class="keyword">end</span>
+<span class="keyword">elseif</span> max(size(chLabels)) &lt; nChannels
+   <span class="keyword">if</span> isfield(c,<span class="string">'chLabels'</span>)
+      chLabels = c.chLabels;
+   <span class="keyword">else</span>
+      chLabels = [];
+   <span class="keyword">end</span>
+   <span class="keyword">if</span> ~isempty(chLabels) &amp;&amp; max(size(chLabels)) &lt; nChannels
+      error(<span class="string">'2 NOT ENOUGH CHANNEL LABELS 2.'</span>);
+   <span class="keyword">else</span>
+      disp(<span class="string">'3 NOT ENOUGH CHANNEL LABELS. Default labels assumed.'</span>);
+      <span class="comment">% Default labeling consist in enumerating the channels from 1 to nChannels</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+hxlabel = 0; <span class="comment">% x-axis labels' handles</span>
+hylabel = 0; <span class="comment">% y-axis labels' handles</span>
+
+
+<span class="keyword">if</span> c.alpha == 0     <span class="comment">% With no statistics, PDC2 is</span>
+   atrib1 = [0 0 0]; <span class="comment">% plotted in black lines.</span>
+   atrib2 = [0 0 0];
+<span class="keyword">else</span>
+   grayline = 0.71;
+   <span class="keyword">switch</span> flgSignifColor
+      <span class="keyword">case</span> 0
+         atrib1 = [0 0 0];  <span class="comment">%black line</span>
+         atrib2 = [0 0 0];  <span class="comment">%black line</span>
+      <span class="keyword">case</span> 1
+         atrib1 = [0 0 0];  <span class="comment">% 1: black / gray -&gt; signif /not signif PDC2/DTF2</span>
+         atrib2 = grayline*[1 1 1];  <span class="comment">%gray line</span>
+      <span class="keyword">case</span> 2
+         atrib1 = [1 0 0];  <span class="comment">% 2: red  /  gray -&gt;      "</span>
+         atrib2 = grayline*[1 1 1];  <span class="comment">%gray line</span>
+      <span class="keyword">case</span> 3
+         atrib1 = [1 0 0];  <span class="comment">% 3: red  / green -&gt;      "</span>
+         atrib2 = [0 1 0];  <span class="comment">%    green -&gt;      "</span>
+      <span class="keyword">case</span> 4
+         atrib1 = [1 0 0];  <span class="comment">% 4: red        "</span>
+         atrib2 = [0 0 0];  <span class="comment">%    black -&gt;      "</span>
+      <span class="keyword">otherwise</span>
+         atrib1 = [0 0 0];  <span class="comment">% 5: black        "</span>
+         atrib2 = [0 .5 0];  <span class="comment">%    green -&gt;      "</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%     Loop for nChannels x nChannels Lay-out DTF2 or PDC2 plots in the</span>
+<span class="comment">%                        frequency domain</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+<span class="keyword">for</span> j = 1:nChannels
+   s = nodesett(j);
+   <span class="keyword">for</span> i = 1:nChannels
+      r = nodesett(i);
+      <span class="keyword">if</span> j ~= i || ( j == i &amp;&amp; flgPrinting(7) ~= 0)
+         <span class="keyword">if</span> ( j == i &amp;&amp; flgPrinting(7) ~= 0) || flgPrinting(1) ~= 0 <span class="keyword">...</span>
+                                             || flgPrinting(6) ~= 0
+            h = subplot2(nChannels,nChannels,(i-1)*nChannels+j);
+         <span class="keyword">end</span>
+      <span class="keyword">end</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%               Power Spectrum Plotting on Main Diagonal</span>
+<span class="comment">% ==============================================================================</span>
+
+      <span class="keyword">if</span> (j == i) <span class="comment">%&amp;&amp; flgPrinting(7) ~= 3 %Power spectrum</span>
+         <span class="keyword">if</span> flgPrinting(7) ~= 0
+            SStmp = abs(getCij(SS,r,s,nPlotPoints));
+            Ltmp  = abs(getCij(L, r,s,nPlotPoints)); <span class="comment">% PDC2/DTF2 estimates (?)</span>
+
+            <span class="keyword">switch</span> flgPrinting(7) <span class="comment">% Main diagonal plotting SS and/or PDC2/DTF2</span>
+
+               <span class="keyword">case</span> 1 <span class="comment">%Standardized spectra</span>
+                  SStmp = SStmp/max(SStmp);
+                  h12   = plot(w,SStmp);
+                  ax(1) = gca;
+                  ax(2) = ax(1);
+                  <span class="keyword">if</span> j == 2
+                     hh = ylabel(<span class="string">'Spectra [a.u.]'</span>);
+                     pos = get(hh,<span class="string">'Position'</span>);
+                     <span class="keyword">if</span> ~isOctave()
+                        pos(1) = 0.0055;
+                     <span class="keyword">else</span>
+                        pos(1) = (pos(1)+0.00275)/2;
+                     <span class="keyword">end</span>
+                     set(hh,<span class="string">'Position'</span>,pos, <span class="string">'FontSize'</span>, vFontSize, <span class="keyword">...</span>
+                            <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+                  <span class="keyword">end</span>
+                  set(h12,<span class="string">'LineWidth'</span>,vLineWidth,<span class="string">'Color'</span>,[0 0 0.7]);
+
+
+                  <span class="keyword">if</span> flgScale == 1 || flgScale == 2
+                     yTick = [0 .5 1];
+                     <span class="keyword">if</span> i == 1 || i == nChannels
+                        yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+                     <span class="keyword">else</span>
+                        yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                     <span class="keyword">end</span>
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,kylim, <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                        <span class="string">'YTick'</span>,yTick, <span class="keyword">...</span>
+                        <span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                        <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                        <span class="string">'FontName'</span>, <span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'Helvetica-Narrow', ...</span>
+                        <span class="string">'FontSize'</span>, vFontSize);
+                     <span class="keyword">if</span> ~isOctave()
+                        h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+                     <span class="keyword">end</span>
+                  <span class="keyword">else</span>
+                     vaxis = double(axis); <span class="comment">% axis may return single, and oddly</span>
+                                           <span class="comment">% enough axis() requires doubles.</span>
+                     vaxis =[w_min w_max -0.05*vaxis(4) 1.10*vaxis(4)];
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="keyword">...</span>
+                        <span class="string">'YLim'</span>,[vaxis(3) vaxis(4)], <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                        <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                        <span class="string">'FontName'</span>, <span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'Helvetica-Narrow', ...</span>
+                        <span class="string">'FontSize'</span>, vFontSize);
+                  <span class="keyword">end</span>
+
+               <span class="keyword">case</span> 2 <span class="comment">% Log spectra on diagonal</span>
+                  SStmp = log(SStmp);
+                  SStmp = (SStmp-min(SStmp))/(max(SStmp)-min(SStmp));
+                  h12 = plot(w,SStmp);
+                  ax(1) = gca;
+                  ax(2) = ax(1);
+
+                  <span class="keyword">if</span> j == 2
+                     hh = ylabel(<span class="string">'log Spectra [a.u.]'</span>);
+                     pos = get(hh,<span class="string">'Position'</span>);
+                     <span class="keyword">if</span> ~isOctave()
+                        pos(1) = 0.0055;
+                     <span class="keyword">else</span>
+                        pos(1) = (pos(1)+0.00275)/2;
+                     <span class="keyword">end</span>
+                     set(hh,<span class="string">'Position'</span>,pos, <span class="keyword">...</span>
+                            <span class="string">'FontSize'</span>, vFontSize, <span class="string">'FontWeight'</span>, <span class="string">'normal'</span>, <span class="keyword">...</span>
+                            <span class="string">'FontName'</span>, <span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow', ...);</span>
+                  <span class="keyword">end</span>
+                  set(h12,<span class="string">'LineWidth'</span>,vLineWidth,<span class="string">'Color'</span>,[0 0 0.7]);
+
+                  <span class="keyword">if</span> flgScale == 1 || flgScale == 2
+                     yTick = [0 .5 1];
+                     <span class="keyword">if</span> i == 1 || i == nChannels
+                        yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+                     <span class="keyword">else</span>
+                        yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                     <span class="keyword">end</span>
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,kylim, <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                        <span class="string">'YTick'</span>,yTick, <span class="keyword">...</span>
+                        <span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                        <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                        <span class="string">'FontName'</span>,  <span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'Helvetica-Narrow', ...</span>
+                        <span class="string">'FontSize'</span>, vFontSize);
+                     <span class="keyword">if</span> ~isOctave()
+                        h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+                     <span class="keyword">end</span>
+                  <span class="keyword">else</span>
+                     vaxis = double(axis);
+                     vaxis =[w_min w_max -0.05*vaxis(4) 1.10*vaxis(4)];
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="keyword">...</span>
+                        <span class="string">'YLim'</span>,[vaxis(3) vaxis(4)], <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                        <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                        <span class="string">'FontName'</span>, <span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'Helvetica-Narrow', ...</span>
+                        <span class="string">'FontSize'</span>, vFontSize);
+                  <span class="keyword">end</span>
+
+               <span class="keyword">case</span> 3 <span class="comment">% PDC2/DTF2 on main diagonal</span>
+                  <span class="keyword">if</span> flgPrinting(1)
+                     Ltmp = abs(getCij(L,r,s,nPlotPoints)); <span class="comment">% PDC2/DTF2 values</span>
+                     plot(w,Ltmp,<span class="string">'Color'</span>,atrib2,<span class="string">'LineWidth'</span>,vLineWidth);
+
+                     hold <span class="string">on</span>
+                     ax(1) = gca;
+                     ax(2) = ax(1);
+
+                     <span class="keyword">if</span> c.alpha ~= 0
+                        <span class="comment">% Significant PDC2/DTF2</span>
+                        LTratmp = abs(getCij(LTra,r,s,nPlotPoints));
+                        <span class="keyword">if</span> flgPrinting(2) == 1
+                           atrib=<span class="string">'k--'</span>; <span class="comment">% Patnaik threshold in black dashed line</span>
+                           plot(w,abs(getCij(Lpatnaik,r,s,nPlotPoints)), <span class="keyword">...</span>
+                                           atrib,<span class="string">'LineWidth'</span>,vPatnaikLineWidth);
+                        <span class="keyword">end</span>
+
+                        <span class="keyword">if</span> flgPrinting(3)
+                           <span class="keyword">if</span> flgPrinting(4)
+                              <span class="keyword">if</span> isempty(c.ci1)
+                                 L2vuppertmp   = Ltmp;
+                              <span class="keyword">else</span>
+                                 L2vuppertmp = abs(getCij(L2vupper,r,s, <span class="keyword">...</span>
+                                                                  nPlotPoints));
+                              <span class="keyword">end</span>
+                              flgSignif      = sum(~isnan(LTratmp));
+                              indexSignif    = ~isnan(LTratmp);
+                              indexNotSignif = isnan(LTratmp);
+                              <span class="comment">% CI plotting on main diagonal for PDC or DTF</span>
+                              plotCI(flgPrinting,flgSignif,w,r,s,Ltmp, <span class="keyword">...</span>
+                                           L2vupper,L2vlower,nPlotPoints, <span class="keyword">...</span>
+                                           indexNotSignif,vPatnaikLineWidth, <span class="keyword">...</span>
+                                           versionNumberMatlab);
+                           <span class="keyword">end</span> <span class="comment">% flgPrinting(4) CI</span>
+
+                           <span class="comment">% Draw significant PDC2/DTF2 in different colors</span>
+                           plot(h,w,LTratmp,<span class="string">'Color'</span>,atrib1, <span class="keyword">...</span>
+                                                        <span class="string">'LineWidth'</span>,vLineWidth);
+
+                           <span class="keyword">if</span> flgScale == 1 || flgScale == 2 || flgScale == 3
+                              yTick = [0 .5 1];
+                              <span class="keyword">if</span> i == 1 || i == nChannels
+                                 yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+                              <span class="keyword">else</span>
+                                 yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                              <span class="keyword">end</span>
+                              set(h,<span class="string">'XLim'</span>,[w_min w_max],<span class="string">'YLim'</span>,kylim, <span class="keyword">...</span>
+                                 <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                                 <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                                 <span class="string">'YTick'</span>,yTick, <span class="keyword">...</span>
+                                 <span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                                 <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                                 <span class="string">'FontName'</span>, <span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'Helvetica-Narrow', ...</span>
+                                 <span class="string">'FontSize'</span>, vFontSize);
+                              <span class="keyword">if</span> ~isOctave()
+                                 h.YRuler.TickLabelGapOffset = <span class="keyword">...</span>
+                                                            vTickLabelGapOffset;
+                              <span class="keyword">end</span>
+                           <span class="keyword">else</span>
+                              vaxis = double(axis);
+                              vaxis =[w_min w_max -0.05*vaxis(4) 1.10*vaxis(4)];
+                              set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="keyword">...</span>
+                                 <span class="string">'YLim'</span>,[vaxis(3) vaxis(4)], <span class="keyword">...</span>
+                                 <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                                 <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                                 <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                                 <span class="string">'FontName'</span>, <span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'Helvetica-Narrow', ...</span>
+                                 <span class="string">'FontSize'</span>, vFontSize);
+                           <span class="keyword">end</span>
+                        <span class="keyword">end</span> <span class="comment">% flgPrinting(3) Significant PDC2/DTF2</span>
+                     <span class="keyword">end</span>  <span class="comment">% c.alpha ~= 0</span>
+
+                     plot(h,w,Ltmp,<span class="string">'Color'</span>,atrib2,<span class="string">'LineWidth'</span>,vLineWidth);
+                     <span class="keyword">if</span> c.alpha ~= 0
+                        plot(h,w,LTratmp,<span class="string">'Color'</span>,atrib1,<span class="string">'LineWidth'</span>,vLineWidth);
+                     <span class="keyword">end</span>
+
+                     <span class="keyword">if</span> j == nChannels
+                        hxlabel(j) = labelitx(j,chLabels);
+                     <span class="keyword">end</span>
+
+                     set(h,<span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+
+                     <span class="keyword">if</span> j == 1 &amp;&amp; (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+                        hylabel(i) = labelity(i,chLabels);
+                     <span class="keyword">end</span>
+
+                     set(h,<span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                           <span class="string">'FontName'</span>, <span class="string">'Arial'</span>) <span class="comment">%, 'Helvetica-Narrow');</span>
+                     <span class="keyword">if</span> ~isOctave()
+                        h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+                     <span class="keyword">end</span>
+                  <span class="keyword">else</span>
+
+                  <span class="keyword">end</span>
+
+               <span class="keyword">case</span> {4,5} <span class="comment">% Log spectra + PDC2/DTF2</span>
+                  Ltmp = abs(getCij(L,r,s,nPlotPoints));
+                  maxPDC = max([1 max(Ltmp)]);
+
+                  <span class="comment">% Power spectra</span>
+                  <span class="keyword">if</span> flgPrinting(7) == 4     <span class="comment">% Spectra + PDC2/DTF2</span>
+                     SStmp = SStmp/max(SStmp);
+                  <span class="keyword">else</span> <span class="comment">% flgPrinting(7) == 5 % Log spectra + PDC2/DTF2</span>
+                     SStmp = log(SStmp);
+                     SStmp = (SStmp-min(SStmp))/(max(SStmp)-min(SStmp));
+                  <span class="keyword">end</span>
+
+                  [ax,h1,h2] = plotyy(h,w,SStmp,w,Ltmp);
+                  set(h2,<span class="string">'Color'</span>,atrib2,<span class="string">'LineWidth'</span>,vLineWidth);
+
+                  hold <span class="string">on</span>
+
+                  <span class="keyword">if</span> c.alpha ~= 0
+                     <span class="comment">% Significant PDC2/DTF2</span>
+                     LTratmp = abs(getCij(LTra,r,s,nPlotPoints));
+                     <span class="keyword">if</span> flgPrinting(2) == 1
+                        atrib=<span class="string">'k--'</span>; <span class="comment">% Patnaik threshold in black dashed line</span>
+                        plot(w,abs(getCij(Lpatnaik,r,s,nPlotPoints)), <span class="keyword">...</span>
+                           atrib,<span class="string">'LineWidth'</span>,vPatnaikLineWidth);
+                     <span class="keyword">end</span>
+
+                     <span class="keyword">if</span> flgPrinting(3)
+                        <span class="keyword">if</span> flgPrinting(4)
+                           <span class="keyword">if</span> isempty(c.ci1)
+                              L2vuppertmp = Ltmp;
+                           <span class="keyword">else</span>
+                              L2vuppertmp = abs(getCij(L2vupper,r,s, <span class="keyword">...</span>
+                                                                 nPlotPoints));
+                           <span class="keyword">end</span>
+                           flgSignif      = sum(~isnan(LTratmp));
+                           indexSignif    = ~isnan(LTratmp);
+                           indexNotSignif = isnan(LTratmp);
+
+                           <span class="comment">% CI plotting on main diagonal for PDC or DTF</span>
+                           plotCI(flgPrinting,flgSignif,w,r,s,Ltmp, <span class="keyword">...</span>
+                                           L2vupper,L2vlower,nPlotPoints, <span class="keyword">...</span>
+                                           indexNotSignif,vPatnaikLineWidth, <span class="keyword">...</span>
+                                           versionNumberMatlab);
+
+                        <span class="keyword">end</span> <span class="comment">% flgPrinting(4) CI</span>
+
+                        <span class="keyword">if</span> flgScale == 1
+                           yTick = [0 .5 1];
+                           <span class="keyword">if</span> i == 1 || i == nChannels
+                              yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+                           <span class="keyword">else</span>
+                              yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                           <span class="keyword">end</span>
+                           set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel);
+                        <span class="keyword">end</span>
+                     <span class="keyword">end</span> <span class="comment">% flgPrinting(3) Significant PDC2/DTF2</span>
+                  <span class="keyword">end</span>  <span class="comment">% c.alpha ~= 0</span>
+
+                  <span class="keyword">if</span> j == 2
+                     <span class="keyword">if</span> flgPrinting(7) == 4
+                        hh = ylabel(<span class="string">'Spectra [a.u.]'</span>);
+                     <span class="keyword">else</span>
+                        hh = ylabel(<span class="string">'log Spectra [a.u.]'</span>);
+                     <span class="keyword">end</span>
+                     pos = get(hh,<span class="string">'Position'</span>);
+                     <span class="keyword">if</span> ~isOctave()
+                        pos(1) = 0.005;
+                     <span class="keyword">else</span>
+                        pos(1) = (pos(1)+0.0025)/2;
+                     <span class="keyword">end</span>
+                     set(hh,<span class="string">'Position'</span>,pos,<span class="string">'FontSize'</span>, vFontSize);
+                  <span class="keyword">end</span>
+
+                  ylim  = maxPDC * kylim;
+
+                  set(h1,<span class="string">'LineWidth'</span>,vLineWidth,<span class="string">'Color'</span>,[0  0 0.7]);
+                  set(h2,<span class="string">'LineWidth'</span>,vLineWidth,<span class="string">'Color'</span>,[0  1   0]);
+                  yTick = [0 .5 1.0];
+                  yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                  <span class="keyword">if</span> j == nChannels, yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>]; <span class="keyword">end</span>
+                  set(ax(2),<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                     <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                     <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                     <span class="string">'YTick'</span>,yTick, <span class="keyword">...</span>
+                     <span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                     <span class="string">'FontName'</span>,<span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> %'FontName', 'Helvetica-Narrow', ...</span>
+                     <span class="string">'FontSize'</span>, vFontSize);
+                  <span class="keyword">if</span> j == 1, yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>]; <span class="keyword">end</span>
+                  set(ax(1), <span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                     <span class="string">'YTick'</span>,yTick, <span class="keyword">...</span>
+                     <span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+                     <span class="string">'FontName'</span>,<span class="string">'Arial'</span>, <span class="keyword">...</span><span class="comment"> % 'Helvetica-Narrow', ...</span>
+                     <span class="string">'FontSize'</span>, vFontSize);
+                  <span class="keyword">if</span> ~isOctave()
+                     ax(1).YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+                     ax(2).YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+                  <span class="keyword">end</span>
+
+                  hold(ax(1), <span class="string">'all'</span>); hold(ax(2), <span class="string">'all'</span>);
+
+                  plot(h,w,Ltmp,<span class="string">'Color'</span>,atrib2,<span class="string">'LineWidth'</span>,vLineWidth);
+                  <span class="keyword">if</span> c.alpha ~= 0
+                     plot(ax(2),w,LTratmp,<span class="string">'Color'</span>,atrib1,<span class="string">'LineWidth'</span>,vLineWidth);
+                  <span class="keyword">end</span>
+
+
+                  hold <span class="string">on</span>
+                  <span class="comment">%            grid on % For plots along the main diagonal.</span>
+                  ylim  = kylim;
+
+                  set(gca,<span class="string">'Box'</span>         , <span class="string">'on'</span>     , <span class="keyword">...</span>
+                          <span class="string">'TickDir'</span>     , <span class="string">'in'</span>     , <span class="keyword">...</span>
+                          <span class="string">'TickLength'</span>  , [.02 .02], <span class="keyword">...</span>
+                          <span class="string">'XMinorTick'</span>  , <span class="string">'off'</span>    , <span class="keyword">...</span>
+                          <span class="string">'YMinorTick'</span>  , <span class="string">'off'</span>);
+
+                  set(ax(1),<span class="string">'XLim'</span>,[w_min w_max], <span class="keyword">...</span>
+                            <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5],<span class="string">'XTickLabel'</span>,[<span class="string">' '</span>],<span class="keyword">...</span>
+                            <span class="string">'YLim'</span>,ylim); <span class="comment">%,'YTick',[]);</span>
+                  <span class="keyword">if</span> j == nChannels &amp;&amp; (flgPrinting(7) == 4 || <span class="keyword">...</span>
+                                                            flgPrinting(7) == 5)
+                     set(ax(2),<span class="string">'XLim'</span>,[w_min w_max],<span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5],<span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>],<span class="string">'YLim'</span>, ylim);
+                  <span class="keyword">end</span>
+
+                  set(h, <span class="string">'Color'</span>, 0.9*[1 1 1],<span class="string">'layer'</span>,<span class="string">'bottom'</span>); <span class="comment">% Background color</span>
+                  set(h, <span class="string">'TickLength'</span>, [.02 .02]);
+                  <span class="keyword">if</span> j == nChannels
+                     hxlabel(j) = labelitx(j,chLabels);
+                  <span class="keyword">end</span>
+
+                  set(h,<span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+
+                  <span class="keyword">if</span> j == 1 &amp;&amp; (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+                     hylabel(i) = labelity(i,chLabels);
+                  <span class="keyword">end</span>
+
+                  <span class="keyword">if</span> c.alpha ~= 0
+                     plot(w,LTratmp,<span class="string">'Color'</span>,atrib1,<span class="string">'LineWidth'</span>,vLineWidth);
+                  <span class="keyword">end</span>
+
+
+                  <span class="keyword">if</span> flgScale == 1 || flgScale == 2  <span class="comment">% *****</span>
+                     yTick = [0 .5 1];
+                     <span class="keyword">if</span> i == 1 || i == nChannels
+                        yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+                     <span class="keyword">else</span>
+                        yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                     <span class="keyword">end</span>
+                     set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel);
+                  <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+            <span class="keyword">if</span> j == nChannels
+               hxlabel(j) = labelitx(j,chLabels);
+            <span class="keyword">end</span>
+
+            set(h,<span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+
+            <span class="keyword">if</span> j == 1 &amp;&amp; (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+               hylabel(i) = labelity(i,chLabels);
+            <span class="keyword">end</span>
+
+            ylim = [-0.05 1.075];
+
+            yTick = [0 .5 1];
+            <span class="keyword">if</span> i == nChannels &amp;&amp; j == 1
+               yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+            <span class="keyword">else</span>
+               yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+            <span class="keyword">end</span>
+
+         <span class="keyword">else</span> <span class="comment">% if flgPrinting(7) == 0 Main Diagonal w/o subplots</span>
+            <span class="comment">% Label last column variable or channel</span>
+            <span class="keyword">if</span> j == nChannels
+               hxlabel(j) = labelitx(j,chLabels);
+            <span class="keyword">end</span>
+         <span class="keyword">end</span> <span class="comment">% if flgPrinting(7) ~= 0</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%     PDC2 and Coh2 plotting - Off diagonal subplots</span>
+<span class="comment">% ==============================================================================</span>
+
+      <span class="keyword">else</span> <span class="comment">% (i~=j) PDC2 and Coh2  % if NOT {(j == i) %&amp;&amp; flgPrinting(7) ~= 3}</span>
+         <span class="keyword">if</span> flgPrinting(6)
+            Coh2tmp = abs(getCij(Coh2,r,s,nPlotPoints));
+            <span class="comment">% Omnibus options</span>
+            ylim = kylim;
+            yTick = [0 .5 1];
+            yTickLabel = [<span class="string">'0'</span>;<span class="string">' '</span>;<span class="string">'1'</span>];
+         <span class="keyword">end</span>
+         <span class="keyword">if</span> flgPrinting(1)
+            Ltmp    = abs(getCij(L,r,s,nPlotPoints));
+            <span class="keyword">if</span> c.alpha ~= 0
+               LTratmp = abs(getCij(LTra,r,s,nPlotPoints));
+               Lpatmp  = abs(getCij(Lpatnaik,r,s,nPlotPoints));
+               <span class="keyword">if</span> isempty(c.ci1)
+                  L2vuppertmp   = Ltmp;
+               <span class="keyword">else</span>
+                  L2vuppertmp = abs(getCij(L2vupper,r,s,nPlotPoints));
+               <span class="keyword">end</span>
+               flgSignif    = sum(~isnan(LTratmp));
+               indexSignif  = ~isnan(LTratmp);
+               indexNotSignif = isnan(LTratmp);
+               atrib2 = [0.41,0.41,0.41];
+            <span class="keyword">else</span> <span class="comment">% c.alpha == 0     % With no statistics, PDC2 is</span>
+               atrib1 = [0 0 0]; <span class="comment">% plotted in black lines.</span>
+               atrib2 = [0 0 0];
+               flgSignif = 0;
+               flgSignifColor = 0;
+            <span class="keyword">end</span>
+            grayline = 0.71;
+
+            <span class="keyword">switch</span> flgSignifColor
+               <span class="keyword">case</span> 0
+                  atrib1 = [0 0 0];  <span class="comment">%black line</span>
+                  atrib2 = [0 0 0];  <span class="comment">%black line</span>
+               <span class="keyword">case</span> 1
+                  atrib1 = [0 0 0];  <span class="comment">% 1: black / gray -&gt; significant</span>
+                                     <span class="comment">%                     /not signif PDC2/DTF2</span>
+                  atrib2 = grayline*[1 1 1];  <span class="comment">%gray line</span>
+               <span class="keyword">case</span> 2
+                  atrib1 = [1 0 0];  <span class="comment">% 2: red  /  gray -&gt;      "</span>
+                  atrib2 = grayline*[1 1 1];  <span class="comment">%gray line</span>
+               <span class="keyword">case</span> 3
+                  atrib1 = [1 0 0];  <span class="comment">% 3: red  / green -&gt;      "</span>
+                  atrib2 = [0 1 0];  <span class="comment">%    green -&gt;      "</span>
+               <span class="keyword">case</span> 4
+                  atrib1 = [1 0 0];  <span class="comment">% 4: red        "</span>
+                  atrib2 = [0 0 0];  <span class="comment">%    black -&gt;      "</span>
+               <span class="keyword">otherwise</span>
+                  atrib1 = [0 0 0];  <span class="comment">% 5: black        "</span>
+                  atrib2 = [0 1 0];  <span class="comment">%    green -&gt;      "</span>
+            <span class="keyword">end</span> <span class="comment">% switch flgSignifColor</span>
+
+            plot(h,w,Ltmp,<span class="string">'Color'</span>,atrib2,<span class="string">'LineWidth'</span>, vLineWidth);
+            ax(1) = gca;
+            ax(2) = ax(1);
+            grid <span class="string">off</span>
+            hold <span class="string">on</span>
+
+            <span class="keyword">if</span> c.alpha ~= 0
+               <span class="keyword">if</span> isempty(c.ci1)
+                  maxCI = max(Ltmp);
+               <span class="keyword">else</span>
+                  maxCI  = max(L2vuppertmp(indexSignif));
+               <span class="keyword">end</span>
+               maxPDC = max(Ltmp);
+               maxThr = max(Lpatmp);
+               <span class="keyword">if</span> flgPrinting(6) ~= 0
+                  maxCoh = max(Coh2tmp);
+               <span class="keyword">end</span>
+            <span class="keyword">else</span>
+               maxCI  = max(Ltmp);
+               maxPDC = maxCI;
+               maxThr = maxCI;
+               <span class="keyword">if</span> flgPrinting(6) ~= 0
+                  maxCoh = max(Coh2tmp);
+               <span class="keyword">end</span>
+            <span class="keyword">end</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%           First flgScale switch</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+            <span class="keyword">switch</span> flgScale
+               <span class="keyword">case</span> 1 <span class="comment">% [0 1] / [0 max(PDC2)]</span>
+                  <span class="keyword">if</span> maxPDC &lt;= 1
+                     ylim = kylim;
+                     maxValue = 1.0;
+                  <span class="keyword">else</span>
+                     ylim = maxPDC*kylim;
+                     maxValue = maxPDC;
+                  <span class="keyword">end</span>
+
+               <span class="keyword">case</span> {0,2,3,4} <span class="comment">% [0 max(PDC2)]/[0 1]/[0 .1]/[0 .01]</span>
+                  <span class="comment">%ytickformat('.%02d');</span>
+                  <span class="keyword">switch</span> upper(flgMax)
+                     <span class="keyword">case</span> <span class="string">'PDC'</span>
+                        maxValue = maxPDC;
+
+                     <span class="keyword">case</span> <span class="string">'THR'</span>
+                        <span class="keyword">if</span> flgPrinting(2)
+                           maxValue = max([maxThr maxPDC]);
+                        <span class="keyword">else</span>
+                           maxValue = maxPDC;
+                        <span class="keyword">end</span>
+
+                     <span class="keyword">case</span> <span class="string">'CI'</span>
+                        <span class="keyword">if</span> flgSignif &amp;&amp; flgPrinting(4)
+                           maxValue = max([maxCI maxPDC]);
+                        <span class="keyword">else</span>
+                           maxValue = maxPDC;
+                        <span class="keyword">end</span>
+
+                     <span class="keyword">case</span> <span class="string">'COH'</span>
+                        <span class="keyword">if</span> flgPrinting(6)
+                           maxValue = max([maxCoh maxPDC]);
+                        <span class="keyword">else</span>
+                           maxValue = maxPDC;
+                        <span class="keyword">end</span>
+
+                     <span class="keyword">case</span> <span class="string">'TCI'</span>
+                        <span class="keyword">if</span> (flgSignif &amp;&amp; flgPrinting(4)) &amp;&amp; flgPrinting(2)
+                           maxValue = max([maxPDC maxThr maxCI]);
+                        <span class="keyword">elseif</span> flgSignif &amp;&amp; flgPrinting(4)
+                           maxValue = max([maxPDC maxCI]);
+                        <span class="keyword">elseif</span> flgPrinting(2)
+                           maxValue = max([maxPDC maxThr]);
+                        <span class="keyword">else</span>
+                           maxValue = maxPDC;
+                        <span class="keyword">end</span>
+
+                     <span class="keyword">case</span> <span class="string">'ALL'</span>
+                        <span class="keyword">if</span> (flgSignif &amp;&amp; flgPrinting(4)) &amp;&amp; flgPrinting(2) <span class="keyword">...</span>
+                                                               &amp;&amp; flgPrinting(6)
+                           maxValue = max([maxPDC maxThr maxCI maxCoh]);
+                        <span class="keyword">elseif</span> (flgSignif &amp;&amp; flgPrinting(4)) &amp;&amp; flgPrinting(2)
+                           maxValue = max([maxPDC maxThr maxCI]);
+                        <span class="keyword">elseif</span> (flgSignif &amp;&amp; flgPrinting(4)) &amp;&amp; flgPrinting(6)
+                           maxValue = max([maxPDC maxCoh maxCI]);
+                        <span class="keyword">elseif</span> flgPrinting(2) &amp;&amp; flgPrinting(6)
+                           maxValue = max([maxPDC maxThr maxCoh]);
+                        <span class="keyword">elseif</span> flgPrinting(2)
+                           maxValue = max([maxPDC maxThr]);
+                        <span class="keyword">elseif</span> (flgSignif &amp;&amp; flgPrinting(4))
+                           maxValue = max([maxPDC maxCI]);
+                        <span class="keyword">elseif</span> flgPrinting(6)
+                           maxValue = max([maxPDC maxCoh]);
+                        <span class="keyword">else</span>
+                           maxValue = maxPDC;
+                        <span class="keyword">end</span>
+                     <span class="keyword">otherwise</span>
+                        maxValue = 1.0;
+                  <span class="keyword">end</span>  <span class="comment">% switch upper(flgMax)</span>
+            <span class="keyword">end</span> <span class="comment">% switch flgScale</span>
+
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%           Second flgScale switch</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+            <span class="keyword">switch</span> flgScale
+               <span class="keyword">case</span> 1
+                  yTick = [0 .5 1];
+                  ylim = kylim;
+                  <span class="keyword">if</span> i == nChannels &amp;&amp; j == 1
+                     yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+                  <span class="keyword">else</span>
+                     yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+                  <span class="keyword">end</span>
+               <span class="keyword">case</span> 2
+                  <span class="keyword">if</span> maxValue &lt; 0.0001
+                     ylim = 0.002*kylim; <span class="comment">% [-0.0001    0.0022];</span>
+                     yTick = [0 .001];
+                     yTickLabel = [<span class="string">'   0'</span>;<span class="string">'.001'</span>];
+                  <span class="keyword">elseif</span> maxValue &lt; 0.0105
+                     ylim = .01*kylim; <span class="comment">% [-0.0005    0.0110</span>
+                     yTick = [0 .005 .01];
+                     yTickLabel = [<span class="string">'  0'</span>;<span class="string">'   '</span>;<span class="string">'.01'</span>];
+                  <span class="keyword">elseif</span> maxValue &lt; 0.105
+                     ylim = .1*kylim; <span class="comment">% [-0.005 0.11];</span>
+                     yTick = [0 .05 .1];
+                     yTickLabel = [<span class="string">' 0'</span>;<span class="string">'  '</span>;<span class="string">'.1'</span>];
+                  <span class="keyword">elseif</span> maxValue &lt; 1.05
+                     ylim = kylim;
+                     yTick = [0 .5 1];
+                     yTickLabel = [<span class="string">'0'</span>;<span class="string">' '</span>;<span class="string">'1'</span>];
+                  <span class="keyword">else</span>
+                     ylim = maxValue*kylim;
+                     yTick = [0 .5 1];
+                     yTickLabel = [<span class="string">'0'</span>;<span class="string">' '</span>;<span class="string">'1'</span>];
+                  <span class="keyword">end</span>
+               <span class="keyword">case</span> 3
+                  ylim = maxValue * kylim;
+                     yTick = [0 .5 1];
+                     yTickLabel = [<span class="string">'0'</span>;<span class="string">' '</span>;<span class="string">'1'</span>];
+               <span class="keyword">case</span> 4
+                  <span class="keyword">if</span> maxValue &lt; 0.0001
+                     ylim = 0.001*kylim; <span class="comment">%[-0.00004 0.00210];</span>
+                  <span class="keyword">elseif</span> maxValue &lt; 0.005
+                     ylim = maxValue*kylim; <span class="comment">% [-0.02 1.05];</span>
+                  <span class="keyword">elseif</span> maxValue &lt; 0.0105
+                     ylim = 0.01*kylim; <span class="comment">%[-0.0005 0.0110]; %[-0.05  1.075]</span>
+                  <span class="keyword">elseif</span> maxValue &lt; 0.05
+                     ylim = maxValue*kylim;
+                  <span class="keyword">elseif</span> maxValue &lt; 0.105
+                     ylim = 0.1*kylim; <span class="comment">%[-0.005 0.110];</span>
+                  <span class="keyword">elseif</span> maxValue &lt; 0.5
+                     ylim = maxValue*kylim;
+                  <span class="keyword">elseif</span> maxValue &lt; 1.05
+                     ylim = kylim;
+                  <span class="keyword">else</span>
+                     ylim = maxValue*kylim;
+                  <span class="keyword">end</span>
+            <span class="keyword">end</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">% flgColor --  Set subplots background color</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+            set(gca, <span class="string">'Layer'</span>, <span class="string">'bottom'</span>);
+            <span class="keyword">switch</span> flgColor
+               <span class="keyword">case</span> 0
+                  <span class="comment">% White background.</span>
+
+               <span class="keyword">case</span> 1
+                  <span class="keyword">if</span> maxValue &lt; 0.001
+                     shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], <span class="keyword">...</span>
+                        [0.7 0.7 1]);
+                     hold <span class="string">on</span>
+                     shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], <span class="keyword">...</span>
+                        0.8*[1 0.7 1]);
+                  <span class="keyword">elseif</span> maxValue &lt; 0.01
+                     shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], <span class="keyword">...</span>
+                        [0.7 0.7 1]);
+                     hold <span class="string">on</span>
+                     shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], <span class="keyword">...</span>
+                        0.8*[1 0.7 1]);
+                  <span class="keyword">else</span>
+                     shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], <span class="keyword">...</span>
+                        [0.7 0.7 1]);
+                     hold <span class="string">on</span>
+                     shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], <span class="keyword">...</span>
+                        0.8*[1 0.7 1]);
+                  <span class="keyword">end</span>
+
+               <span class="keyword">case</span> 2
+                  <span class="keyword">if</span> maxValue &lt; 0.001
+                     shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], <span class="keyword">...</span>
+                        0.9*[1 1 1]);  <span class="comment">%light gray</span>
+                     hold <span class="string">on</span>
+                     shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], <span class="keyword">...</span>
+                        0.75*[1 1 1]);  <span class="comment">% darker gray</span>
+                  <span class="keyword">elseif</span> maxValue &lt; 0.01
+                     shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], <span class="keyword">...</span>
+                        0.9*[1 1 1]);
+                     hold <span class="string">on</span>
+                     shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], <span class="keyword">...</span>
+                        0.75*[1 1 1]);
+                  <span class="keyword">else</span>
+                     shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], <span class="keyword">...</span>
+                        0.9*[1 1 1]);
+                     hold <span class="string">on</span>
+                     shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], <span class="keyword">...</span>
+                        0.75*[1 1 1]);
+                  <span class="keyword">end</span>
+            <span class="keyword">end</span> <span class="comment">% switch flgColor</span>
+
+
+
+         <span class="keyword">else</span> <span class="comment">% flgPrinting(1) == 0</span>
+<span class="comment">%</span>
+<span class="comment">%             disp('In test 2 ...')</span>
+
+            <span class="keyword">if</span> exist(<span class="string">'ylim'</span>) ~= 1,
+               ylim = kylim;
+            <span class="keyword">end</span>
+            yTick = [0 .5 1];
+            <span class="keyword">if</span> i == nChannels &amp;&amp; j == 1
+               yTickLabel = [<span class="string">' 0'</span>;<span class="string">'.5'</span>;<span class="string">' 1'</span>];
+            <span class="keyword">else</span>
+               yTickLabel = [<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>];
+            <span class="keyword">end</span>
+         <span class="keyword">end</span> <span class="comment">% if flgPrinting(1)</span>
+
+         grid <span class="string">off</span>
+
+<span class="comment">%===============================================================================</span>
+<span class="comment">% Labeling axes, and set x- y-axis limits, x- yTickLabels, FontSize</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+         <span class="keyword">if</span> i == nChannels    <span class="comment">% Bottom row subplots</span>
+            <span class="keyword">if</span> j == 1 <span class="comment">% subplot with Freq Scale</span>
+               <span class="keyword">if</span> flgColor == 4
+                  <span class="keyword">if</span> max(Ltmp) &lt; 0.001  <span class="comment">% Review, else is identical</span>
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' 0'</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;str_w_max], <span class="keyword">...</span>
+                        <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                        <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+                     <span class="keyword">if</span> flgScale == 2
+                        set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                           <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                           <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow');</span>
+                     <span class="keyword">end</span>
+                  <span class="keyword">else</span>
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' 0'</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;str_w_max], <span class="keyword">...</span>
+                        <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+                     <span class="keyword">if</span> flgScale ==2
+                        set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                           <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                           <span class="string">'FontName'</span>, <span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow');</span>
+                     <span class="keyword">end</span>
+                  <span class="keyword">end</span> <span class="comment">% max(Ltmp) &lt; 0.001 Review</span>
+               <span class="keyword">else</span>
+                  set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                     <span class="string">'XTick'</span>,2*w_max*[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                     <span class="string">'XTickLabel'</span>,{<span class="string">' 0'</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;<span class="string">'  '</span>;str_w_max}, <span class="keyword">...</span>
+                     <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                     <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+                  <span class="keyword">if</span> flgScale ==2 || flgScale == 1
+                     set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                        <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                        <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow');</span>
+                  <span class="keyword">end</span>
+               <span class="keyword">end</span>  <span class="comment">% flgColor == 4</span>
+               <span class="keyword">if</span> (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+                  hylabel(i) = labelity(i,chLabels);
+               <span class="keyword">end</span>
+               hxlabel(j) = labelitx(j,chLabels);
+            <span class="keyword">else</span> <span class="comment">% j ~= 1</span>
+               <span class="keyword">if</span> flgScale == 1
+                  <span class="keyword">if</span> j ~= nChannels
+                     set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                        <span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                        <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                        <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+                  <span class="keyword">end</span>
+               <span class="keyword">else</span>
+                  set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                     <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                     <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+               <span class="keyword">end</span>
+               set(h,<span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+                     <span class="keyword">if</span> ~isOctave()
+                        h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+                     <span class="keyword">end</span>
+
+               <span class="keyword">if</span> flgScale == 2
+                  set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                     <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                     <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow');</span>
+               <span class="keyword">end</span>
+               hxlabel(j) = labelitx(j,chLabels);
+            <span class="keyword">end</span> <span class="comment">% j == 1</span>
+         <span class="keyword">elseif</span> i == 1 &amp;&amp; j == 2 &amp;&amp; flgPrinting(7) == 0 <span class="comment">% Special case row #1</span>
+            set(h,<span class="string">'XLim'</span>, [w_min w_max],<span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+               <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+               <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+               <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+            <span class="keyword">if</span> flgScale ==2 || flgScale == 1
+               set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                  <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                  <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow');</span>
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+               hylabel(i) = labelity(i,chLabels);
+            <span class="keyword">end</span>
+         <span class="keyword">elseif</span> j == 1 <span class="comment">% Column #1 of lay-out</span>
+            set(h,<span class="string">'XLim'</span>, [w_min w_max],<span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+               <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+               <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+               <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+               <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+            <span class="keyword">if</span> flgScale == 2, set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel); <span class="keyword">end</span>
+            <span class="keyword">if</span> i == nChannels
+               set(h,<span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                      <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">%'Helvetica-Narrow');</span>
+               hxlabel(j) = labelitx(j,chLabels);
+            <span class="keyword">elseif</span> flgScale == 1
+             set(h,<span class="string">'XLim'</span>, [w_min w_max],<span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                   <span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel, <span class="keyword">...</span>
+                   <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                   <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>], <span class="keyword">...</span>
+                   <span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                   <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+               hylabel(i) = labelity(i,chLabels);
+            <span class="keyword">end</span>
+         <span class="keyword">else</span>  <span class="comment">% j~=1 or j~=nChannels or not(i==1 and j==2 and ~flgPrinting(7))</span>
+            set(h,<span class="string">'XLim'</span>, [w_min w_max], <span class="string">'YLim'</span>,ylim, <span class="keyword">...</span>
+                  <span class="string">'XTick'</span>,[0 .1 .2 .3 .4 .5], <span class="keyword">...</span>
+                  <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+            <span class="comment">% Review: cases of flgScale 1 or 2 look similar.</span>
+            <span class="keyword">if</span> flgScale == 2, set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel);<span class="keyword">end</span>
+            <span class="keyword">if</span> flgScale == 1, set(h,<span class="string">'YTick'</span>,yTick,<span class="string">'YTickLabel'</span>,yTickLabel);<span class="keyword">end</span>
+            set(h,<span class="string">'FontSize'</span>, vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                  <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+         <span class="keyword">end</span> <span class="comment">% i == nChannels</span>
+         <span class="comment">% Label axes; set x- y-axis limits, x- yTickLabels, FontSize</span>
+
+         <span class="keyword">if</span> ~isOctave()
+            h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
+         <span class="keyword">end</span>
+         <span class="keyword">if</span> nChannels &gt; 20  <span class="comment">% Rotate ylabels by 20 degrees if numChannels &gt; 10.</span>
+            set(hylabel(i),<span class="string">'Rotation'</span>,70);
+         <span class="keyword">end</span>
+         hold <span class="string">on</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">% Plotting lower and upper bound limits of confidence interval</span>
+<span class="comment">% ==============================================================================</span>
+         <span class="keyword">if</span> flgPrinting(4)
+            plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, <span class="keyword">...</span>
+                                          nPlotPoints,indexNotSignif, <span class="keyword">...</span>
+                                          vPatnaikLineWidth,versionNumberMatlab)
+            set(gca, <span class="keyword">...</span>
+               <span class="string">'Box'</span>         , <span class="string">'on'</span>     , <span class="keyword">...</span>
+               <span class="string">'TickDir'</span>     , <span class="string">'in'</span>     , <span class="keyword">...</span>
+               <span class="string">'TickLength'</span>  , [.02 .02] , <span class="keyword">...</span>
+               <span class="string">'XMinorTick'</span>  , <span class="string">'off'</span>      , <span class="keyword">...</span>
+               <span class="string">'YMinorTick'</span>  , <span class="string">'off'</span>      );
+         <span class="keyword">end</span>
+         <span class="keyword">if</span> flgPrinting(6) <span class="comment">%|Coh|^2 plot in gray-lines</span>
+            plot(w,Coh2tmp,<span class="string">'-'</span>,<span class="string">'LineWidth'</span>,vLineWidth,<span class="string">'Color'</span>,colorCoh2);
+         <span class="keyword">end</span>
+         <span class="keyword">if</span> flgPrinting(1)
+            plot(h,w,Ltmp,<span class="string">'Color'</span>,atrib2,<span class="string">'LineWidth'</span>,vLineWidth);
+            <span class="keyword">if</span> c.alpha ~= 0
+               plot(h,w,LTratmp,<span class="string">'Color'</span>,atrib1,<span class="string">'LineWidth'</span>,vLineWidth);
+            <span class="keyword">end</span>
+         <span class="keyword">end</span>
+
+         <span class="keyword">if</span> flgPrinting(2)
+            atrib = <span class="string">'k--'</span>; <span class="comment">% Patnaik significance level in black line</span>
+            plot(w,abs(getCij(Lpatnaik,r,s,nPlotPoints)),atrib, <span class="keyword">...</span>
+               <span class="string">'LineWidth'</span>,vPatnaikLineWidth);
+         <span class="keyword">end</span>
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">% Print GCT p-values above subplot</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+         <span class="keyword">if</span> r ~= s
+            <span class="keyword">if</span> (flgPrinting(1) == 1) &amp;&amp; (flgPrinting(5) &gt; 0)
+               vaxis = double(axis);
+               <span class="keyword">if</span> isfield(c,<span class="string">'Tragct'</span>)
+                  <span class="keyword">if</span> Tragct(r,s)
+                     <span class="keyword">if</span> (flgPrinting(5) &gt; 1)
+                        plot(0.96*vaxis(2),0.93*(vaxis(4)-vaxis(3))+vaxis(3),<span class="string">'.'</span>, <span class="keyword">...</span>
+                             <span class="string">'Color'</span>,vMarkerColor,<span class="string">'MarkerSize'</span>,vMarkerSize);
+                     <span class="keyword">end</span>
+                     <span class="keyword">if</span> isfield(c,<span class="string">'pvaluesgct'</span>) &amp;&amp; (flgPrinting(5) == 1 || <span class="keyword">...</span>
+                                                    flgPrinting(5) == 3)
+                        <span class="keyword">if</span> pvaluesgct(r,s) &lt; 1.0e-15
+                           text(vaxis(2),1.1*(vaxis(4)-vaxis(3))+vaxis(3),[<span class="string">'&lt;1.0e-15'</span>], <span class="keyword">...</span>
+                              <span class="string">'FontSize'</span>,pValuesFontSize, <span class="keyword">...</span>
+                              <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="string">'Color'</span>,0.6*vMarkerColor, <span class="keyword">...</span>
+                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>)
+                        <span class="keyword">else</span>
+                           text(vaxis(2),1.1*(vaxis(4)-vaxis(3))+vaxis(3), <span class="keyword">...</span>
+                              sprintf(<span class="string">'%0.3g'</span>,pvaluesgct(r,s)), <span class="keyword">...</span>
+                              <span class="string">'FontSize'</span>,pValuesFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                              <span class="string">'Color'</span>,0.6*vMarkerColor, <span class="keyword">...</span>
+                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>)
+                        <span class="keyword">end</span>
+                     <span class="keyword">end</span>
+                  <span class="keyword">else</span> <span class="comment">% not significant GCT</span>
+                     <span class="keyword">if</span> isfield(c,<span class="string">'pvaluesgct'</span>) &amp;&amp; (flgPrinting(5) == 1 || <span class="keyword">...</span>
+                                                    flgPrinting(5) == 3)
+                        text(vaxis(2),1.1*(vaxis(4)-vaxis(3))+vaxis(3), <span class="keyword">...</span><span class="comment">  % 0.6*vaxis(2)</span>
+                             sprintf(<span class="string">'%0.3g'</span>,pvaluesgct(r,s)), <span class="keyword">...</span>
+                             <span class="string">'FontSize'</span>,pValuesFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+                             <span class="string">'Color'</span>,[0 .4 0],<span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>)
+                     <span class="keyword">end</span>
+                  <span class="keyword">end</span>
+               <span class="keyword">end</span>
+            <span class="keyword">end</span>  <span class="comment">%strrep(num2str(pvaluesgct), '0.', '.')</span>
+         <span class="keyword">end</span> <span class="comment">% GCT p-values</span>
+
+      <span class="keyword">end</span> <span class="comment">% PDC2 and squared coherence</span>
+   <span class="keyword">end</span>  <span class="comment">% Subplot-layout row target channels loop for i = 1:nChannels</span>
+<span class="keyword">end</span> <span class="comment">% Subplot-layout column source channels loop for j = 1:nChannels</span>
+
+<span class="comment">% ------------------------------------------------------------------------------</span>
+<span class="comment">% Main x-axis labeling</span>
+<span class="comment">%</span>
+supAxes = [.08 .075 .84 .84]; <span class="comment">% [.12 .11 .84 .80];</span>
+<span class="keyword">if</span> fs == 1,
+   strXsuplabel = <span class="string">'Frequency'</span>;
+<span class="keyword">else</span>
+   strXsuplabel = <span class="string">'Frequency (Hz)'</span>;
+<span class="keyword">end</span>
+
+[ax1,h1] = suplabel(strXsuplabel,<span class="string">'x'</span>); <span class="comment">%,supAxes);</span>
+pos = get(ax1,<span class="string">'Position'</span>);
+
+<span class="keyword">switch</span> computer
+   <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+      set(h1,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontSize'</span>,12,<span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+<span class="comment">%       pos(2) = -0.03;</span>
+      pos(2) = pos(2) + 0.035; <span class="comment">%dpos2           % 0.0545 % 0.025</span>
+   <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>,<span class="string">'i686-pc-linux-gnu'</span>}
+      set(h1,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontSize'</span>,12,<span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+<span class="comment">%       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant</span>
+      pos(2) = pos(2) + 0.025; <span class="comment">%dpos2           % 0.0545 % 0.025</span>
+   <span class="keyword">case</span> <span class="string">'MACI64'</span>
+      set(h1,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontSize'</span>,14,<span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+      <span class="comment">%        dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant</span>
+      <span class="comment">%      pos2 = pos(2)</span>
+      pos(2) = pos(2) + 0.010;
+      <span class="comment">%       pos(2) = pos(2) + 0.025;</span>
+      <span class="comment">%  pos(2) = pos(2) - .025; % dpos2/3;</span>
+      <span class="comment">% save maci64_suplabelx h1 pos</span>
+   <span class="keyword">otherwise</span>
+      disp(<span class="string">'otherwise'</span>)
+      <span class="comment">%nop</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~isOctave()
+   set(ax1,<span class="string">'Position'</span>,pos);    <span class="comment">% Adjust xlabel position</span>
+<span class="keyword">else</span>
+   set(ax1,<span class="string">'Position'</span>,pos);    <span class="comment">% Actually suplabel does not work in Octave</span>
+<span class="keyword">end</span>
+<span class="comment">% ------------------------------------------------------------------------------</span>
+<span class="keyword">if</span> flgPrinting(1) <span class="comment">% PDC2 or DTF2</span>
+
+   <span class="comment">% Main y-axis type of measure DFT, PDC, Coh or SS labeling</span>
+   <span class="comment">%</span>
+   <span class="keyword">if</span> strcmp(flgType,<span class="string">'DTF'</span>)
+      gType = <span class="string">'gamma'</span>;
+      <span class="keyword">switch</span> metric
+         <span class="keyword">case</span> <span class="string">'euc'</span>
+            pType = <span class="string">'DTF'</span>;
+         <span class="keyword">case</span> <span class="string">'diag'</span>
+            pType = <span class="string">'DC'</span>;
+         <span class="keyword">case</span> <span class="string">'info'</span>
+            pType = <span class="string">'_{i}DTF'</span>;
+         <span class="keyword">case</span> <span class="string">'ratio'</span>
+            pType = <span class="string">'Ratio'</span>;
+         <span class="keyword">otherwise</span>
+            error(<span class="string">'Unknown metric.'</span>)
+      <span class="keyword">end</span>
+   <span class="keyword">else</span>
+      gType = <span class="string">'pi'</span>;
+      <span class="keyword">switch</span> metric
+         <span class="keyword">case</span> <span class="string">'euc'</span>
+            pType = <span class="string">'PDC'</span>;
+         <span class="keyword">case</span> <span class="string">'diag'</span>
+            pType = <span class="string">'_{g}PDC'</span>;
+         <span class="keyword">case</span> <span class="string">'info'</span>
+            pType = <span class="string">'_{i}PDC'</span>;
+         <span class="keyword">case</span> <span class="string">'ratio'</span>
+            pType = <span class="string">'iPDC/gPDC Ratio'</span>;
+        <span class="keyword">otherwise</span>
+            error(<span class="string">'Unknown metric.'</span>)
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="keyword">switch</span> lower(flgPrint)
+      <span class="keyword">case</span> <span class="string">'screen'</span>
+         <span class="keyword">switch</span> metric
+            <span class="keyword">case</span> <span class="string">'euc'</span>
+               [ax2,h2] = suplabel([<span class="string">'{\mid\'</span> gType <span class="keyword">...</span>
+                             <span class="string">'_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'</span>],<span class="string">'y'</span>,supAxes);
+            <span class="keyword">case</span> <span class="string">'diag'</span>
+               [ax2,h2] = suplabel([<span class="string">'{\mid{_{\it{g}}}\'</span> gType <span class="keyword">...</span>
+                             <span class="string">'_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'</span>],<span class="string">'y'</span>,supAxes);
+            <span class="keyword">case</span> <span class="string">'info'</span>
+               [ax2,h2] = suplabel([<span class="string">'{\mid{_i}\'</span> gType <span class="keyword">...</span>
+                             <span class="string">'_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'</span>],<span class="string">'y'</span>,supAxes);
+            <span class="keyword">case</span> <span class="string">'ratio'</span>
+               [ax2,h2] = suplabel([<span class="string">'i'</span> flgType <span class="string">' to g'</span> flgType <span class="string">' Ratio'</span>],<span class="keyword">...</span>
+                                  <span class="string">'y'</span>,supAxes);
+            <span class="keyword">otherwise</span>
+               error(<span class="string">'Unknown metric.'</span>)
+         <span class="keyword">end</span>
+      <span class="keyword">otherwise</span> <span class="comment">%Print</span>
+         [ax2,h2] = suplabel([<span class="string">'{|'</span> pType <span class="string">'(\lambda)|}^{2}'</span>],<span class="string">'y'</span>,supAxes);
+         set(h2,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontSize'</span>,12);
+         pos = get(ax2,<span class="string">'Position'</span>);
+         pos(1) = pos(1) + 0.030;   <span class="comment">% 0.0545</span>
+         set(ax2,<span class="string">'Position'</span>,pos);    <span class="comment">% Adjust ylabel position</span>
+   <span class="keyword">end</span>
+<span class="keyword">elseif</span> flgPrinting(6)
+   <span class="keyword">switch</span> lower(flgPrint)
+      <span class="keyword">case</span> <span class="string">'screen'</span>
+         [ax2,h2] = suplabel([<span class="string">'{|\textbf{Coh}_{\it{{i}{j}}}{(\lambda)|}^{2}}'</span>],<span class="keyword">...</span>
+                            <span class="string">'y'</span>,supAxes);
+      <span class="keyword">otherwise</span> <span class="comment">%Print</span>
+         [ax2,h2] = suplabel([<span class="string">'{|Coh(\lambda)|}^{2}'</span>],<span class="string">'y'</span>,supAxes);
+         set(h2,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontSize'</span>,12);
+         pos = get(ax2,<span class="string">'Position'</span>);
+         pos(1) = pos(1) + 0.020;   <span class="comment">% 0.0545</span>
+         set(ax2,<span class="string">'Position'</span>,pos);    <span class="comment">% Adjust ylabel position</span>
+   <span class="keyword">end</span>
+<span class="keyword">elseif</span> flgPrinting(7)
+   <span class="keyword">switch</span> lower(flgPrint)
+      <span class="keyword">case</span> <span class="string">'screen'</span>
+         [ax2,h2] = suplabel([<span class="string">'{|SS(\lambda)|}'</span>],<span class="string">'y'</span>,supAxes);
+      <span class="keyword">otherwise</span> <span class="comment">%Print</span>
+         [ax2,h2] = suplabel([<span class="string">'SS(\lambda)|'</span>],<span class="string">'y'</span>,supAxes);
+         set(h2,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="string">'FontSize'</span>,12);
+         pos = get(ax2,<span class="string">'Position'</span>);
+         pos(1) = pos(1) + 0.020;   <span class="comment">% 0.0545</span>
+         set(ax2,<span class="string">'Position'</span>,pos);    <span class="comment">% Adjust ylabel position</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p>Change y-LABEL font size</p><pre class="codeinput"><span class="keyword">switch</span> computer
+   <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+      <span class="comment">%nop</span>
+   <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>,<span class="string">'i686-pc-linux-gnu'</span>}
+
+   <span class="keyword">case</span> <span class="string">'MACI64'</span>
+      set(h2,<span class="string">'FontSize'</span>,16)
+<span class="keyword">end</span>
+
+
+<span class="comment">% ==============================================================================</span>
+<span class="comment">% Fine adjustment of axis labels positions.</span>
+<span class="comment">% ==============================================================================</span>
+<span class="comment">%</span>
+<span class="keyword">for</span> k = 1:nChannels
+   set(hxlabel(k),<span class="string">'Units'</span>,<span class="string">'normalized'</span>);
+
+   <span class="keyword">if</span> (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
+      set(hylabel(k),<span class="string">'Units'</span>,<span class="string">'normalized'</span>);
+      pos = get(hylabel(k),<span class="string">'Position'</span>);
+      pos(1) = -0.135*nChannels/4;
+      set(hylabel(k),<span class="string">'Position'</span>,pos);
+   <span class="keyword">end</span>
+
+   pos = get(hxlabel(k),<span class="string">'Position'</span>);
+   pos(2) = -0.145*nChannels/4;
+   set(hxlabel(k),<span class="string">'Position'</span>,pos);
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><h2 id="14">labelitx</h2><pre>    x-axis labeling function</pre><pre class="codeinput"><span class="keyword">function</span> [hxlabel] = labelitx(j,chLabels) <span class="comment">% Labels x-axis plottings</span>
+<span class="keyword">if</span> isOctave()
+   vFontSize = 12;
+<span class="keyword">else</span>
+   <span class="keyword">switch</span> computer
+      <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+         vFontSize = 10;
+      <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>,<span class="string">'i686-pc-linux-gnu'</span>}
+         vFontSize = 10;
+      <span class="keyword">case</span> <span class="string">'MACI64'</span>
+         vFontSize = 12;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> isempty(chLabels)
+   hxlabel = xlabel([<span class="string">'j='</span> int2str(j)]);
+   set(hxlabel,<span class="string">'FontSize'</span>,vFontSize, <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+               <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">% 'FontName','Helvetica-Narrow'</span>
+<span class="keyword">else</span>
+   hxlabel = xlabel([chLabels{j}]);
+   set(hxlabel,<span class="string">'FontSize'</span>,vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+               <span class="string">'FontName'</span>,<span class="string">'Arial'</span>);
+<span class="keyword">end</span>
+
+pos = get(hxlabel,<span class="string">'Position'</span>);
+pos(2) = pos(2) + 0.085;   <span class="comment">% 0.0545</span>
+set(hxlabel,<span class="string">'Position'</span>,pos);
+
+<span class="keyword">end</span>
+</pre><h2 id="15">latelity</h2><p>y-axis labeling function</p><pre class="codeinput"><span class="keyword">function</span> [hylabel] = labelity(i,chLabels) <span class="comment">% Labels y-axis plottings</span>
+<span class="keyword">if</span> isOctave()
+   vFontSize = 12;
+<span class="keyword">else</span>
+   <span class="keyword">switch</span> computer
+      <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+         vFontSize = 10;
+      <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>,<span class="string">'i686-pc-linux-gnu'</span>}
+         vFontSize = 10;
+      <span class="keyword">case</span> <span class="string">'MACI64'</span>
+         vFontSize = 12;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">if</span> isempty(chLabels)
+   hylabel = ylabel([<span class="string">'i='</span> int2str(i)],<span class="keyword">...</span>
+      <span class="string">'Rotation'</span>,90);
+   set(hylabel,<span class="string">'FontSize'</span>,vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>, <span class="keyword">...</span>
+               <span class="string">'FontName'</span>,<span class="string">'Arial'</span>) <span class="comment">%      'FontName','Helvetica-Narrow')  % 'Times'</span>
+<span class="keyword">else</span>
+   hylabel = ylabel([chLabels{i}]);
+   set(hylabel,<span class="string">'FontSize'</span>,vFontSize,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+<span class="keyword">end</span>
+
+pos = get(hylabel,<span class="string">'Position'</span>);
+<span class="keyword">if</span> isOctave()
+   pos(1) = pos(1) - 0.0545;   <span class="comment">% 0.0545</span>
+<span class="keyword">else</span>
+   pos(1) = pos(1) + 0.0845;   <span class="comment">% 0.0545</span>
+<span class="keyword">end</span>
+set(hylabel,<span class="string">'Position'</span>,pos)
+<span class="keyword">end</span>
+</pre><h2 id="16">plotci</h2><pre>    Plot upper and lower confidence interval limits</pre><pre class="codeinput"><span class="keyword">function</span> plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, <span class="keyword">...</span>
+               nPlotPoints,indexNotSignif,vPatnaikLineWidth,versionNumberMatlab)
+
+<span class="keyword">if</span> flgPrinting(4) &gt;= 2 <span class="comment">% Plot error bar</span>
+   <span class="keyword">if</span> flgPrinting(4) == 3
+      kstep = 2; <span class="comment">% Errorbar spacing parameter</span>
+   <span class="keyword">elseif</span> flgPrinting(4) == 4
+      kstep = round(length(w)/32); <span class="comment">% Limiting number of error bar on x-axis</span>
+      <span class="comment">%                     % to 32.</span>
+   <span class="keyword">elseif</span> flgPrinting(4) == 5
+      kstep = round(length(w)/16); <span class="comment">% Limiting number of error bar on x-axis</span>
+      <span class="comment">%                     % to 16.</span>
+   <span class="keyword">end</span>
+
+   L2vuppertmp = abs(getCij(L2vupper,r,s,nPlotPoints));
+   L2vuppertmp(indexNotSignif) = NaN;
+   L2vlowertmp = abs(getCij(L2vlower,r,s,nPlotPoints));
+   L2vlowertmp(indexNotSignif) = NaN;
+
+   Ltmp2 = Ltmp; <span class="comment">%= = abs(getCij(L,r,s,nPlotPoints));</span>
+   Ltmp2(indexNotSignif) = NaN;
+   varPDC2upper = L2vuppertmp - Ltmp2;
+
+   <span class="comment">% Sparsed error bar plotting for confidence interval</span>
+   <span class="keyword">if</span> flgPrinting(4) == 2
+      web = 1:length(w);
+   <span class="keyword">else</span>
+      web = kstep:kstep:length(w); <span class="comment">% for sparse plotting interval.</span>
+   <span class="keyword">end</span>
+   b = zeros(length(web),2,1);
+   b(:,1,1) = varPDC2upper(web);
+   b(:,2,1) = varPDC2upper(web);
+
+   Nweb = length(web);
+
+   <span class="keyword">if</span> flgPrinting(4) == 2  <span class="comment">% Confidence interval with shadeplotting</span>
+      web = 1:length(w);
+      indexTemp = ones(1,Nweb);
+      <span class="comment">%web(webb) index with NaN values.</span>
+      isnanIndex = find(isnan(varPDC2upper(web)));
+      indexTemp(isnanIndex) = 0;
+      webb = web(indexTemp &gt; 0);      <span class="comment">% webb contains not NaN web indices.</span>
+      webbProbe = [-1 webb Nweb+2]; <span class="comment">% Temporary variable for probing not NaN elements.</span>
+      webbDiff = diff(webbProbe);
+      indexNotNaN = find(webbDiff &gt; 1);
+      <span class="comment">%webbDiffIndex = webb(webbDiff(1:end-1) &gt; 1);</span>
+      nDiff2 = sum(webbDiff &gt; 1);
+
+      <span class="keyword">if</span> nDiff2 ~= 0
+         <span class="keyword">for</span> kDiff = 1:nDiff2-1
+            indexPlotVar0   = webb(indexNotNaN(kDiff));
+            indexPlotVarEnd = webb(indexNotNaN(kDiff+1)-1);
+
+            webbIndexTemp = web(indexPlotVar0:indexPlotVarEnd);
+            wtmp = w(webbIndexTemp);     wtmp = [wtmp(1) wtmp];
+            ytmp = Ltmp(webbIndexTemp);  ytmp = [ytmp(1); ytmp];
+            btmp = b(webbIndexTemp,:,:); btmp = [[0 0]; btmp];
+            hE = boundedline(wtmp,ytmp,btmp,<span class="string">'-k'</span>,<span class="string">'alpha'</span>); <span class="comment">% Transparent patch</span>
+         <span class="keyword">end</span>
+      <span class="keyword">else</span>
+         wtmp = w(webb);     wtmp = [wtmp(1) wtmp];
+         ytmp = Ltmp(webb);  ytmp = [ytmp(1); ytmp];
+         btmp = b(webb,:,:); btmp = [[0 0]; btmp];
+         hE = boundedline(wtmp,ytmp,btmp(:,1),<span class="string">'-k'</span>,<span class="string">'alpha'</span>); <span class="comment">% Transparent patch</span>
+      <span class="keyword">end</span>
+
+   <span class="keyword">else</span> <span class="comment">% Confidence interval with error bars</span>
+      <span class="keyword">if</span> isOctave()
+         hE = errorbar(w(web),Ltmp(web),varPDC2upper(web));
+      <span class="keyword">else</span>
+         <span class="keyword">if</span> versionNumberMatlab &gt; 9.0 <span class="comment">% &gt; 2016a: 'CapSize' appeared on 2016b.</span>
+            hE = errorbar(w(web),Ltmp(web),varPDC2upper(web), <span class="keyword">...</span>
+                                                 <span class="string">'LineWidth'</span>,0.75,<span class="string">'CapSize'</span>,4);
+         <span class="keyword">else</span> <span class="comment">% for older v. Matlab and Octave</span>
+            hE = errorbar(w(web),Ltmp(web),varPDC2upper(web), <span class="keyword">...</span>
+                                                             <span class="string">'LineWidth'</span>,0.75);
+         <span class="keyword">end</span>
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="keyword">if</span> exist(<span class="string">'hE'</span>,<span class="string">'var'</span>)
+      set(hE,<span class="string">'LineWidth'</span>,1,<span class="string">'color'</span>,[0 0 0]); <span class="comment">%[0.4 0.4 0.4]);</span>
+   <span class="keyword">end</span>
+
+<span class="keyword">else</span>  <span class="comment">% Plot confidence interval with gray dashed-line</span>
+   <span class="keyword">if</span> flgPrinting(4) &amp;&amp; flgSignif
+      atrib = <span class="string">'k--'</span>;
+
+      <span class="comment">% Lower-bound confidence interval limits</span>
+      tmp = getCij(L2vlower,r,s,nPlotPoints);
+      <span class="comment">% lower-bound can be negative.</span>
+      tmp(indexNotSignif) = NaN;
+      plot(w,tmp, atrib,<span class="string">'LineWidth'</span>,vPatnaikLineWidth,<span class="string">'Color'</span>,[.4 .4 .4]);
+
+      <span class="comment">% Upper-bound confidence interval limits</span>
+      tmp = abs(getCij(L2vupper,r,s,nPlotPoints));
+      tmp(indexNotSignif) = NaN;
+      plot(w,tmp, atrib,<span class="string">'LineWidth'</span>,vPatnaikLineWidth,<span class="string">'Color'</span>,[.4 .4 .4]);
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>  <span class="comment">% Plotting lower and upper bound of confidence interval</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% XPLOT
-%        Pretty plot of PDC2 or DTF2 (squared PDC or DTF) connectivity measure
+%        Pretty plot PDC2 / DTF2 (squared-PDC / DTF) connectivity measure
 %        and  Coh2 in the frequency domain using matrix layout, optionally with
-%        power spectra (and/or auto-PDC2/DTF2) plots on the main diagonal.
+%        power spectra (and/or auto-PDC2/DTF2) plots along the main diagonal.
 %
 %% Syntax
-%        [hxlabel,hylabel] = XPLOT(strBarTitle,c,flgPrinting,fs,w_max, ...
+%        [hfigure,hxlabel,hylabel] = XPLOT(strBarTitle,c,flgPrinting,fs,w_max, ...
 %                              chLabels,flgColor,flgScale,flgMax,flgSignifColor)
 %
 %% Input Arguments
 %
-%   strBarTitle:  Title for the figure window bar 
+%   strBarTitle:  Title for the figure window bar
 %
 %   c: struct variable with the following fields:
 %   |
@@ -161,13 +1806,14 @@ xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
 %
 %                 1 2 3 4 5 6 7
 %   flgPrinting: [1 1 1 1 1 0 1]; % Example: Plot everything, except coh2.
-%           blue  | | | | | | 7REPLACE_WITH_DASH_DASH {0:5} Spectra (0: w/o; 1: Linear; 2: Log; 
-%                 | | | | | |           3: PDC2; 4: Linear normalized;  
+%           blue  | | | | | | 7REPLACE_WITH_DASH_DASH {0:5} Spectra (0: w/o; 1: Linear; 2: Log;
+%                 | | | | | |           3: PDC2; 4: Linear normalized;
 %                 | | | | | |           5: Log spectra + PDC2)
 %           gray  | | | | | 6REPLACE_WITH_DASH_DASH {0:1} Coh2 (0: w/o Coh2; 1: w Coh2)
-%    dark-purple  | | | | 5REPLACE_WITH_DASH_DASH {0:3} Mark significant GCT pairs and print p-values 
-%  or dark-green  | | | |          (0: w/o; 1: print p-values; 2: mark +GCT; 
-%                 | | | |            3: print p-values + mark significant GCT)
+%    dark-purple  | | | | 5REPLACE_WITH_DASH_DASH {0:3} Print GCT p-values and dot-mark significant
+%  or dark-green  | | | |           connectivity channel-pair (0: w/o;
+%                 | | | |           1: p-values; 2: dot-mark +GCT;
+%                 | | | |           3: p-values + dot-mark significant GCT)
 %    dashed-blue  | | | 4REPLACE_WITH_DASH_DASH {0:4} Confidence interval (0:w/o; 1: Dashed-lines;
 %                 | | |           2: Shaded-plot; 3: Error-bar 1; 4: Error-bar 2
 %            red  | | 3REPLACE_WITH_DASH_DASH {0:1} Significant PDC2|DTF2 in red lines
@@ -177,7 +1823,7 @@ xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
 %
 %   fs:         sampling frequency
 %
-%   w_max:      frequency scale upper-limit (w_max <= fs/2 = Nyquist frequency)
+%   w_max:      frequency scale upper-limit (<= fs/2, i.e. Nyquist frequency)
 %
 %   chLabels:   channels id labels (if ==[], channels will be enumerated)
 %
@@ -187,9 +1833,9 @@ xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
 %
 %   flgScale:   1: [0 1] / {if max(PDC2/DTF2) > 1}:[0 max(PDC2/DTF2)]
 %               2: [0 {if max(PDC/DTF2) > 1}:max(PDC/DTF2)]/[0 1]/[0 .1]/[0 .01]
-%                                          based on flgMax(PDC2/DTF2/Thr/CI/all)
-%               3: [0 max(PDC2/DTF2/Thr/CI/all)] 
-%                                          based on flgMax(PDC2/DTF2/Thr/CI/all)
+%                                         based on flgMax (PDC2/DTF2/Thr/CI/all)
+%               3: [0 max(PDC2/DTF2/Thr/CI/all)]
+%                                         based on flgMax (PDC2/DTF2/Thr/CI/all)
 %               4: [0 {max(PDC2/DTF2/Thr/CI/all) or round to {0.01 0.1 1.0}]
 %
 %   flgMax:     {'PDC'|'DTF'|'Thr'|'CI'|'TCI'|'all'} measure used as upper limit
@@ -210,15 +1856,16 @@ xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
 %               5: black / green =>      "
 %
 %% Output
-%   Pretty matrix-layout plots and optionally p-values of GCT
-%   hxlabel,hylabel: label's handles
+%     Pretty matrix-layout plots and optionally p-values of GCT
+%     hfigure: figure handle
+%     hxlabel,hylabel: label's handles
 %
 %% Description
-%   Cosmetic script to visualize results from 'asymp_pdc.m' or 'asymp_dtf.m'
-%   or FastAsympAlg0.m routines in a "standard" matrix-layout.
+%     Cosmetic script to visualize results from 'asymp_pdc.m' or 'asymp_dtf.m'
+%     or FastAsympAlg0.m routines in a "standard" matrix-layout.
 %
 %% Examples
-%   %Calculate c = asymp_pdc() or asymp_dtf(), then:
+%   %Try the following example:
 %
 %   % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Example script start hereREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
 %   N = 7;
@@ -227,35 +1874,91 @@ xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
 %   [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
 %   nFreqs = 128; metric = 'info'; alpha = 0.05;
 %   c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
-%   xplot([],c); shg; % Defaults flgPrinting, fs, w_max and flgColor
+%   xplot([],c); shg; % Defaults flgPrinting, fs, w_hmax and flgColor
 %   % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH End hereREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
 %
-%   % You might see on average in between 4 and 5 suplots with red lines, i.e.
+%   % You might see on average  4 or 5 suplots with red lines, i.e.
 %   % significat iPDC at alpha = 0.05, which is the number of analyzed pairs
 %   % times alpha, or N(N-1)*alpha = 10(10-1)*0.05 = 4.5 cases or connections
 %
 %   % Then try the following option:
 %   xplot([],c,[1 1 1 0 0 1 1],1,0.5,[],0); shg;
-%                        % PDC2/DTF2, threshold, power spectra, coherence plots
-%                        % with normalized fs=1 Hz; default channel label;
-%                        % flgColor=0 => no color or rescalling is used.
+%   % which will plot PDC2/DTF2, threshold, power spectra, coherence plots
+%   % with normalized fs=1 Hz; default channel label;
+%   % flgColor=0 => no color or rescalling is used.
 %
 %% Other routines
-%  See also  xplot_title, asymp_pdc, asymp_dtf, FastAsympAlg0, subplot2, xstats,
+%     See also  xplot_title, asymp_pdc, asymp_dtf, FastAsympAlg0, subplot2, xstats,
 %            xplot_pvalues
-% < xplot.html |xplot|> |
+%     <xplot.html |xplot|> |
 
 % (C) Koichi Sameshima & Luiz A. Baccala', 2022. See file license.txt in
-% installation directory for licensing terms.
+%     installation directory for licensing terms.
 
-function [hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max, ...
+function [hfigure,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max, ...
                                chLabels,flgColor,flgScale,flgMax,flgSignifColor)
-                            
+
 msgID = 'all';
 warning('OFF',msgID);
 
+while 0
+   if isOctave()
+      disp('Output of ''get(0,''MonitorPositions'') command:')
+      get(0, 'MonitorPositions')
+      disp('Output of ''get(0,''ScreenSize''')
+      get(0, 'ScreenSize')
+   else
+      disp('1. Output of ''get(0,''MonitorPositions'') command:')
+      sz = get(0, 'MonitorPositions');
+      [m n] = size(sz);
+      if m >= 2,
+         fprintf([' a. Multiple-monitor detected.\n'])
+         fprintf([' b. Screens resolutions are: \n'])
+         disp(sz)
+      elseif m == 1
+         fprintf([' a. Single monitor detected.\n'])
+         fprintf([' b. Screen resolution is: \n'])
+         disp(sz)
+      else
+         error('*** No monitor detected.')
+      end
+
+      fprintf('\n2. Output of ''get(0,''ScreenSize''): ')
+      sz = get(0, 'ScreenSize');
+      disp(sz)
+      if m >= 2
+         fprintf('\n *** This command can only detect the primary monitor.\n\n')
+      end
+   end
+   pause(5)
+   break
+end
+
+
+%%
+% <https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size>
+% by 
+%   <https://www.mathworks.com/matlabcentral/profile/authors/770850>
+while 0
+   ScreenPixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution()
+   ScreenDevices = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+   MainScreen = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getScreen()+1;
+   MainBounds = ScreenDevices(MainScreen).getDefaultConfiguration().getBounds();
+   MonitorPositions = zeros(numel(ScreenDevices),4);
+   for n = 1:numel(ScreenDevices)
+      Bounds = ScreenDevices(n).getDefaultConfiguration().getBounds();
+      MonitorPositions(n,:) = [Bounds.getLocation().getX() + 1, ...
+                    -Bounds.getLocation().getY() + 1 - Bounds.getHeight() + ...
+                   MainBounds.getHeight(),Bounds.getWidth(),Bounds.getHeight()];
+   end
+   disp('MonitorPositions parameter:')
+   disp(MonitorPositions)
+   pause(5)
+   break
+end
+
 % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
-% To deal with errobar CapSize option compatibility along different 
+% To deal with errobar CapSize option compatibility along different
 % MATLAB version R2016b or later (9.1)
 if ~isOctave()
    v = ver('MATLAB');
@@ -268,11 +1971,11 @@ knargin = 10;     % Number of input arguments
 kylim  = [-0.05  1.075]; % y-axis scaling factors at lower and upper limits.
 %             kylim1 = [-0.05   1.10]; % Previous values
 %             kylim2 = [-0.02   1.05]; % Previous previous values
-            
+
 if nargin < 7, flgColor = 0; end % 0: white background;
-if nargin < 8 || isempty(flgScale), flgScale = 1; end 
-% 1: [0 1] / {if max(PDC2/DTF2) > 1}:[0 max(PDC2/DTF2)]
-if nargin < 9, flgMax = 'TCI'; end % {'PDC'; 'DTF'; 'Thr'; 'CI'; 'TCI'; 'all'}
+if nargin < 8 || isempty(flgScale), flgScale = 1; end
+%                        % 1: [0 1] / {if max(PDC2/DTF2) > 1}:[0 max(PDC2/DTF2)]
+if nargin < 9, flgMax = 'TCI'; end   % {'PDC'; 'DTF'; 'Thr'; 'CI'; 'TCI'; 'all'}
 if nargin < 10, flgSignifColor = 3; end % 3: red/green: signif/~signif PDC2/DTF2
 if flgSignifColor < 0 || flgSignifColor > 5, flgSignifColor = 3; end
 
@@ -305,7 +2008,7 @@ end
 
 SS = c.SS;       % Spectra
 Coh2 = c.coh2;   % |Coh|^2
-colorCoh2 = [.7 .7 .7]; 
+colorCoh2 = [.7 .7 .7];
 Lpatnaik = c.th; % Patnaik threshold values for alpha (level of significance)
 
 if isempty(c.ci1) || isempty(c.ci2)
@@ -325,43 +2028,36 @@ nodesett = 1:nChannels;
 % figure scaling parameter adjustment
 vChannels = max([10, nChannels]);
 
-% Parameters for p-values plotting.
-% vMarkerSize = 30 - 25*(nChannels - 1)/29; % marker size for presence of GCT
+% Formatting parameters for p-values plotting above each subplot.
 N1 = 1; N30 = 30; V1 = 25; V30 = 10; % was 10,5
 vMarkerSize = V1 + (vChannels - N1)*(V30 - V1)/(N30 - N1);
-% vMarkerSize = vMarkerSize*vChannels/nChannels;
 
 vMarkerColor = [ 1       0         1]; % Purple
-% pValuesFontSize = 30 - 25*(nChannels - 1)/29; % marker size for +GCT
 N1 = 10; N30 = 24; V1 = 8; V30 = 5; % was 10,5
-% N1 = 10; N30 = 24; V1 = 8; V30 = 4; % was 10,5
-% N1 = 10; N30 = 30; V1 = 8; V30 = 5; % was 10,5
 pValuesFontSize = V1 + (vChannels - N1)*(V30 - V1)/(N30 - N1);
-% pValuesFontSize = pValuesFontSize*vChannels/nChannels;
 
-% if nChannels >20 
+% if nChannels >20
 %    pValuesFontSize = 4;
-% elseif nChannels > 15 
-%    pValuesFontSize = 5; 
+% elseif nChannels > 15
+%    pValuesFontSize = 5;
 % else
-%    pValuesFontSize = 7; 
+%    pValuesFontSize = 7;
 % end
-
 
 if w_max > fs/2 + eps
    error(['The parameter w_max should be <= Nyquist frequency,' ...
-      'i.e, w_max <= fs/2.'])
+                                                        'i.e, w_max <= fs/2.'])
 end
 
 % ==============================================================================
 %          Check flgPrinting choices and availabitiy of proper measures
 % ==============================================================================
 %   flgPrinting: [X X X X X X X];
-%       blue-line | | | | | | 7REPLACE_WITH_DASH_DASHSpectra (0: w/o; 1: Linear; 2: Log; 3: PDC2; 
+%       blue-line | | | | | | 7REPLACE_WITH_DASH_DASHSpectra (0: w/o; 1: Linear; 2: Log; 3: PDC2;
 %                 | | | | | |      4: Linear normalized; 5: Log spectra + PDC2)
 %            gray | | | | | 6REPLACE_WITH_DASH_DASHCoh2 (0: w/o Coh2; 1: with Coh2)
-%     dark-purple | | | | 5REPLACE_WITH_DASH_DASHMark GCT significant pairs and p-values printing 
-%                 | | | |      (0:w/o; 1: p-values print; 2: dot plot +GCT; 
+%     dark-purple | | | | 5REPLACE_WITH_DASH_DASHMark GCT significant pairs and p-values printing
+%                 | | | |      (0:w/o; 1: p-values print; 2: dot plot +GCT;
 %                 | | | |      3: p-values print + dot plot for significant GCT)
 %     dashed-blue | | | 4REPLACE_WITH_DASH_DASHConfidence interval (0:w/o; 1: Dashed-lines;
 %                 | | |          2: Shaded-plot; 3: Error-bar 1; 4: Error-bar 2
@@ -371,10 +2067,10 @@ end
 
 if (flgPrinting(1) == 1) && (flgPrinting(5) == 1) && ~isfield(c,'Tragct')
    fprintf(2,['\n*** Warning: to print GCT p-values, assign ''gct_alg()''' ...
-              'results to c structure. ***\n'])
+                                               'results to c structure. ***\n'])
    fprintf(2,['\n    Tr_gct, pValue_gct, Tr_igct, pValue_igct] =' ...
                                'gct_alg(u,A,pf,gct_signif,flgPrintResults);'])
-   fprintf(2,'\n   then before calling xplot() function execute:')
+   fprintf(2,['\n   then, before calling xplot(), execute:'])
    fprintf(2,['\n    c.Tragct = Tr_gct;'])
    fprintf(2,['\n    c.pvaluesgct = pValue_gct;\n\n'])
 end
@@ -398,7 +2094,7 @@ if c.alpha <= 0
       error('No PDC2 or DTF2 measure available in result struct variable.')
    end
 else  % alpha > 0. For fast routine asymp_pdc routine and flgPrinting(4)==0
-   if isfield(c,'pdc2') 
+   if isfield(c,'pdc2')
       if isempty(c.ci1)
          flgPrinting = [1 1 1 0 1 1 1] .* flgPrinting;
          L2vupper = [];
@@ -413,7 +2109,7 @@ else  % alpha > 0. For fast routine asymp_pdc routine and flgPrinting(4)==0
       flgPrinting = flgPrinting .* [0 0 0 0 0 1 1];
       if flgPrinting(7) == 4, flgPrinting(7) = 1; end
       if flgPrinting(7) == 5, flgPrinting(7) = 2; end
-      if flgPrinting(7) > 5,  flgPrinting(7) = 1; end
+      if flgPrinting(7) >  5, flgPrinting(7) = 1; end
       if flgPrinting(7) == 3, flgPrinting(7) = 1; end
    end
 end
@@ -421,11 +2117,14 @@ end
 if exist('shadedplot.m','file') ~= 2, flgColor = 0; end
 
 
+%%
 % Figure setting
+%
 
 hfigure = figure;
+
 set(hfigure,'PaperOrientation','landscape', ...
-            'renderer','painters'); % To get vector figures
+            'renderer','painters'); % To get vector figure
 
 if isempty(strBarTitle)
    set(hfigure,'NumberTitle','off','MenuBar','none');
@@ -444,7 +2143,7 @@ w_min = w(1);
 % a=gca;
 % a.XRuler.TickLabelGapOffset = -8;
 % % negative numbers move the ticklabels down (positive -> up)
-% a.YRuler.TickLabelGapOffset = -8;    
+% a.YRuler.TickLabelGapOffset = -8;
 % % negative numbers move the ticklabels right (negative -> left)
 
 if isOctave()
@@ -461,7 +2160,7 @@ else
          f0 = 10; N0 = 4;   % FontSize = 10   for nChannels = 4
          f1 = 6.5; N1 = 20; % FontSize =  6.5 for nChannels = 20
          vTickLabelGapOffset = -1.5; % YTickLabel distance from y-axis  =1.5
-      case 'GLNXA64'
+      case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
          f0 = 9; N0 = 4;    % FontSize = 9   for nChannels = 4
          f1 = 5.5; N1 = 20; % FontSize = 6.5 for nChannels = 20
          vTickLabelGapOffset = -1.0; % YTickLabel distance from y-axis -2.5
@@ -493,46 +2192,90 @@ end
 % ==============================================================================
 
 % Screen dimension in pixel.
+% Read the following:
+% <https://undocumentedmatlab.com/articles/working-with-non-standard-dpi-displays>
+
 set(0,'units','pixels');
 sz = get(0,'ScreenSize');
 
-% Ad hoc checking for the presence of multiple monitors in Octave.
-khmon = round(sz(3)/1920); % Guessed # of horizontally tiled screens
+skreenfactor = 2.4; % Ad hoc factor that should 
+
+if ~isOctave()
+%    https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size
+   % This code is more accurate to get the correct screen size (REF <URL>)
+   ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
+   gd = ge.getDefaultScreenDevice;
+   screensize = [gd.getDisplayMode.getWidth gd.getDisplayMode.getHeight];
+
+   sz(3) = screensize(1); % width in pixels
+   sz(4) = screensize(2); % height in pixels
+else
+   sz = get(0,'ScreenSize');
+end
+
+% Ad hoc check for the presence of multiple monitors in Octave.
+khmon = ceil(sz(3)/sz(4)/skreenfactor); % Guessed # of horizontally tiled screens
 if khmon < 1, khmon = 1; end
 
 kvmon = round(sz(4)/1000); % Guessed # of stacked screens
 if kvmon < 1, kvmon = 1; end
+screenratio = sz(3)/sz(4)/khmon;
 
 % Scale figure size on screen according to the monitor resolution
 % This has been implemented particularly for Octave.
 % Reference monitor has width=sz(3)=1920 pxls
-pxwidth = 1920;  pxwidth  = pxwidth*sz(3)/1920; 
-pxheight = 1080; pxheight = pxheight*sz(3)/1920;
+pxwidthscreen = sz(3)/khmon; pxheightscreen = sz(4)/kvmon;
+
+%%
+% Let's adopt printing paper size proportion as A4
+A4width = 29.7; A4height = 21.0; % A4 landscape paper orientation size in centimeterw
+A4ratio = sqrt(2);
+
+% Real figure size for printing or publication in centimeters
+width = min([A4width * vChannels/25  A4width]);
+height = min([A4height * vChannels/25 A4height]);
 
 % What follow is a kludge solution to determine figure size in normalized units
 % that might allow handling the cases of multiple monitors set up in Octave.
-rwidth  = pxwidth/sz(3)/khmon/kvmon;
-rheight = pxheight/sz(4)/khmon/kvmon;
+% % % rwidth  = pxwidthscreen/sz(3)/khmon/kvmon;
+% % % rheight = pxheightscreen/sz(4)/khmon/kvmon*screenratio1/screenratio0;
 
-A4width = 29.7; A4height = 21.0; % A4 landscape paper
-% vChannels = max([10, nChannels]);
+% rwidth = rwidth * width/A4width;
+% rheight = rheight * height/A4height - 0.03;
 
-width = min([A4width * vChannels/25  A4width]); 
-height = 1.1* min([A4height * vChannels/25 A4height]); 
+%%
+% Determine max figure size in pixels that fit the monitor, which will
+% correspond to the A4 max figure size;
+if screenratio >= A4ratio % Wider screen than A4 proportion
+   pxwidth_max = round(A4ratio * pxheightscreen);
+   pxheight_max = pxheightscreen;
+else
+   pxwidth_max = pxwidthscreen;
+   pxheight_max = round(pxwidthscreen/A4ratio);
+end
 
-set(0,'units','centimeters'); szcm = get(0,'ScreenSize');
-
-rwidth = rwidth * width/A4width; 
-rheight = rheight * height/A4height;
-
-% rwidth
-% rheight
-% width
-% height
+% Relative figure size on screen scale keeping A4 paper proportion .
+rwidth = width/A4width * pxwidth_max/pxwidthscreen/khmon;
+rheight = height/A4height * pxheight_max/pxheightscreen;
 
 set(hfigure,'units','centimeters','position',[0 0 width height]);
-set(hfigure,'units','normalized', ...
-            'position',[(1-rwidth)/2 (1-rheight) rwidth rheight]);
+
+switch computer
+   case 'PCWIN64'
+      set(hfigure,'units','normalized', ...
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]); % -0.03
+
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
+      set(hfigure,'units','normalized', ...
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+
+   case 'MACI64'
+      set(hfigure,'units','normalized', ...
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+
+   otherwise
+      error('computer function not working properly.')
+end
 
 if fs == 1
    str_w_max = '.5';
@@ -621,7 +2364,7 @@ for j = 1:nChannels
             h = subplot2(nChannels,nChannels,(i-1)*nChannels+j);
          end
       end
-      
+
 % ==============================================================================
 %               Power Spectrum Plotting on Main Diagonal
 % ==============================================================================
@@ -630,9 +2373,9 @@ for j = 1:nChannels
          if flgPrinting(7) ~= 0
             SStmp = abs(getCij(SS,r,s,nPlotPoints));
             Ltmp  = abs(getCij(L, r,s,nPlotPoints)); % PDC2/DTF2 estimates (?)
-            
+
             switch flgPrinting(7) % Main diagonal plotting SS and/or PDC2/DTF2
-               
+
                case 1 %Standardized spectra
                   SStmp = SStmp/max(SStmp);
                   h12   = plot(w,SStmp);
@@ -651,7 +2394,7 @@ for j = 1:nChannels
                   end
                   set(h12,'LineWidth',vLineWidth,'Color',[0 0 0.7]);
 
-                  
+
                   if flgScale == 1 || flgScale == 2
                      yTick = [0 .5 1];
                      if i == 1 || i == nChannels
@@ -682,14 +2425,14 @@ for j = 1:nChannels
                         'FontName', 'Arial', ... %'Helvetica-Narrow', ...
                         'FontSize', vFontSize);
                   end
-                  
+
                case 2 % Log spectra on diagonal
                   SStmp = log(SStmp);
                   SStmp = (SStmp-min(SStmp))/(max(SStmp)-min(SStmp));
                   h12 = plot(w,SStmp);
                   ax(1) = gca;
                   ax(2) = ax(1);
-    
+
                   if j == 2
                      hh = ylabel('log Spectra [a.u.]');
                      pos = get(hh,'Position');
@@ -703,7 +2446,7 @@ for j = 1:nChannels
                             'FontName', 'Arial') %'Helvetica-Narrow', ...);
                   end
                   set(h12,'LineWidth',vLineWidth,'Color',[0 0 0.7]);
-                  
+
                   if flgScale == 1 || flgScale == 2
                      yTick = [0 .5 1];
                      if i == 1 || i == nChannels
@@ -733,16 +2476,16 @@ for j = 1:nChannels
                         'FontName', 'Arial', ... %'Helvetica-Narrow', ...
                         'FontSize', vFontSize);
                   end
-                  
+
                case 3 % PDC2/DTF2 on main diagonal
                   if flgPrinting(1)
                      Ltmp = abs(getCij(L,r,s,nPlotPoints)); % PDC2/DTF2 values
                      plot(w,Ltmp,'Color',atrib2,'LineWidth',vLineWidth);
-                     
+
                      hold on
                      ax(1) = gca;
                      ax(2) = ax(1);
-                     
+
                      if c.alpha ~= 0
                         % Significant PDC2/DTF2
                         LTratmp = abs(getCij(LTra,r,s,nPlotPoints));
@@ -751,7 +2494,7 @@ for j = 1:nChannels
                            plot(w,abs(getCij(Lpatnaik,r,s,nPlotPoints)), ...
                                            atrib,'LineWidth',vPatnaikLineWidth);
                         end
-                        
+
                         if flgPrinting(3)
                            if flgPrinting(4)
                               if isempty(c.ci1)
@@ -769,11 +2512,11 @@ for j = 1:nChannels
                                            indexNotSignif,vPatnaikLineWidth, ...
                                            versionNumberMatlab);
                            end % flgPrinting(4) CI
-                           
+
                            % Draw significant PDC2/DTF2 in different colors
                            plot(h,w,LTratmp,'Color',atrib1, ...
                                                         'LineWidth',vLineWidth);
-                           
+
                            if flgScale == 1 || flgScale == 2 || flgScale == 3
                               yTick = [0 .5 1];
                               if i == 1 || i == nChannels
@@ -795,7 +2538,7 @@ for j = 1:nChannels
                               end
                            else
                               vaxis = double(axis);
-                              vaxis =[w_min w_max -0.05*vaxis(4) 1.10*vaxis(4)]; 
+                              vaxis =[w_min w_max -0.05*vaxis(4) 1.10*vaxis(4)];
                               set(h,'XLim', [w_min w_max], ...
                                  'YLim',[vaxis(3) vaxis(4)], ...
                                  'XTick',[0 .1 .2 .3 .4 .5], ...
@@ -806,35 +2549,35 @@ for j = 1:nChannels
                            end
                         end % flgPrinting(3) Significant PDC2/DTF2
                      end  % c.alpha ~= 0
-                     
+
                      plot(h,w,Ltmp,'Color',atrib2,'LineWidth',vLineWidth);
                      if c.alpha ~= 0
                         plot(h,w,LTratmp,'Color',atrib1,'LineWidth',vLineWidth);
                      end
-                     
+
                      if j == nChannels
                         hxlabel(j) = labelitx(j,chLabels);
                      end
-                     
+
                      set(h,'XTickLabel',[' ';' ';' ';' ';' ';' ']);
-                     
+
                      if j == 1 && (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
                         hylabel(i) = labelity(i,chLabels);
                      end
-                     
+
                      set(h,'FontSize', vFontSize,'FontWeight','bold', ...
                            'FontName', 'Arial') %, 'Helvetica-Narrow');
                      if ~isOctave()
                         h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
                      end
                   else
-                     
+
                   end
-                  
+
                case {4,5} % Log spectra + PDC2/DTF2
                   Ltmp = abs(getCij(L,r,s,nPlotPoints));
                   maxPDC = max([1 max(Ltmp)]);
-                  
+
                   % Power spectra
                   if flgPrinting(7) == 4     % Spectra + PDC2/DTF2
                      SStmp = SStmp/max(SStmp);
@@ -842,7 +2585,7 @@ for j = 1:nChannels
                      SStmp = log(SStmp);
                      SStmp = (SStmp-min(SStmp))/(max(SStmp)-min(SStmp));
                   end
-                  
+
                   [ax,h1,h2] = plotyy(h,w,SStmp,w,Ltmp);
                   set(h2,'Color',atrib2,'LineWidth',vLineWidth);
 
@@ -856,7 +2599,7 @@ for j = 1:nChannels
                         plot(w,abs(getCij(Lpatnaik,r,s,nPlotPoints)), ...
                            atrib,'LineWidth',vPatnaikLineWidth);
                      end
-                     
+
                      if flgPrinting(3)
                         if flgPrinting(4)
                            if isempty(c.ci1)
@@ -868,15 +2611,15 @@ for j = 1:nChannels
                            flgSignif      = sum(~isnan(LTratmp));
                            indexSignif    = ~isnan(LTratmp);
                            indexNotSignif = isnan(LTratmp);
-                           
+
                            % CI plotting on main diagonal for PDC or DTF
                            plotCI(flgPrinting,flgSignif,w,r,s,Ltmp, ...
                                            L2vupper,L2vlower,nPlotPoints, ...
                                            indexNotSignif,vPatnaikLineWidth, ...
                                            versionNumberMatlab);
-                           
+
                         end % flgPrinting(4) CI
-                        
+
                         if flgScale == 1
                            yTick = [0 .5 1];
                            if i == 1 || i == nChannels
@@ -888,7 +2631,7 @@ for j = 1:nChannels
                         end
                      end % flgPrinting(3) Significant PDC2/DTF2
                   end  % c.alpha ~= 0
-                  
+
                   if j == 2
                      if flgPrinting(7) == 4
                         hh = ylabel('Spectra [a.u.]');
@@ -903,9 +2646,9 @@ for j = 1:nChannels
                      end
                      set(hh,'Position',pos,'FontSize', vFontSize);
                   end
-                  
+
                   ylim  = maxPDC * kylim;
-                  
+
                   set(h1,'LineWidth',vLineWidth,'Color',[0  0 0.7]);
                   set(h2,'LineWidth',vLineWidth,'Color',[0  1   0]);
                   yTick = [0 .5 1.0];
@@ -930,25 +2673,25 @@ for j = 1:nChannels
                      ax(1).YRuler.TickLabelGapOffset = vTickLabelGapOffset;
                      ax(2).YRuler.TickLabelGapOffset = vTickLabelGapOffset;
                   end
-                  
+
                   hold(ax(1), 'all'); hold(ax(2), 'all');
-                  
+
                   plot(h,w,Ltmp,'Color',atrib2,'LineWidth',vLineWidth);
                   if c.alpha ~= 0
                      plot(ax(2),w,LTratmp,'Color',atrib1,'LineWidth',vLineWidth);
                   end
-                  
-                  
+
+
                   hold on
                   %            grid on % For plots along the main diagonal.
                   ylim  = kylim;
-                  
+
                   set(gca,'Box'         , 'on'     , ...
                           'TickDir'     , 'in'     , ...
                           'TickLength'  , [.02 .02], ...
                           'XMinorTick'  , 'off'    , ...
                           'YMinorTick'  , 'off');
-                  
+
                   set(ax(1),'XLim',[w_min w_max], ...
                             'XTick',[0 .1 .2 .3 .4 .5],'XTickLabel',[' '],...
                             'YLim',ylim); %,'YTick',[]);
@@ -957,24 +2700,24 @@ for j = 1:nChannels
                      set(ax(2),'XLim',[w_min w_max],'XTick',[0 .1 .2 .3 .4 .5],...
                         'XTickLabel',[' '],'YLim', ylim);
                   end
-                  
+
                   set(h, 'Color', 0.9*[1 1 1],'layer','bottom'); % Background color
                   set(h, 'TickLength', [.02 .02]);
                   if j == nChannels
                      hxlabel(j) = labelitx(j,chLabels);
                   end
-                  
+
                   set(h,'XTickLabel',[' ';' ';' ';' ';' ';' ']);
-                  
+
                   if j == 1 && (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
                      hylabel(i) = labelity(i,chLabels);
                   end
-                  
+
                   if c.alpha ~= 0
                      plot(w,LTratmp,'Color',atrib1,'LineWidth',vLineWidth);
                   end
-                  
-                  
+
+
                   if flgScale == 1 || flgScale == 2  % *****
                      yTick = [0 .5 1];
                      if i == 1 || i == nChannels
@@ -985,13 +2728,13 @@ for j = 1:nChannels
                      set(h,'YTick',yTick,'YTickLabel',yTickLabel);
                   end
             end
-            
+
             if j == nChannels
                hxlabel(j) = labelitx(j,chLabels);
             end
-            
+
             set(h,'XTickLabel',[' ';' ';' ';' ';' ';' ']);
-            
+
             if j == 1 && (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
                hylabel(i) = labelity(i,chLabels);
             end
@@ -1004,14 +2747,14 @@ for j = 1:nChannels
             else
                yTickLabel = [' ';' ';' '];
             end
-            
+
          else % if flgPrinting(7) == 0 Main Diagonal w/o subplots
             % Label last column variable or channel
             if j == nChannels
                hxlabel(j) = labelitx(j,chLabels);
             end
          end % if flgPrinting(7) ~= 0
-         
+
 % ==============================================================================
 %     PDC2 and Coh2 plotting - Off diagonal subplots
 % ==============================================================================
@@ -1045,13 +2788,13 @@ for j = 1:nChannels
                flgSignifColor = 0;
             end
             grayline = 0.71;
-            
+
             switch flgSignifColor
                case 0
                   atrib1 = [0 0 0];  %black line
                   atrib2 = [0 0 0];  %black line
                case 1
-                  atrib1 = [0 0 0];  % 1: black / gray -> significant 
+                  atrib1 = [0 0 0];  % 1: black / gray -> significant
                                      %                     /not signif PDC2/DTF2
                   atrib2 = grayline*[1 1 1];  %gray line
                case 2
@@ -1067,13 +2810,13 @@ for j = 1:nChannels
                   atrib1 = [0 0 0];  % 5: black        "
                   atrib2 = [0 1 0];  %    green ->      "
             end % switch flgSignifColor
-            
+
             plot(h,w,Ltmp,'Color',atrib2,'LineWidth', vLineWidth);
             ax(1) = gca;
             ax(2) = ax(1);
             grid off
             hold on
-            
+
             if c.alpha ~= 0
                if isempty(c.ci1)
                   maxCI = max(Ltmp);
@@ -1106,34 +2849,34 @@ for j = 1:nChannels
                      ylim = maxPDC*kylim;
                      maxValue = maxPDC;
                   end
-                  
+
                case {0,2,3,4} % [0 max(PDC2)]/[0 1]/[0 .1]/[0 .01]
                   %ytickformat('.%02d');
                   switch upper(flgMax)
                      case 'PDC'
                         maxValue = maxPDC;
-                        
+
                      case 'THR'
                         if flgPrinting(2)
                            maxValue = max([maxThr maxPDC]);
                         else
                            maxValue = maxPDC;
                         end
-                        
+
                      case 'CI'
                         if flgSignif && flgPrinting(4)
                            maxValue = max([maxCI maxPDC]);
                         else
                            maxValue = maxPDC;
                         end
-                        
+
                      case 'COH'
                         if flgPrinting(6)
                            maxValue = max([maxCoh maxPDC]);
                         else
                            maxValue = maxPDC;
                         end
-                        
+
                      case 'TCI'
                         if (flgSignif && flgPrinting(4)) && flgPrinting(2)
                            maxValue = max([maxPDC maxThr maxCI]);
@@ -1144,7 +2887,7 @@ for j = 1:nChannels
                         else
                            maxValue = maxPDC;
                         end
-                        
+
                      case 'ALL'
                         if (flgSignif && flgPrinting(4)) && flgPrinting(2) ...
                                                                && flgPrinting(6)
@@ -1236,7 +2979,7 @@ for j = 1:nChannels
             switch flgColor
                case 0
                   % White background.
-                  
+
                case 1
                   if maxValue < 0.001
                      shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], ...
@@ -1257,7 +3000,7 @@ for j = 1:nChannels
                      shadedplot([w_min w_max],[0.0 0.0],[0.01 0.01], ...
                         0.8*[1 0.7 1]);
                   end
-                  
+
                case 2
                   if maxValue < 0.001
                      shadedplot([w_min w_max],[0.01 0.01],[0.1 0.1], ...
@@ -1279,11 +3022,11 @@ for j = 1:nChannels
                         0.75*[1 1 1]);
                   end
             end % switch flgColor
-            
 
-            
+
+
          else % flgPrinting(1) == 0
-%             
+%
 %             disp('In test 2 ...')
 
             if exist('ylim') ~= 1,
@@ -1296,9 +3039,9 @@ for j = 1:nChannels
                yTickLabel = [' ';' ';' '];
             end
          end % if flgPrinting(1)
-         
+
          grid off
-         
+
 %===============================================================================
 % Labeling axes, and set x- y-axis limits, x- yTickLabels, FontSize
 % ==============================================================================
@@ -1361,7 +3104,7 @@ for j = 1:nChannels
                      if ~isOctave()
                         h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
                      end
-               
+
                if flgScale == 2
                   set(h,'YTick',yTick,'YTickLabel',yTickLabel, ...
                      'FontSize', vFontSize,'FontWeight','bold', ...
@@ -1399,7 +3142,7 @@ for j = 1:nChannels
                    'XTick',[0 .1 .2 .3 .4 .5], ...
                    'XTickLabel',[' ';' ';' ';' ';' ';' '], ...
                    'FontSize', vFontSize,'FontWeight','bold', ...
-                   'FontName','Arial');         
+                   'FontName','Arial');
             end
             if (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
                hylabel(i) = labelity(i,chLabels);
@@ -1415,7 +3158,7 @@ for j = 1:nChannels
                   'FontName','Arial');
          end % i == nChannels
          % Label axes; set x- y-axis limits, x- yTickLabels, FontSize
-         
+
          if ~isOctave()
             h.YRuler.TickLabelGapOffset = vTickLabelGapOffset;
          end
@@ -1423,7 +3166,7 @@ for j = 1:nChannels
             set(hylabel(i),'Rotation',70);
          end
          hold on
-         
+
 % ==============================================================================
 % Plotting lower and upper bound limits of confidence interval
 % ==============================================================================
@@ -1447,15 +3190,15 @@ for j = 1:nChannels
                plot(h,w,LTratmp,'Color',atrib1,'LineWidth',vLineWidth);
             end
          end
-         
+
          if flgPrinting(2)
             atrib = 'kREPLACE_WITH_DASH_DASH'; % Patnaik significance level in black line
             plot(w,abs(getCij(Lpatnaik,r,s,nPlotPoints)),atrib, ...
                'LineWidth',vPatnaikLineWidth);
          end
-         
+
 % ==============================================================================
-% GCT p-values
+% Print GCT p-values above subplot
 % ==============================================================================
 %
          if r ~= s
@@ -1476,7 +3219,7 @@ for j = 1:nChannels
                               'HorizontalAlignment','right')
                         else
                            text(vaxis(2),1.1*(vaxis(4)-vaxis(3))+vaxis(3), ...
-                              sprintf('%0.2g',pvaluesgct(r,s)), ...
+                              sprintf('%0.3g',pvaluesgct(r,s)), ...
                               'FontSize',pValuesFontSize,'FontWeight','bold', ...
                               'Color',0.6*vMarkerColor, ...
                               'HorizontalAlignment','right')
@@ -1486,7 +3229,7 @@ for j = 1:nChannels
                      if isfield(c,'pvaluesgct') && (flgPrinting(5) == 1 || ...
                                                     flgPrinting(5) == 3)
                         text(vaxis(2),1.1*(vaxis(4)-vaxis(3))+vaxis(3), ...  % 0.6*vaxis(2)
-                             sprintf('%0.2g',pvaluesgct(r,s)), ...
+                             sprintf('%0.3g',pvaluesgct(r,s)), ...
                              'FontSize',pValuesFontSize,'FontWeight','bold', ...
                              'Color',[0 .4 0],'HorizontalAlignment','right')
                      end
@@ -1494,7 +3237,7 @@ for j = 1:nChannels
                end
             end  %strrep(num2str(pvaluesgct), '0.', '.')
          end % GCT p-values
-         
+
       end % PDC2 and squared coherence
    end  % Subplot-layout row target channels loop for i = 1:nChannels
 end % Subplot-layout column source channels loop for j = 1:nChannels
@@ -1507,21 +3250,41 @@ if fs == 1,
    strXsuplabel = 'Frequency';
 else
    strXsuplabel = 'Frequency (Hz)';
-end   
+end
 
+[ax1,h1] = suplabel(strXsuplabel,'x'); %,supAxes);
+pos = get(ax1,'Position');
 
-[~,h1] = suplabel(strXsuplabel,'x',supAxes);
-set(h1,'FontWeight','bold', 'FontSize',12);
-pos = get(h1,'Position');
+switch computer
+   case 'PCWIN64'
+      set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
+%       pos(2) = -0.03;
+      pos(2) = pos(2) + 0.035; %dpos2           % 0.0545 % 0.025
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
+      set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
+%       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
+      pos(2) = pos(2) + 0.025; %dpos2           % 0.0545 % 0.025
+   case 'MACI64'
+      set(h1,'FontWeight','bold', 'FontSize',14,'FontName','Arial');
+      %        dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
+      %      pos2 = pos(2)
+      pos(2) = pos(2) + 0.010;
+      %       pos(2) = pos(2) + 0.025;
+      %  pos(2) = pos(2) - .025; % dpos2/3;
+      % save maci64_suplabelx h1 pos
+   otherwise
+      disp('otherwise')
+      %nop
+end
 
-pos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
-pos(2) = pos(2) + pos2;   % 0.0545 % 0.025
-
-set(h1,'Position',pos);    % Adjust ylabel position
-
+if ~isOctave()   
+   set(ax1,'Position',pos);    % Adjust xlabel position
+else
+   set(ax1,'Position',pos);    % Actually suplabel does not work in Octave   
+end
 % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
 if flgPrinting(1) % PDC2 or DTF2
-   
+
    % Main y-axis type of measure DFT, PDC, Coh or SS labeling
    %
    if strcmp(flgType,'DTF')
@@ -1549,60 +3312,72 @@ if flgPrinting(1) % PDC2 or DTF2
             pType = '_{i}PDC';
          case 'ratio'
             pType = 'iPDC/gPDC Ratio';
-         otherwise
+        otherwise
             error('Unknown metric.')
       end
    end
-   
+
    switch lower(flgPrint)
       case 'screen'
          switch metric
             case 'euc'
-               [~,h2] = suplabel(['{\mid\' gType ...
+               [ax2,h2] = suplabel(['{\mid\' gType ...
                              '_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'],'y',supAxes);
             case 'diag'
-               [~,h2] = suplabel(['{\mid{_{\it{g}}}\' gType ...
+               [ax2,h2] = suplabel(['{\mid{_{\it{g}}}\' gType ...
                              '_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'],'y',supAxes);
             case 'info'
-               [~,h2] = suplabel(['{\mid{_i}\' gType ...
+               [ax2,h2] = suplabel(['{\mid{_i}\' gType ...
                              '_{\it{{i}{j}}}{(\lambda)\mid}^{2}}'],'y',supAxes);
             case 'ratio'
-               [~,h2] = suplabel(['i' flgType ' to g' flgType ' Ratio'],...
+               [ax2,h2] = suplabel(['i' flgType ' to g' flgType ' Ratio'],...
                                   'y',supAxes);
             otherwise
                error('Unknown metric.')
          end
       otherwise %Print
-         [~,h2] = suplabel(['{|' pType '(\lambda)|}^{2}'],'y',supAxes);
+         [ax2,h2] = suplabel(['{|' pType '(\lambda)|}^{2}'],'y',supAxes);
          set(h2,'FontWeight','bold', 'FontSize',12);
-         pos = get(h2,'Position');
-         pos(1) = pos(1) + 0.020;   % 0.0545
-         set(h2,'Position',pos);    % Adjust ylabel position
+         pos = get(ax2,'Position');
+         pos(1) = pos(1) + 0.030;   % 0.0545
+         set(ax2,'Position',pos);    % Adjust ylabel position
    end
 elseif flgPrinting(6)
    switch lower(flgPrint)
       case 'screen'
-         [~,h2] = suplabel(['{|\textbf{Coh}_{\it{{i}{j}}}{(\lambda)|}^{2}}'],...
+         [ax2,h2] = suplabel(['{|\textbf{Coh}_{\it{{i}{j}}}{(\lambda)|}^{2}}'],...
                             'y',supAxes);
       otherwise %Print
-         [~,h2] = suplabel(['{|Coh(\lambda)|}^{2}'],'y',supAxes);
+         [ax2,h2] = suplabel(['{|Coh(\lambda)|}^{2}'],'y',supAxes);
          set(h2,'FontWeight','bold', 'FontSize',12);
-         pos = get(h2,'Position');
+         pos = get(ax2,'Position');
          pos(1) = pos(1) + 0.020;   % 0.0545
-         set(h2,'Position',pos);    % Adjust ylabel position
+         set(ax2,'Position',pos);    % Adjust ylabel position
    end
 elseif flgPrinting(7)
    switch lower(flgPrint)
       case 'screen'
-         [~,h2] = suplabel(['{|SS(\lambda)|}'],'y',supAxes);
+         [ax2,h2] = suplabel(['{|SS(\lambda)|}'],'y',supAxes);
       otherwise %Print
-         [~,h2] = suplabel(['SS(\lambda)|'],'y',supAxes);
+         [ax2,h2] = suplabel(['SS(\lambda)|'],'y',supAxes);
          set(h2,'FontWeight','bold', 'FontSize',12);
-         pos = get(h2,'Position');
+         pos = get(ax2,'Position');
          pos(1) = pos(1) + 0.020;   % 0.0545
-         set(h2,'Position',pos);    % Adjust ylabel position
+         set(ax2,'Position',pos);    % Adjust ylabel position
    end
 end
+
+%%
+% Change y-LABEL font size
+switch computer
+   case 'PCWIN64'
+      %nop
+   case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
+
+   case 'MACI64'
+      set(h2,'FontSize',16)
+end
+
 
 % ==============================================================================
 % Fine adjustment of axis labels positions.
@@ -1610,27 +3385,24 @@ end
 %
 for k = 1:nChannels
    set(hxlabel(k),'Units','normalized');
-   
+
    if (flgPrinting(1) ~= 0 || flgPrinting(6) ~= 0)
       set(hylabel(k),'Units','normalized');
       pos = get(hylabel(k),'Position');
-      pos(1) = -0.135*nChannels/3;
+      pos(1) = -0.135*nChannels/4;
       set(hylabel(k),'Position',pos);
    end
-   
+
    pos = get(hxlabel(k),'Position');
-   pos(2) = -0.145*nChannels/3;
+   pos(2) = -0.145*nChannels/4;
    set(hxlabel(k),'Position',pos);
 end
 
 end
 
 
-% ==============================================================================
-%              Local functions
-% ==============================================================================
-
-% x-axis labeling function
+%% labelitx
+%      x-axis labeling function
 %
 function [hxlabel] = labelitx(j,chLabels) % Labels x-axis plottings
 if isOctave()
@@ -1639,7 +3411,7 @@ else
    switch computer
       case 'PCWIN64'
          vFontSize = 10;
-      case 'GLNXA64'
+      case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
          vFontSize = 10;
       case 'MACI64'
          vFontSize = 12;
@@ -1656,14 +3428,13 @@ else
                'FontName','Arial');
 end
 
-
 pos = get(hxlabel,'Position');
-pos(2) = pos(2) + 0.055;   % 0.0545
+pos(2) = pos(2) + 0.085;   % 0.0545
 set(hxlabel,'Position',pos);
 
 end
 
-% ==============================================================================
+%% latelity 
 % y-axis labeling function
 %
 function [hylabel] = labelity(i,chLabels) % Labels y-axis plottings
@@ -1673,7 +3444,7 @@ else
    switch computer
       case 'PCWIN64'
          vFontSize = 10;
-      case 'GLNXA64'
+      case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
          vFontSize = 10;
       case 'MACI64'
          vFontSize = 12;
@@ -1690,13 +3461,16 @@ else
 end
 
 pos = get(hylabel,'Position');
-pos(1) = pos(1) + 0.0545;   % 0.0545
+if isOctave()
+   pos(1) = pos(1) - 0.0545;   % 0.0545
+else
+   pos(1) = pos(1) + 0.0845;   % 0.0545
+end
 set(hylabel,'Position',pos)
-
 end
 
-% ==============================================================================
-% Confidence Interval plot limits
+%% plotci
+%      Plot upper and lower confidence interval limits
 %
 function plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, ...
                nPlotPoints,indexNotSignif,vPatnaikLineWidth,versionNumberMatlab)
@@ -1704,23 +3478,23 @@ function plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, ...
 if flgPrinting(4) >= 2 % Plot error bar
    if flgPrinting(4) == 3
       kstep = 2; % Errorbar spacing parameter
-   elseif flgPrinting(4) == 4 
+   elseif flgPrinting(4) == 4
       kstep = round(length(w)/32); % Limiting number of error bar on x-axis
       %                     % to 32.
    elseif flgPrinting(4) == 5
       kstep = round(length(w)/16); % Limiting number of error bar on x-axis
-      %                     % to 16.      
+      %                     % to 16.
    end
-   
+
    L2vuppertmp = abs(getCij(L2vupper,r,s,nPlotPoints));
    L2vuppertmp(indexNotSignif) = NaN;
    L2vlowertmp = abs(getCij(L2vlower,r,s,nPlotPoints));
    L2vlowertmp(indexNotSignif) = NaN;
-   
+
    Ltmp2 = Ltmp; %= = abs(getCij(L,r,s,nPlotPoints));
    Ltmp2(indexNotSignif) = NaN;
    varPDC2upper = L2vuppertmp - Ltmp2;
-   
+
    % Sparsed error bar plotting for confidence interval
    if flgPrinting(4) == 2
       web = 1:length(w);
@@ -1730,9 +3504,9 @@ if flgPrinting(4) >= 2 % Plot error bar
    b = zeros(length(web),2,1);
    b(:,1,1) = varPDC2upper(web);
    b(:,2,1) = varPDC2upper(web);
-   
+
    Nweb = length(web);
-   
+
    if flgPrinting(4) == 2  % Confidence interval with shadeplotting
       web = 1:length(w);
       indexTemp = ones(1,Nweb);
@@ -1745,12 +3519,12 @@ if flgPrinting(4) >= 2 % Plot error bar
       indexNotNaN = find(webbDiff > 1);
       %webbDiffIndex = webb(webbDiff(1:end-1) > 1);
       nDiff2 = sum(webbDiff > 1);
-      
+
       if nDiff2 ~= 0
          for kDiff = 1:nDiff2-1
             indexPlotVar0   = webb(indexNotNaN(kDiff));
             indexPlotVarEnd = webb(indexNotNaN(kDiff+1)-1);
-            
+
             webbIndexTemp = web(indexPlotVar0:indexPlotVarEnd);
             wtmp = w(webbIndexTemp);     wtmp = [wtmp(1) wtmp];
             ytmp = Ltmp(webbIndexTemp);  ytmp = [ytmp(1); ytmp];
@@ -1763,7 +3537,7 @@ if flgPrinting(4) >= 2 % Plot error bar
          btmp = b(webb,:,:); btmp = [[0 0]; btmp];
          hE = boundedline(wtmp,ytmp,btmp(:,1),'-k','alpha'); % Transparent patch
       end
- 
+
    else % Confidence interval with error bars
       if isOctave()
          hE = errorbar(w(web),Ltmp(web),varPDC2upper(web));
@@ -1777,15 +3551,15 @@ if flgPrinting(4) >= 2 % Plot error bar
          end
       end
    end
-   
+
    if exist('hE','var')
       set(hE,'LineWidth',1,'color',[0 0 0]); %[0.4 0.4 0.4]);
    end
-   
+
 else  % Plot confidence interval with gray dashed-line
    if flgPrinting(4) && flgSignif
       atrib = 'kREPLACE_WITH_DASH_DASH';
-      
+
       % Lower-bound confidence interval limits
       tmp = getCij(L2vlower,r,s,nPlotPoints);
       % lower-bound can be negative.

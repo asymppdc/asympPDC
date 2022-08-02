@@ -1,12 +1,13 @@
-%PDC analysis getting started template file
+%% PDC or DTF analysis getting started template file
 %
-% Edit this file to analyze your data. You might want to choose analysis
-% parameters followed by comment containing "<***>". Check bellow.
+% Follow and edit this template to set up analysis or  your data. You might
+% want to choose analysis parameters followed by comment containing
+% "<***>". Check bellow.
 %
 % Some important input and output parameters and variables:
 % input:
-%        u     - data in rows
-%        fs    - Sampling frequency
+%        u     - time series data  in row-wise orientation
+%        fs    - Sampling frequency (=1 for normalized frequency)
 %        maxIP - externally defined maximum IP
 %        alg   - for algorithm (1: Nutall-Strand),(2: mlsm) ,
 %                              (3: Vieira Morf),  (4: ARfit)
@@ -15,40 +16,42 @@
 %                                   4: FPE, 5: fixed order in MaxIP
 %        alpha  -  PDC test significance level
 %
-% output: c struct variable from asymp_pdc or asymp_dtf routine.
-%
-%         c.pdc2 - squared original/generalized/information PDC
+% output: c struct variable from asymp_pdc() or asymp_dtf() function
+%         required fields:
+%         c.{pdc2, dtf2} - squared original/generalized/information PDC
 %         c.th -  threshold level by Patnaik approximation
-%         c.pdc_th - above threshold pdc values otherwise equal NaN
-%         c.ic1,c.ic2 - superior and inferior confidence interval
+%         c.{pdc_th,dtf_th} - above threshold pdc2 or dtf2 values otherwise equal NaN
+%         c.ci1,c.ci2 - superior and inferior confidence interval
 %         c.p - VAR model order
 %         c.SS - Power spectrum
-%         c.coh - coherece function
+%         c.coh2 - coherece function
 
 
 %===========================#
 % Times series for analysis /
 %===========================#
-% u     - data in rows.
+% u     - time series data in rows.
 %         The variable u must contain the time series
-%         For instance, if flgExample = 1 the template file will analyze a
+%         In this template, if flgExample = 1 the template file will analyze a
 %         5-variable Gaussian independent noise processes.
 
 format compact
 clear all; clc
 
+%% Examples 
+
 % Choose Example 1 == Five independent Gaussian random variables model
 %                2 == Sunspot-melanoma time series
 %                3 == Baccala & Sameshima (2001) 5-variable linear model
 %                4 == Takahashi(2008) Thesis' example model                
-flgExample = 4;
+flgExample = 3;
 
 disp('======================================================================');
 disp('============= PDC analysis getting started template ==================')
 disp('======================================================================');
 
 switch flgExample
-   case 1,
+   case 1
       u=randn(2000,5);    %<***> Example (1)
       disp('            Random Independent Process with 5 variables')
       disp('======================================================================');
@@ -60,103 +63,127 @@ switch flgExample
       disp('======================================================================');
    case 3
       u=baccala2001a_ex5data(2000);
-   case 4,
+   case 4
       u=takahashi_thesis_dat(200);
    otherwise
       error('Wrong example selection.')
-end;
+end
 
 fs = 1; %<***> Sampling frequency
 
-[nSegLength,nChannels]=size(u);
-if nSegLength < nChannels, error('The data might be transposed.'); end;
+%%
+% Checking structure of input time series u
+[nChannels,nSegLength] =size(u);
+if nChannels > nSegLength
+   disp('The data might be transposed.');  
+   u = u.';
+   [nChannels,nSegLength]=size(u);
+end
 
 %===========================#
 %  Channel identification   /
 %===========================#
 
 switch flgExample
-  case 1,
+  case 1
     chLabels  = {'x_1';'x_2';'x_3';'x_4';'x_5'}; %<***> Example (1)
     strTitle2 = 'Five independent Gaussian noises '; %Title info
   case 2
     chLabels  = {'Sunspot';'Melanoma'}; %<***> Example (2)
     strTitle2 = 'Sunspot-Melanoma 1936-1972 ';
-  case 3,
+  case 3
     chLabels  = [];                     %<***> Example (3)
     strTitle2 = 'Five-variable example ';
-  case 4,
-    chLabels  = {'X'; 'Y'; 'Z'};        % Takahashi thesis example
+  case 4
+    chLabels  = {'X'; 'Y'; 'Z'};        % Takahashi's thesis example
     strTitle2 = 'Takahashi 2008 (Thesis) example';
-end;
+end
 
 flgLabels = ~isempty(chLabels);
-if flgLabels,
+if flgLabels
   if nChannels ~= max(size(chLabels))
     error('Numbers of labels and channels do not match.')
-  end;
-end;
+  end
+end
 
-%==========================================#
-%       Pre-processing Action flags        /
-%==========================================#
+%% Selecting Data Pre-processing Action flags
+%
+
 flgDetrend = 1;     %<***> Usually it's recommended to detrend the time series.
 
-flgStandardize = 0; %<***> For PDCn estimation normalization has no effect.
-if flgStandardize,
+flgStandardize = 0; %<***> For gPDC and iPDC estimates normalization has no effect.
+if flgStandardize
   disp('Be aware that the data standardization does not affect the generalized')
   disp('   and information PDC/DTF estimates nor its statistical results, ')
-  disp('  so that data standardization is not necessary in these measures.')
-end;
+  disp('   so that data standardization is not necessary in these measures.')
+end
 
-%===========================#
-%    Analysis parameters    /
-%===========================#
+
+%% Set up Multivariate AutoRegressive (MAR) estimation algorithm parameters
+%
+
+%%
+% Choose one of algorithm for MAR model estimation
+% alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square
+% method),
+%                     (3: Vieira Morf),  (4: QR artfit)
+
+alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, our experience indicate that
+         %      N-S seems to be a good and robust estimation algorithm.
+
+%% 
+% MAR model order selection criteria
+%
+% criterion - for AR order choice
+%  1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;
+%  4: FPE, 5: fixed MAR order given by MaxIP bellow
+
+criterion = 1; %<***> AIC, Akaike information criterion (Our preferred one 
+               %      along with BIC)
+
+maxIP = 30; % maxIP - externally defined maximum IP %<***>
+
+%%
+% Adequacy of MAR model estimate
+
+VARadequacy_signif = 0.05; % VAR model adequacy significance level
+
+
+%% PDC or DTF Analysis parameters
+%
+
+%%
+% Selecting number of frequency points
+
 nFreqs = 128; %<***> number of points on frequency scale; 
               %      recommended to use either 64 or 128.
+%%
+% Selection of metric used in PDC or DTF estimate
 
 metric = 'info';
 %        metric   'euc'  - Euclidean     -> original PDC or DTF;
 %                 'diag' - diagonal      -> gPDC or DC;
 %                 'info' - information   -> iPDC or DTF;
 
-maxIP = 30; % maxIP - externally defined maximum IP %<***>
+%%
+% Significance level for PDC2 null hypothesis testing, GCT and iGCT 
 
-%===========================#
-%    MAR algorithm          /
-%===========================#
-% Choose one of algorithm for MAR estimation
-% alg   - for algorithm  (1: Nutall-Strand),(2: mlsm) ,
-%                        (3: Vieira Morf),  (4: QR artfit)
-alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, it seems to be a good 
-         %      and robust method.
-
-%============================#
-%MAR order selection criteria/
-%============================#
-% criterion - for AR order choice
-%  1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;
-%  4: FPE, 5: fixed order in MaxIP
-criterion = 1; %<***> AIC, Akaike information criterion (Our preferred one)
-
-%==================
-alpha = 0.01;        %<***> Significance level for PDC null hypothesis 
-                     % testing,
+alpha = 0.01;        %<***> Significance level for PDC2 null hypothesis testing,
                      %
                      % Note: if alpha == 0, no asymptotic statistics 
                      % calculation is performed and ASYMP_PDC (see bellow) 
                      % will only returns PDC. This option is interesting 
                      % if you want faster PDC calculation.
-                     %
+                     
 gct_signif = alpha;  % Granger causality test significance. Choose other 
                      % value if you have good reason for adopting different 
                      % one from frequency domain statistical testing. 
+                     
 igct_signif = alpha; % Instantaneous Granger causality test significance level.
-VARadequacy_signif = 0.05; % VAR model adequacy significance level
 
-%==========================================================================
-%                    Plotting options
-%==========================================================================
+
+%% Pretty-plot option parameters for xplot and xplot_pvalues function
+%
 
 flgScale = 2; % 1: [0 1] / {if max(PDC2/DTF2) > 1}:[0 max(PDC2/DTF2)]
 %               2: [0 {if max(PDC/DTF2) > 1}:max(PDC/DTF2)]/[0 1]/[0 .1]/[0 .01]
@@ -164,7 +191,7 @@ flgScale = 2; % 1: [0 1] / {if max(PDC2/DTF2) > 1}:[0 max(PDC2/DTF2)]
 %               3: [0 max(PDC2/DTF2/Thr/CI/all)]
 %                                         based on flgMax (PDC2/DTF2/Thr/CI/all)
 %               4: [0 {max(PDC2/DTF2/Thr/CI/all) or round to {0.01 0.1 1.0}]
-%
+
 flgMax = 'all'; % {'PDC'|'DTF'|'Thr'|'CI'|'TCI'|'all'} measure used as upper limit
 %                for y-axis scales:
 %                    PDC|DTF - PDC2/DTF2 maximum value;
@@ -211,9 +238,10 @@ flgPrinting   =  [1 1 1 2 2 0 1]; % Example: Plot everything, except coh2.
 %          green  1-- {0:1} PDC2/DTF2 in green lines or black w/o statistics,
 %                           see flgSignifColor bellow for line color selection.
 
+w = fs*(0:(nFreqs-1))/2/nFreqs; % frequency scale
 
-w = fs*(0:(nFreqs-1))/2/nFreqs;
-w_max = fs/2; %<***> Usually half of sampling frequency = Nyquist frequency
+% maximum frequency to plot in frequency domain measures
+w_max = fs/2; %<***> Usually half of sampling frequency, the Nyquist frequency
 
 
 %==========================================================================
@@ -227,21 +255,21 @@ w_max = fs/2; %<***> Usually half of sampling frequency = Nyquist frequency
 %==========================================================================
 
 
-% Determine time series length.
+% Determine time series length and check if data is row-wise organized.
 [nChannels,nSegLength]=size(u);
 if nChannels > nSegLength, u=u.'; 
-   [nChannels,nSegLength]=size(u);
-end;
+   [nChannels,nSegLength]=size(u); % Transpose if not.
+end
 
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 
 
@@ -260,11 +288,11 @@ switch alg
     disp('VAR estimation using Vieira-Morf algorithm.')
   case 4
     disp('VAR estimation using QR-Arfit algorithm.')
-end;
+end
 
-%============================#
-%MAR order selection criteria/
-%============================#
+%================================#
+%   MAR order selection criteria /
+%================================#
 switch criterion
    case 1
       disp('Model order selection criteria: AIC.')
@@ -278,32 +306,36 @@ switch criterion
       disp('Model order selection criteria: fixed order in maxIP.')
    otherwise
       error('Model order selection criteria: NOT IMPLEMENTED YET.')
-end;
+end
 
 %==========================================================================
-%                            VAR model estimation
+%    VAR model estimation
 %==========================================================================
 [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
 
-
 disp(['Number of channels = ' int2str(nChannels) ' with ' ...
-  int2str(nSegLength) ' data points; MAR model order = ' int2str(IP) '.']);
+       int2str(nSegLength) ' data points; MAR model order = ' int2str(IP) '.']);
 
 %==========================================================================
 %    Testing for adequacy of MAR model fitting through Portmanteau test
 %==========================================================================
-   h = 20; % testing lag
-   aValueVAR = 1 - VARadequacy_signif;
-   flgPrintResults = 1;
-[Pass,Portmanteau,st,ths]=mvarresidue(ef,nSegLength,IP,aValueVAR,h,...
+h = 20; % testing lag
+aValueVAR = 1 - VARadequacy_signif;
+flgPrintResults = 1;
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueVAR,h,...
                                                           flgPrintResults);
 
 %==========================================================================
-%         Granger causality test (GCT) and instantaneous GCT
+%         Granger causality test (GCT)
 %==========================================================================
-   flgPrintResults = 1;
-[Tr_gct, pValue_gct, Tr_igct, pValue_igct] = gct_alg(u,A,pf,gct_signif, ...
-                                                         flgPrintResults);
+flgPrintResults = 1;
+[Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
+
+%==========================================================================
+%         Instantaneous Granger causality test (iGCT)
+%==========================================================================
+flgPrintResults = 1;
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,gct_signif,flgPrintResults);
 
 %==========================================================================
 %            PDC, threshold and confidence interval calculation.
@@ -311,24 +343,25 @@ disp(['Number of channels = ' int2str(nChannels) ' with ' ...
 
 % if alpha == 0, no asymptotic statistics is performed. ASYMP_PDC returns
 % only the PDC. This option is much faster!!
-tic
-  c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
-toc
+
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+
+% If you want to print the Granger Causality Test p-values you need to
+% assign these values to c struct variable
+c.Tragct = Tr_gct;
+c.pvaluesgct = pValue_gct;
+
 %                    or 
-% c=asymp_dtf(u,A,pf,nFreqs,metric,alpha);
+% c=asymp_dtf(u,A,pf,nFreqs,metric,alpha); % for DTF analysis
 
-%  Two lines bellow are unnecessary as asymp_dtf and asymp_pdc already 
-%  calculate SS and coh.
-
-%Adding further analysis details in the figure title.
-%strTitle3 = ['[N=' int2str(nSegLength) '; IP=' int2str(c.p) ']'];
-% or
+%% Adding further analysis details to the figure title.
+%
 
 % strTitle3 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) '; ' ...
 %    datestr(now) ']'];
 strTitle3 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 
-% or leave emptied: strTitle3=[];
+% or leave it empty: strTitle3=[];
 
 %==========================================================================
 %              Matrix Layout Plotting of the Analysis Results
@@ -348,18 +381,71 @@ strWindowName = 'PDC/DTF/GCT Analysis Template Example';
 % light-purple-background shows very fine detail of small, usually not
 % significant PDCs. Try flgColor = 0 or 1, or both [0 1].
 
-for kflgColor = flgColor,
-   [h1,~,~] = xplot(strWindowName,c,...
-                    flgPrinting,fs,w_max,chLabels,kflgColor);
-  
+flgColor = [0 1];
+
+for kflgColor = flgColor
+   if kflgColor 
+       strWindowName = 'xplot FUNCTION **WITH** background scale color.';
+   else
+       strWindowName = 'xplot FUNCTION **WITHOUT** background scale color.';
+   end
+   
+   flgPrinting   =  [1 1 1 2 0 0 1];   
+   %           blue  | | | | | | 7-- {1} Spectra 1: Linear scale
+   %           gray  | | | | | 6-- {0} Without Coh2
+   %    dark-purple  | | | | 5-- {0} GCT 0: without
+   %    dashed-blue  | | | 4-- {2} Confidence interval 2: Shaded-plot
+   %            red  | | 3-- {1} Significant PDC2|DTF2 in red lines
+   %   dashed-black  | 2-- {1} Patnaik threshold level in black dashed-lines
+   %          green  1-- {1} PDC2 in green lines or black w/o statistics,
+
    [h2,~,~] = xplot(strWindowName,c,flgPrinting,fs,w_max,chLabels, ...
                                  kflgColor,flgScale,flgMax,flgSignifColor);
-   
-% The title suplabel command should (not sure) follow the dtf_xplot routine
-% In MacOS X, for flgPrinting(7) = 4 or 5, the main diagonal plotting
-% gets misaligned if suplabel with 't' option is used more than once.
    xplot_title(alpha,metric,'pdc',strTitle);
-end;
+   drawnow; shg; pause(3)
+
+   flgPrinting   =  [1 1 1 2 3 0 0];   
+   %           blue  | | | | | | 7-- {0} No plotting on main diagonal
+   %           gray  | | | | | 6-- {0} Without Coh2
+   %    dark-purple  | | | | 5-- {3} Print GCT 3: p-values + dot-mark significant GCT
+   %    dashed-blue  | | | 4-- {4} Confidence interval 2: Shaded-plot
+   %            red  | | 3-- {1} Significant PDC2|DTF2 in red lines
+   %   dashed-black  | 2-- {1} Patnaik threshold level in black dashed-lines
+   %          green  1-- {1} PDC2 in green lines or black w/o statistics,
+
+    [h2,~,~] = xplot(strWindowName,c,flgPrinting,fs,w_max,chLabels, ...
+                                 kflgColor,flgScale,flgMax,flgSignifColor);
+   xplot_title(alpha,metric,'pdc',strTitle);
+   drawnow; shg; pause(3) % Pause to allow figure visualization during analysis
+   
+end
+
+%==========================================================================
+%              Matrix Layout Plotting of PDC p-values 
+%==========================================================================
+% See xplot_p-values() function for more details
+%
+%   flgPrinting: [1 1 1 2 3 0 0];
+%           blue  | | | | | | 7-- {0:2} Spectra (0: wo; 1: Linear; 2: Log) 
+%                 | | | | | 6-- {} Not used
+%   dark-purple   | | | | 5-- {0:3} Mark significant GCT pairs + print p-values   
+%  or dark-green  | | | |          (0: w/o; 1: print p-values; 2: mark +GCT;
+%                 | | | |           3: print p-values + mark significant GCT)
+%    dashed-blue  | | | 4-- {0:2} Scale of p-values plots 1:linear; 2:log10
+%                 | | 3-- {} Not used
+%   dashed-black  | 2-- {0:1} Patnaik threshold level in black dashed-line
+%                 1-- {} Not used
+
+flgPrinting  =   [1 1 1 2 3 0 0];
+flgScale = 2; % y-axis scale for p-values: 1: linear [0 1] and log [0 -15];
+%                                          2: log y-axis according to 
+%                                             max(abs(pvalues_log10)) value
+%                                             [0 -5], [0 -10] or [0 -15]
+strWindow = ['xplot_p-values FUNCTION to plot PDC p-values in frequency domain'];
+
+[h3,~,~] = xplot_pvalues(strWindow,c,flgPrinting,fs,w_max,chLabels, ...
+                                     flgColor,flgScale);
+xplot_title(alpha,metric,strTitle)
 
 
 %======================= xplot ========================================
@@ -382,5 +468,5 @@ end;
 %              modulates the incidence of melanoma.
 %======================= dtf_xplot ========================================
 disp('======================================================================');
-disp('===========ANALYSIS_TEMPLATE SUCCESSFULLY FINISHED ===============')
+disp('============ ANALYSIS_TEMPLATE SUCCESSFULLY FINISHED =================')
 disp('======================================================================');

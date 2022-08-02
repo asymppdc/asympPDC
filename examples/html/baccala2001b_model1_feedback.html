@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Baccala &amp; Sameshima (2001b) 7-dimensional VAR[2] model with loop and feedback</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-25"><meta name="DC.source" content="baccala2001b_model1_feedback.m"><style type="text/css">
+      --><title>Baccala &amp; Sameshima (2001b) Model I: 7-dimensional VAR[2] model with loop and feedback</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="baccala2001b_model1_feedback.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Baccala &amp; Sameshima (2001b) 7-dimensional VAR[2] model with loop and feedback</h1><!--introduction--><p><b>*Description</b>*:</p><p>Baccala &amp; Sameshima. Overcoming the limitations of correlation analysis for many simultaneously processed neural structures, Progress in Brain Research, 130:33--47, 2001.</p><p><a href="http://dx.doi.org/10.1016/S0079-6123(01)30004-3">http://dx.doi.org/10.1016/S0079-6123(01)30004-3</a></p><p>See also:</p><div><ol><li>Koichi Sameshima, Daniel Y. Takahashi, Luiz A. Baccala. On the statistical performance of Granger-causal connectivity estimators. Brain Informatics (2015) 2:119?133.</li></ol></div><p><a href="http://dx.doi.org/10.1007/s40708-015-0015-1">http://dx.doi.org/10.1007/s40708-015-0015-1</a></p><p>Example Model 1 - 7-dimensional VAR[2] model with loop and feedback</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Data sample generation</a></li><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation Model I with feedback</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#5">Data pre-processing: detrending and normalization options</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="baccala2001b_model1_feedback_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#14">Generalized PDC estimation</a></li><li><a href="#15"><img src="baccala2001b_model1_feedback_eq04908713853873291132.png" alt="$|_{g}PDC|^2$"> Matrix-Layout Plot</a></li><li><a href="#16">Generalized DTF = DC estimation</a></li><li><a href="#17"><img src="baccala2001b_model1_feedback_eq07157287094885315677.png" alt="$|DC|^2$"> Matrix-Layout Plot</a></li></ul></div><h2 id="1">Data sample generation</h2><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
-</pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_baccala2001b_graph.png" alt=""> </p><p>Figure 2a from Baccala &amp; Sameshima. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><h2 id="3">Equation Model I with feedback</h2><p><img vspace="5" hspace="5" src="fig_baccala2001b_eq.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+  </style></head><body><div class="content"><h1>Baccala &amp; Sameshima (2001b) Model I: 7-dimensional VAR[2] model with loop and feedback</h1><!--introduction--><p><b>*Description</b>*: This is a toy model example that "mimicks local field potential measurements along hippocampal structures, is represented by the following set of linear difference equations with N = 7 structures", that is the  Example Model I - 7-dimensional VAR[2] model with loop and feedback from</p><p>Baccala &amp; Sameshima (2001b). Overcoming the limitations of correlation analysis for many simultaneously processed neural structures, Progress in Brain Research, 130:33--47.</p><p><a href="http://dx.doi.org/10.1016/S0079-6123(01)30004-3">http://dx.doi.org/10.1016/S0079-6123(01)30004-3</a></p><p>See also:</p><div><ol><li>Koichi Sameshima, Daniel Y. Takahashi, Luiz A. Baccala. On the statistical performance of Granger-causal connectivity estimators. Brain Informatics (2015) 2:119--133.</li></ol></div><p><a href="http://dx.doi.org/10.1007/s40708-015-0015-1">http://dx.doi.org/10.1007/s40708-015-0015-1</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Data sample generation</a></li><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation Model I with feedback</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#5">Data pre-processing: detrending and normalization options</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="baccala2001b_model1_feedback_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#14">Generalized PDC estimation</a></li><li><a href="#15"><img src="baccala2001b_model1_feedback_eq04908713853873291132.png" alt="$|_{g}PDC|^2$"> Matrix-Layout Plot</a></li><li><a href="#16">Generalized DTF = DC estimation</a></li><li><a href="#17"><img src="baccala2001b_model1_feedback_eq07157287094885315677.png" alt="$|DC|^2$"> Matrix-Layout Plot</a></li></ul></div><h2 id="1">Data sample generation</h2><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+</pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_baccala2001b_graph.png" alt=""> </p><p>Figure 2a from Baccala &amp; Sameshima. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><h2 id="3">Equation Model I with feedback</h2><p><img vspace="5" hspace="5" src="fig_baccala2001b_eq.png" alt=""> </p><p><b>Note</b>: "These equations are designed so that <img src="baccala2001b_model1_feedback_eq16346822256748622899.png" alt="$x_{1}(n)$"> behaves as an oscillator driving the other structures, either directly or indirectly, according to the diagram above. Note that the interaction between <img src="baccala2001b_model1_feedback_eq11373979961742959141.png" alt="$x_1{(n)}$"> and <img src="baccala2001b_model1_feedback_eq07833705429915406587.png" alt="$x_3(n)$"> is both via a direct path and via an indirect route through <img src="baccala2001b_model1_feedback_eq14931896062548354642.png" alt="$x_2(n)$">. The dynamics of the pair <img src="baccala2001b_model1_feedback_eq03738045709845216279.png" alt="$x_4(n)$"> and <img src="baccala2001b_model1_feedback_eq03539578249646585543.png" alt="$x_5(n)$"> is designed so that they jointly represent an oscillator, whose intrinsic characteristics are due to their mutual signal feedback but which are entrained to the rest of the structure via <img src="baccala2001b_model1_feedback_eq07833705429915406587.png" alt="$x_3(n)$">. To this structure it was added  a feedback from <img src="baccala2001b_model1_feedback_eq03539578249646585543.png" alt="$x_5(n)$"> to <img src="baccala2001b_model1_feedback_eq09118710831803441507.png" alt="$x_1(n)$">, which establishes a loop among structures 1 to 5. The signals <img src="baccala2001b_model1_feedback_eq13915937198332124764.png" alt="$x_6(n)$"> and <img src="baccala2001b_model1_feedback_eq08917953897962766897.png" alt="$x_7(n)$"> belong to a totally separate substructure where <img src="baccala2001b_model1_feedback_eq13915937198332124764.png" alt="$x_6(n)$"> is designed to generate oscillations at the same frequency as <img src="baccala2001b_model1_feedback_eq09118710831803441507.png" alt="$x_1(n)$">; <img src="baccala2001b_model1_feedback_eq08917953897962766897.png" alt="$x_7(n)$"> does not feedback anywhere." (Reproduzed and modified from Baccala &amp; Sameshima, 2001b)</p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
 N=nDiscard+nPoints; <span class="comment">% number of simulated points</span>
 
@@ -108,9 +108,9 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=112744.673037
-IP=2  vaic=106288.890092
-IP=3  vaic=106330.645819
+IP=1  vaic=112929.725149
+IP=2  vaic=106445.805678
+IP=3  vaic=106498.731213
  
 Number of channels = 7 with 2000 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -126,9 +126,10 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.0367347
-  st = 900.316
+(**) Poor MAR model fitting:
+                   Residues white noise hypothesis was rejected.
+Pass = 0.0428571
+  st = 961.119
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -143,20 +144,20 @@ flgPrintResults = 1;
 Connectivity matrix:
    NaN     0     0     0     1     0     0
      1   NaN     0     0     0     0     0
-     1     1   NaN     0     0     0     0
+     1     1   NaN     0     1     0     0
      0     0     1   NaN     1     0     0
      0     0     0     1   NaN     0     0
      0     0     0     0     0   NaN     0
      0     0     0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.5886    0.0457    0.2038         0    0.6678    0.6227
-         0       NaN    0.3919    0.8828    0.6471    0.0724    0.1621
-         0         0       NaN    0.3444    0.4626    0.1332    0.9021
-    0.4618    0.8741         0       NaN         0    0.5415    0.5994
-    0.7422    0.5640    0.4003         0       NaN    0.2316    0.0336
-    0.4573    0.6636    0.2263    0.0903    0.9156       NaN    0.1093
-    0.5538    0.2235    0.8024    0.6035    0.1506         0       NaN
+       NaN    0.1810    0.2640    0.1569         0    0.8529    0.9030
+         0       NaN    0.0514    0.6175    0.7906    0.8126    0.6407
+         0         0       NaN    0.4549    0.0064    0.4822    0.6647
+    0.4664    0.9068         0       NaN         0    0.4747    0.6350
+    0.5718    0.1016    0.9394         0       NaN    0.7994    0.9173
+    0.4404    0.8757    0.6623    0.8295    0.0346       NaN    0.3655
+    0.1532    0.5356    0.7106    0.1274    0.8153         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -171,13 +172,13 @@ Instantaneous connectivity matrix:
      0     0     0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.7070    0.1684    0.7113    0.9933    0.0687    0.8741
-    0.7070       NaN    0.1656    0.1717    0.1664    0.9691    0.7585
-    0.1684    0.1656       NaN    0.5961    0.0681    0.8976    0.4123
-    0.7113    0.1717    0.5961       NaN    0.9092    0.3171    0.4123
-    0.9933    0.1664    0.0681    0.9092       NaN    0.8583    0.6028
-    0.0687    0.9691    0.8976    0.3171    0.8583       NaN    0.1632
-    0.8741    0.7585    0.4123    0.4123    0.6028    0.1632       NaN
+       NaN    0.7197    0.1380    0.6213    0.0347    0.1151    0.9774
+    0.7197       NaN    0.2374    0.5508    0.6635    0.4469    0.9848
+    0.1380    0.2374       NaN    0.7314    0.1354    0.9812    0.9651
+    0.6213    0.5508    0.7314       NaN    0.6944    0.3778    0.9488
+    0.0347    0.6635    0.1354    0.6944       NaN    0.7884    0.7367
+    0.1151    0.4469    0.9812    0.3778    0.7884       NaN    0.1852
+    0.9774    0.9848    0.9651    0.9488    0.7367    0.1852       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -186,20 +187,21 @@ Instantaneous Granger Causality test p-values:
 metric = <span class="string">'euc'</span>;
 alpha = 0.01;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
-</pre><h2 id="10"><img src="baccala2001b_model1_feedback_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 2 1 2]; <span class="comment">% overriding default setting</span>
+c.pvaluesgct = pValue_gct; <span class="comment">% Necessary for printing GCT</span>
+c.Tragct = Tr_gct;
+</pre><h2 id="10"><img src="baccala2001b_model1_feedback_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 1 2]; <span class="comment">% GCT+Coh2</span>
 flgColor = 0;
 w_max=fs/2;
 
 strTitle1 = [<span class="string">'7-dimensional linear VAR[3] Model I with feedback: '</span>];
-strTitle2 = [<span class="string">'[N='</span> int2str(nSegLength) <span class="string">'pts; IP='</span> int2str(c.p) <span class="string">'; '</span> <span class="keyword">...</span>
-   datestr(now) <span class="string">']'</span>];
+strTitle2 = [<span class="string">'[N='</span> int2str(nSegLength) <span class="string">'pts; IP='</span> int2str(c.p) <span class="string">']'</span>];
 strTitle =[strTitle1 strTitle2];
 
-strTask = <span class="string">'Baccala &amp; Sameshima (2001) Example 3'</span>;
+strTask = <span class="string">'Baccala &amp; Sameshima (2001b) Model I'</span>;
 [hxlabel hylabel] = xplot(strTask,c,<span class="keyword">...</span>
                           flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,strTask);
-</pre><img vspace="5" hspace="5" src="baccala2001b_model1_feedback_01.png" alt=""> <p>The spectral coherence are plotted in gray-line. You may notice that although the isolated structures 6 and 7 have power peak at the same frequency of remaining structures, they most likely will present low or no coherence with other structures. The red-lines indicate statistically significant PDC. You may also see occasionally spurious false positive connectivity inference which may occur in approximately equal to the level of significance chosen for the null hypothesis for non causality test, i.e. <img src="baccala2001b_model1_feedback_eq14221827199139923399.png" alt="$\alpha$">.</p><p>Theoretical PDC results from the original article, Baccala &amp; Sameshima (2001b) Figure 6b, from article.</p><p><img vspace="5" hspace="5" src="fig_baccala2001b_pdc_result.png" alt=""> </p><p>In this original article's figure the significant PDC is shown in shaded area, and the spectral coherence in gray-line.</p><h2 id="14">Generalized PDC estimation</h2><p>PDC analysis results will be saved in <b>d</b> structure. See asymp_pdc.m</p><pre class="codeinput">nFreqs = 128;
+xplot_title(alpha,metric,strTitle);
+</pre><img vspace="5" hspace="5" src="baccala2001b_model1_feedback_01.png" alt=""> <p><b>Notes</b>: The spectral coherences are plotted in gray-line. You may notice that although the isolated structures 6 and 7 have power peak at the same frequency of remaining structures, they will most likely be present with low or no coherence with other structures. The red-lines indicate statistically significant PDC. You may also see occasional spurious false-positive connectivity detection, which may occur in approximately equal probability to the level of significance chosen for the null hypothesis for non-causality test, i.e. <img src="baccala2001b_model1_feedback_eq14221827199139923399.png" alt="$\alpha$">.</p><p>Theoretical PDC results from the original article, Baccala &amp; Sameshima (2001b), Figure 6b reproduced here:</p><p><img vspace="5" hspace="5" src="fig_baccala2001b_pdc_result.png" alt=""> </p><p>In this original article's figure the significant |PDC|s are depicted in shaded areas, and the spectral coherence in black-lines.</p><h2 id="14">Generalized PDC estimation</h2><p>PDC analysis results will be saved in <b>d</b> struct variable. See asymp_pdc.m</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'diag'</span>;
 alpha = 0.01;
 d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
@@ -212,7 +214,7 @@ flgSignifColor = 3; <span class="comment">% red = significant, gree = nonsignifi
 
 [hxlabel,hylabel] = xplot(strTask,d,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,strTask);
+xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="baccala2001b_model1_feedback_02.png" alt=""> <h2 id="16">Generalized DTF = DC estimation</h2><p>DC analysis results are saved in <b>e</b> structure. See asymp_dtf.m</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'diag'</span>;
 alpha = 0.01;
@@ -226,28 +228,33 @@ flgSignifColor = 3; <span class="comment">% red = significant, gree = nonsignifi
 
 [hxlabel,hylabel] = xplot(strTask,e,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTask);
-</pre><img vspace="5" hspace="5" src="baccala2001b_model1_feedback_03.png" alt=""> <p>In this example with feedback loop, theoretically, all structures {1,2,3,4,5} should be able to reach each other, henceforth all DC between these set of structures should be significant. But false negative DC connectivity may occur more often for short simulation data segment.</p><div><ul><li>In the original article the amplitude of PDC/DTF has been plotted. Here we chose squared PDC, i.e. the xplot.m routine can only handle squared magnitude measures, <img src="baccala2001b_model1_feedback_eq06563705797252587072.png" alt="$|PDC|^2$">, <img src="baccala2001b_model1_feedback_eq15465123740211846091.png" alt="$|DTF|^2$">, <img src="baccala2001b_model1_feedback_eq07039071056066437425.png" alt="$|Coh|^2$">, as the asymptotic statistics is formulated in spectral coherence domain.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="baccala2001b_model1_feedback_03.png" alt=""> <p>In this example with feedback and closed-loop, theoretically, the structures {1,2,3,4,5} should be able to reach each other, henceforth all DC between these pairs of structures should be significant. But false negative DC connectivity may arise, more often for short simulation data segment.</p><div><ul><li>In the original article the amplitude of <tt>PDC</tt> or <tt>DTF</tt> was plotted. Here we chose to depict squared <tt>gPDC</tt> and <tt>DC</tt>, i.e. the xplot.m function was designed to only handle squared magnitude measures, <img src="baccala2001b_model1_feedback_eq06563705797252587072.png" alt="$|PDC|^2$">, <img src="baccala2001b_model1_feedback_eq15465123740211846091.png" alt="$|DTF|^2$"> --- as the asymptotic statistics were formulated for these measures ---, and <img src="baccala2001b_model1_feedback_eq07039071056066437425.png" alt="$|Coh|^2$"> the spectral coherence.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Baccala & Sameshima (2001b) 7-dimensional VAR[2] model with loop and feedback
+%% Baccala & Sameshima (2001b) Model I: 7-dimensional VAR[2] model with loop and feedback
 %
 % **Description**:
-%
-% Baccala & Sameshima. Overcoming the limitations of correlation analysis 
+% This is a toy model example that "mimicks local field potential
+% measurements along hippocampal structures, is represented by the
+% following set of linear difference equations with N = 7 structures",
+% that is the  Example Model I - 7-dimensional VAR[2] model with loop and
+% feedback from
+% 
+% Baccala & Sameshima (2001b). Overcoming the limitations of correlation analysis 
 % for many simultaneously processed neural structures, Progress in Brain 
-% Research, 130:33REPLACE_WITH_DASH_DASH47, 2001.
+% Research, 130:33REPLACE_WITH_DASH_DASH47.
 %
 % <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
+%
 %
 % See also:
 %
 % # Koichi Sameshima, Daniel Y. Takahashi, Luiz A. Baccala. On the
 % statistical performance of Granger-causal connectivity estimators. Brain
-% Informatics (2015) 2:119?133.
+% Informatics (2015) 2:119REPLACE_WITH_DASH_DASH133.
 %
 % <http://dx.doi.org/10.1007/s40708-015-0015-1>
 % 
-% Example Model 1 - 7-dimensional VAR[2] model with loop and feedback
 
 %% Data sample generation
 
@@ -262,6 +269,20 @@ clear; clc; format compact; format short
 %% Equation Model I with feedback
 %
 % <<fig_baccala2001b_eq.png>>
+%
+% *Note*: "These equations are designed so that $x_{1}(n)$ behaves as an
+% oscillator driving the other structures, either directly or indirectly,
+% according to the diagram above. Note that the interaction between
+% $x_1{(n)}$ and $x_3(n)$ is both via a direct path and via an indirect
+% route through $x_2(n)$. The dynamics of the pair $x_4(n)$ and $x_5(n)$ is
+% designed so that they jointly represent an oscillator, whose intrinsic
+% characteristics are due to their mutual signal feedback but which are
+% entrained to the rest of the structure via $x_3(n)$. To this structure it
+% was added  a feedback from $x_5(n)$ to $x_1(n)$, which establishes a loop
+% among structures 1 to 5. The signals $x_6(n)$ and $x_7(n)$ belong to a
+% totally separate substructure where $x_6(n)$ is designed to generate
+% oscillations at the same frequency as $x_1(n)$; $x_7(n)$ does not
+% feedback anywhere." (Reproduzed and modified from Baccala & Sameshima, 2001b)
 %
 
 %% Data sample generation
@@ -341,47 +362,49 @@ nFreqs = 128;
 metric = 'euc';
 alpha = 0.01;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.pvaluesgct = pValue_gct; % Necessary for printing GCT
+c.Tragct = Tr_gct;
 
 %% $|PDC(\lambda)|^2$ Matrix-Layout Plotting
 
-flgPrinting = [1 1 1 2 2 1 2]; % overriding default setting
+flgPrinting = [1 1 1 2 3 1 2]; % GCT+Coh2
 flgColor = 0;
 w_max=fs/2;
 
 strTitle1 = ['7-dimensional linear VAR[3] Model I with feedback: '];
-strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) '; ' ...
-   datestr(now) ']'];
+strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 strTitle =[strTitle1 strTitle2];
 
-strTask = 'Baccala & Sameshima (2001) Example 3';
+strTask = 'Baccala & Sameshima (2001b) Model I';
 [hxlabel hylabel] = xplot(strTask,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,strTask);
+xplot_title(alpha,metric,strTitle);
 
 
 %%
-% The spectral coherence are plotted in gray-line. You may notice that
-% although the isolated structures 6 and 7 have power peak at the same
-% frequency of remaining structures, they most likely will present low or no
-% coherence with other structures. The red-lines indicate statistically significant PDC. You may
-% also see occasionally spurious false positive connectivity inference
-% which may occur in approximately equal to the level of significance
-% chosen for the null hypothesis for non causality test, i.e. $\alpha$.
+% *Notes*: The spectral coherences are plotted in gray-line. You may notice
+% that although the isolated structures 6 and 7 have power peak at the same
+% frequency of remaining structures, they will most likely be present with low or
+% no coherence with other structures. The red-lines indicate statistically
+% significant PDC. You may also see occasional spurious false-positive
+% connectivity detection, which may occur in approximately equal probability to the
+% level of significance chosen for the null hypothesis for non-causality
+% test, i.e. $\alpha$.
 
 %% 
-% Theoretical PDC results from the original article, Baccala & Sameshima (2001b) 
-% Figure 6b, from article.
+% Theoretical PDC results from the original article, Baccala & Sameshima
+% (2001b), Figure 6b reproduced here:
 %
 % <<fig_baccala2001b_pdc_result.png>>
 % 
 
 %%
-% In this original article's figure the significant PDC is shown in shaded
-% area, and the spectral coherence in gray-line.
+% In this original article's figure the significant |PDC|s are depicted in shaded
+% areas, and the spectral coherence in black-lines.
 
 %% Generalized PDC estimation
 %
-% PDC analysis results will be saved in *d* structure.
+% PDC analysis results will be saved in *d* struct variable.
 % See asymp_pdc.m
 
 nFreqs = 128;
@@ -401,7 +424,7 @@ flgSignifColor = 3; % red = significant, gree = nonsignificant
 
 [hxlabel,hylabel] = xplot(strTask,d,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,strTask);
+xplot_title(alpha,metric,'pdc',strTitle);
 
 
 %% Generalized DTF = DC estimation
@@ -426,20 +449,21 @@ flgSignifColor = 3; % red = significant, gree = nonsignificant
 
 [hxlabel,hylabel] = xplot(strTask,e,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,'dtf',strTask);
+xplot_title(alpha,metric,'dtf',strTitle);
 
 
 %%
-% In this example with feedback loop, theoretically, all structures {1,2,3,4,5} 
-% should be able to reach each other, henceforth all DC between these set 
+% In this example with feedback and closed-loop, theoretically, the structures {1,2,3,4,5} 
+% should be able to reach each other, henceforth all DC between these pairs 
 % of structures should be significant. But false negative DC connectivity
-% may occur more often for short simulation data segment.
+% may arise, more often for short simulation data segment.
 
 %%
-% * In the original article the amplitude of PDC/DTF has been plotted.
-% Here we chose squared PDC, i.e. the xplot.m routine can only handle
-% squared magnitude measures, $|PDC|^2$, $|DTF|^2$, $|Coh|^2$, as the 
-% asymptotic statistics is formulated in spectral coherence domain. 
+% * In the original article the amplitude of |PDC| or |DTF| was plotted. Here we
+% chose to depict squared |gPDC| and |DC|, i.e. the xplot.m function was designed to only
+% handle squared magnitude measures, $|PDC|^2$, $|DTF|^2$ REPLACE_WITH_DASH_DASH- as the
+% asymptotic statistics were formulated for these measures REPLACE_WITH_DASH_DASH-, and
+% $|Coh|^2$ the spectral coherence.
 
 
 ##### SOURCE END #####

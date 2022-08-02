@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="gourevitch2006_model2.m"><style type="text/css">
+      --><title>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="gourevitch2006_model2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</h1><!--introduction--><p>DESCRIPTION:</p><p>Example Model 2: Linear bivariate model with bidirectional influence                          with common source</p><pre>   x1&lt;==&gt;x2 (feedback)  x1==x2 (instantaneous Granger causality)</pre><pre>   x1&lt;==S==&gt;x2, which gives x1==x2 (iGC) from hidden source</pre><p>Example Model 2 borrowed from:</p><pre>Gourevitch, Bouquin-Jeannes &amp; Faucon. Linear and nonlinear casuality between
+  </style></head><body><div class="content"><h1>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</h1><!--introduction--><p>DESCRIPTION:</p><p>Example Model 2: Linear bivariate model with bidirectional influence                          with common source</p><pre>   x1&lt;==&gt;x2 (feedback)  x1==x2 (instantaneous Granger causality)</pre><pre>   x1&lt;==S==&gt;x2, which gives x1==x2 (iGC) from hidden source</pre><p>Example Model 2 was borrowed from:</p><pre>Gourevitch, Bouquin-Jeannes &amp; Faucon. Linear and nonlinear casuality between
    signals: methods, examples and neurophysiological applications.
    Biol Cybern 95:349--369, 2006.</pre><p><a href="http://dx.doi.org/10.1007/s00422-006-0098-0">http://dx.doi.org/10.1007/s00422-006-0098-0</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Other routines</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">Data sample generation</a></li><li><a href="#8">MVAR model estimation</a></li><li><a href="#10">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#11">Original PDC estimation</a></li><li><a href="#13">Generalized PDC estimation</a></li><li><a href="#15">Result from the original article, Gourevitch (2006)</a></li><li><a href="#17">gPDC p-values matrix layout plots</a></li><li><a href="#19">gDTF = DC estimation</a></li><li><a href="#20">DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range</a></li><li><a href="#22">Concluding remarks</a></li></ul></div><h2 id="1">Other routines</h2><pre>See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
           xplot_pvalues
@@ -78,7 +78,7 @@ nPoints  = 800;     <span class="comment">% number of analyzed samples points</s
 u = fgourevitch2006_model2( nPoints, nDiscard );
 
 chLabels = []; <span class="comment">% or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};</span>
-fs = 1; <span class="comment">% normalized frequency</span>
+fs = 1000; <span class="comment">% 1 kHz as used by Gourevitch et al. (2006)</span>
 </pre><pre class="codeoutput">====================================================================================================
              Gourevitch et al. Biol Cybern 95:349-69, 2006.
      Model 2: Linear Bivariate model with Bidirectional Influence 
@@ -124,10 +124,10 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=12068.109798
-IP=2  vaic=9370.759248
-IP=3  vaic=9368.973306
-IP=4  vaic=9369.247230
+IP=1  vaic=11892.724919
+IP=2  vaic=9379.607797
+IP=3  vaic=9377.789706
+IP=4  vaic=9379.695904
  
 Number of channels = 2 with 800 data points; MAR model order = 3.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -143,13 +143,13 @@ flgPrintResults = 1;
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
 Pass = 0.0375
-  st = 70.9879
+  st = 78.1488
 </pre><h2 id="10">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">alpha = 0.01;
 
 gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
 
-flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
+flgPrintResults = 1; <span class="comment">% Flag for printing gct/igct results on command window.</span>
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
@@ -184,7 +184,7 @@ Instantaneous Granger Causality test p-values:
 metric = <span class="string">'euc'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
                  <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
                  <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
-c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and statistics</span>
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 </pre><p>PDC Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 2 2 0 1]; <span class="comment">% overriding default setting</span>
 flgColor = 1;
@@ -196,12 +196,12 @@ strTitle = [<span class="string">'Model 2: Linear bivariate model with common so
    int2str(nPoints) <span class="string">' data points.'</span>];
 
 [h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle); <span class="comment">%Main title with PDC type and alpha value</span>
+xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle); <span class="comment">% Main title</span>
 </pre><img vspace="5" hspace="5" src="gourevitch2006_model2_01.png" alt=""> <h2 id="13">Generalized PDC estimation</h2><p>gPDC analysis results are saved in <b>d</b> structure. See asymp_pdc.m.</p><pre class="codeinput">metric = <span class="string">'diag'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
                   <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
                   <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
 
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and statistics</span>
 d.Tragct = Tr_gct;  d.pvaluesgct = pValue_gct;
 </pre><p>PDC Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 1]; <span class="comment">% overriding default setting</span>
 flgColor = 1;
@@ -213,12 +213,13 @@ strID = <span class="string">'Gourevitch et al.(Biol Cybern, 2006)'</span>;
 
 strTitle = [<span class="string">'Model 2: Linear bivariate model with common source: '</span> <span class="keyword">...</span>
              int2str(nPoints) <span class="string">' data points.'</span>];
-xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle); <span class="comment">%Main title with PDC type and alpha value</span>
+xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle); <span class="comment">% Main title</span>
 </pre><img vspace="5" hspace="5" src="gourevitch2006_model2_02.png" alt=""> <h2 id="15">Result from the original article, Gourevitch (2006)</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_result.png" alt=""> </p><p><b>Figure</b> - from Gourevitch et al. (2006) presented results of PDC and DC</p><h2 id="17">gPDC p-values matrix layout plots</h2><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 [h3,~,~] = xplot_pvalues([],d,flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
 
-xplot_title(alpha,metric,[<span class="string">'p-value gPDC'</span>],<span class="string">'Gourevitch et al.(Biol Cybern, 2006)'</span>);
+xplot_title(alpha,metric,[<span class="string">'p-value gPDC'</span>], <span class="keyword">...</span>
+                                        <span class="string">'Gourevitch et al.(Biol Cybern, 2006)'</span>);
 </pre><img vspace="5" hspace="5" src="gourevitch2006_model2_03.png" alt=""> <p>gPDC's p-values in the frequency domain, which, in this case, are &lt; 1.0e-15.</p><h2 id="19">gDTF = DC estimation</h2><p>DC analysis results will be saved in <b>e</b> structure. See asymp_dtf.m or issue   &gt;&gt; help asymp_dtf command for more detail.</p><pre class="codeinput">metric = <span class="string">'diag'</span>;
 e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate DTF and asymptotic statistics</span>
 </pre><h2 id="20">DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range</h2><pre class="codeinput">flgPrinting = [1 1 1 2 2 0 1]; <span class="comment">% Plot auto-DTF on main-diagonal</span>
@@ -236,6 +237,7 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="gourevitch2006_model2_04.png" alt=""> <p>Note significant Instantaneous Granger causality in between the pair  of processes. The common influence source in the model is 0.5*wi(3,t) Verify that the p-value (pValue) is or should be very small, i.e. <img src="gourevitch2006_model2_eq04678278548474686549.png" alt="$p << 0.001$">.</p><h2 id="22">Concluding remarks</h2><div><ul><li>Check the output obtained in this simulation with the one presented in Gourevitch et al.'s article</li></ul></div><div><ul><li>Try different sample size to see its influence on estimation and   threshold level. Try for instance, in the [80 to 2000] range to see   how the threshold value in PDC and DC varies.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE
+%
 % DESCRIPTION:
 %
 % Example Model 2: Linear bivariate model with bidirectional influence 
@@ -245,7 +247,7 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 %
 %     x1<==S==>x2, which gives x1==x2 (iGC) from hidden source
 %
-% Example Model 2 borrowed from:  
+% Example Model 2 was borrowed from:  
 %
 %  Gourevitch, Bouquin-Jeannes & Faucon. Linear and nonlinear casuality between 
 %     signals: methods, examples and neurophysiological applications. 
@@ -257,7 +259,6 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 %  See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
 %            xplot_pvalues
 % < gourevitch2006_model2.html |gourevitch2006_model2|> |
-
 %%
 
 clear; clc
@@ -285,7 +286,7 @@ nPoints  = 800;     % number of analyzed samples points
 u = fgourevitch2006_model2( nPoints, nDiscard );
 
 chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-fs = 1; % normalized frequency
+fs = 1000; % 1 kHz as used by Gourevitch et al. (2006)
 
 
 %%
@@ -349,7 +350,7 @@ alpha = 0.01;
 gct_signif  = alpha;  % Granger causality test significance level
 igct_signif = alpha;  % Instantaneous GCT significance level
 
-flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
+flgPrintResults = 1; % Flag for printing gct/igct results on command window.
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
@@ -366,7 +367,7 @@ nFreqs = 128;
 metric = 'euc';  % euc  = original PDC or DTF;
                  % diag = generalized PDC (gPDC) or DC;
                  % info = information PDC (iPDC) or iDTF.
-c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and statistics
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 
 %%
@@ -382,7 +383,7 @@ strTitle = ['Model 2: Linear bivariate model with common source: ' ...
    int2str(nPoints) ' data points.'];
 
 [h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
+xplot_title(alpha,metric,'pdc',strTitle); % Main title
 
 
 %% Generalized PDC estimation
@@ -394,7 +395,7 @@ metric = 'diag';  % euc  = original PDC or DTF;
                   % diag = generalized PDC (gPDC) or DC;
                   % info = information PDC (iPDC) or iDTF.
 
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and statistics
 d.Tragct = Tr_gct;  d.pvaluesgct = pValue_gct;
 
 
@@ -411,7 +412,7 @@ strID = 'Gourevitch et al.(Biol Cybern, 2006)';
 
 strTitle = ['Model 2: Linear bivariate model with common source: ' ...
              int2str(nPoints) ' data points.'];
-xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
+xplot_title(alpha,metric,'pdc',strTitle); % Main title
 
 
 %% Result from the original article, Gourevitch (2006) 
@@ -431,7 +432,8 @@ flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 [h3,~,~] = xplot_pvalues([],d,flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
 
-xplot_title(alpha,metric,['p-value gPDC'],'Gourevitch et al.(Biol Cybern, 2006)');
+xplot_title(alpha,metric,['p-value gPDC'], ...
+                                        'Gourevitch et al.(Biol Cybern, 2006)');
 
 
 %%

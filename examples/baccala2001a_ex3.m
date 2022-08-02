@@ -1,7 +1,6 @@
 %% BACCALA & SAMESHIMA 2001A, EXAMPLE 3, PAGE 468
-% DESCRIPTION:
 %
-% Example *baccala2001_ex3.m*:
+% DESCRIPTION:
 %
 % Linear five-dimension  VAR(3) model with feedback
 %
@@ -15,16 +14,15 @@
 %
 %     $x1-->x2  x1-->x3 x1-->x4 x4<-->x5$
 %
+% Example *baccala2001_ex3.m*:
+%
+%% Other routines
+%  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
+%            xplot, xplot_pvalues
+%  <baccala2001a_ex3.html |baccala2001a_ex3|> |
+%%
 
 clear; clc; format compact; format short
-
-%% Data sample generation
-%
-nDiscard = 5000;   % number of points discarded at beginning of simulation
-nPoints  = 1000;   % number of analyzed samples points
-u = fbaccala2001a_ex3(nPoints, nDiscard); % Model function
-chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'}; % or = []; 
-fs = 1; % Normalized frequency.
 
 %% Interaction diagram
 %
@@ -37,8 +35,17 @@ fs = 1; % Normalized frequency.
 % <<fig_baccala2001a_ex3_eq.png>>
 %
 
-%%
-% Data pre-processing: detrending and/or normalization options
+%% Data sample generation
+%
+nDiscard = 5000;   % number of points discarded at beginning of simulation
+nPoints  = 1000;   % number of analyzed samples points
+u = fbaccala2001a_ex3(nPoints, nDiscard); % Model function
+chLabels = []; %{'x_1';'x_2';'x_3';'x_4';'x_5'};
+fs = 1; % Normalized frequency.
+
+
+%% Data pre-processing: detrending and/or normalization options
+%
 
 [nChannels,nSegLength] =size(u);
 if nChannels > nSegLength
@@ -102,16 +109,21 @@ c.pvaluesgct = pValue_gct;
     
 %% $|PDC(\lambda)|^2$ Matrix-Layout Plot
 
-flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
+flgPrinting = [1 1 1 2 3 0 3]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
 strTitle = ['Linear 5-dim VAR(3) model w feedback'];  %'; '  datestr(now) ']'];
-vTitleBar = 'Baccala & Sameshima (2001a) Example 3';
+strBarTitle = 'Baccala & Sameshima (2001a) Example 3';
 
-[h1,~, ~] = xplot(vTitleBar,c,...
+[h1,~, ~] = xplot(strBarTitle,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc', strTitle);
+
+%%
+% Original PDC2 plots with auto-PDC2 along the main-diagonal, reproducing
+% the figure of original article. Note however that here we are depicting the
+% squared-PDC, while in the article |PDC| was used.
 
 
 %% information PDC estimation
@@ -128,7 +140,7 @@ d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
 
 
-%% $|_iPDC(\lambda)|^2$ Matrix Layout Plotting
+%% $|_{i}PDC(\lambda)|^2$ Matrix-Layout Plotting
 
 %                 1 2 3 4 5 6 7
    flgPrinting = [1 1 1 2 3 0 2]; % GCT and power spectra selection.
@@ -145,9 +157,12 @@ d.pvaluesgct = pValue_gct;
 
 flgColor = 0; w_max=fs/2;
 
-[h2,~, ~] = xplot(vTitleBar,d,...
+[h2,~, ~] = xplot(strBarTitle,d,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc', strTitle);
+
+%%
+% Information PDC2 plots with log-spectra along the main-diagonal.
 
 %% Original DTF estimation
 %
@@ -162,10 +177,16 @@ e = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 %
 
 flgColor = 0; flgScale = 1; flgMax = 'dtf'; flgSignifColor = 3;
+flgPrinting = [1 1 1 2 0 0 3]; % overriding default setting
 
-[h3,~,~] = xplot(vTitleBar,e,flgPrinting,fs,w_max,chLabels, ...
+[h3,~,~] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
                                  flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'dtf',strTitle);
+
+%%
+% Original DTF2 plots with auto-DTF2 along the main-diagonal,
+% closely reproducing the figure of original article in which we depicted |DTF|. 
+
 
 %% Result from the original article, Baccala & Sameshima (2001) 
 % Figure 2, page 469 from article.

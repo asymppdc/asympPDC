@@ -12,8 +12,8 @@
 %       <http://dx.doi.org/10.1007/s00422-006-0062-z>
 %
 %  Example - Three-dimension VAR[2].
-
 %%
+
 clc; format compact
 
 %% Interaction diagram
@@ -46,18 +46,18 @@ fs = 1; % Normalized frequency
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
 [nChannels,nSegLength] =size(u);
-if nChannels > nSegLength,
+if nChannels > nSegLength
    u = u.';
    [nChannels,nSegLength]=size(u);
-end;
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 %

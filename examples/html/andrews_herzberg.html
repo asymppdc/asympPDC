@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Andrews and Herzberg Sunspot-Melanoma 1936-1972 Series Demonstration</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-25"><meta name="DC.source" content="andrews_herzberg.m"><style type="text/css">
+      --><title>Andrews and Herzberg Sunspot-Melanoma 1936-1972 Series Demonstration</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="andrews_herzberg.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -241,21 +241,23 @@ w_max=fs/2;
 flgSignifColor = 0;
 flgMax = <span class="string">'PDC'</span>;
 flgScale = 2;
-vBarTitle = <span class="string">'Sunspot-Melanoma Series (1936-1972)'</span>; <span class="comment">% Trimmed to see GCT p-values</span>
 
-[h1,~, ~] = xplot(vBarTitle,c,<span class="keyword">...</span>
+strBarTitle = <span class="string">'Andrews &amp; Herzberg''s Sunspot-Melanoma Series (1936-1972)'</span>;
+strTitle = <span class="string">'Sunspot-Melanoma (1936-1972)'</span>;
+
+[h1,~, ~] = xplot(strBarTitle,c,<span class="keyword">...</span>
                           flgPrinting,fs,w_max,chLabels,flgColor, <span class="keyword">...</span>
                           flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_c,metric,<span class="string">'pdc'</span>,vBarTitle);
+xplot_title(alpha_c,metric,<span class="string">'pdc'</span>,strTitle);
 shg; pause(3)
 </pre><img vspace="5" hspace="5" src="andrews_herzberg_03.png" alt=""> <p>Note that, in this case, the original PDC from Melanoma (smaller variance) to Sunspot (larger variance) estimate is close to unit (large), but not significant, while in the opposite direction it is very small and significant. The p-values of Granger causality test result are printed above each PDC subplot in dark-green (not significant from Melanoma to Sunspot), or in dark-purple (significant from Sunspot to Melanoma series, together with a dot inside the subplot with the same color).</p><p>Proper "scaling" of original PDC estimates could be attained by standardizing the time series, i.e scaling to have unit variance and zero mean, or, better, using either generalized PDC or information PDC.</p><h2 id="16">Showing more detail changing the scale and adding color information</h2><p>The following figure shows in more detail the rescaled y-axis of PDC from <b>Sunspot</b> to <b>Melanoma</b>, which one would expect some causal influence of solar radiation intensity increase on skin cancer incidence.</p><pre class="codeinput">flgScale = 2;
 flgMax = <span class="string">'all'</span>;
 flgSignifColor = 3;
-vBarTitle = <span class="string">'Sunspot-Melanoma Series (1936-1972)'</span>;
-[h2,hxlabel,hylabel] = xplot(vBarTitle,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+
+[h2,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                           flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_c,metric,<span class="string">'pdc'</span>,vBarTitle);
-shg; pause(3)
+xplot_title(alpha_c,metric,<span class="string">'pdc'</span>,strTitle);
+pause(3)
 </pre><img vspace="5" hspace="5" src="andrews_herzberg_04.png" alt=""> <p>One interesting aspect of asymptotic statistics you may notice is that it gives proper and consistent inference for all three forms of PDC (PDC|gPDC|iPDC) and even for DTF (DTF|DC|iDTF).</p><p>The <b>robustness</b> is one of such interesting aspects of the analyses based on asymptotic statistics implemented in the AsympPDC Package.</p><h2 id="18">Generalized PDC estimation and analysis parameters</h2><p>The gPDC analysis results are saved in <b>d</b> struct variable, attained using metric = 'diag' (diagonal). See asymp_pdc.m help.</p><pre class="codeinput"> <span class="comment">% Estimate generalized PDC and its asymptotic statistics</span>
 metric = <span class="string">'diag'</span>;
 alpha_d = alpha_c;
@@ -265,10 +267,10 @@ d = asymp_pdc(u,A,pf,nFreqs,metric,alpha_d);
 d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
 </pre><h2 id="19">Generalized PDC Matrix Layout Plotting</h2><pre class="codeinput">flgColor = 0;
-[h3,hxlabel hylabel] = xplot(vBarTitle,d,<span class="keyword">...</span>
+[h3,hxlabel,hylabel] = xplot(strBarTitle,d,<span class="keyword">...</span>
                           flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha_d,metric,<span class="string">'pdc'</span>,vBarTitle);
-shg; pause(3)
+xplot_title(alpha_d,metric,<span class="string">'pdc'</span>,strTitle);
+pause(3)
 </pre><img vspace="5" hspace="5" src="andrews_herzberg_05.png" alt=""> <p>The <b>generalized PDC</b> provides a better idea  of real <i>interaction</i> between <b>Sunspot</b> number (an indirect measure of Sun's activity level) and incidence of <b>Melanoma</b> in the State of Connecticut.</p><p>Note that the peak of gPDC from Sunspot to Melanona in frequency coincides with the peak of Sunspot and Melanoma series power spectra, which corresponds to the 11-year Sun's activity cycle period.</p><h2 id="21">Repeating the analysis with Information PDC</h2><p>iPDC analysis results are saved in <b>e</b> struct variable.</p><pre class="codeinput"><span class="comment">% Estimate iPDC and asymptotic statistics</span>
 metric = <span class="string">'info'</span>;
 alpha_e = 0.01;
@@ -281,17 +283,17 @@ flgScale = 2;
 flgMax = <span class="string">'all'</span>;
 flgSignifColor = 3;
 
-[h4,hxlabel hylabel] = xplot(vBarTitle,e,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+[h4,hxlabel,hylabel] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_e,metric,<span class="string">'pdc'</span>);
-shg; pause(3)
+xplot_title(alpha_e,metric,<span class="string">'pdc'</span>,strTitle);
+pause(3)
 </pre><img vspace="5" hspace="5" src="andrews_herzberg_06.png" alt=""> <p>Looking closely, the iPDC and gPDC's magnitude patterns, although similar, are not equal.</p><h2 id="24">Plotting the p-values in the frequency domain plotting</h2><pre class="codeinput">flgPrinting=[1 1 1 2 3 1 1];
 flgScale = 1;
-vBarTitle = <span class="string">'Sunspot-Melanoma Series (1936-1972)'</span>; <span class="comment">% Trimmed to reveal p-values</span>
+strBarTitle = <span class="string">'Sunspot-Melanoma Series (1936-1972)'</span>; <span class="comment">% Trimmed to reveal p-values</span>
 
-[h5,hxlabel hylabel] = xplot_pvalues(vBarTitle, c, <span class="keyword">...</span>
+[h5,hxlabel,hylabel] = xplot_pvalues(strBarTitle, c, <span class="keyword">...</span>
                                   flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
-xplot_title(alpha_c,metric,<span class="string">'p-value iPDC'</span>,vBarTitle);
+xplot_title(alpha_c,metric,<span class="string">'p-value iPDC'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="andrews_herzberg_07.png" alt=""> <p>In this case <img src="andrews_herzberg_eq11007464405666851578.png" alt="$\alpha = 1$">% was used, and note the threshold dashed-lines located at -2 (<img src="andrews_herzberg_eq15528222941197467174.png" alt="$=log_{10}\,0.01$">). Only the iPDC from <b>Sunspot</b> to <b>Melanoma</b> is significant in the lower frequency range, which overlaps with peaks of power spectra.</p><p>End of Sunspot-Melanoma series analysis example.</p><pre class="codeinput"><span class="comment">% Notes for Publishing m-files</span>
 <span class="comment">%</span>
 <span class="comment">% Correcting figures size</span>
@@ -526,12 +528,14 @@ w_max=fs/2;
 flgSignifColor = 0;
 flgMax = 'PDC';
 flgScale = 2;
-vBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to see GCT p-values
 
-[h1,~, ~] = xplot(vBarTitle,c,...
+strBarTitle = 'Andrews & Herzberg''s Sunspot-Melanoma Series (1936-1972)';
+strTitle = 'Sunspot-Melanoma (1936-1972)';
+
+[h1,~, ~] = xplot(strBarTitle,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor, ...
                           flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_c,metric,'pdc',vBarTitle);
+xplot_title(alpha_c,metric,'pdc',strTitle);
 shg; pause(3)
 
 %% 
@@ -556,11 +560,11 @@ shg; pause(3)
 flgScale = 2;
 flgMax = 'all';
 flgSignifColor = 3;
-vBarTitle = 'Sunspot-Melanoma Series (1936-1972)';
-[h2,hxlabel,hylabel] = xplot(vBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
+
+[h2,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
                           flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_c,metric,'pdc',vBarTitle);
-shg; pause(3)
+xplot_title(alpha_c,metric,'pdc',strTitle);
+pause(3)
 
 %%
 % One interesting aspect of asymptotic statistics you may notice is that it
@@ -588,10 +592,10 @@ d.pvaluesgct = pValue_gct;
 %
 
 flgColor = 0;
-[h3,hxlabel hylabel] = xplot(vBarTitle,d,...
+[h3,hxlabel,hylabel] = xplot(strBarTitle,d,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha_d,metric,'pdc',vBarTitle);
-shg; pause(3)
+xplot_title(alpha_d,metric,'pdc',strTitle);
+pause(3)
 
 %%
 % The *generalized PDC* provides a better idea  of real _interaction_ between
@@ -622,10 +626,10 @@ flgScale = 2;
 flgMax = 'all';
 flgSignifColor = 3;
 
-[h4,hxlabel hylabel] = xplot(vBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
+[h4,hxlabel,hylabel] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_e,metric,'pdc');
-shg; pause(3)
+xplot_title(alpha_e,metric,'pdc',strTitle);
+pause(3)
 
 %%
 % Looking closely, the iPDC and gPDC's magnitude patterns, although similar, are
@@ -634,11 +638,11 @@ shg; pause(3)
 %% Plotting the p-values in the frequency domain plotting 
 flgPrinting=[1 1 1 2 3 1 1];
 flgScale = 1;
-vBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to reveal p-values
+strBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to reveal p-values
 
-[h5,hxlabel hylabel] = xplot_pvalues(vBarTitle, c, ...
+[h5,hxlabel,hylabel] = xplot_pvalues(strBarTitle, c, ...
                                   flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
-xplot_title(alpha_c,metric,'p-value iPDC',vBarTitle);
+xplot_title(alpha_c,metric,'p-value iPDC',strTitle);
 
 %%
 % In this case $\alpha = 1$% was used, and note the threshold dashed-lines

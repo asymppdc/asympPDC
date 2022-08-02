@@ -116,7 +116,7 @@ w_max = fs/2;
 
 strTitle = ['6-dimension linear VAR[4] Model II: [N=' int2str(nSegLength) ...
             'pts; IP=' int2str(c.p) ']'];
-strID = 'Baccala & Sameshima (2001) Model II'; % figure window bar ID
+strID = 'Baccala & Sameshima (2001b) Model II'; % figure window bar ID
 [h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'pdc', strTitle);

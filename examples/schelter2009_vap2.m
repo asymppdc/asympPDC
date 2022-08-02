@@ -37,17 +37,17 @@ flgStandardize = 0; % No standardization
 [nChannels,nSegLength]=size(u);
 if nChannels > nSegLength, u=u.'; 
    [nChannels,nSegLength]=size(u);
-end;
+end
 
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 

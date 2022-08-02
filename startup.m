@@ -86,7 +86,7 @@ if isOctave()
       else
          fprintf('[AsympPDC startup] All necessary packages are already loaded into Octave environment!\n')
          fprintf('                   You are good to go.\n')
-         
+
       end
    else
       fprintf(2,'[AsympPDC startup] Warning: the control, statistics and signal packages are not load in Octave environment.\n')
@@ -115,16 +115,18 @@ end
 if ~isOctave()
    if ~isempty(which('chi2cdf')) && ~isempty(which('chi2inv')) ...
          && ~isempty(which('norminv'))
-      fprintf('[AsympPDC startup] Statistics Toolbox(TM) seems to be present.\n');
+      fprintf('[AsympPDC startup] Statistics Toolbox(TM) or Statistics and Machine Learning Toolbox(TM) \n');
+      fprintf('                   seems to be present.\n');
    else
-      fprintf(2,'[AsympPDC startup] WARNING: Statistics Toolbox(TM) does not seem to be present.\n');
+      fprintf(2,'[AsympPDC startup] WARNING: Statistics Toolbox(TM) or Statistics and Machine \n');
+      fprintf(2,'[AsympPDC startup]          Learning Toolbox(TM) does not seem to be present.\n');
       fprintf(2,'[AsympPDC startup]          Will not be able to perform asymptotic statistical \n');
       fprintf(2,'[AsympPDC startup]          tests for PDC and DTF estimates. \n')
    end
    fprintf(1,'\n')
-   
+
    % Check if we have Signal Processing toolbox - see if pwelch is present
-   
+
    if ~isempty(which('xcorr')) && ~isempty(which('norminv'))
       fprintf('[AsympPDC startup] Signal Processing Toolbox(TM) seems to be present.\n');
    else
@@ -135,10 +137,19 @@ if ~isOctave()
    fprintf(1,'\n')
 end
 
+if ~isempty(which('dlyap')) && ~isOctave()
+   fprintf('[AsympPDC startup] Control System Toolbox(TM) seems to be present.\n');
+else
+   fprintf(2,'[AsympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n\n');
+   fprintf(  '[AsympPDC startup] The lyap.m legacy code from 1986 Control System Toolbox(TM) will be used.\n');
+   addpath(fullfile(asymppdc_root,'utils','legacy'));
+   fprintf(  '[AsympPDC startup] Adding ./code/utils/legacy directory to MATLAB path with lyap.m.\n');
+end
+
 if ~isempty(which('lyap'))
    % Testing lyap.m code using Example 1 from modern lyap help.
    %The A matrix is stable, and the Q matrix is positive definite.
-   
+
    % Define an absolute tolerance
    tol = 1e-10;
    % Three input arguments example
@@ -148,19 +159,16 @@ if ~isempty(which('lyap'))
    X = lyap(A,B,C);
    % If correct, these commands should return the following X matrix:
    Xcorrect = [   -0.2000   -0.0500];
-   
+
    if sum(abs(Xcorrect(:) - X(:))) <= tol
-      fprintf('[AsympPDC startup] Using lyap.m legacy code from 1986 Control System Toolbox(TM).\n');
+      fprintf('                   The *lyap* function is present and working properly.\n');
    else
-      error('Problem with lyap.m routine. Verify if lyap.m is available')
+      error('Problem with lyap.m function. Verify lyap.m function.')
    end
    clear A B C X Q Xcorrect tol
-   
-elseif ~isempty(which('dlyap')) && ~isOctave()
-   fprintf('[AsympPDC startup] Control System Toolbox(TM) seems to be present.\n');
 else
-   fprintf(2,'[AsympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n');
-   fprintf(2,'[AsympPDC startup]          Check if lyap.m is present in ./code/utils/legacy directory.\n');
+   fprintf(2,'[AsympPDC startup] WARNING: Control System Toolbox(TM) not installed,\n');
+   fprintf(2,'[AsympPDC startup]          and lyap function is not available.\n');
 end
 fprintf(1,'\n')
 
@@ -178,13 +186,13 @@ fprintf(1,'\n')
 
 if ~isempty(which('suplabel')) && ~isempty(which('suptitle'))
    if isOctave()
-      fprintf('[AsympPDC startup] xplot.m routine will use suptitle.m (Drea Thomas, 1995).\n\n');
+      fprintf('[AsympPDC startup] The xplot function will use suptitle.m (Drea Thomas, 1995).\n\n');
       fprintf('               (*) As suplabel.m (Ben Barrowes, 2004) does not work in Octave,\n');
-      fprintf('                   in the matrix layout subplots, y- and x-axis labels will be missing.\n');
-      
+      fprintf('                   the y- and x-axis labels will be missing in the matrix layout subplots, .\n');
+
    else
-      fprintf('[AsympPDC startup] xplot.m routine will use suplabel.m (Ben Barrowes, 2004), and\n');
-      fprintf('                                            suptitle.m (Drea Thomas, 1995).\n');
+      fprintf('[AsympPDC startup] The xplot function will use suplabel.m (Ben Barrowes, 2004), and\n');
+      fprintf('                                               suptitle.m (Drea Thomas, 1995).\n');
    end
    fprintf(1,'\n')
 if ~isempty(which('shadedplot')) && ~isempty(which('boundedline'))
@@ -197,7 +205,7 @@ end
 if ~isOctave()
    if ~isempty(which('tilefigs')) || ~isempty(which('tilefigs1')) || ~isempty(which('tilefigs2'))
       fprintf('[AsympPDC startup] You may quickly visualize multiple figure windows issuing either\n');
-      fprintf('                   tilefigs1 or tilefigs2 command (Peter J Acklam,2003; Brendan Tracey, 2012).\n');
+      fprintf('                   tilefigs1 (Peter J Acklam,2003) or tilefigs2 (Brendan Tracey, 2012) command.\n');
    end
 end
 fprintf(1,'\n')
@@ -207,18 +215,32 @@ fprintf(1,'\n')
 if isOctave()
    randn('seed',sum(100*clock)); % set randn initial 'seed' randomization.
    fprintf('[AsympPDC startup] Random number generator uses ad hoc initialization for Octave.\n');
-   
+
 else
    rng('default')
    rng('shuffle')
-   fprintf('[AsympPDC startup] Random number generator initialized using Matlab recommendation.\n');
+   fprintf('[AsympPDC startup] Random number generator initialized using Matlab recommended procedure.\n');
 end
 fprintf(1,'\n')
 
 %% Enable all warnings
-warning on all
+
+if isOctave()
+   warning('off', 'all');
+else
+   warning on all
+end
+
 fprintf('[AsympPDC startup] All warnings enabled\n');
 fprintf(1,'\n')
 fprintf('[AsympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n\n\n');
 
 % <startup.html back to top>
+
+
+%%
+% get(0,'ScreenSize')
+
+% monitorPositions = get(0,'MonitorPositions');
+% matlabMonitorLocation = monitorPositions(:,1:2);
+% matlabMonitorSize = monitorPositions(:,3:4) - monitorPositions(:,1:2) + 1;

@@ -1,22 +1,27 @@
-%% Baccala & Sameshima (2001b) 7-dimensional VAR[2] model with loop and feedback
+%% Baccala & Sameshima (2001b) Model I: 7-dimensional VAR[2] model with loop and feedback
 %
 % **Description**:
-%
-% Baccala & Sameshima. Overcoming the limitations of correlation analysis 
+% This is a toy model example that "mimicks local field potential
+% measurements along hippocampal structures, is represented by the
+% following set of linear difference equations with N = 7 structures",
+% that is the  Example Model I - 7-dimensional VAR[2] model with loop and
+% feedback from
+% 
+% Baccala & Sameshima (2001b). Overcoming the limitations of correlation analysis 
 % for many simultaneously processed neural structures, Progress in Brain 
-% Research, 130:33--47, 2001.
+% Research, 130:33--47.
 %
 % <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
+%
 %
 % See also:
 %
 % # Koichi Sameshima, Daniel Y. Takahashi, Luiz A. Baccala. On the
 % statistical performance of Granger-causal connectivity estimators. Brain
-% Informatics (2015) 2:119?133.
+% Informatics (2015) 2:119--133.
 %
 % <http://dx.doi.org/10.1007/s40708-015-0015-1>
 % 
-% Example Model 1 - 7-dimensional VAR[2] model with loop and feedback
 
 %% Data sample generation
 
@@ -31,6 +36,20 @@ clear; clc; format compact; format short
 %% Equation Model I with feedback
 %
 % <<fig_baccala2001b_eq.png>>
+%
+% *Note*: "These equations are designed so that $x_{1}(n)$ behaves as an
+% oscillator driving the other structures, either directly or indirectly,
+% according to the diagram above. Note that the interaction between
+% $x_1{(n)}$ and $x_3(n)$ is both via a direct path and via an indirect
+% route through $x_2(n)$. The dynamics of the pair $x_4(n)$ and $x_5(n)$ is
+% designed so that they jointly represent an oscillator, whose intrinsic
+% characteristics are due to their mutual signal feedback but which are
+% entrained to the rest of the structure via $x_3(n)$. To this structure it
+% was added  a feedback from $x_5(n)$ to $x_1(n)$, which establishes a loop
+% among structures 1 to 5. The signals $x_6(n)$ and $x_7(n)$ belong to a
+% totally separate substructure where $x_6(n)$ is designed to generate
+% oscillations at the same frequency as $x_1(n)$; $x_7(n)$ does not
+% feedback anywhere." (Reproduzed and modified from Baccala & Sameshima, 2001b)
 %
 
 %% Data sample generation
@@ -110,47 +129,49 @@ nFreqs = 128;
 metric = 'euc';
 alpha = 0.01;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.pvaluesgct = pValue_gct; % Necessary for printing GCT
+c.Tragct = Tr_gct;
 
 %% $|PDC(\lambda)|^2$ Matrix-Layout Plotting
 
-flgPrinting = [1 1 1 2 2 1 2]; % overriding default setting
+flgPrinting = [1 1 1 2 3 1 2]; % GCT+Coh2
 flgColor = 0;
 w_max=fs/2;
 
 strTitle1 = ['7-dimensional linear VAR[3] Model I with feedback: '];
-strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) '; ' ...
-   datestr(now) ']'];
+strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 strTitle =[strTitle1 strTitle2];
 
-strTask = 'Baccala & Sameshima (2001) Example 3';
+strTask = 'Baccala & Sameshima (2001b) Model I';
 [hxlabel hylabel] = xplot(strTask,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,strTask);
+xplot_title(alpha,metric,strTitle);
 
 
 %%
-% The spectral coherence are plotted in gray-line. You may notice that
-% although the isolated structures 6 and 7 have power peak at the same
-% frequency of remaining structures, they most likely will present low or no
-% coherence with other structures. The red-lines indicate statistically significant PDC. You may
-% also see occasionally spurious false positive connectivity inference
-% which may occur in approximately equal to the level of significance
-% chosen for the null hypothesis for non causality test, i.e. $\alpha$.
+% *Notes*: The spectral coherences are plotted in gray-line. You may notice
+% that although the isolated structures 6 and 7 have power peak at the same
+% frequency of remaining structures, they will most likely be present with low or
+% no coherence with other structures. The red-lines indicate statistically
+% significant PDC. You may also see occasional spurious false-positive
+% connectivity detection, which may occur in approximately equal probability to the
+% level of significance chosen for the null hypothesis for non-causality
+% test, i.e. $\alpha$.
 
 %% 
-% Theoretical PDC results from the original article, Baccala & Sameshima (2001b) 
-% Figure 6b, from article.
+% Theoretical PDC results from the original article, Baccala & Sameshima
+% (2001b), Figure 6b reproduced here:
 %
 % <<fig_baccala2001b_pdc_result.png>>
 % 
 
 %%
-% In this original article's figure the significant PDC is shown in shaded
-% area, and the spectral coherence in gray-line.
+% In this original article's figure the significant |PDC|s are depicted in shaded
+% areas, and the spectral coherence in black-lines.
 
 %% Generalized PDC estimation
 %
-% PDC analysis results will be saved in *d* structure.
+% PDC analysis results will be saved in *d* struct variable.
 % See asymp_pdc.m
 
 nFreqs = 128;
@@ -170,7 +191,7 @@ flgSignifColor = 3; % red = significant, gree = nonsignificant
 
 [hxlabel,hylabel] = xplot(strTask,d,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,strTask);
+xplot_title(alpha,metric,'pdc',strTitle);
 
 
 %% Generalized DTF = DC estimation
@@ -195,18 +216,19 @@ flgSignifColor = 3; % red = significant, gree = nonsignificant
 
 [hxlabel,hylabel] = xplot(strTask,e,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha,metric,'dtf',strTask);
+xplot_title(alpha,metric,'dtf',strTitle);
 
 
 %%
-% In this example with feedback loop, theoretically, all structures {1,2,3,4,5} 
-% should be able to reach each other, henceforth all DC between these set 
+% In this example with feedback and closed-loop, theoretically, the structures {1,2,3,4,5} 
+% should be able to reach each other, henceforth all DC between these pairs 
 % of structures should be significant. But false negative DC connectivity
-% may occur more often for short simulation data segment.
+% may arise, more often for short simulation data segment.
 
 %%
-% * In the original article the amplitude of PDC/DTF has been plotted.
-% Here we chose squared PDC, i.e. the xplot.m routine can only handle
-% squared magnitude measures, $|PDC|^2$, $|DTF|^2$, $|Coh|^2$, as the 
-% asymptotic statistics is formulated in spectral coherence domain. 
+% * In the original article the amplitude of |PDC| or |DTF| was plotted. Here we
+% chose to depict squared |gPDC| and |DC|, i.e. the xplot.m function was designed to only
+% handle squared magnitude measures, $|PDC|^2$, $|DTF|^2$ --- as the
+% asymptotic statistics were formulated for these measures ---, and
+% $|Coh|^2$ the spectral coherence.
 

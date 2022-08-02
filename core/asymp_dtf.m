@@ -1,6 +1,6 @@
 %% ASYMP_DTF
 %        Compute DTF connectivity measures magnitude, from series j--> i, for
-%        any of three types of metrics -- Euclidean, diagonal and information --
+%        any of three of metrics -- Euclidean, diagonal and information --
 %        as well as asymptotic statistics from vector autoregressive (VAR)
 %        coefficients in the frequency domain.
 %
@@ -8,7 +8,7 @@
 %        c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)
 %
 %% Input Arguments
-%        u      - multiple time series
+%        u      - multiple row vectors time series
 %        A      - AR estimate matrix obtained via MVAR routine
 %        pf     - covariance matrix provided via MVAR routine
 %        nFreqs - number of point in [0,fs/2) frequency scale
@@ -103,7 +103,7 @@
 %          asymp_pdc, <ASYMP_DTF.html>, XPLOT
 %
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. See file license.txt in
 % installation directory for licensing terms.
 
 function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
@@ -339,7 +339,7 @@ end
 % Power spectra and coherence calculation
 c.SS = ss_alg(A, pf, nFreqs);
 c.coh2 = coh_alg(c.SS);
-
+end
 
 %==========================================================================
 function gamma = bigautocorr(x, p)
@@ -354,6 +354,7 @@ for i = 1:p
                                        xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
    end
 end
+end
 
 %==========================================================================
 function c = xlag(x,tlag)
@@ -362,6 +363,7 @@ if tlag == 0
 else
    c = zeros(size(x));
    c(:,(tlag + 1):end) = x(:,1:(end - tlag));
+end
 end
 
 %==========================================================================
@@ -383,6 +385,7 @@ d = d1(length(d) - 1:length(d));
 if (size(d) > 2)
    disp('More than two Chi-squares in the sum:')
 end
+end
 
 %==========================================================================
 function c = fIij(i,j,n)
@@ -391,6 +394,7 @@ Iij = zeros(1,n^2);
 Iij(n*(j - 1) + i) = 1;
 Iij = diag(Iij);
 c = kron(eye(2), Iij);
+end
 
 %==========================================================================
 % function c = fIj(j,n)
@@ -400,6 +404,7 @@ c = kron(eye(2), Iij);
 % Ij = diag(Ij);
 % Ij = kron(Ij,eye(n));
 % c = kron(eye(2), Ij);
+% end
 
 %==========================================================================
 function c = fIi(i,n)
@@ -409,6 +414,7 @@ Ii(i) = 1;
 Ii = diag(Ii);
 Ii = kron(eye(n), Ii);
 c = kron(eye(2), Ii);
+end
 
 %==========================================================================
 function d = fCa(f, p, n)
@@ -417,7 +423,7 @@ C1 = cos(-2*pi*f*(1:p));
 S1 = sin(-2*pi*f*(1:p));
 C2 = [C1; S1];
 d = kron(C2, eye(n^2));
-
+end
 %==========================================================================
 % function c = fdebig_de(n)
 % %'''Derivative of kron(I(2n), A) by A'''
@@ -426,7 +432,7 @@ d = kron(C2, eye(n^2));
 % B=sparse(kron(vec(eye(2*n)), eye(n)));
 % c = A * kron(eye(n), B);
 % c=sparse(c);
-
+% end
 %==========================================================================
 function c = fdebig_de_dtf(n)
 %''' New \Theta_K for DTF asymptotics'''
@@ -444,12 +450,13 @@ A5=sparse(kron(vec(eye(2)),A4));
 c=sparse(A1*A5);
 % To generate sparse matrix
 %c=sparse(c*diag(vec(eye(n))));
+end
 
 %==========================================================================
 function c = vec(x)
 %vec = lambda x: mat(x.ravel('F')).T
 c=x(:);
-
+end
 %==========================================================================
 function t = TT(a,b)
 %''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''
@@ -460,6 +467,7 @@ for i = 1:a
    end
 end
 t = sparse(t);
+end
 
 %==========================================================================
 function L = fChol(omega)
@@ -478,11 +486,13 @@ catch % err
       L(:,i) = v(:,i)*sqrt(d(i,i));
    end
 end
+end
 
 %==========================================================================
 function c = mdiag(a)
 %  diagonal matrix
 c = diag(diag(a));
+end
 
 %==========================================================================
 function d = Dup(n)
@@ -499,6 +509,7 @@ for j= 1:n
       end
    end
 end
+end
 
 %==========================================================================
 function hh=fdh_da(Af)
@@ -509,7 +520,7 @@ h = -kron(ha.', ha);
 h1 = [real(h) -imag(h)];
 h2 = [imag(h) real(h)];   %h2 = cat(h.imag, h.real, 1)
 hh = -[h1; h2];           %hh = cat(h1, h2, 0)
-
+end
 %==========================================================================
 
 %%

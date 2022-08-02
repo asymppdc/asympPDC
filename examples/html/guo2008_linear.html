@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>guo2008_linear</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="guo2008_linear.m"><style type="text/css">
+      --><title>GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="guo2008_linear.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</a></li><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="guo2008_linear_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix Layout Plotting</a></li><li><a href="#11">Result from Figure 1 (bottom) Guo et al.(2006)</a></li><li><a href="#12">Information PDC estimation</a></li><li><a href="#13">iPDC Matrix Layout Plotting</a></li><li><a href="#14">Original DTF estimation</a></li><li><a href="#15">DTF Matrix Layout Plotting</a></li><li><a href="#16">PDC p-values matrix layout plots</a></li><li><a href="#17">Concluding remarkds;</a></li></ul></div><h2 id="1">GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</h2><p>Guo, Wu, Ding &amp; Feng. Uncovering interactions in frequency domains.         PLoS Computational Biology, 4(5):1-10, February 8, 2008.           [http://dx.plos.org/10.1371/journal.pcbi.1000087]</p><p>Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input</p><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+  </style></head><body><div class="content"><h1>GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</h1><!--introduction--><p>Guo, Wu, Ding &amp; Feng. Uncovering interactions in frequency domains.         PLoS Computational Biology, 4(5):1-10, February 8, 2008.           [http://dx.plos.org/10.1371/journal.pcbi.1000087]</p><p>Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="guo2008_linear_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix Layout Plotting</a></li><li><a href="#11">Result from Figure 1 (bottom) Guo et al.(2006)</a></li><li><a href="#12">Information PDC estimation</a></li><li><a href="#13">iPDC Matrix Layout Plotting</a></li><li><a href="#14">Original DTF estimation</a></li><li><a href="#15">DTF Matrix Layout Plotting</a></li><li><a href="#16">PDC p-values matrix layout plots</a></li><li><a href="#17">Concluding remarkds;</a></li></ul></div><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
 </pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_guo2008_graph.png" alt=""> </p><h2 id="3">Equation system</h2><p><img vspace="5" hspace="5" src="fig_guo2008_eq.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 50000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 10000;   <span class="comment">% number of analyzed samples points</span>
 
@@ -86,7 +86,7 @@ alpha = 0.0001; <span class="comment">% = 0.01%  !</span>
 ====================================================================================================
 Assigned "sum(100*clock)" initial state.2
 Model parameters:
-a1=0.438744; a2=0.381558; a3=0.765517; a4=0.795200; a5=0.186873;
+a1=0.349984; a2=0.196595; a3=0.251084; a4=0.616045; a5=0.473289;
 b1 = b2 = b3 = b4 = b5 = 2;
 c1 = c2 = c3 = c4 = c5 = 5;
  
@@ -119,10 +119,10 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=525027.920824
-IP=2  vaic=511701.997767
-IP=3  vaic=510986.518357
-IP=4  vaic=511012.400027
+IP=1  vaic=524750.892574
+IP=2  vaic=511459.024859
+IP=3  vaic=510640.768259
+IP=4  vaic=510660.382565
  
 Number of channels = 5 with 10000 data points; MAR model order = 3.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -138,9 +138,10 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.064
-  st = 443.927
+(**) Poor MAR model fitting:
+                   Residues white noise hypothesis was rejected.
+Pass = 0.084
+  st = 485.014
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -160,11 +161,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.7765    0.0035    0.0038    0.0125
-         0       NaN    0.0034    0.0017    0.0230
-    0.0000    0.8892       NaN    0.0015    0.0268
-         0    0.8929    0.0108       NaN         0
-    0.0330    0.8050    0.0014    0.0000       NaN
+       NaN    0.0105    0.2335    0.4859    0.1910
+         0       NaN    0.2454    0.2473    0.3562
+         0    0.0100       NaN    0.4227    0.2589
+         0    0.0572    0.0744       NaN    0.0000
+    0.0103    0.0133    0.0596    0.0000       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -237,6 +238,8 @@ xplot_title(alpha,metric,[<span class="string">'p-value_{iPDC}'</span>],strID);
 %           [http://dx.plos.org/10.1371/journal.pcbi.1000087] 
 % 
 % Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input
+%
+%%
 
 clear; clc; format compact; format short
 

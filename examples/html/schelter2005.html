@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>schelter2005</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
+      --><title>Schelter et al. (2005)  Five-dimension VAR[4]-process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Schelter et al. (2005)  Five-dimension VAR[4]-process</a></li><li><a href="#2">Data sample generation</a></li><li><a href="#4">MVAR model estimation</a></li><li><a href="#6">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#7">PDC, threshold and confidence interval calculations.</a></li><li><a href="#8">Plotting options set up, mostly cosmetics, used in xplot.m routine:</a></li><li><a href="#10">Remarks:</a></li></ul></div><h2 id="1">Schelter et al. (2005)  Five-dimension VAR[4]-process</h2><p>Description:</p><p>Example from: Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking, Dahlhaus &amp; Timmer. Testing for directed influences among neural signals using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.</p><p><a href="https://dx.doi.org/10.1016/j.jneumeth.2005.09.001">https://dx.doi.org/10.1016/j.jneumeth.2005.09.001</a></p><p>Example Eq. (5) Five-dimension VAR[4]-process</p><pre class="codeinput">clear; clc
-</pre><h2 id="2">Data sample generation</h2><pre class="codeinput">flgPrintScreen = <span class="string">'screen'</span>;
+  </style></head><body><div class="content"><h1>Schelter et al. (2005)  Five-dimension VAR[4]-process</h1><!--introduction--><p>Description:</p><p>Example from: Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking, Dahlhaus &amp; Timmer. Testing for directed influences among neural signals using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.</p><p><a href="https://dx.doi.org/10.1016/j.jneumeth.2005.09.001">https://dx.doi.org/10.1016/j.jneumeth.2005.09.001</a></p><p>Example Eq. (5) Five-dimension VAR[4]-process</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">PDC, threshold and confidence interval calculations.</a></li><li><a href="#10">Plotting options set up, mostly cosmetics, used in xplot.m routine:</a></li><li><a href="#12">Result from Figure 1 Schelter et al.(2005)</a></li><li><a href="#13">Remarks:</a></li></ul></div><pre class="codeinput">clear; clc
+</pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_schelter2005_graph.png" alt=""> </p><h2 id="3">Equation system</h2><p><img vspace="5" hspace="5" src="fig_schelter2005_eq.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">flgPrintScreen = <span class="string">'screen'</span>;
 nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
 N = nDiscard + nPoints; <span class="comment">% number of simulated points</span>
@@ -105,9 +105,6 @@ chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;
 
 y=[x1' x2' x3' x4' x5']; <span class="comment">% data must be organized column-wise</span>
 u=y(nDiscard+1:N,:);
-
-[nSegLength,nChannels]=size(u);
-
 fs = 1;
 </pre><pre class="codeoutput">ans =
     '===================================================================================================='
@@ -135,7 +132,7 @@ flgStandardize = 0; <span class="comment">% 0: No standardization</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">Time series were detrended.
-</pre><h2 id="4">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+</pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1 = Nutall-Strand MVAR estimation algorithm</span>
 criterion = 1;      <span class="comment">% 1 = AIC, Akaike Information Criteria</span>
 
@@ -147,11 +144,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation and GCT analysis routines.
 maxOrder limited to 30
-IP=1  vaic=80379.510033
-IP=2  vaic=76333.644549
-IP=3  vaic=76309.960731
-IP=4  vaic=76251.049619
-IP=5  vaic=76282.588568
+IP=1  vaic=80297.987625
+IP=2  vaic=76171.814892
+IP=3  vaic=76149.926895
+IP=4  vaic=76099.137126
+IP=5  vaic=76126.478030
  
 Number of channels = 5 with 2000 data points; MAR model order = 4.
 </pre><pre class="codeinput"><span class="comment">%Testing the adequacy of MAR model fitting through Portmanteau test</span>
@@ -169,8 +166,8 @@ flgPrintResults = 1;
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
 Pass = 0.028
-  st = 336.628
-</pre><h2 id="6">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
+  st = 419.701
+</pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -189,11 +186,11 @@ Connectivity matrix:
      0     0     1     0   NaN
 
 Granger causality test p-values:
-       NaN         0    0.3885    0.9844    0.7105
-    0.0922       NaN         0         0    0.8700
-    0.3378    0.1864       NaN    0.3242    0.0000
-    0.1427    0.3390         0       NaN         0
-    0.6360    0.4870         0    0.0857       NaN
+       NaN         0    0.8506    0.4538    0.7410
+    0.8838       NaN         0         0    0.9786
+    0.8873    0.9417       NaN    0.0772    0.0000
+    0.2449    0.3601         0       NaN         0
+    0.7682    0.6294         0    0.3327       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -206,23 +203,23 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.5022    0.5667    0.5001    0.8674
-    0.5022       NaN    0.7745    0.7455    0.9050
-    0.5667    0.7745       NaN    0.6164    0.1344
-    0.5001    0.7455    0.6164       NaN    0.9941
-    0.8674    0.9050    0.1344    0.9941       NaN
+       NaN    0.3736    0.9226    0.8703    0.6389
+    0.3736       NaN    0.2923    0.0343    0.2332
+    0.9226    0.2923       NaN    0.7184    0.3775
+    0.8703    0.0343    0.7184       NaN    0.0988
+    0.6389    0.2332    0.3775    0.0988       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-</pre><h2 id="7">PDC, threshold and confidence interval calculations.</h2><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_pdc.m,</p><pre class="codeinput">metric = <span class="string">'diag'</span>; <span class="comment">% Generalized PDC estimation</span>
+</pre><h2 id="9">PDC, threshold and confidence interval calculations.</h2><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_pdc.m,</p><pre class="codeinput">metric = <span class="string">'diag'</span>; <span class="comment">% Generalized PDC estimation</span>
 nFreqs = 128;   <span class="comment">% Number of frequency points to consider</span>
 alpha  = 0.0001;  <span class="comment">% Significance level for PDC/DTF null hypothesis test</span>
 
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         <span class="comment">% Assigning GCT results to c struct variable.</span>
 c.pvaluesgct = pValue_gct;
-</pre><h2 id="8">Plotting options set up, mostly cosmetics, used in xplot.m routine:</h2><pre class="codeinput"><span class="keyword">switch</span> lower(flgPrintScreen)
+</pre><h2 id="10">Plotting options set up, mostly cosmetics, used in xplot.m routine:</h2><pre class="codeinput"><span class="keyword">switch</span> lower(flgPrintScreen)
    <span class="keyword">case</span> <span class="string">'print'</span>
       flgMax = <span class="string">'TCI'</span>;
       flgSignifColor = 1; <span class="comment">% black + gray</span>
@@ -265,7 +262,7 @@ strID = <span class="string">'Schelter et al. J. Neurosci Methods (2005)'</span>
 [h,hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                 flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strID);
-</pre><img vspace="5" hspace="5" src="schelter2005_01.png" alt=""> <h2 id="10">Remarks:</h2><div><ul><li>Compare the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter   et al., 2005). As you may notice, the power spectrum of <img src="schelter2005_eq06218598531655674008.png" alt="$x_4$">, as well   as <img src="schelter2005_eq02327891265049891971.png" alt="$|PDC|^2_{24}$">, differ significantly.   Our guess is that Schelter and collaborators may have used slightly different   parameters from what they stated in Eq. 5.</li></ul></div><div><ul><li>Note that, for linear model with balanced innovation, the maximum   of PDC estimates is roughly proportional to the autoregressive   model coefficients. As we are plotting <img src="schelter2005_eq06563705797252587072.png" alt="$|PDC|^2$">, amplitude is   roughly proportional to the square of VAR coefficients.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="schelter2005_01.png" alt=""> <h2 id="12">Result from Figure 1 Schelter et al.(2005)</h2><p>Figure 1, page 212.</p><p><img vspace="5" hspace="5" src="fig_schelter2005_fig_1_pdc.png" alt=""> </p><h2 id="13">Remarks:</h2><div><ul><li>Compare the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter   et al., 2005). As you may notice, the power spectrum of <img src="schelter2005_eq06218598531655674008.png" alt="$x_4$">, as well   as <img src="schelter2005_eq02327891265049891971.png" alt="$|PDC|^2_{24}$">, differ significantly.   Our guess is that Schelter and collaborators may have used slightly different   parameters from what they stated in Eq. 5.</li></ul></div><div><ul><li>Note that, for linear model with balanced innovation, the maximum   of PDC estimates is roughly proportional to the autoregressive   model coefficients. As we are plotting <img src="schelter2005_eq06563705797252587072.png" alt="$|PDC|^2$">, amplitude is   roughly proportional to the square of VAR coefficients.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Schelter et al. (2005)  Five-dimension VAR[4]-process 
 %
@@ -280,8 +277,21 @@ xplot_title(alpha,metric,<span class="string">'pdc'</span>,strID);
 % 
 % Example Eq. (5) Five-dimension VAR[4]-process 
 %
+%%
 
 clear; clc
+
+
+%% Interaction diagram
+%
+%
+% <<fig_schelter2005_graph.png>>
+%
+
+%% Equation system  
+%
+% <<fig_schelter2005_eq.png>>
+%
 
 %% Data sample generation
 
@@ -322,9 +332,6 @@ end
 
 y=[x1' x2' x3' x4' x5']; % data must be organized column-wise
 u=y(nDiscard+1:N,:);
-
-[nSegLength,nChannels]=size(u);
-
 fs = 1;
 
 %%
@@ -448,6 +455,10 @@ strID = 'Schelter et al. J. Neurosci Methods (2005)';
                                 flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'pdc',strID);
 
+%% Result from Figure 1 Schelter et al.(2005)
+% Figure 1, page 212.
+%
+% <<fig_schelter2005_fig_1_pdc.png>>
 
 %% Remarks:
 % 

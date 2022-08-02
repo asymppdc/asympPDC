@@ -3,20 +3,19 @@
 %        alpha-value information.
 %
 %% Syntax
+%
 %   XPLOT_TITLE(c)
 %   XPLOT_TITLE(alpha,metric,measure)
 %
 %% Input Arguments
 %   alpha:      significance level
-%
 %   measure:    should be either 'pdc'| 'dtf'
-%
 %   metric:     'euc'  -- Euclidean   ==> |PDC|^2  or |DTF|^2
 %               'diag' -- diagonal    ==> |gPDC|^2 or |DC|^2
 %               'info' -- information ==> |iPDC|^2 or |iDTF|^2
 %
 %% Output 
-%   Print a title above all subplots of DTF/PDC.
+%   Print main title above all subplots of DTF/PDC.
 %
 % See also XPLOT, PVALUES_XPLOT
 %          xplot | <xplot.html> |
@@ -126,6 +125,9 @@ else
    set(ax,'Position',pos);
 end
 
+drawnow
+
+end
 % ax : Axes (suplabel) with properties:
 %              XLim: [0 1]
 %              YLim: [0 1]

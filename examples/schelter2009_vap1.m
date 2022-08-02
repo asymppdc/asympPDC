@@ -119,7 +119,7 @@ metric = 'info';  % euc  = original PDC or DTF;
                   % info = information PDC (iPDC) or iDTF.
 alpha = 0.01; % Significance level for iPDC null hypothesis test
 
-c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
 c.pvaluesgct = pValue_gct;
 

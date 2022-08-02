@@ -5,6 +5,8 @@
 %           [http://dx.plos.org/10.1371/journal.pcbi.1000087] 
 % 
 % Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input
+%
+%%
 
 clear; clc; format compact; format short
 

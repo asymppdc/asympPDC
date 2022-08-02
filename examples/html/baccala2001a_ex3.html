@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>baccala2001a_ex3</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="baccala2001a_ex3.m"><style type="text/css">
+      --><title>BACCALA &amp; SAMESHIMA 2001A, EXAMPLE 3, PAGE 468</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="baccala2001a_ex3.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,18 +67,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">BACCALA &amp; SAMESHIMA 2001A, EXAMPLE 3, PAGE 468</a></li><li><a href="#2">Data sample generation</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation system</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="baccala2001a_ex3_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plot</a></li><li><a href="#11">information PDC estimation</a></li><li><a href="#12"><img src="baccala2001a_ex3_eq16638434991807348760.png" alt="$|_iPDC(\lambda)|^2$"> Matrix Layout Plotting</a></li><li><a href="#13">Original DTF estimation</a></li><li><a href="#14"><img src="baccala2001a_ex3_eq04121545881237396650.png" alt="$|{DTF}(\lambda)|^2$"> Matrix-Layout Plot</a></li><li><a href="#15">Result from the original article, Baccala &amp; Sameshima (2001)</a></li><li><a href="#16">Some remarks:</a></li></ul></div><h2 id="1">BACCALA &amp; SAMESHIMA 2001A, EXAMPLE 3, PAGE 468</h2><p>DESCRIPTION:</p><p>Example <b>baccala2001_ex3.m</b>:</p><p>Linear five-dimension  VAR(3) model with feedback</p><p>Baccala &amp; Sameshima. Partial directed coherence: a new concept in neural structure determination. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><p><a href="http://dx.doi.org/10.1007/PL00007990">http://dx.doi.org/10.1007/PL00007990</a></p><p>Example 3 (pag.468)                       VAR(3) with feedback between x4 and x5</p><pre>   $x1--&gt;x2  x1--&gt;x3 x1--&gt;x4 x4&lt;--&gt;x5$</pre><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
-</pre><h2 id="2">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
+  </style></head><body><div class="content"><h1>BACCALA &amp; SAMESHIMA 2001A, EXAMPLE 3, PAGE 468</h1><!--introduction--><p>DESCRIPTION:</p><p>Linear five-dimension  VAR(3) model with feedback</p><p>Baccala &amp; Sameshima. Partial directed coherence: a new concept in neural structure determination. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><p><a href="http://dx.doi.org/10.1007/PL00007990">http://dx.doi.org/10.1007/PL00007990</a></p><p>Example 3 (pag.468)                       VAR(3) with feedback between x4 and x5</p><pre>   $x1--&gt;x2  x1--&gt;x3 x1--&gt;x4 x4&lt;--&gt;x5$</pre><p>Example <b>baccala2001_ex3.m</b>:</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Other routines</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation system</a></li><li><a href="#5">Data sample generation</a></li><li><a href="#6">Data pre-processing: detrending and/or normalization options</a></li><li><a href="#7">MVAR model estimation</a></li><li><a href="#9">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#10">Original PDC estimation</a></li><li><a href="#11"><img src="baccala2001a_ex3_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plot</a></li><li><a href="#13">information PDC estimation</a></li><li><a href="#14"><img src="baccala2001a_ex3_eq16305117700392502441.png" alt="$|_{i}PDC(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#16">Original DTF estimation</a></li><li><a href="#17"><img src="baccala2001a_ex3_eq04121545881237396650.png" alt="$|{DTF}(\lambda)|^2$"> Matrix-Layout Plot</a></li><li><a href="#19">Result from the original article, Baccala &amp; Sameshima (2001)</a></li><li><a href="#20">Some remarks:</a></li></ul></div><h2 id="1">Other routines</h2><pre>See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg,
+          xplot, xplot_pvalues
+&lt;baccala2001a_ex3.html |baccala2001a_ex3|&gt; |</pre><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+</pre><h2 id="3">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex3_graph.png" alt=""> </p><p>Figure 2a from Baccala &amp; Sameshima. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><h2 id="4">Equation system</h2><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex3_eq.png" alt=""> </p><h2 id="5">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 1000;   <span class="comment">% number of analyzed samples points</span>
 u = fbaccala2001a_ex3(nPoints, nDiscard); <span class="comment">% Model function</span>
-chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>}; <span class="comment">% or = [];</span>
+chLabels = []; <span class="comment">%{'x_1';'x_2';'x_3';'x_4';'x_5'};</span>
 fs = 1; <span class="comment">% Normalized frequency.</span>
 </pre><pre class="codeoutput">======================================================================
                Linear five-dimensional VAR[3] Model
  Baccala &amp; Sameshima. Biol.Cybern.84:463-74, 2001. Example 3 (pag.468)
              x1--&gt;x2  x1--&gt;x3 x1--&gt;x4 x4--&gt;x5 x5--&gt;x4
 ======================================================================
-</pre><h2 id="3">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex3_graph.png" alt=""> </p><p>Figure 2a from Baccala &amp; Sameshima. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><h2 id="4">Equation system</h2><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex3_eq.png" alt=""> </p><p>Data pre-processing: detrending and/or normalization options</p><pre class="codeinput">[nChannels,nSegLength] =size(u);
+</pre><h2 id="6">Data pre-processing: detrending and/or normalization options</h2><pre class="codeinput">[nChannels,nSegLength] =size(u);
 <span class="keyword">if</span> nChannels &gt; nSegLength
    u = u.';
    [nChannels,nSegLength]=size(u);
@@ -87,7 +89,7 @@ fs = 1; <span class="comment">% Normalized frequency.</span>
 <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
 disp(<span class="string">'Time series were detrended.'</span>);
 </pre><pre class="codeoutput">Time series were detrended.
-</pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to be considered.</span>
+</pre><h2 id="7">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to be considered.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm</span>
 criterion = 1;      <span class="comment">% 1: AIC, Akaike Information Criteria</span>
 
@@ -99,10 +101,10 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=35642.158291
-IP=2  vaic=34608.152052
-IP=3  vaic=34558.200179
-IP=4  vaic=34590.254028
+IP=1  vaic=35635.797915
+IP=2  vaic=34558.500023
+IP=3  vaic=34517.612471
+IP=4  vaic=34541.041856
  
 Number of channels = 5 with 1000 data points; MAR model order = 3.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% GCT testing lag</span>
@@ -117,9 +119,9 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.02
-  st = 390.786
-</pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
+Pass = 0.04
+  st = 417.141
+</pre><h2 id="9">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
 flgPrintResults = 1;
@@ -138,11 +140,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.7093    0.6501    0.4259    0.4680
-         0       NaN    0.0303    0.6968    0.0158
-         0    0.6876       NaN    0.1364    0.9955
-         0    0.9244    0.6009       NaN         0
-    0.1936    0.7963    0.9683         0       NaN
+       NaN    0.7139    0.6977    0.8575    0.3178
+         0       NaN    0.7988    0.5625    0.3726
+         0    0.2428       NaN    0.5585    0.2458
+         0    0.7469    0.4721       NaN         0
+    0.4881    0.0961    0.9228         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -155,40 +157,40 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.5764    0.7753    0.6145    0.3326
-    0.5764       NaN    0.4899    0.6037    0.6190
-    0.7753    0.4899       NaN    0.7337    0.2802
-    0.6145    0.6037    0.7337       NaN    0.8709
-    0.3326    0.6190    0.2802    0.8709       NaN
+       NaN    0.7749    0.2794    0.1817    0.3420
+    0.7749       NaN    0.2383    0.0612    0.7029
+    0.2794    0.2383       NaN    0.0358    0.6227
+    0.1817    0.0612    0.0358       NaN    0.4069
+    0.3420    0.7029    0.6227    0.4069       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-</pre><h2 id="9">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> struct variable. See asymp_pdc.m or issue   &gt;&gt; help asymp_pdc to see more detail.</p><pre class="codeinput">nFreqs = 128;
+</pre><h2 id="10">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> struct variable. See asymp_pdc.m or issue   &gt;&gt; help asymp_pdc to see more detail.</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'euc'</span>; <span class="comment">% Euclidean metric = original PDC definition</span>
 alpha = 0.01;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 
 c.Tragct = Tr_gct;         <span class="comment">% Assigning GCT results to c struct variable.</span>
 c.pvaluesgct = pValue_gct;
-</pre><h2 id="10"><img src="baccala2001a_ex3_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plot</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 1]; <span class="comment">% overriding default setting</span>
+</pre><h2 id="11"><img src="baccala2001a_ex3_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plot</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 3]; <span class="comment">% overriding default setting</span>
 flgColor = 0;
 w_max=fs/2;
 
 strTitle = [<span class="string">'Linear 5-dim VAR(3) model w feedback'</span>];  <span class="comment">%'; '  datestr(now) ']'];</span>
-vTitleBar = <span class="string">'Baccala &amp; Sameshima (2001a) Example 3'</span>;
+strBarTitle = <span class="string">'Baccala &amp; Sameshima (2001a) Example 3'</span>;
 
-[h1,~, ~] = xplot(vTitleBar,c,<span class="keyword">...</span>
+[h1,~, ~] = xplot(strBarTitle,c,<span class="keyword">...</span>
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>, strTitle);
-</pre><img vspace="5" hspace="5" src="baccala2001a_ex3_01.png" alt=""> <h2 id="11">information PDC estimation</h2><p>iPDC analysis results are saved in <b>d</b> struct variable. See asymp_pdc.m</p><pre class="codeinput">nFreqs = 128;
+</pre><img vspace="5" hspace="5" src="baccala2001a_ex3_01.png" alt=""> <p>Original PDC2 plots with auto-PDC2 along the main-diagonal, reproducing the figure of original article. Note however that here we are depicting the squared-PDC, while in the article <tt>PDC</tt> was used.</p><h2 id="13">information PDC estimation</h2><p>iPDC analysis results are saved in <b>d</b> struct variable. See asymp_pdc.m</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'info'</span>; <span class="comment">% Choosing information PDC</span>
 
 d = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 
 d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
-</pre><h2 id="12"><img src="baccala2001a_ex3_eq16638434991807348760.png" alt="$|_iPDC(\lambda)|^2$"> Matrix Layout Plotting</h2><pre class="codeinput"><span class="comment">%                 1 2 3 4 5 6 7</span>
+</pre><h2 id="14"><img src="baccala2001a_ex3_eq16305117700392502441.png" alt="$|_{i}PDC(\lambda)|^2$"> Matrix-Layout Plotting</h2><pre class="codeinput"><span class="comment">%                 1 2 3 4 5 6 7</span>
    flgPrinting = [1 1 1 2 3 0 2]; <span class="comment">% GCT and power spectra selection.</span>
 <span class="comment">%                 | | | | |   |</span>
 <span class="comment">%           blue  | | | | |   7-- 2: Log spoectra;</span>
@@ -203,22 +205,22 @@ d.pvaluesgct = pValue_gct;
 
 flgColor = 0; w_max=fs/2;
 
-[h2,~, ~] = xplot(vTitleBar,d,<span class="keyword">...</span>
+[h2,~, ~] = xplot(strBarTitle,d,<span class="keyword">...</span>
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>, strTitle);
-</pre><img vspace="5" hspace="5" src="baccala2001a_ex3_02.png" alt=""> <h2 id="13">Original DTF estimation</h2><p>DTF analysis results are saved in <b>e</b> struct variable. See asymp_dtf.m for more detail.</p><pre class="codeinput">metric = <span class="string">'euc'</span>; <span class="comment">% Original DTF</span>
+</pre><img vspace="5" hspace="5" src="baccala2001a_ex3_02.png" alt=""> <p>Information PDC2 plots with log-spectra along the main-diagonal.</p><h2 id="16">Original DTF estimation</h2><p>DTF analysis results are saved in <b>e</b> struct variable. See asymp_dtf.m for more detail.</p><pre class="codeinput">metric = <span class="string">'euc'</span>; <span class="comment">% Original DTF</span>
 e = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
-</pre><h2 id="14"><img src="baccala2001a_ex3_eq04121545881237396650.png" alt="$|{DTF}(\lambda)|^2$"> Matrix-Layout Plot</h2><pre class="codeinput">flgColor = 0; flgScale = 1; flgMax = <span class="string">'dtf'</span>; flgSignifColor = 3;
+</pre><h2 id="17"><img src="baccala2001a_ex3_eq04121545881237396650.png" alt="$|{DTF}(\lambda)|^2$"> Matrix-Layout Plot</h2><pre class="codeinput">flgColor = 0; flgScale = 1; flgMax = <span class="string">'dtf'</span>; flgSignifColor = 3;
+flgPrinting = [1 1 1 2 0 0 3]; <span class="comment">% overriding default setting</span>
 
-[h3,~,~] = xplot(vTitleBar,e,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+[h3,~,~] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                  flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
-</pre><img vspace="5" hspace="5" src="baccala2001a_ex3_03.png" alt=""> <h2 id="15">Result from the original article, Baccala &amp; Sameshima (2001)</h2><p>Figure 2, page 469 from article.</p><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex3abc.png" alt=""> </p><h2 id="16">Some remarks:</h2><div><ol><li>Check &amp; compare Fig. 2b, page 468, Baccala &amp; Sameshima (2001).</li><li>Note that in the original article the amplitude PDC has been plotted,   while here we preferred to plot squared-PDC.</li></ol></div><p>This completes the Example 3 (Baccala &amp; Sameshima, 2001)'</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="baccala2001a_ex3_03.png" alt=""> <p>Original DTF2 plots with auto-DTF2 along the main-diagonal, closely reproducing the figure of original article in which we depicted <tt>DTF</tt>.</p><h2 id="19">Result from the original article, Baccala &amp; Sameshima (2001)</h2><p>Figure 2, page 469 from article.</p><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex3abc.png" alt=""> </p><h2 id="20">Some remarks:</h2><div><ol><li>Check &amp; compare Fig. 2b, page 468, Baccala &amp; Sameshima (2001).</li><li>Note that in the original article the amplitude PDC has been plotted,   while here we preferred to plot squared-PDC.</li></ol></div><p>This completes the Example 3 (Baccala &amp; Sameshima, 2001)'</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% BACCALA & SAMESHIMA 2001A, EXAMPLE 3, PAGE 468
-% DESCRIPTION:
 %
-% Example *baccala2001_ex3.m*:
+% DESCRIPTION:
 %
 % Linear five-dimension  VAR(3) model with feedback
 %
@@ -232,16 +234,15 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 %
 %     $x1REPLACE_WITH_DASH_DASH>x2  x1REPLACE_WITH_DASH_DASH>x3 x1REPLACE_WITH_DASH_DASH>x4 x4<REPLACE_WITH_DASH_DASH>x5$
 %
+% Example *baccala2001_ex3.m*:
+%
+%% Other routines
+%  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
+%            xplot, xplot_pvalues
+%  <baccala2001a_ex3.html |baccala2001a_ex3|> |
+%%
 
 clear; clc; format compact; format short
-
-%% Data sample generation
-%
-nDiscard = 5000;   % number of points discarded at beginning of simulation
-nPoints  = 1000;   % number of analyzed samples points
-u = fbaccala2001a_ex3(nPoints, nDiscard); % Model function
-chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'}; % or = []; 
-fs = 1; % Normalized frequency.
 
 %% Interaction diagram
 %
@@ -254,8 +255,17 @@ fs = 1; % Normalized frequency.
 % <<fig_baccala2001a_ex3_eq.png>>
 %
 
-%%
-% Data pre-processing: detrending and/or normalization options
+%% Data sample generation
+%
+nDiscard = 5000;   % number of points discarded at beginning of simulation
+nPoints  = 1000;   % number of analyzed samples points
+u = fbaccala2001a_ex3(nPoints, nDiscard); % Model function
+chLabels = []; %{'x_1';'x_2';'x_3';'x_4';'x_5'};
+fs = 1; % Normalized frequency.
+
+
+%% Data pre-processing: detrending and/or normalization options
+%
 
 [nChannels,nSegLength] =size(u);
 if nChannels > nSegLength
@@ -319,16 +329,21 @@ c.pvaluesgct = pValue_gct;
     
 %% $|PDC(\lambda)|^2$ Matrix-Layout Plot
 
-flgPrinting = [1 1 1 2 3 0 1]; % overriding default setting
+flgPrinting = [1 1 1 2 3 0 3]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
 strTitle = ['Linear 5-dim VAR(3) model w feedback'];  %'; '  datestr(now) ']'];
-vTitleBar = 'Baccala & Sameshima (2001a) Example 3';
+strBarTitle = 'Baccala & Sameshima (2001a) Example 3';
 
-[h1,~, ~] = xplot(vTitleBar,c,...
+[h1,~, ~] = xplot(strBarTitle,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc', strTitle);
+
+%%
+% Original PDC2 plots with auto-PDC2 along the main-diagonal, reproducing
+% the figure of original article. Note however that here we are depicting the
+% squared-PDC, while in the article |PDC| was used.
 
 
 %% information PDC estimation
@@ -345,7 +360,7 @@ d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
 
 
-%% $|_iPDC(\lambda)|^2$ Matrix Layout Plotting
+%% $|_{i}PDC(\lambda)|^2$ Matrix-Layout Plotting
 
 %                 1 2 3 4 5 6 7
    flgPrinting = [1 1 1 2 3 0 2]; % GCT and power spectra selection.
@@ -362,9 +377,12 @@ d.pvaluesgct = pValue_gct;
 
 flgColor = 0; w_max=fs/2;
 
-[h2,~, ~] = xplot(vTitleBar,d,...
+[h2,~, ~] = xplot(strBarTitle,d,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc', strTitle);
+
+%%
+% Information PDC2 plots with log-spectra along the main-diagonal.
 
 %% Original DTF estimation
 %
@@ -379,10 +397,16 @@ e = asymp_dtf(u,A,pf,nFreqs,metric,alpha);
 %
 
 flgColor = 0; flgScale = 1; flgMax = 'dtf'; flgSignifColor = 3;
+flgPrinting = [1 1 1 2 0 0 3]; % overriding default setting
 
-[h3,~,~] = xplot(vTitleBar,e,flgPrinting,fs,w_max,chLabels, ...
+[h3,~,~] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
                                  flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'dtf',strTitle);
+
+%%
+% Original DTF2 plots with auto-DTF2 along the main-diagonal,
+% closely reproducing the figure of original article in which we depicted |DTF|. 
+
 
 %% Result from the original article, Baccala & Sameshima (2001) 
 % Figure 2, page 469 from article.

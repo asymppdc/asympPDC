@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>WINTERHALDER ET AL. (2005) 7-DIMENSION UNBALANCED RANDOM INDEPENDENT VARIABLES</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="winterhalder2005_variant.m"><style type="text/css">
+      --><title>WINTERHALDER ET AL. (2005) 7-DIMENSION UNBALANCED RANDOM INDEPENDENT VARIABLES</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="winterhalder2005_variant.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>WINTERHALDER ET AL. (2005) 7-DIMENSION UNBALANCED RANDOM INDEPENDENT VARIABLES</h1><!--introduction--><p>Description:</p><p>Expanded to seven variables and modified to consider unbalanced variances example taken from:  Winterhalder et al. Comparison of linear signal processing techniques to  infer directed interactions in multivariate neural systems.  <i>Signal Processing</i> 85:2137--2160, 2005.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Data sample generation</a></li><li><a href="#3">Data generation function:</a></li><li><a href="#4">PDC/DTF  estimation and analysis parameters</a></li><li><a href="#5">Data pre-processing: detrending and standardization options</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#7">Testing the adequacy of MAR model fitting through Portmanteau test</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">PDC, threshold and confidence interval calculations.</a></li><li><a href="#11">Plotting options set up, mostly cosmetic for xplot.m routine:</a></li><li><a href="#13">Remarks on nonstandardized unbalanced noise analysis:</a></li><li><a href="#14">Information DTF estimation and analysis parameters</a></li><li><a href="#16">Remarks on false-positive connectivity detection ratio:</a></li></ul></div><p><a href="http://dx.doi.org/10.1016/j.sigpro.2005.07.011">http://dx.doi.org/10.1016/j.sigpro.2005.07.011</a></p><p>Example: Seven random independent variables with unbalanced variances. Variant of Random Independent Process with 7 variables') with following variances:</p><p><img src="winterhalder2005_variant_eq07584489195343151379.png" alt="$\sigma_1^2=\sigma_3^2=250000; \sigma_2^2=\sigma_4^2=\sigma_5^2=\sigma_6^2=\sigma_7^2=1$"></p><h2 id="2">Data sample generation</h2><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+  </style></head><body><div class="content"><h1>WINTERHALDER ET AL. (2005) 7-DIMENSION UNBALANCED RANDOM INDEPENDENT VARIABLES</h1><!--introduction--><p>Description:</p><p>Expanded to seven variables and modified to consider unbalanced variances with idea borrowed from:  Winterhalder et al. Comparison of linear signal processing techniques to  infer directed interactions in multivariate neural systems.  <i>Signal Processing</i> 85:2137--2160, 2005. <a href="http://dx.doi.org/10.1016/j.sigpro.2005.07.011">http://dx.doi.org/10.1016/j.sigpro.2005.07.011</a></p><p>Example: Seven random independent variables with unbalanced variances. Variant of Random Independent Process with 7 variables') with following variances:</p><p><img src="winterhalder2005_variant_eq03245793016271417325.png" alt="$\sigma_1^2=\sigma_3^2=250,000; \sigma_2^2=\sigma_4^2=\sigma_5^2=\sigma_6^2=\sigma_7^2=1$"></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Data sample generation</a></li><li><a href="#2">Data generation function:</a></li><li><a href="#3">PDC/DTF  estimation and analysis parameters</a></li><li><a href="#4">Data pre-processing: detrending and standardization options</a></li><li><a href="#5">MVAR model estimation</a></li><li><a href="#6">Testing the adequacy of MAR model fitting through Portmanteau test</a></li><li><a href="#7">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#8">PDC, threshold and confidence interval calculations.</a></li><li><a href="#10">Plotting options set up, mostly cosmetic for xplot.m routine:</a></li><li><a href="#11">Original PDC plot</a></li><li><a href="#13">PDC p-values plot</a></li><li><a href="#15">Information PDC estimation and analysis parameters</a></li><li><a href="#16">Information PDC plot</a></li><li><a href="#17">Remarks on false-positive connectivity detection ratio:</a></li><li><a href="#18">General remarks about xplot features:</a></li></ul></div><h2 id="1">Data sample generation</h2><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
 
 flgPrintScreen = <span class="string">'Screen'</span>; <span class="comment">%'Screen' or  'Print'</span>
 
@@ -75,7 +75,7 @@ nDiscard = 1000;    <span class="comment">% number of points discarded at beginn
 nPoints  = 5000;    <span class="comment">% number of analyzed samples points</span>
 
 alpha  = 0.05;  <span class="comment">% Significance level for PDC/DTF null hypothesis test</span>
-</pre><h2 id="3">Data generation function:</h2><pre class="codeinput">u = fwinterhalder2005_variant(nPoints, nDiscard);
+</pre><h2 id="2">Data generation function:</h2><pre class="codeinput">u = fwinterhalder2005_variant(nPoints, nDiscard);
 
 chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>;<span class="string">'x_6'</span>;<span class="string">'x_7'</span>};<span class="comment">%chLabels = [];</span>
 fs = 1; <span class="comment">% Normalized sampling frequency</span>
@@ -84,30 +84,30 @@ fs = 1; <span class="comment">% Normalized sampling frequency</span>
         Variant of Random Independent Process with 7 variables
  [sigma1=500|sigma2=1|sigma3=500|sigma4=1|sigma5=1|sigma6=1|sigma7=1]
 ======================================================================
-</pre><h2 id="4">PDC/DTF  estimation and analysis parameters</h2><pre class="codeinput"><span class="comment">% Common routine segment for all examples</span>
-</pre><h2 id="5">Data pre-processing: detrending and standardization options</h2><pre class="codeinput">flgDetrend = 1;     <span class="comment">% 1: Detrending the data set</span>
+</pre><h2 id="3">PDC/DTF  estimation and analysis parameters</h2><pre class="codeinput"><span class="comment">% Common routine segment for all examples</span>
+</pre><h2 id="4">Data pre-processing: detrending and standardization options</h2><pre class="codeinput">flgDetrend = 1;     <span class="comment">% 1: Detrending the data set</span>
 flgStandardize = 0; <span class="comment">% 0: No standardization</span>
 
 <span class="comment">% Checking data dimension</span>
 [nChannels,nSegLength] = size(u);
-<span class="keyword">if</span> nChannels &gt; nSegLength,
+<span class="keyword">if</span> nChannels &gt; nSegLength
    u = u.';
    [nChannels,nSegLength] = size(u);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 
 <span class="comment">% Detrending</span>
-<span class="keyword">if</span> flgDetrend,
-   <span class="keyword">for</span> i = 1:nChannels, u(i,:) = detrend(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i = 1:nChannels, u(i,:) = detrend(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were detrended.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 
 <span class="comment">% Standardization</span>
-<span class="keyword">if</span> flgStandardize,
-   <span class="keyword">for</span> i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
 <span class="keyword">end</span>;
 </pre><pre class="codeoutput">Time series were detrended.
-</pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+</pre><h2 id="5">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1 = Nutall-Strand MVAR estimation algorithm</span>
 criterion = 1;      <span class="comment">% 1 = AIC, Akaike Information Criteria</span>
 
@@ -119,11 +119,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation and GCT analysis routines.
 maxOrder limited to 30
-IP=1  vaic=422383.071494
-IP=2  vaic=422414.455118
+IP=1  vaic=422467.856472
+IP=2  vaic=422522.068103
  
 Number of channels = 7 with 5000 data points; MAR model order = 1.
-</pre><h2 id="7">Testing the adequacy of MAR model fitting through Portmanteau test</h2><pre class="codeinput">h = 20; <span class="comment">% testing lag value</span>
+</pre><h2 id="6">Testing the adequacy of MAR model fitting through Portmanteau test</h2><pre class="codeinput">h = 20; <span class="comment">% testing lag value</span>
 MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
                             <span class="comment">% level</span>
 aValueMVAR = 1 - MVARadequacy_signif; <span class="comment">% Confidence value for the testing</span>
@@ -137,14 +137,12 @@ flgPrintResults = 1; <span class="comment">% flag = 1, print analysis results</s
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.0387755
-  st = 864.076
-</pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
+Pass = 0.0377551
+  st = 907.487
+</pre><h2 id="7">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
 
-metric = <span class="string">'diag'</span>; <span class="comment">% euc  = original PDC or DTF;</span>
-                 <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
-                 <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
+
 
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
 
@@ -156,21 +154,21 @@ flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m 
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
    NaN     0     0     0     0     0     0
-     1   NaN     0     0     0     0     0
-     1     0   NaN     0     0     0     0
+     0   NaN     0     0     0     0     0
+     0     0   NaN     0     0     0     0
      0     0     0   NaN     0     0     0
-     0     0     0     0   NaN     0     0
-     0     0     0     0     0   NaN     1
-     0     0     0     0     0     0   NaN
+     1     0     0     0   NaN     0     0
+     0     0     0     0     0   NaN     0
+     0     0     0     1     0     0   NaN
 
 Granger causality test p-values:
-       NaN    0.4723    0.0921    0.1788    0.5988    0.8331    0.8850
-    0.0293       NaN    0.6584    0.3589    0.7347    0.3407    0.9677
-    0.0312    0.8326       NaN    0.6076    0.3675    0.6684    0.6554
-    0.9466    0.9296    0.8079       NaN    0.1158    0.6567    0.7899
-    0.3651    0.5035    0.8905    0.3826       NaN    0.5366    0.8587
-    0.3088    0.0971    0.0711    0.8015    0.8239       NaN    0.0299
-    0.5867    0.1823    0.1415    0.1830    0.1614    0.2319       NaN
+       NaN    0.2994    0.7590    0.4432    0.3574    0.8363    0.4786
+    0.6322       NaN    0.2119    0.9984    0.0656    0.3565    0.1251
+    0.2370    0.6359       NaN    0.0927    0.8489    0.3160    0.4271
+    0.5820    0.8588    0.1821       NaN    0.9869    0.7340    0.8659
+    0.0120    0.2883    0.0506    0.6478       NaN    0.1034    0.8575
+    0.8534    0.9966    0.9350    0.8759    0.7908       NaN    0.9379
+    0.6986    0.4593    0.7539    0.0296    0.9437    0.7950       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -185,28 +183,32 @@ Instantaneous connectivity matrix:
      0     0     0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.0003    0.5123    0.7813    0.0701    0.3490    0.6955
-    0.0003       NaN    0.5593    0.8273    0.2213    0.6195    0.0619
-    0.5123    0.5593       NaN    0.8801    0.3427    0.1171    0.6956
-    0.7813    0.8273    0.8801       NaN    0.0574    0.3780    0.3855
-    0.0701    0.2213    0.3427    0.0574       NaN    0.2440    0.8587
-    0.3490    0.6195    0.1171    0.3780    0.2440       NaN    0.6021
-    0.6955    0.0619    0.6956    0.3855    0.8587    0.6021       NaN
+       NaN    0.0110    0.0844    0.6286    0.6296    0.2309    0.7520
+    0.0110       NaN    0.6407    0.9063    0.2452    0.9954    0.3364
+    0.0844    0.6407       NaN    0.6578    0.6700    0.6887    0.5175
+    0.6286    0.9063    0.6578       NaN    0.6111    0.2919    0.9388
+    0.6296    0.2452    0.6700    0.6111       NaN    0.7464    0.7587
+    0.2309    0.9954    0.6887    0.2919    0.7464       NaN    0.1905
+    0.7520    0.3364    0.5175    0.9388    0.7587    0.1905       NaN
 
 &gt;&gt;&gt;&gt; There is a pair of channels with significant Instantaneous 
      Granger Causality.
 
 ====================================================================================================
-</pre><h2 id="9">PDC, threshold and confidence interval calculations.</h2><pre class="codeinput">metric = <span class="string">'euc'</span>; <span class="comment">% Original DTF estimation</span>
+</pre><h2 id="8">PDC, threshold and confidence interval calculations.</h2><pre class="codeinput">metric = <span class="string">'euc'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
+                 <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
+                 <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
+
 nFreqs = 128;   <span class="comment">% Number of frequency points to consider</span>
-</pre><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_dtf.m or issue</p><pre class="language-matlab">&gt;&gt; help asymp_pdc
+</pre><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_pdc.m or issue</p><pre class="language-matlab">&gt;&gt; help asymp_pdc
 </pre><p>command for more detail.</p><pre class="codeinput">c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
     c.Tragct = Tr_gct;
     c.pvaluesgct = pValue_gct;
-</pre><h2 id="11">Plotting options set up, mostly cosmetic for xplot.m routine:</h2><pre class="codeinput">flgMax = <span class="string">'all'</span>;
+</pre><h2 id="10">Plotting options set up, mostly cosmetic for xplot.m routine:</h2><pre class="codeinput"><span class="comment">% flgColor parameter for PDC matrix-layout plot.</span>
+flgMax = <span class="string">'all'</span>;
 flgSignifColor = 4; <span class="comment">% red + green</span>
 flgScale = 3;       <span class="comment">% [0 1]/[0 .1]/[0 .01]</span>
-</pre><p>flgColor parameter for PDC matrix-layout plot.</p><pre class="codeinput">flgColor = [0];   <span class="comment">% Plotting option for automatic scaling for small PDC</span>
+flgColor = [0];   <span class="comment">% Plotting option for automatic scaling for small PDC</span>
                   <span class="comment">% values.</span>
                   <span class="comment">% if flgColor = 0, y-axis scale = [0 1]</span>
                   <span class="comment">% elseif flgColor = 1, xplot routine rescale</span>
@@ -215,7 +217,6 @@ flgScale = 3;       <span class="comment">% [0 1]/[0 .1]/[0 .01]</span>
                   <span class="comment">%                          so that y-axis scale = [0 .1]</span>
                   <span class="comment">%   elseif max(|PDC(f)|^2) &lt; .001 background-color = light-purple</span>
                   <span class="comment">%                          and y-axis = [0 .01].</span>
-
 <span class="comment">%                [1 2 3 4 5 6 7]</span>
 flgPrinting  =   [1 0 1 0 3 0 0];
 <span class="comment">%       blue-line | | | | | | 7--Spectra (0: w/o; 1: Linear; 2: Log; 3: PDC2;</span>
@@ -234,34 +235,42 @@ strTitle = [<span class="string">' Independent Gaussian Noise: \sigma_1=\sigma_3
                            <span class="string">' \sigma_2 = \sigma_4 = \sigma_5 = 1'</span>];
 
 flgScale = 2;
-
-[h,hxlabel hylabel] = xplot(strID, c, <span class="keyword">...</span>
+</pre><h2 id="11">Original PDC plot</h2><pre class="codeinput">[h,hxlabel,hylabel] = xplot(strID, c, <span class="keyword">...</span>
                                flgPrinting,fs,w_max,chLabels,flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'PDC'</span>,strTitle);
-
-flgPrinting  =   [1 1 1 2 3 0 0];
-[hp,hxlabel hylabel] = xplot_pvalues(strID, c, <span class="keyword">...</span>
+</pre><img vspace="5" hspace="5" src="winterhalder2005_variant_01.png" alt=""> <p><b>Remarks on nonstandardized unbalanced noise analysis</b>:</p><div><ul><li>Note that in this example the time series were not standardized.</li><li>As a consequence, due to the high variance/power of channels   <img src="winterhalder2005_variant_eq06613056106014670631.png" alt="$x_1$"> and <img src="winterhalder2005_variant_eq14660336936512934444.png" alt="$x_3$">, <img src="winterhalder2005_variant_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> from other channels reaching these channels are   high, but   still in most cases not significant (represented by green lines).</li><li>The Patnaik thresholds plotted in dashed-lines may not be visible in these   subplots because their values are well above  upper limit of scale   range which is limited to [0 1] on y-axis.</li></ul></div><h2 id="13">PDC p-values plot</h2><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
+[hp,hxlabel,hylabel] = xplot_pvalues(strID, c, <span class="keyword">...</span>
                                flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
 xplot_title(alpha,metric,<span class="string">'p-value PDC'</span>,strTitle);
-</pre><img vspace="5" hspace="5" src="winterhalder2005_variant_01.png" alt=""> <img vspace="5" hspace="5" src="winterhalder2005_variant_02.png" alt=""> <h2 id="13">Remarks on nonstandardized unbalanced noise analysis:</h2><div><ul><li>Note that in this example the time series were not standardized.</li><li>As a consequence, due to the high variance/power of channels   <img src="winterhalder2005_variant_eq06613056106014670631.png" alt="$x_1$"> and <img src="winterhalder2005_variant_eq14660336936512934444.png" alt="$x_3$">, <img src="winterhalder2005_variant_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> from other channels reaching these channels are   high, but   still in most cases not significant (represented by green lines).</li><li>The Patnaik thresholds plotted in dashed-lines may not be visible in these   subplots because their values are well above  upper limit of scale   range which is limited to [0 1] on y-axis.</li></ul></div><h2 id="14">Information DTF estimation and analysis parameters</h2><p>If the metric is either 'diag' or 'info', the unbalanced noises are ruled out or scaled in their formulation as you can see in the information DTF calculation results shown bellow. Same consideration would apply for information PDC.</p><p>PDC analysis results are saved in <b>d</b> struct variable.</p><p>See asymp_dtf.m or issue   &gt;&gt; help asymp_dtf for more detail.</p><p>When `flgColor=1` parameter option is used in the xplot.m routine, the y-axis intervals: (a) [0 .01] background is colored in <b>LIGHT-PURPLE</b>; (b) (.01 .1] in <b>LIGHT-BLUE</b>; and (c) (.1 1] is <b>WHITE</b>.</p><p>If the y-axis is scaled according to the maximum amplitude of the measures, this color coding may help easily getting clue about the magnitude <img src="winterhalder2005_variant_eq12280493672499922952.png" alt="$|{DTF}|^2$"> or <img src="winterhalder2005_variant_eq16963151017031281882.png" alt="$|{PDC}|^2$"> estimates.</p><p>If the background is <b>LIGHT-PURPLE</b>  one would know the maximum amplitude is smaller than 1/100, while with <b>LIGHT-BLUE</b> background is smaller than 1/10.</p><h2 id="16">Remarks on false-positive connectivity detection ratio:</h2><div><ul><li>As 42 combinations of <b>DTF</b> and <b>GC</b> are tested, chances are that you     will see significant <img src="winterhalder2005_variant_eq04121545881237396650.png" alt="$|{DTF}(\lambda)|^2$"> (red lines), also in the case of     <img src="winterhalder2005_variant_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> (see above), in some plottings. The     significant <b>DTF</b> probability depends on significance level you     choose for null hypothesis DTF testing.</li><li>The false-positive rate is approximately equal to the chosen <img src="winterhalder2005_variant_eq14221827199139923399.png" alt="$\alpha$"> value.</li><li>The similar argument applies to "instantaneous Granger causality"     outcomes, and combination of 21 pairs of variables are considered     as <b>iGC</b> is a symmetric relation.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="winterhalder2005_variant_02.png" alt=""> <p><b>Remarks on PDC p-values plots</b>:</p><div><ul><li>Obviously this will vary with the simulations, As we are dealing with 7 channels, there are 42 combinations of pair of channels. For random Gaussian processes, most likely one will see occasional false-positive inference in a rate proportional to the chosen alpha, which is 5% in this example. So one would expect roughly 42*0.05 false-positive cases in each simulation.</li><li>One can see above each subplot the Granger causality test p-value printed in green (not significant) or purple with dot (significant GCT) that should agree or be approximately equal in magnitude in most cases with the PDC p-values (our experience) plotted in frequency domain.</li></ul></div><h2 id="15">Information PDC estimation and analysis parameters</h2><p>If the metric is either 'diag' or 'info', the unbalanced noises are ruled out or scaled in their formulation as you can see in the information PDC calculation results shown bellow. Same consideration would apply for information PDC.</p><p>Information PDC analysis results are saved in <b>d</b> struct variable.</p><pre class="codeinput">metric = <span class="string">'info'</span>; <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
+nFreqs = 128;   <span class="comment">% Number of frequency points to consider</span>
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+d.Tragct = Tr_gct;
+d.pvaluesgct = pValue_gct;
+</pre><h2 id="16">Information PDC plot</h2><pre class="codeinput">flgColor = 1;
+[h,hxlabel,hylabel] = xplot(strID, d, <span class="keyword">...</span>
+                               flgPrinting,fs,w_max,chLabels,flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,<span class="string">'PDC'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="winterhalder2005_variant_03.png" alt=""> <h2 id="17">Remarks on false-positive connectivity detection ratio:</h2><div><ul><li>As 42 combinations of <b>PDC</b> and <b>GC</b> are tested, chances are that you     will see significant <img src="winterhalder2005_variant_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> (red lines), also in the     case of <img src="winterhalder2005_variant_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> (see above), in some plottings. The     significant <b>PDC</b> probability depends on significance level you have     chosen for null hypothesis PDC testing.</li><li>As stated before, the false-positive rate is approximately equal to the   chosen level of significance <img src="winterhalder2005_variant_eq14221827199139923399.png" alt="$\alpha$"> value.</li><li>The similar argument would apply for "instantaneous Granger causality"   outcomes evaluation, and the combination of 21 pairs of variables   should be considered as <b>iGC</b> is a symmetric relation in this case.</li></ul></div><h2 id="18">General remarks about xplot features:</h2><div><ul><li>When `flgColor=1` parameter option is used in the xplot.m routine, the y-axis intervals: (a) [0 .01] background is colored in <b>LIGHT-PURPLE</b>; (b) (.01 .1] in <b>LIGHT-BLUE</b>; and (c) (.1 1] is <b>WHITE</b>.</li></ul></div><div><ul><li>If the y-axis is scaled according to the maximum amplitude of the measures, this color coding may help easily getting clue about the magnitude <img src="winterhalder2005_variant_eq12280493672499922952.png" alt="$|{DTF}|^2$"> or <img src="winterhalder2005_variant_eq16963151017031281882.png" alt="$|{PDC}|^2$"> estimates.</li></ul></div><div><ul><li>If the background is <b>LIGHT-PURPLE</b>  one would know the maximum amplitude is smaller than 1/100, while with <b>LIGHT-BLUE</b> background is smaller than 1/10.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% WINTERHALDER ET AL. (2005) 7-DIMENSION UNBALANCED RANDOM INDEPENDENT VARIABLES
+%
 % Description:
 %
-% Expanded to seven variables and modified to consider unbalanced variances example taken from:
+% Expanded to seven variables and modified to consider unbalanced variances with idea borrowed from:
 %  Winterhalder et al. Comparison of linear signal processing techniques to
 %  infer directed interactions in multivariate neural systems. 
 %  _Signal Processing_ 85:2137REPLACE_WITH_DASH_DASH2160, 2005.
-%
-%%
-%
 % <http://dx.doi.org/10.1016/j.sigpro.2005.07.011>
+%
 %
 % Example: Seven random independent variables with unbalanced variances.
 % Variant of Random Independent Process with 7 variables') with following
 % variances:
 %
-% $\sigma_1^2=\sigma_3^2=250000; \sigma_2^2=\sigma_4^2=\sigma_5^2=\sigma_6^2=\sigma_7^2=1$
+% $\sigma_1^2=\sigma_3^2=250,000; \sigma_2^2=\sigma_4^2=\sigma_5^2=\sigma_6^2=\sigma_7^2=1$
+%
+%%
 
 %% Data sample generation
 
@@ -291,20 +300,20 @@ flgStandardize = 0; % 0: No standardization
 
 % Checking data dimension
 [nChannels,nSegLength] = size(u);
-if nChannels > nSegLength, 
+if nChannels > nSegLength
    u = u.'; 
    [nChannels,nSegLength] = size(u);
-end;
+end
 
 % Detrending 
-if flgDetrend,
-   for i = 1:nChannels, u(i,:) = detrend(u(i,:)); end;
+if flgDetrend
+   for i = 1:nChannels, u(i,:) = detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 
 % Standardization 
-if flgStandardize,
-   for i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i = 1:nChannels, u(i,:) = u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
 end;
 
@@ -338,9 +347,7 @@ flgPrintResults = 1; % flag = 1, print analysis results
 gct_signif  = alpha;  % Granger causality test significance level
 igct_signif = alpha;  % Instantaneous GCT significance level
 
-metric = 'diag'; % euc  = original PDC or DTF;
-                 % diag = generalized PDC (gPDC) or DC;
-                 % info = information PDC (iPDC) or iDTF.
+
                  
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
 
@@ -349,12 +356,15 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
                                                        
 %% PDC, threshold and confidence interval calculations.
 %
-metric = 'euc'; % Original DTF estimation
+metric = 'euc';  % euc  = original PDC or DTF;
+                 % diag = generalized PDC (gPDC) or DC;
+                 % info = information PDC (iPDC) or iDTF.
+
 nFreqs = 128;   % Number of frequency points to consider
 
 %%
 % PDC analysis results are saved in *c* data structure.
-% See asymp_dtf.m or issue 
+% See asymp_pdc.m or issue 
 %
 %   >> help asymp_pdc 
 %
@@ -368,12 +378,10 @@ c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 %% Plotting options set up, mostly cosmetic for xplot.m routine:
 %
 
+% flgColor parameter for PDC matrix-layout plot.
 flgMax = 'all';
 flgSignifColor = 4; % red + green
 flgScale = 3;       % [0 1]/[0 .1]/[0 .01]
-
-%%
-% flgColor parameter for PDC matrix-layout plot.
 flgColor = [0];   % Plotting option for automatic scaling for small PDC
                   % values.
                   % if flgColor = 0, y-axis scale = [0 1]
@@ -383,7 +391,6 @@ flgColor = [0];   % Plotting option for automatic scaling for small PDC
                   %                          so that y-axis scale = [0 .1]
                   %   elseif max(|PDC(f)|^2) < .001 background-color = light-purple
                   %                          and y-axis = [0 .01].
-
 %                [1 2 3 4 5 6 7]
 flgPrinting  =   [1 0 1 0 3 0 0];
 %       blue-line | | | | | | 7REPLACE_WITH_DASH_DASHSpectra (0: w/o; 1: Linear; 2: Log; 3: PDC2; 
@@ -403,17 +410,16 @@ strTitle = [' Independent Gaussian Noise: \sigma_1=\sigma_3=500;' ...
 
 flgScale = 2;
 
-[h,hxlabel hylabel] = xplot(strID, c, ...
+%% Original PDC plot
+%
+
+[h,hxlabel,hylabel] = xplot(strID, c, ...
                                flgPrinting,fs,w_max,chLabels,flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'PDC',strTitle);
 
-flgPrinting  =   [1 1 1 2 3 0 0];
-[hp,hxlabel hylabel] = xplot_pvalues(strID, c, ...
-                               flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
-xplot_title(alpha,metric,'p-value PDC',strTitle);
 
-
-%% Remarks on nonstandardized unbalanced noise analysis:
+%% 
+% *Remarks on nonstandardized unbalanced noise analysis*:
 % 
 % * Note that in this example the time series were not standardized.
 % * As a consequence, due to the high variance/power of channels
@@ -425,43 +431,80 @@ xplot_title(alpha,metric,'p-value PDC',strTitle);
 %   range which is limited to [0 1] on y-axis.
 %   
 
-%% Information DTF estimation and analysis parameters
-% 
-% If the metric is either 'diag' or 'info', the unbalanced noises are 
-% ruled out or scaled in their formulation as you can see in 
-% the information DTF calculation results shown
-% bellow. Same consideration would apply for information PDC.
+
+%% PDC p-values plot
 %
-% PDC analysis results are saved in *d* struct variable.
-%
-% See asymp_dtf.m or issue 
-%   >> help asymp_dtf 
-% for more detail.
+
+flgPrinting  =   [1 1 1 2 3 0 0];
+[hp,hxlabel,hylabel] = xplot_pvalues(strID, c, ...
+                               flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
+xplot_title(alpha,metric,'p-value PDC',strTitle);
 
 
 %%
-% When `flgColor=1` parameter option is used in the xplot.m routine, the
-% y-axis intervals: (a) [0 .01] background is colored in *LIGHT-PURPLE*; (b) (.01 .1] in
-% *LIGHT-BLUE*; and (c) (.1 1] is *WHITE*.
+% *Remarks on PDC p-values plots*:
+% 
+% * Obviously this will vary with the simulations, As we are dealing with 7
+% channels, there are 42 combinations of pair of channels. For random
+% Gaussian processes, most likely one will see occasional false-positive
+% inference in a rate proportional to the chosen alpha, which is 5% in this
+% example. So one would expect roughly 42*0.05 false-positive cases in each
+% simulation.
+% * One can see above each subplot the Granger causality test p-value
+% printed in green (not significant) or purple with dot (significant GCT)
+% that should agree or be approximately equal in magnitude in most cases
+% with the PDC p-values (our experience) plotted in frequency domain.
+
+
+%% Information PDC estimation and analysis parameters
+% 
+% If the metric is either 'diag' or 'info', the unbalanced noises are 
+% ruled out or scaled in their formulation as you can see in 
+% the information PDC calculation results shown
+% bellow. Same consideration would apply for information PDC.
 %
-% If the y-axis is scaled according to the maximum amplitude of the measures, 
-% this color coding may help easily getting clue about the magnitude 
-% $|{DTF}|^2$ or $|{PDC}|^2$ estimates.
+% Information PDC analysis results are saved in *d* struct variable.
+
+metric = 'info'; % info = information PDC (iPDC) or iDTF.
+nFreqs = 128;   % Number of frequency points to consider
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+d.Tragct = Tr_gct;
+d.pvaluesgct = pValue_gct;
+
+%% Information PDC plot
 %
-% If the background is *LIGHT-PURPLE*  one would know the maximum amplitude is
-% smaller than 1/100, while with *LIGHT-BLUE* background is smaller than 1/10.
+flgColor = 1;
+[h,hxlabel,hylabel] = xplot(strID, d, ...
+                               flgPrinting,fs,w_max,chLabels,flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,'PDC',strTitle);
 
 %% Remarks on false-positive connectivity detection ratio:
 % 
-% * As 42 combinations of *DTF* and *GC* are tested, chances are that you
-%     will see significant $|{DTF}(\lambda)|^2$ (red lines), also in the case of 
-%     $|{PDC}(\lambda)|^2$ (see above), in some plottings. The 
-%     significant *DTF* probability depends on significance level you 
-%     choose for null hypothesis DTF testing.
-% * The false-positive rate is approximately equal to the chosen $\alpha$ value.
-% * The similar argument applies to "instantaneous Granger causality"
-%     outcomes, and combination of 21 pairs of variables are considered
-%     as *iGC* is a symmetric relation.
+% * As 42 combinations of *PDC* and *GC* are tested, chances are that you
+%     will see significant $|{PDC}(\lambda)|^2$ (red lines), also in the
+%     case of $|{PDC}(\lambda)|^2$ (see above), in some plottings. The
+%     significant *PDC* probability depends on significance level you have
+%     chosen for null hypothesis PDC testing.
+% * As stated before, the false-positive rate is approximately equal to the
+%   chosen level of significance $\alpha$ value.
+% * The similar argument would apply for "instantaneous Granger causality"
+%   outcomes evaluation, and the combination of 21 pairs of variables
+%   should be considered as *iGC* is a symmetric relation in this case.
+%
+
+
+%% General remarks about xplot features:
+%
+% * When `flgColor=1` parameter option is used in the xplot.m routine, the
+% y-axis intervals: (a) [0 .01] background is colored in *LIGHT-PURPLE*; (b) (.01 .1] in
+% *LIGHT-BLUE*; and (c) (.1 1] is *WHITE*.
+%
+% * If the y-axis is scaled according to the maximum amplitude of the measures, 
+% this color coding may help easily getting clue about the magnitude 
+% $|{DTF}|^2$ or $|{PDC}|^2$ estimates.
+%
+% * If the background is *LIGHT-PURPLE*  one would know the maximum amplitude is
+% smaller than 1/100, while with *LIGHT-BLUE* background is smaller than 1/10.
 %
 
 ##### SOURCE END #####

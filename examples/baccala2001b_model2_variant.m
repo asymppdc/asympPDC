@@ -42,18 +42,18 @@ fs = 1;
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
 [nChannels,nSegLength] =size(u);
-if nChannels > nSegLength, 
+if nChannels > nSegLength
    u = u.'; 
    [nChannels,nSegLength]=size(u);
-end;
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 %
@@ -104,11 +104,13 @@ metric = 'euc';  % euc  = original PDC or DTF;
 nFreqs = 128;
 alpha = 0.001;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.pvaluesgct = pValue_gct; % Necessary for printing GCT
+c.Tragct = Tr_gct;
 
 %% $|PDC(\lambda)|^2$ Matrix Layout Plotting
 %
 
-flgPrinting = [1 1 1 2 2 1 2]; % overriding default setting
+flgPrinting = [1 1 1 2 3 1 2]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
@@ -116,8 +118,8 @@ strTitle1 = ['6-dimensional linear VAR[4] Variant Model II: '];
 strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 strTitle =[strTitle1 strTitle2];
 
-strTitle = 'Baccala & Sameshima (2001) Model II Variant';
-[hxlabel hylabel] = xplot(strTitle,c,...
+strWindowBar = 'Baccala & Sameshima (2001b) Model II Variant';
+[h,~,~] = xplot(strWindowBar,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor,2,'all');
 xplot_title(alpha,metric,'pdc', strTitle);
 

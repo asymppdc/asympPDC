@@ -225,12 +225,14 @@ w_max=fs/2;
 flgSignifColor = 0;
 flgMax = 'PDC';
 flgScale = 2;
-vBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to see GCT p-values
 
-[h1,~, ~] = xplot(vBarTitle,c,...
+strBarTitle = 'Andrews & Herzberg''s Sunspot-Melanoma Series (1936-1972)';
+strTitle = 'Sunspot-Melanoma (1936-1972)';
+
+[h1,~, ~] = xplot(strBarTitle,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor, ...
                           flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_c,metric,'pdc',vBarTitle);
+xplot_title(alpha_c,metric,'pdc',strTitle);
 shg; pause(3)
 
 %% 
@@ -255,11 +257,11 @@ shg; pause(3)
 flgScale = 2;
 flgMax = 'all';
 flgSignifColor = 3;
-vBarTitle = 'Sunspot-Melanoma Series (1936-1972)';
-[h2,hxlabel,hylabel] = xplot(vBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
+
+[h2,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
                           flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_c,metric,'pdc',vBarTitle);
-shg; pause(3)
+xplot_title(alpha_c,metric,'pdc',strTitle);
+pause(3)
 
 %%
 % One interesting aspect of asymptotic statistics you may notice is that it
@@ -287,10 +289,10 @@ d.pvaluesgct = pValue_gct;
 %
 
 flgColor = 0;
-[h3,hxlabel hylabel] = xplot(vBarTitle,d,...
+[h3,hxlabel,hylabel] = xplot(strBarTitle,d,...
                           flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha_d,metric,'pdc',vBarTitle);
-shg; pause(3)
+xplot_title(alpha_d,metric,'pdc',strTitle);
+pause(3)
 
 %%
 % The *generalized PDC* provides a better idea  of real _interaction_ between
@@ -321,10 +323,10 @@ flgScale = 2;
 flgMax = 'all';
 flgSignifColor = 3;
 
-[h4,hxlabel hylabel] = xplot(vBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
+[h4,hxlabel,hylabel] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
                                        flgColor,flgScale,flgMax,flgSignifColor);
-xplot_title(alpha_e,metric,'pdc');
-shg; pause(3)
+xplot_title(alpha_e,metric,'pdc',strTitle);
+pause(3)
 
 %%
 % Looking closely, the iPDC and gPDC's magnitude patterns, although similar, are
@@ -333,11 +335,11 @@ shg; pause(3)
 %% Plotting the p-values in the frequency domain plotting 
 flgPrinting=[1 1 1 2 3 1 1];
 flgScale = 1;
-vBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to reveal p-values
+strBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to reveal p-values
 
-[h5,hxlabel hylabel] = xplot_pvalues(vBarTitle, c, ...
+[h5,hxlabel,hylabel] = xplot_pvalues(strBarTitle, c, ...
                                   flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
-xplot_title(alpha_c,metric,'p-value iPDC',vBarTitle);
+xplot_title(alpha_c,metric,'p-value iPDC',strTitle);
 
 %%
 % In this case $\alpha = 1$% was used, and note the threshold dashed-lines

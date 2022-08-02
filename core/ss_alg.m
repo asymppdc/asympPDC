@@ -13,13 +13,14 @@
 
 function SS = ss_alg(A, e_cov, nf, nfcalc)
 
-if nargin < 4, nfcalc = nf; end;
-[nnChannels, nChannels, r] = size(A);
+if nargin < 4, nfcalc = nf; end
+[~, nChannels,~] = size(A);
 AL = A_to_f(A, nf);
 ss = zeros(size(AL));
-for i = 1:nfcalc,
+for i = 1:nfcalc
    H = inv(reshape(AL(i,:,:),nChannels,nChannels));
    ss(i,:,:) = H * e_cov * H';
-end;
+end
 
 SS=permute(ss,[2,3,1]);
+end

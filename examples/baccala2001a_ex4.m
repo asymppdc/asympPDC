@@ -1,5 +1,7 @@
 %% BACCALA & SAMESHIMA (2001A) EXAMPLE 4
+%
 % DESCRIPTION:
+%
 % Five-dimensional linear VAR[2] Model Example 4
 %
 %    $x1==>x2  x2-->x3 x3-->x4 x4<-->x5$
@@ -11,7 +13,11 @@
 %        *84*:463-474.
 %
 %                <https://dx.doi.org/10.1007/PL00007990>
-
+%% Other routines
+%  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
+%            xplot, xplot_pvalues
+%  <baccala2001a_ex4.html |baccala2001a_ex4|> |
+%%
 clear; clc; format compact; format short
 
 %% Interaction diagram
@@ -20,7 +26,7 @@ clear; clc; format compact; format short
 %
 % Figure 3a from Baccala & Sameshima. _Biol. Cybern._ *84*:463-474, 2001.
 
-%% Equation system
+%% Equation 5-dimension VAR[2] with feedback
 %
 % <<fig_baccala2001a_ex4_eq.png>>
 %
@@ -31,27 +37,27 @@ nDiscard = 1000;   % number of points to be discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
 
 u = fbaccala2001a_ex4( nPoints, nDiscard );
-chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
+chLabels = []; %{'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1;
 
-%%
-% Data pre-processing: detrending and normalization options
+%% Data pre-processing: detrending and normalization options
+%
 
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
 [nChannels,nSegLength] =size(u);
-if nChannels > nSegLength, 
+if nChannels > nSegLength
    u = u.'; 
    [nChannels,nSegLength]=size(u);
-end;
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %%
 % MVAR model estimation

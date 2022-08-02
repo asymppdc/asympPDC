@@ -11,8 +11,21 @@
 % 
 % Example Eq. (5) Five-dimension VAR[4]-process 
 %
+%%
 
 clear; clc
+
+
+%% Interaction diagram
+%
+%
+% <<fig_schelter2005_graph.png>>
+%
+
+%% Equation system  
+%
+% <<fig_schelter2005_eq.png>>
+%
 
 %% Data sample generation
 
@@ -53,9 +66,6 @@ end
 
 y=[x1' x2' x3' x4' x5']; % data must be organized column-wise
 u=y(nDiscard+1:N,:);
-
-[nSegLength,nChannels]=size(u);
-
 fs = 1;
 
 %%
@@ -179,6 +189,10 @@ strID = 'Schelter et al. J. Neurosci Methods (2005)';
                                 flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,'pdc',strID);
 
+%% Result from Figure 1 Schelter et al.(2005)
+% Figure 1, page 212.
+%
+% <<fig_schelter2005_fig_1_pdc.png>>
 
 %% Remarks:
 % 

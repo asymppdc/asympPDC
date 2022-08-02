@@ -151,7 +151,6 @@ end
 % <https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size>
 % by 
 %   <https://www.mathworks.com/matlabcentral/profile/authors/770850>
-%
 while 0
    ScreenPixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution()
    ScreenDevices = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
@@ -160,7 +159,9 @@ while 0
    MonitorPositions = zeros(numel(ScreenDevices),4);
    for n = 1:numel(ScreenDevices)
       Bounds = ScreenDevices(n).getDefaultConfiguration().getBounds();
-      MonitorPositions(n,:) = [Bounds.getLocation().getX() + 1,-Bounds.getLocation().getY() + 1 - Bounds.getHeight() + MainBounds.getHeight(),Bounds.getWidth(),Bounds.getHeight()];
+      MonitorPositions(n,:) = [Bounds.getLocation().getX() + 1, ...
+                    -Bounds.getLocation().getY() + 1 - Bounds.getHeight() + ...
+                   MainBounds.getHeight(),Bounds.getWidth(),Bounds.getHeight()];
    end
    disp('MonitorPositions parameter:')
    disp(MonitorPositions)
@@ -409,6 +410,8 @@ end
 set(0,'units','pixels');
 sz = get(0,'ScreenSize');
 
+skreenfactor = 2.4; % Ad hoc factor that should 
+
 if ~isOctave()
 %    https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size
    % This code is more accurate to get the correct screen size (REF <URL>)
@@ -418,25 +421,26 @@ if ~isOctave()
 
    sz(3) = screensize(1); % width in pixels
    sz(4) = screensize(2); % height in pixels
+else
+   sz = get(0,'ScreenSize');
 end
-screenratio = sz(3)/sz(4);
-
 
 % Ad hoc check for the presence of multiple monitors in Octave.
-khmon = round(sz(3)/1920); % Guessed # of horizontally tiled screens
+khmon = ceil(sz(3)/sz(4)/skreenfactor); % Guessed # of horizontally tiled screens
 if khmon < 1, khmon = 1; end
 
 kvmon = round(sz(4)/1000); % Guessed # of stacked screens
 if kvmon < 1, kvmon = 1; end
+screenratio = sz(3)/sz(4)/khmon;
 
 % Scale figure size on screen according to the monitor resolution
 % This has been implemented particularly for Octave.
 % Reference monitor has width=sz(3)=1920 pxls
-pxwidthscreen = sz(3); pxheightscreen = sz(4);
+pxwidthscreen = sz(3)/khmon; pxheightscreen = sz(4)/kvmon;
 
 %%
 % Let's adopt printing paper size proportion as A4
-A4width = 29.7; A4height = 21.0; % A4 landscape paper orientation size in cm
+A4width = 29.7; A4height = 21.0; % A4 landscape paper orientation size in centimeterw
 A4ratio = sqrt(2);
 
 % Real figure size for printing or publication in centimeters
@@ -463,7 +467,7 @@ else
 end
 
 % Relative figure size on screen scale keeping A4 paper proportion .
-rwidth = width/A4width * pxwidth_max/pxwidthscreen;
+rwidth = width/A4width * pxwidth_max/pxwidthscreen/khmon;
 rheight = height/A4height * pxheight_max/pxheightscreen;
 
 set(hfigure,'units','centimeters','position',[0 0 width height]);
@@ -471,15 +475,15 @@ set(hfigure,'units','centimeters','position',[0 0 width height]);
 switch computer
    case 'PCWIN64'
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]); % -0.03
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]); % -0.03
 
    case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
 
    case 'MACI64'
       set(hfigure,'units','normalized', ...
-         'position',[(1-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
+         'position',[(1/khmon-rwidth)/2 (1-1.087*rheight) rwidth rheight]);
 
    otherwise
       error('computer function not working properly.')
@@ -1469,7 +1473,7 @@ switch computer
 %       pos(2) = -0.03;
       pos(2) = pos(2) + 0.035; %dpos2           % 0.0545 % 0.025
    case {'GLNXA64','x86_64-pc-linux-gnu','i686-pc-linux-gnu'}
-      set(h1,'FontWeight','bold', 'FontSize',10,'FontName','Arial');
+      set(h1,'FontWeight','bold', 'FontSize',12,'FontName','Arial');
 %       dpos2 = 0.021*(30 - nChannels)/25; % xlabel y-shift correctionn constant
       pos(2) = pos(2) + 0.025; %dpos2           % 0.0545 % 0.025
    case 'MACI64'
@@ -1575,12 +1579,6 @@ elseif flgPrinting(7)
    end
 end
 
-% if vChannels < 11
-%    pos = get(h2,'Position');
-%    pos(1) = pos(1) + 0.020;   % 0.0545
-%    set(h2,'Position',pos);    % Adjust ylabel position
-% end
-
 %%
 % Change y-LABEL font size
 switch computer
@@ -1612,10 +1610,11 @@ for k = 1:nChannels
    set(hxlabel(k),'Position',pos);
 end
 
+drawnow
+
 end
 
-
-%% LABELITX
+%% labelitx
 %      x-axis labeling function
 %
 function [hxlabel] = labelitx(j,chLabels) % Labels x-axis plottings
@@ -1648,7 +1647,7 @@ set(hxlabel,'Position',pos);
 
 end
 
-%% LABELITY 
+%% latelity 
 % y-axis labeling function
 %
 function [hylabel] = labelity(i,chLabels) % Labels y-axis plottings
@@ -1683,7 +1682,7 @@ end
 set(hylabel,'Position',pos)
 end
 
-%% PLOTCI
+%% plotci
 %      Plot upper and lower confidence interval limits
 %
 function plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, ...

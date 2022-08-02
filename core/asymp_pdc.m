@@ -8,7 +8,7 @@
 %        c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)
 %
 %% Input Arguments
-%        u:          time series
+%        u:          multiple row vectors time series
 %        A:          AR estimate matrix by MVAR routine
 %        pf:         covariance matrix provided by MVAR routine
 %        nFreqs:     number of point in [0,fs/2) frequency scale range
@@ -16,8 +16,8 @@
 %                    'diag' -- diagonal    ==> gPDC (generalized)
 %                    'info' -- information ==> iPDC
 %        alpha:      significance level
-%                    if alpha is zero, statistical analysis will not performed
-%                    for faster computation.
+%                    if alpha is zero, statistical analysis will not be
+%                    performed for faster computation.
 %
 %% Output Arguments 
 %        c: struct variable with following fields:

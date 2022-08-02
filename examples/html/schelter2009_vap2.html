@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>schelter2009_vap2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="schelter2009_vap2.m"><style type="text/css">
+      --><title>schelter2009_vap2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="schelter2009_vap2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -86,17 +86,17 @@ flgStandardize = 0; <span class="comment">% No standardization</span>
 [nChannels,nSegLength]=size(u);
 <span class="keyword">if</span> nChannels &gt; nSegLength, u=u.';
    [nChannels,nSegLength]=size(u);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 
-<span class="keyword">if</span> flgDetrend,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were detrended.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 
-<span class="keyword">if</span> flgStandardize,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 </pre><pre class="codeoutput">Time series were detrended.
 </pre><h2 id="5">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm;</span>
@@ -130,9 +130,9 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=135029.206421
-IP=2  vaic=119899.634698
-IP=3  vaic=119924.373619
+IP=1  vaic=135155.566136
+IP=2  vaic=120045.226197
+IP=3  vaic=120071.294185
  
 Number of channels = 5 with 3000 data points; MAR model order = 2.
 
@@ -140,8 +140,8 @@ Number of channels = 5 with 3000 data points; MAR model order = 2.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.026
-  st = 427.731
+Pass = 0.032
+  st = 415.692
 </pre><h2 id="6">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.05;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.05;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -153,36 +153,37 @@ flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m 
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
    NaN     0     0     0     0
-     1   NaN     1     0     0
+     1   NaN     0     0     0
      0     0   NaN     1     1
      0     0     0   NaN     0
      1     0     0     0   NaN
 
 Granger causality test p-values:
-       NaN    0.8202    0.1666    0.5941    0.3241
-         0       NaN    0.0231    0.3379    0.0956
-    0.8427    0.6997       NaN         0         0
-    0.6045    0.8198    0.2680       NaN    0.3030
-         0    0.2070    0.6105    0.2507       NaN
+       NaN    0.4454    0.0671    0.2970    0.2254
+         0       NaN    0.8878    0.8320    0.5498
+    0.1548    0.9429       NaN         0         0
+    0.0962    0.8574    0.2214       NaN    0.1271
+         0    0.5756    0.1530    0.5480       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
 Instantaneous connectivity matrix:
-   NaN     0     0     0     0
+   NaN     0     0     0     1
      0   NaN     0     0     0
-     0     0   NaN     0     0
-     0     0     0   NaN     0
-     0     0     0     0   NaN
+     0     0   NaN     1     0
+     0     0     1   NaN     0
+     1     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.1319    0.2772    0.2051    0.2789
-    0.1319       NaN    0.6079    0.7827    0.3805
-    0.2772    0.6079       NaN    0.7650    0.9900
-    0.2051    0.7827    0.7650       NaN    0.1941
-    0.2789    0.3805    0.9900    0.1941       NaN
+       NaN    0.0586    0.4340    0.1303    0.0343
+    0.0586       NaN    0.6771    0.5899    0.9699
+    0.4340    0.6771       NaN    0.0006    0.6391
+    0.1303    0.5899    0.0006       NaN    0.5490
+    0.0343    0.9699    0.6391    0.5490       NaN
 
-&gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
+&gt;&gt;&gt;&gt; There are 2 pairs of channels with
+      significant Instantaneous Granger Causality.
 
 ====================================================================================================
 </pre><h2 id="7">Information PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_pdc.m or issue</p><pre class="language-matlab">&gt;&gt; help asymp_pdc
@@ -246,17 +247,17 @@ flgStandardize = 0; % No standardization
 [nChannels,nSegLength]=size(u);
 if nChannels > nSegLength, u=u.'; 
    [nChannels,nSegLength]=size(u);
-end;
+end
 
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 

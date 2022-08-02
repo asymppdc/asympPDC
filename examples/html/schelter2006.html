@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
+      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -71,7 +71,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
      Direct or indirect? Graphical models for neural oscillators
              J Physiology - Paris 99:37-46, 2006.
        &lt;http://dx.doi.org/10.1016/j.jphysparis.2005.06.006&gt;</pre><pre>    Example 5-dimension VAR[4]
-==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate data sample using fschelter2006 function</a></li><li><a href="#5">Original PDC estimation</a></li><li><a href="#8">Result from Schelter et al.(2006)</a></li><li><a href="#10">Some remarks</a></li></ul></div><h2 id="1">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
+==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate data sample using fschelter2006 function</a></li><li><a href="#5">Original PDC estimation</a></li><li><a href="#6">PDCn Matrix Layout Plotting</a></li><li><a href="#7">PDC p-values matrix layout plots</a></li><li><a href="#8">Result from Schelter et al.(2006)</a></li><li><a href="#10">Some remarks</a></li></ul></div><h2 id="1">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
 
 nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 5000;   <span class="comment">% number of analyzed samples points</span>
@@ -85,7 +85,7 @@ flgRepeat = 0; <span class="comment">% You may want to repeat simulation using t
                <span class="comment">% schelter2006_state.mat file, so that randn can be</span>
                <span class="comment">% initialized with the same state number in subsequent</span>
                <span class="comment">% simulations.</span>
-[u aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
+[u,aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
 
 <span class="comment">% if ~flgRepeat, save schelter2006_state.mat aState; end;</span>
 
@@ -104,17 +104,17 @@ flgStandardize = 0; <span class="comment">% No standardization</span>
 [nChannels,nSegLength]=size(u);
 <span class="keyword">if</span> nChannels &gt; nSegLength, u=u.';
    [nChannels,nSegLength]=size(u);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 
-<span class="keyword">if</span> flgDetrend,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were detrended.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 
-<span class="keyword">if</span> flgStandardize,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 </pre><pre class="codeoutput">Time series were detrended.
 </pre><p>MVAR model estimation</p><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm;</span>
@@ -148,24 +148,24 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=226607.201352
-IP=2  vaic=218337.390623
-IP=3  vaic=213196.841616
-IP=4  vaic=212738.841188
-IP=5  vaic=212755.649607
+IP=1  vaic=227416.263057
+IP=2  vaic=219327.215717
+IP=3  vaic=213817.028276
+IP=4  vaic=213291.465438
+IP=5  vaic=213316.286798
  
 Number of channels = 5 with 5000 data points; MAR model order = 4.
 
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-(**) Poor MAR model fitting:
-                   Residues white noise hypothesis was rejected.
-Pass = 0.042
-  st = 448.753
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.046
+  st = 438.96
 </pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
+
 [Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 </pre><pre class="codeoutput">
@@ -180,11 +180,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.9866    0.7010    0.1763         0
-         0       NaN    0.2267    0.1215         0
-    0.2065    0.2780       NaN    0.0565         0
-         0         0    0.4731       NaN    0.1358
-    0.2357    0.3305    0.0370         0       NaN
+       NaN    0.5196    0.5542    0.2004         0
+         0       NaN    0.1515    0.6123         0
+    0.9473    0.3178       NaN    0.1203         0
+         0         0    0.9830       NaN    0.0504
+    0.4794    0.8296    0.2736         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -197,11 +197,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.5401    0.3435    0.3868    0.7216
-    0.5401       NaN    0.9157    0.3380    0.8285
-    0.3435    0.9157       NaN    0.3949    0.9495
-    0.3868    0.3380    0.3949       NaN    0.6157
-    0.7216    0.8285    0.9495    0.6157       NaN
+       NaN    0.4983    0.0320    0.5981    0.4978
+    0.4983       NaN    0.2989    0.3038    0.7776
+    0.0320    0.2989       NaN    0.1547    0.4845
+    0.5981    0.3038    0.1547       NaN    0.6697
+    0.4978    0.7776    0.4845    0.6697       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -214,24 +214,24 @@ alpha = 0.01;
 
 c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
-</pre><p>PDCn Matrix Layout Plotting</p><pre class="codeinput">flgPrinting = [1 1 1 2 2 0 2];
+</pre><h2 id="6">PDCn Matrix Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf(<span class="string">'%0.3g'</span>,100*alpha);
 
 strID = <span class="string">'Schelter et al. J Physiology - Paris 99:37-46, 2006.'</span>;
-
-[h,hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 strTitle = [<span class="string">'Linear pentavariate Model II: '</span> int2str(nPoints) <span class="keyword">...</span>
               <span class="string">' data points.'</span>];
+
+[h,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
-</pre><img vspace="5" hspace="5" src="schelter2006_01.png" alt=""> <p>PDC p-values matrix layout plots</p><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
+</pre><img vspace="5" hspace="5" src="schelter2006_01.png" alt=""> <h2 id="7">PDC p-values matrix layout plots</h2><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 
 [hp,~,~] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                                              flgColor,flgScale);
 xplot_title(alpha,metric,[<span class="string">'p-value PDC'</span>],strTitle);
-</pre><img vspace="5" hspace="5" src="schelter2006_02.png" alt=""> <h2 id="8">Result from Schelter et al.(2006)</h2><p>Figure 3, page 41.</p><p><img vspace="5" hspace="5" src="fig_schelter2006_result.png" alt=""> </p><p>Figure shows the results from Schelter et al. (2006) in agreement with the present simulation.</p><h2 id="10">Some remarks</h2><div><ul><li>Compare this plot with Fig.3, page 41,in Schelter et al. (2006),   depicting PDC''s amplitude plots, while this example plots squared   PDC.</li></ul></div><div><ul><li>Note that, for linear model, the mean amplitude of PDC estimates   is roughly proportional to relative coefficient values of   the autoregressive model.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="schelter2006_02.png" alt=""> <h2 id="8">Result from Schelter et al.(2006)</h2><p>Figure 3, page 41.</p><p><img vspace="5" hspace="5" src="fig_schelter2006_result.png" alt=""> </p><p>Figure shows the results from Schelter et al. (2006) with the magnitudes mostly in agreement with the present simulation. See remarks listed bellow regardings the differences in the amplitudes.</p><h2 id="10">Some remarks</h2><div><ul><li>Compare this plot with Fig.3, page 41,in Schelter et al. (2006),   depicting PDC''s amplitude plots, while this example plots squared   PDC.</li></ul></div><div><ul><li>Note that, for linear model, the mean amplitude of PDC estimates   is roughly proportional to relative coefficient values of   the autoregressive model.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Schelter 2006 5-dimension VAR[4]
 %
@@ -265,7 +265,7 @@ flgRepeat = 0; % You may want to repeat simulation using the same data set
                % schelter2006_state.mat file, so that randn can be
                % initialized with the same state number in subsequent
                % simulations.
-[u aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
+[u,aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
 
 % if ~flgRepeat, save schelter2006_state.mat aState; end;
 
@@ -282,17 +282,17 @@ flgStandardize = 0; % No standardization
 [nChannels,nSegLength]=size(u);
 if nChannels > nSegLength, u=u.'; 
    [nChannels,nSegLength]=size(u);
-end;
+end
 
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %%
 % MVAR model estimation
@@ -334,6 +334,7 @@ flgPrintResults = 1;
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
+
 [Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
  
@@ -351,23 +352,24 @@ alpha = 0.01;
 
 c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
-%%
-% PDCn Matrix Layout Plotting
 
-flgPrinting = [1 1 1 2 2 0 2];
+%% PDCn Matrix Layout Plotting
+%
+
+flgPrinting = [1 1 1 2 3 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf('%0.3g',100*alpha);
 
 strID = 'Schelter et al. J Physiology - Paris 99:37-46, 2006.';
-
-[h,hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 strTitle = ['Linear pentavariate Model II: ' int2str(nPoints) ...
               ' data points.'];
+
+[h,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc',strTitle);
 
-%%
-% PDC p-values matrix layout plots
+%% PDC p-values matrix layout plots
+%
 
 flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
@@ -376,7 +378,6 @@ flgScale = 2;
                                                              flgColor,flgScale);
 xplot_title(alpha,metric,['p-value PDC'],strTitle);
 
-
 %% Result from Schelter et al.(2006) 
 % Figure 3, page 41.
 %
@@ -384,8 +385,9 @@ xplot_title(alpha,metric,['p-value PDC'],strTitle);
 % 
 
 %%
-% Figure shows the results from Schelter et al. (2006) in agreement
-% with the present simulation.
+% Figure shows the results from Schelter et al. (2006) with the magnitudes
+% mostly in agreement with the present simulation. See remarks listed
+% bellow regardings the differences in the amplitudes.
 
 
 %% Some remarks

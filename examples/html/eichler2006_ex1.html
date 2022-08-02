@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>EICHLER (2006) 3-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-27"><meta name="DC.source" content="eichler2006_ex1.m"><style type="text/css">
+      --><title>EICHLER (2006) 3-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="eichler2006_ex1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -87,18 +87,18 @@ Assigned "sum(100*clock)" initial state.2
 </pre><p>Data pre-processing: detrending and normalization options</p><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
 flgStandardize = 0; <span class="comment">% No standardization</span>
 [nChannels,nSegLength] =size(u);
-<span class="keyword">if</span> nChannels &gt; nSegLength,
+<span class="keyword">if</span> nChannels &gt; nSegLength
    u = u.';
    [nChannels,nSegLength]=size(u);
-<span class="keyword">end</span>;
-<span class="keyword">if</span> flgDetrend,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were detrended.'</span>);
-<span class="keyword">end</span>;
-<span class="keyword">if</span> flgStandardize,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 </pre><pre class="codeoutput">Time series were detrended.
 </pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm</span>
@@ -113,9 +113,9 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=45972.413711
-IP=2  vaic=45635.606742
-IP=3  vaic=45645.559607
+IP=1  vaic=46173.914975
+IP=2  vaic=45810.759432
+IP=3  vaic=45822.236735
  
 Number of channels = 3 with 2000 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -129,10 +129,9 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-(**) Poor MAR model fitting:
-                   Residues white noise hypothesis was rejected.
-Pass = 0.0777778
-  st = 210.603
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.0555556
+  st = 159.676
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -149,9 +148,9 @@ Connectivity matrix:
      0     1   NaN
 
 Granger causality test p-values:
-       NaN         0    0.4514
-         0       NaN    0.8269
-    0.9187         0       NaN
+       NaN         0    0.2823
+         0       NaN    0.4366
+    0.0970         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -162,9 +161,9 @@ Instantaneous connectivity matrix:
      0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.5393    0.2190
-    0.5393       NaN    0.1593
-    0.2190    0.1593       NaN
+       NaN    0.4259    0.9348
+    0.4259       NaN    0.4368
+    0.9348    0.4368       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -209,8 +208,8 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 %       <http://dx.doi.org/10.1007/s00422-006-0062-z>
 %
 %  Example - Three-dimension VAR[2].
-
 %%
+
 clc; format compact
 
 %% Interaction diagram
@@ -243,18 +242,18 @@ fs = 1; % Normalized frequency
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
 [nChannels,nSegLength] =size(u);
-if nChannels > nSegLength,
+if nChannels > nSegLength
    u = u.';
    [nChannels,nSegLength]=size(u);
-end;
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 %

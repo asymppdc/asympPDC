@@ -1,4 +1,5 @@
 %% GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE
+%
 % DESCRIPTION:
 %
 % Example Model 2: Linear bivariate model with bidirectional influence 
@@ -8,7 +9,7 @@
 %
 %     x1<==S==>x2, which gives x1==x2 (iGC) from hidden source
 %
-% Example Model 2 borrowed from:  
+% Example Model 2 was borrowed from:  
 %
 %  Gourevitch, Bouquin-Jeannes & Faucon. Linear and nonlinear casuality between 
 %     signals: methods, examples and neurophysiological applications. 
@@ -20,7 +21,6 @@
 %  See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
 %            xplot_pvalues
 % < gourevitch2006_model2.html |gourevitch2006_model2|> |
-
 %%
 
 clear; clc
@@ -48,7 +48,7 @@ nPoints  = 800;     % number of analyzed samples points
 u = fgourevitch2006_model2( nPoints, nDiscard );
 
 chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-fs = 1; % normalized frequency
+fs = 1000; % 1 kHz as used by Gourevitch et al. (2006)
 
 
 %%
@@ -112,7 +112,7 @@ alpha = 0.01;
 gct_signif  = alpha;  % Granger causality test significance level
 igct_signif = alpha;  % Instantaneous GCT significance level
 
-flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
+flgPrintResults = 1; % Flag for printing gct/igct results on command window.
 
 [Tr_gct, pValue_gct]   =  gct_alg(u,A,pf, gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
@@ -129,7 +129,7 @@ nFreqs = 128;
 metric = 'euc';  % euc  = original PDC or DTF;
                  % diag = generalized PDC (gPDC) or DC;
                  % info = information PDC (iPDC) or iDTF.
-c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and statistics
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
 
 %%
@@ -145,7 +145,7 @@ strTitle = ['Model 2: Linear bivariate model with common source: ' ...
    int2str(nPoints) ' data points.'];
 
 [h1,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
-xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
+xplot_title(alpha,metric,'pdc',strTitle); % Main title
 
 
 %% Generalized PDC estimation
@@ -157,7 +157,7 @@ metric = 'diag';  % euc  = original PDC or DTF;
                   % diag = generalized PDC (gPDC) or DC;
                   % info = information PDC (iPDC) or iDTF.
 
-d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+d = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and statistics
 d.Tragct = Tr_gct;  d.pvaluesgct = pValue_gct;
 
 
@@ -174,7 +174,7 @@ strID = 'Gourevitch et al.(Biol Cybern, 2006)';
 
 strTitle = ['Model 2: Linear bivariate model with common source: ' ...
              int2str(nPoints) ' data points.'];
-xplot_title(alpha,metric,'pdc',strTitle); %Main title with PDC type and alpha value
+xplot_title(alpha,metric,'pdc',strTitle); % Main title
 
 
 %% Result from the original article, Gourevitch (2006) 
@@ -194,7 +194,8 @@ flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 [h3,~,~] = xplot_pvalues([],d,flgPrinting,fs,w_max,chLabels,flgColor,flgScale);
 
-xplot_title(alpha,metric,['p-value gPDC'],'Gourevitch et al.(Biol Cybern, 2006)');
+xplot_title(alpha,metric,['p-value gPDC'], ...
+                                        'Gourevitch et al.(Biol Cybern, 2006)');
 
 
 %%

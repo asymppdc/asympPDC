@@ -3,7 +3,7 @@
 %        from series j--> i.
 %
 %% Syntax
-%        c = pdc_alg(u,alg,criterion,nFreqs,metric,maxIP,alpha)
+%        c = PDC_ALG(u,alg,criterion,nFreqs,metric,maxIP,alpha)
 %
 %% Input arguments
 %        u         - data
@@ -107,4 +107,5 @@ if alpha ~= 0
    c.pdc2_th = pdc2_temp;
 else
    c.pdc2_th = [];
+end
 end

@@ -30,7 +30,7 @@ flgRepeat = 0; % You may want to repeat simulation using the same data set
                % schelter2006_state.mat file, so that randn can be
                % initialized with the same state number in subsequent
                % simulations.
-[u aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
+[u,aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
 
 % if ~flgRepeat, save schelter2006_state.mat aState; end;
 
@@ -47,17 +47,17 @@ flgStandardize = 0; % No standardization
 [nChannels,nSegLength]=size(u);
 if nChannels > nSegLength, u=u.'; 
    [nChannels,nSegLength]=size(u);
-end;
+end
 
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
+end
 
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %%
 % MVAR model estimation
@@ -99,6 +99,7 @@ flgPrintResults = 1;
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
 flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
+
 [Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
  
@@ -116,23 +117,24 @@ alpha = 0.01;
 
 c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
-%%
-% PDCn Matrix Layout Plotting
 
-flgPrinting = [1 1 1 2 2 0 2];
+%% PDCn Matrix Layout Plotting
+%
+
+flgPrinting = [1 1 1 2 3 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf('%0.3g',100*alpha);
 
 strID = 'Schelter et al. J Physiology - Paris 99:37-46, 2006.';
-
-[h,hxlabel hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 strTitle = ['Linear pentavariate Model II: ' int2str(nPoints) ...
               ' data points.'];
+
+[h,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'pdc',strTitle);
 
-%%
-% PDC p-values matrix layout plots
+%% PDC p-values matrix layout plots
+%
 
 flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
@@ -141,7 +143,6 @@ flgScale = 2;
                                                              flgColor,flgScale);
 xplot_title(alpha,metric,['p-value PDC'],strTitle);
 
-
 %% Result from Schelter et al.(2006) 
 % Figure 3, page 41.
 %
@@ -149,8 +150,9 @@ xplot_title(alpha,metric,['p-value PDC'],strTitle);
 % 
 
 %%
-% Figure shows the results from Schelter et al. (2006) in agreement
-% with the present simulation.
+% Figure shows the results from Schelter et al. (2006) with the magnitudes
+% mostly in agreement with the present simulation. See remarks listed
+% bellow regardings the differences in the amplitudes.
 
 
 %% Some remarks

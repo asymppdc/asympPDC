@@ -1,0 +1,575 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Andrews and Herzberg Sunspot-Melanoma 1936-1872 Series</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="andrews_herzberg_dtf.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Andrews and Herzberg Sunspot-Melanoma 1936-1872 Series</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Data File: skin.dat</a></li><li><a href="#3">Causality Analysis using Directed Transfer Function (DTF)</a></li><li><a href="#4">Retrieving data set for analysis from sunmeladat.m m-file</a></li><li><a href="#11">Original DTF estimation</a></li><li><a href="#15">Generalized DTF or Directed Coherence (DC) estimation and analysis parameters</a></li><li><a href="#18">Repeating analysis for iDTF</a></li></ul></div><h2 id="1">Data File: skin.dat</h2><p>This data is from Andrews and Herzberg. D. F. Andrews, A. M. Herzberg. (1985) Data: A Collection of Problems from Many Fields for the Student and Research Worker. Springer, New York.</p><p>The aetiology of melanoma is complex and may include the influences of trauma, heredity and hormonal activity. In particular, exposure to solar radiation may be involved in the pathogenesis of melanoma. Melanoma is more common in fair-skinned individuals and most frequent in skin sites exposed to the sun. In white populations melanoma is more common in areas closer to the equator where the intensity of solar radiation is higher. Data from various parts of the world suggest that the incidence of melanoma is increasing. The data below, giving age-adjusted melanoma incidence, are from the Connecticut Tumor Registry from 1936-1972. Connecticut has the longest record of state population-based cancer statistics in the United States of America. The data also includes the sunspot relative number. Houghton, Munster and Viola (1978) have shown that the age-adjusted incidence rate for malignant melanoma in the state of Connecticut has risen since 1935 and that superimposed on the rise are 3-5 year periods in which the rise in the rate of incidence is excessive. These periods have a cycle of 8-11 years and follow times of maximum sunspot activity. The relationship between solar cycles and melanoma supports the hypothesis that melanoma is related to sun exposure and provides evidence that solar radiation may trigger the development of clinically apparent melanoma. The columns are the year, male incidence, total incidence, and sunspot relative index. The incidence are rates per 100,000.</p><p>Below is the contents of the file skin.dat:</p><div><ul><li>Year % 1936-1972</li><li>ANNUAL MALE MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT</li><li>ANNUAL TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT</li><li>ANNUAL SUNSPOT RELATIVE NUMBER</li></ul></div><h2 id="3">Causality Analysis using Directed Transfer Function (DTF)</h2><p>In this example, ANNUAL SUNSPOT RELATIVE NUMBER and TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) in the state of CONNECTICUT will be considered</p><pre class="codeinput"><span class="comment">% clear; clc; format compact</span>
+<span class="comment">% close all</span>
+
+format <span class="string">short</span>
+warning(<span class="string">'off'</span>); more <span class="string">off</span>
+
+disp(<span class="string">'======================================================================'</span>);
+disp(<span class="string">'     Andrews and Herzberg''s Sunspot and Melanoma 1936-1972 Data'</span>);
+disp(<span class="string">'                 Sunspot --&gt; Melanoma or other way?'</span>);
+disp(<span class="string">'======================================================================'</span>);
+
+flgDataPlot = 1;
+</pre><pre class="codeoutput">======================================================================
+     Andrews and Herzberg's Sunspot and Melanoma 1936-1972 Data
+                 Sunspot --&gt; Melanoma or other way?
+======================================================================
+</pre><h2 id="4">Retrieving data set for analysis from sunmeladat.m m-file</h2><pre class="codeinput">x=sunmeladat([4 3]); chLabels={<span class="string">'Sunspot'</span>;<span class="string">'Melanoma'</span>};
+u = x;
+nPoints = length(u);
+</pre><p>Plotting sunspot and melanoma series</p><pre class="codeinput"><span class="keyword">if</span> flgDataPlot
+   year=sunmeladat(1);  <span class="comment">% Year variable</span>
+   h1=figure;
+   set(h1,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+      <span class="string">'Name'</span>,<span class="string">'Andrews &amp; Herzberg''s Sunspot-Melanoma Series (1936-1972)'</span>)
+   h = subplot(311); plot(year,u(:,1),<span class="string">'o:r'</span>); title(<span class="string">'Sunspot series'</span>); grid
+   set(h,<span class="string">'XLim'</span>, [1935 1975], <span class="keyword">...</span><span class="comment">             %'YLim',ylim, ...</span>
+      <span class="string">'XTick'</span>,[1935:5:1975], <span class="keyword">...</span>
+      <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+
+   h = subplot(312); plot(year,u(:,2),<span class="string">'.:'</span>);
+                     xlabel(<span class="string">''</span>);
+                     title(<span class="string">'Melanoma series'</span>);grid
+   set(h,<span class="string">'XLim'</span>, [1935 1975], <span class="keyword">...</span><span class="comment">             %'YLim',ylim, ...</span>
+      <span class="string">'XTick'</span>,[1935:5:1975], <span class="keyword">...</span>
+      <span class="string">'XTickLabel'</span>,[<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>;<span class="string">' '</span>]);
+   h = subplot(313); plot(year,detrend(u(:,2)),<span class="string">'.:'</span>); xlabel(<span class="string">'year'</span>);
+   set(h,<span class="string">'XLim'</span>, [1935 1975])
+   title(<span class="string">'Detrended melanoma series'</span>)
+   grid; hold <span class="string">on</span>; <span class="comment">%pause(1)</span>
+
+   h2=figure;
+   set(h2,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+      <span class="string">'Name'</span>,<span class="string">'Andrews &amp; Herzberg''s Sunspot-Melanoma Series (1936-1972)'</span>)
+   u2=u(:,2); u2=detrend(u2);
+   h = subplot(211); plot(year,(u2-mean(u2))/std(u2),<span class="string">'b*:'</span>,<span class="keyword">...</span>
+      year,(u(:,1)-mean(u(:,1)))/std(u(:,1)),<span class="string">'ro-'</span>);
+   set(h,<span class="string">'XLim'</span>, [1935 1975])
+   title(<span class="string">'Melanoma &amp; Sunspot: Standardized series'</span>)
+   legend(<span class="string">'Melanoma'</span>,<span class="string">'Sunspot'</span>);grid
+
+   [uxcorr,lag]=xcorr(u2,u(:,1),<span class="string">'coeff'</span>);
+   subplot(212); plot(lag,uxcorr,<span class="string">'o--'</span>); xlabel(<span class="string">'lag(year)'</span>);
+   title(<span class="string">'Normalized cross-correlation function'</span>); axis([-20 20 -1 1]);
+   grid; hold <span class="string">on</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="andrews_herzberg_dtf_01.png" alt=""> <img vspace="5" hspace="5" src="andrews_herzberg_dtf_02.png" alt=""> <p>Note the cross-correlation peak at 2-year time lag.</p><p>Data pre-processing: detrending and standardization options</p><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
+flgStandardize = 0; <span class="comment">% No standardization</span>
+[nChannels,nSegLength] =size(u);
+<span class="keyword">if</span> nChannels &gt; nSegLength
+   u = u.';
+   [nChannels,nSegLength]=size(u);
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
+   disp(<span class="string">'Time series were detrended.'</span>);
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>
+   disp(<span class="string">'Time series were scale-standardized.'</span>);
+<span class="keyword">end</span>
+
+alpha = 0.01;
+fs= 1;
+</pre><pre class="codeoutput">Time series were detrended.
+</pre><p>MVAR model estimation</p><pre class="codeinput">maxIP = 4;         <span class="comment">% maximum model order to consider.</span>
+alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm;</span>
+<span class="comment">%                   % 2: minimum least squares methods;</span>
+<span class="comment">%                   % 3: Vieira Morf algorithm;</span>
+<span class="comment">%                   % 4: QR ARfit algorith.</span>
+
+criterion = 1;      <span class="comment">% Criterion for order choice:</span>
+<span class="comment">%                   % 1: AIC, Akaike Information Criteria;</span>
+<span class="comment">%                   % 2: Hanna-Quinn;</span>
+<span class="comment">%                   % 3: Schwarz;</span>
+<span class="comment">%                   % 4: FPE;</span>
+<span class="comment">%                   % 5: fixed order given by maxIP value.</span>
+
+disp(<span class="string">'Running MVAR estimation routine...'</span>)
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <span class="string">' with '</span> <span class="keyword">...</span>
+    int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
+</pre><pre class="codeoutput">Running MVAR estimation routine...
+maxOrder limited to 4
+IP=1  vaic=418.156614
+IP=2  vaic=415.350982
+IP=3  vaic=409.454496
+IP=4  vaic=411.220477
+ 
+Number of channels = 2 with 37 data points; MAR model order = 3.
+</pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
+MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
+                            <span class="comment">% level</span>
+aValueMVAR = 1 - MVARadequacy_signif; <span class="comment">% Confidence value for the testing</span>
+flgPrintResults = 1;
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,<span class="keyword">...</span>
+                                           flgPrintResults);
+</pre><pre class="codeoutput">
+====================================================================================================
+                  MVAR RESIDURES TEST FOR WHITENESS
+----------------------------------------------------------------------------------------------------
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.025
+  st = 85.8928
+</pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
+igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
+flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
+[Tr_gct, pValue_gct]   = gct_alg(u,A,pf,  gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+</pre><pre class="codeoutput">
+====================================================================================================
+                         GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Connectivity matrix:
+   NaN     0
+     1   NaN
+
+Granger causality test p-values:
+       NaN    0.0796
+    0.0000       NaN
+
+====================================================================================================
+                  INSTANTANEOUS GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Instantaneous connectivity matrix:
+   NaN     0
+     0   NaN
+
+Instantaneous Granger Causality test p-values:
+       NaN    0.0762
+    0.0762       NaN
+
+&gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
+
+====================================================================================================
+</pre><h2 id="11">Original DTF estimation</h2><p>DTF analysis results are saved in <b>c</b> structure. See asymp_dtf.m or issue</p><pre class="language-matlab">&gt;&gt; help asymp_dtf
+</pre><p>command for more detail.</p><pre class="codeinput">nFreqs = 256;
+metric = <span class="string">'euc'</span>;  <span class="comment">% euc  = original DTF;</span>
+                 <span class="comment">% diag = generalized DTF or DC;</span>
+                 <span class="comment">% info = information DTF or iDTF.</span>
+alpha = 0.01;
+c = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate DTF and asymptotic statistics</span>
+
+c.pvaluesgct = pValue_gct; <span class="comment">% Necessary for printing GCT with xplot</span>
+c.Tragct = Tr_gct;
+</pre><p>DTFn Matrix Layout Plotting</p><pre class="codeinput"><span class="comment">% ---------------Plotting options flag setting-----------------------------</span>
+<span class="comment">%           [1 2 3 4 5 6 7]</span>
+flgPrinting=[1 1 1 2 2 0 1];
+<span class="comment">%            | | | | | | 7 Spectra(0: w/o SS; 1: Linear; 2: log-scale)</span>
+<span class="comment">%            | | | | | 6 Coherence</span>
+<span class="comment">%            | | | | 5 Plot lower confidence limit</span>
+<span class="comment">%            | | | 4 Plot upper confidence limit</span>
+<span class="comment">%            | | 3 Significant DTF(w) in red line</span>
+<span class="comment">%            | 2 Patnaik threshold level in black dashed-line</span>
+<span class="comment">%            1 DTF in green line</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+flgColor = 0;
+w_max=fs/2;
+
+strBarTitle = <span class="string">'Andrews &amp; Herzberg''s Sunspot-Melanoma Series (1936-1972)'</span>;
+strTitle = <span class="string">'Sunspot-Melanoma Series (1936-1972)'</span>;
+[h1,hxlabel,hylabel] = xplot(strBarTitle,c,<span class="keyword">...</span>
+      flgPrinting,fs,w_max,chLabels,flgColor);
+   xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="andrews_herzberg_dtf_03.png" alt=""> <p>It is important to note that the time series were not standardized, and the variance of sunspot series is much larger than that of the melanoma's series.</p><p>In this case, the original DTF from melanoma (small variance) to sunspot (large variance) estimate is close to unit (large), but not significant, while in opposite direction it is very small and significant (see red line plot).</p><p>Proper "scale" for original DTF estimates could be attained by standardizing the time series, i.e scaling to have unit variance and zero mean, but it is preferred using either generalized DTF or information DTF.</p><p>Following figure shows in more properly scaled magnitude of DTF from sunspot to melanoma, which one would expect some causal influence of radiation intensity influence on skin cancer incidence.</p><pre class="codeinput">flgScale = 3;
+flgMax = <span class="string">'all'</span>;
+flgSignifColor = 3;
+
+[h2,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+                                       flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="andrews_herzberg_dtf_04.png" alt=""> <img vspace="5" hspace="5" src="andrews_herzberg_dtf_05.png" alt=""> <p>One interesting aspect of asymptotic statistics you may notice is that it gives a proper and consistent inference for all three forms of DTF (DTF|DC|iDTF).</p><p>This is an indication of robustness of the algorithm based on asymptotic statistics implemented in the AsympPDC Package.</p><h2 id="15">Generalized DTF or Directed Coherence (DC) estimation and analysis parameters</h2><p>DC analysis results are saved in <b>d</b> structure.</p><pre class="codeinput">metric = <span class="string">'diag'</span>; <span class="comment">% euc  = original DTF;</span>
+                <span class="comment">% diag = generalized DTF or DC;</span>
+                <span class="comment">% info = information DTF or iDTF</span>
+d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate DTF and asymptotic statistics</span>
+
+flgColor = 0;
+</pre><p>DC Matrix Layout Plotting</p><pre class="codeinput">[h3,hxlabel,hylabel] = xplot(strBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
+xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="andrews_herzberg_dtf_06.png" alt=""> <p>Note that the peak of DC in frequency coincides with the peack or Sunspot and melanoma series power spectra, which corresponds to approximately 11-year Sun's activity cycle period, however, on the contrary to PDC inference, around the peak itself DC is not significant.</p><h2 id="18">Repeating analysis for iDTF</h2><p>iDTF analysis results are saved in <b>e</b> structure.</p><pre class="codeinput">metric = <span class="string">'info'</span>;
+alpha = 0.01;
+e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate iDTF and asymptotic statistics</span>
+</pre><p>iDTF Matrix Layout Plotting</p><pre class="codeinput">flgColor = 0;
+flgPrinting=[1 1 1 3 0 0 1];
+flgScale = 2;
+flgMax = <span class="string">'all'</span>;
+flgSignifColor = 3;
+
+[h4,hxlabel,hylabel] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
+                     flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="andrews_herzberg_dtf_07.png" alt=""> <p>Note that iDTF and DC's magnitude patterns are similar, but not equal.</p><pre class="codeinput">   flgPrinting=[1 1 1 3 1 1 1];
+
+[h5,hxlabel,hylabel] = xplot_pvalues(strBarTitle,c,flgPrinting,fs,w_max, <span class="keyword">...</span>
+                                  chLabels,flgColor);
+xplot_title(alpha,metric,<span class="string">'p-value iDTF'</span>,strTitle);
+</pre><img vspace="5" hspace="5" src="andrews_herzberg_dtf_08.png" alt=""> <p>End of Sunspot-Melanoma series analysis example.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Andrews and Herzberg Sunspot-Melanoma 1936-1872 Series
+%
+%% Data File: skin.dat
+% This data is from Andrews and Herzberg.
+% D. F. Andrews, A. M. Herzberg. (1985) Data: A Collection of Problems from 
+% Many Fields for the Student and Research Worker. Springer, New York.
+%
+% The aetiology of melanoma is complex and may include the influences
+% of trauma, heredity and hormonal activity. In particular, exposure
+% to solar radiation may be involved in the pathogenesis of melanoma.
+% Melanoma is more common in fair-skinned individuals and most frequent
+% in skin sites exposed to the sun. In white populations melanoma is
+% more common in areas closer to the equator where the intensity of
+% solar radiation is higher. Data from various parts of the world suggest
+% that the incidence of melanoma is increasing. The data below, giving
+% age-adjusted melanoma incidence, are from the Connecticut Tumor Registry
+% from 1936-1972. Connecticut has the longest record of state
+% population-based cancer statistics in the United States of America.
+% The data also includes the sunspot relative number. Houghton, Munster
+% and Viola (1978) have shown that the age-adjusted incidence rate for
+% malignant melanoma in the state of Connecticut has risen since 1935 and
+% that superimposed on the rise are 3-5 year periods in which the rise
+% in the rate of incidence is excessive. These periods have a cycle of
+% 8-11 years and follow times of maximum sunspot activity. The relationship
+% between solar cycles and melanoma supports the hypothesis that melanoma
+% is related to sun exposure and provides evidence that solar radiation
+% may trigger the development of clinically apparent melanoma. The columns
+% are the year, male incidence, total incidence, and sunspot relative
+% index. The incidence are rates per 100,000.
+%
+% Below is the contents of the file skin.dat:
+%%
+% * Year % 1936-1972
+% * ANNUAL MALE MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
+% * ANNUAL TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
+% * ANNUAL SUNSPOT RELATIVE NUMBER
+
+%% Causality Analysis using Directed Transfer Function (DTF) 
+% In this example, ANNUAL SUNSPOT RELATIVE NUMBER and TOTAL MELANOMA
+% INCIDENCE(AGE-ADJUSTED PER 10**5) in the state of CONNECTICUT will be
+% considered
+
+% clear; clc; format compact
+% close all
+
+format short
+warning('off'); more off
+
+disp('======================================================================');
+disp('     Andrews and Herzberg''s Sunspot and Melanoma 1936-1972 Data');
+disp('                 Sunspot REPLACE_WITH_DASH_DASH> Melanoma or other way?');
+disp('======================================================================');
+
+flgDataPlot = 1;
+
+%% Retrieving data set for analysis from sunmeladat.m m-file
+%
+
+x=sunmeladat([4 3]); chLabels={'Sunspot';'Melanoma'};
+u = x;
+nPoints = length(u);
+
+%%
+% Plotting sunspot and melanoma series
+  
+if flgDataPlot
+   year=sunmeladat(1);  % Year variable
+   h1=figure;
+   set(h1,'NumberTitle','off','MenuBar','none', ...
+      'Name','Andrews & Herzberg''s Sunspot-Melanoma Series (1936-1972)')
+   h = subplot(311); plot(year,u(:,1),'o:r'); title('Sunspot series'); grid
+   set(h,'XLim', [1935 1975], ...             %'YLim',ylim, ...
+      'XTick',[1935:5:1975], ...
+      'XTickLabel',[' ';' ';' ';' ';' ';' ';' ';' ';' ']);
+
+   h = subplot(312); plot(year,u(:,2),'.:'); 
+                     xlabel(''); 
+                     title('Melanoma series');grid
+   set(h,'XLim', [1935 1975], ...             %'YLim',ylim, ...
+      'XTick',[1935:5:1975], ...
+      'XTickLabel',[' ';' ';' ';' ';' ';' ';' ';' ';' ']);
+   h = subplot(313); plot(year,detrend(u(:,2)),'.:'); xlabel('year');
+   set(h,'XLim', [1935 1975])
+   title('Detrended melanoma series')
+   grid; hold on; %pause(1)
+
+   h2=figure;
+   set(h2,'NumberTitle','off','MenuBar','none', ...
+      'Name','Andrews & Herzberg''s Sunspot-Melanoma Series (1936-1972)')
+   u2=u(:,2); u2=detrend(u2);
+   h = subplot(211); plot(year,(u2-mean(u2))/std(u2),'b*:',...
+      year,(u(:,1)-mean(u(:,1)))/std(u(:,1)),'ro-');
+   set(h,'XLim', [1935 1975])
+   title('Melanoma & Sunspot: Standardized series')
+   legend('Melanoma','Sunspot');grid
+
+   [uxcorr,lag]=xcorr(u2,u(:,1),'coeff');
+   subplot(212); plot(lag,uxcorr,'oREPLACE_WITH_DASH_DASH'); xlabel('lag(year)');
+   title('Normalized cross-correlation function'); axis([-20 20 -1 1]); 
+   grid; hold on
+end
+
+%%
+% Note the cross-correlation peak at 2-year time lag.
+
+
+%%
+% Data pre-processing: detrending and standardization options
+
+flgDetrend = 1;     % Detrending the data set
+flgStandardize = 0; % No standardization
+[nChannels,nSegLength] =size(u);
+if nChannels > nSegLength
+   u = u.'; 
+   [nChannels,nSegLength]=size(u);
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
+   disp('Time series were detrended.');
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
+   disp('Time series were scale-standardized.');
+end
+
+alpha = 0.01;
+fs= 1;
+%%
+% MVAR model estimation
+
+maxIP = 4;         % maximum model order to consider.
+alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm;
+%                   % 2: minimum least squares methods;
+%                   % 3: Vieira Morf algorithm;
+%                   % 4: QR ARfit algorith.
+
+criterion = 1;      % Criterion for order choice:
+%                   % 1: AIC, Akaike Information Criteria; 
+%                   % 2: Hanna-Quinn;
+%                   % 3: Schwarz;
+%                   % 4: FPE;
+%                   % 5: fixed order given by maxIP value.
+
+disp('Running MVAR estimation routine...')
+[IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
+disp(['Number of channels = ' int2str(nChannels) ' with ' ...
+    int2str(nSegLength) ' data points; MAR model order = ' int2str(IP) '.']);
+
+%%
+% Testing for adequacy of MAR model fitting through Portmanteau test
+h = 20; % testing lag
+MVARadequacy_signif = 0.05; % VAR model estimation adequacy significance
+                            % level
+aValueMVAR = 1 - MVARadequacy_signif; % Confidence value for the testing
+flgPrintResults = 1;
+[Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
+                                           flgPrintResults);
+
+%%
+% Granger causality test (GCT) and instantaneous GCT
+
+gct_signif  = 0.01;  % Granger causality test significance level
+igct_signif = 0.01;  % Instantaneous GCT significance level
+flgPrintResults = 1; % Flag to control printing gct_alg.m results on command window.
+[Tr_gct, pValue_gct]   = gct_alg(u,A,pf,  gct_signif,flgPrintResults);
+[Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
+
+%% Original DTF estimation
+%
+% DTF analysis results are saved in *c* structure.
+% See asymp_dtf.m or issue
+%
+%   >> help asymp_dtf 
+%
+% command for more detail.
+nFreqs = 256;
+metric = 'euc';  % euc  = original DTF;
+                 % diag = generalized DTF or DC;
+                 % info = information DTF or iDTF.
+alpha = 0.01;
+c = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
+
+c.pvaluesgct = pValue_gct; % Necessary for printing GCT with xplot
+c.Tragct = Tr_gct;
+
+
+%%
+% DTFn Matrix Layout Plotting
+                
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-Plotting options flag settingREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+%           [1 2 3 4 5 6 7]
+flgPrinting=[1 1 1 2 2 0 1];
+%            | | | | | | 7 Spectra(0: w/o SS; 1: Linear; 2: log-scale)
+%            | | | | | 6 Coherence
+%            | | | | 5 Plot lower confidence limit
+%            | | | 4 Plot upper confidence limit
+%            | | 3 Significant DTF(w) in red line
+%            | 2 Patnaik threshold level in black dashed-line
+%            1 DTF in green line
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+flgColor = 0;
+w_max=fs/2;
+
+strBarTitle = 'Andrews & Herzberg''s Sunspot-Melanoma Series (1936-1972)';
+strTitle = 'Sunspot-Melanoma Series (1936-1972)';
+[h1,hxlabel,hylabel] = xplot(strBarTitle,c,...
+      flgPrinting,fs,w_max,chLabels,flgColor);
+   xplot_title(alpha,metric,'dtf',strTitle);
+
+%%
+% It is important to note that the time series were not standardized, and
+% the variance of sunspot series is much larger than that of the melanoma's
+% series.
+% 
+% In this case, the original DTF from melanoma (small variance) to sunspot 
+% (large variance) estimate is close to unit (large), but not significant,
+% while in opposite direction it is very small and significant (see red line plot). 
+%
+% Proper "scale" for original DTF estimates could be attained by standardizing the
+% time series, i.e scaling to have unit variance and zero mean, but it is
+% preferred using either generalized DTF or information DTF.
+%
+% Following figure shows in more properly scaled magnitude of DTF from sunspot
+% to melanoma, which one would expect some causal influence of radiation
+% intensity influence on skin cancer incidence.
+
+flgScale = 3;
+flgMax = 'all';
+flgSignifColor = 3;
+
+[h2,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max,chLabels, ...
+                                       flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,'dtf',strTitle);
+
+%%
+% One interesting aspect of asymptotic statistics you may notice is that it
+% gives a proper and consistent inference for all three forms of
+% DTF (DTF|DC|iDTF). 
+%
+% This is an indication of robustness of the algorithm based on
+% asymptotic statistics implemented in the AsympPDC Package. 
+
+%% Generalized DTF or Directed Coherence (DC) estimation and analysis parameters
+%
+% DC analysis results are saved in *d* structure.
+
+metric = 'diag'; % euc  = original DTF;
+                % diag = generalized DTF or DC;
+                % info = information DTF or iDTF
+d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statistics
+
+flgColor = 0;
+
+%% 
+% DC Matrix Layout Plotting
+
+[h3,hxlabel,hylabel] = xplot(strBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
+xplot_title(alpha,metric,'dtf',strTitle);
+
+%%
+% Note that the peak of DC in frequency coincides with the peack or
+% Sunspot and melanoma series power spectra, which corresponds to 
+% approximately 11-year Sun's activity cycle period, however, on the contrary to
+% PDC inference, around the peak itself DC is not significant.
+
+
+%% Repeating analysis for iDTF
+%
+% iDTF analysis results are saved in *e* structure.
+
+metric = 'info';
+alpha = 0.01;
+e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate iDTF and asymptotic statistics
+
+%%
+% iDTF Matrix Layout Plotting
+flgColor = 0;
+flgPrinting=[1 1 1 3 0 0 1];
+flgScale = 2;
+flgMax = 'all';
+flgSignifColor = 3;
+
+[h4,hxlabel,hylabel] = xplot(strBarTitle,e,flgPrinting,fs,w_max,chLabels, ...
+                     flgColor,flgScale,flgMax,flgSignifColor);
+xplot_title(alpha,metric,'dtf',strTitle);
+
+%%
+% Note that iDTF and DC's magnitude patterns are similar, but not equal. 
+   flgPrinting=[1 1 1 3 1 1 1];
+
+[h5,hxlabel,hylabel] = xplot_pvalues(strBarTitle,c,flgPrinting,fs,w_max, ...
+                                  chLabels,flgColor);
+xplot_title(alpha,metric,'p-value iDTF',strTitle);
+
+%%
+% End of Sunspot-Melanoma series analysis example.
+
+##### SOURCE END #####
+--></body></html>

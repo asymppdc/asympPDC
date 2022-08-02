@@ -1,5 +1,5 @@
 %% CMLSM
-%        Multivariate autoregressive model least squares estimator.
+%        Multivariate autoregressive model minimum least squares estimator.
 %% Syntax
 %       [npf,na,nef] = CMLSM(u,IP)
 %
@@ -19,6 +19,7 @@ function [npf,na,nef] = cmlsm(u,IP)
 [b,SU,nfe] = mlsmx(u,IP);
 na = reshape(b,m,m,IP);
 npf = SU*n; % see normalization
+end
 
 %==========================================================================
 %
@@ -34,6 +35,7 @@ SU = (Y*Y'-Y*Z'*U1*Y');
 SU = SU/(T-K*p-1);
 b = kron(U1,eye(K))*reshape(Y,K*T,1);
 nfe = reshape(reshape(Y,K*T,1)-kron(Z',eye(K))*b,K,T); 
+end
 
 %==========================================================================
 % Computation of Z - data structure (no estimation of the mean)
@@ -53,4 +55,5 @@ y1 = [zeros(K*p,1);reshape(flipud(Y),K*T,1)];
 Z =  zeros(K*p,T);
 for i = 0:T-1
    Z(:,i+1) = flipud(y1(1+K*i:K*i+K*p));
+end
 end

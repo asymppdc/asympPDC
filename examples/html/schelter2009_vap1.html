@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Schelter2009 VAP I 5-dimension VAR[3] process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="schelter2009_vap1.m"><style type="text/css">
+      --><title>Schelter2009 VAP I 5-dimension VAR[3] process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="schelter2009_vap1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -134,10 +134,10 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=37714.714857
-IP=2  vaic=35523.595219
-IP=3  vaic=34605.784070
-IP=4  vaic=34625.869495
+IP=1  vaic=37356.354687
+IP=2  vaic=35433.635091
+IP=3  vaic=34573.805321
+IP=4  vaic=34606.083329
  
 Number of channels = 5 with 1000 data points; MAR model order = 3.
 
@@ -145,8 +145,8 @@ Number of channels = 5 with 1000 data points; MAR model order = 3.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.036
-  st = 419.241
+Pass = 0.024
+  st = 377.423
 </pre><h2 id="7">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -164,11 +164,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN         0    0.6122    0.7328    0.7541
-    0.6008       NaN    0.6652    0.7756    0.7798
-         0         0       NaN    0.3965    0.3284
-         0    0.6171    0.6831       NaN         0
-    0.2996    0.3822    0.8222         0       NaN
+       NaN         0    0.2822    0.2698    0.2086
+    0.8144       NaN    0.3172    0.5871    0.3564
+         0         0       NaN    0.8217    0.9795
+         0    0.8648    0.9560       NaN         0
+    0.6865    0.3704    0.1172         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -181,11 +181,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.5830    0.3832    0.6823    0.0302
-    0.5830       NaN    0.1914    0.3359    0.3422
-    0.3832    0.1914       NaN    0.7049    0.6972
-    0.6823    0.3359    0.7049       NaN    0.8272
-    0.0302    0.3422    0.6972    0.8272       NaN
+       NaN    0.4198    0.6773    0.3635    0.6451
+    0.4198       NaN    0.7268    0.4665    0.3582
+    0.6773    0.7268       NaN    0.1090    0.9394
+    0.3635    0.4665    0.1090       NaN    0.8945
+    0.6451    0.3582    0.9394    0.8945       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -197,7 +197,7 @@ metric = <span class="string">'info'</span>;  <span class="comment">% euc  = ori
                   <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
 alpha = 0.01; <span class="comment">% Significance level for iPDC null hypothesis test</span>
 
-c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         <span class="comment">% Assigning GCT results to c struct variable.</span>
 c.pvaluesgct = pValue_gct;
 </pre><h2 id="9">iPDC2 Matrix-Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 1]; <span class="comment">% overriding default setting</span>
@@ -333,7 +333,7 @@ metric = 'info';  % euc  = original PDC or DTF;
                   % info = information PDC (iPDC) or iDTF.
 alpha = 0.01; % Significance level for iPDC null hypothesis test
 
-c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
+c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         % Assigning GCT results to c struct variable.
 c.pvaluesgct = pValue_gct;
 

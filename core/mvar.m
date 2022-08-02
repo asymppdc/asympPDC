@@ -8,13 +8,14 @@
 %% Input Arguments
 %        u     - data rows
 %        maxIP - externaly defined maximum IP
-%        alg   - estimation algorithm 1: Nutall-Strand; 2: mlsm;
-%                                     3: Vieira-Morf); 4: QR arfit.
+%        alg   - estimation algorithm 1: Nutall-Strand; 
+%                                     2: mlsm -  minimum least-square method;
+%                                     3: Vieira-Morf; 4: QR arfit.
 %        criterion for order choice - 0: MDL (not implemented)
 %                                     1: AIC; 2: Hanna-Quinn; 3 Schwarz;
 %                                     4: FPE; 5: fixed order given by maxIP value
 %        flgVerbose - display model order limit value
-%
+
 %% Output Argument 
 %     IP     - Autoregressive model order
 %     pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
@@ -39,11 +40,6 @@
 %
 % [2] Marple Jr, SL (1987). Digital Spectral Analysis with Application.
 %                         Prentice-Hall, Englewood-Cliffs, 1987. 
-%
-% [3] Schneider, T & Neumaier, A (2001): Algorithm 808: ARfit - A Matlab package
-%                         for the estimation of parameters and eigenmodes of
-%                         multivariate autoregressive models. ACM Trans. Math.
-%                         Softw., 27:58-–65.
 %
 % See also MCARNS, MCARVM, CMLSM, ARFIT,
 %          <mcarns.html> | <mvar.html> |<mcarvm.html>|<cmlsm.html>

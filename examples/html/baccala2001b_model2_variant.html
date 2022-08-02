@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>baccala2001b_model2_variant</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-26"><meta name="DC.source" content="baccala2001b_model2_variant.m"><style type="text/css">
+      --><title>baccala2001b_model2_variant</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="baccala2001b_model2_variant.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -85,18 +85,18 @@ fs = 1;
 </pre><h2 id="5">Data pre-processing: detrending and normalization options</h2><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
 flgStandardize = 0; <span class="comment">% No standardization</span>
 [nChannels,nSegLength] =size(u);
-<span class="keyword">if</span> nChannels &gt; nSegLength,
+<span class="keyword">if</span> nChannels &gt; nSegLength
    u = u.';
    [nChannels,nSegLength]=size(u);
-<span class="keyword">end</span>;
-<span class="keyword">if</span> flgDetrend,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgDetrend
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were detrended.'</span>);
-<span class="keyword">end</span>;
-<span class="keyword">if</span> flgStandardize,
-   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>;
+<span class="keyword">end</span>
+<span class="keyword">if</span> flgStandardize
+   <span class="keyword">for</span> i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); <span class="keyword">end</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
-<span class="keyword">end</span>;
+<span class="keyword">end</span>
 </pre><pre class="codeoutput">Time series were detrended.
 </pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm</span>
@@ -110,11 +110,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=47353.361179
-IP=2  vaic=41970.238868
-IP=3  vaic=41585.322436
-IP=4  vaic=41537.703117
-IP=5  vaic=41569.141082
+IP=1  vaic=47429.820433
+IP=2  vaic=41952.507302
+IP=3  vaic=41518.431578
+IP=4  vaic=41472.928110
+IP=5  vaic=41513.192972
  
 Number of channels = 6 with 1000 data points; MAR model order = 4.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -129,10 +129,9 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-(**) Poor MAR model fitting:
-                   Residues white noise hypothesis was rejected.
-Pass = 0.0347222
-  st = 638.332
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.0361111
+  st = 608.123
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.001;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.001;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -147,18 +146,18 @@ flgPrintResults = 1;
 Connectivity matrix:
    NaN     0     0     0     0     0
      1   NaN     0     0     0     0
-     0     1   NaN     0     1     0
+     0     1   NaN     0     0     0
      1     0     0   NaN     0     1
      0     1     0     0   NaN     1
      0     0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.5356    0.5911    0.5898    0.5683    0.9313
-         0       NaN    0.1031    0.6528    0.4480    0.5045
-    0.9985         0       NaN    0.6291    0.0005    0.0013
-         0    0.1457    0.5087       NaN    0.0341         0
-    0.8217    0.0000    0.4529    0.7673       NaN         0
-    0.1482    0.3137    0.7058    0.2869         0       NaN
+       NaN    0.1469    0.8825    0.0850    0.1354    0.9078
+         0       NaN    0.0024    0.4998    0.0178    0.1358
+    0.9183         0       NaN    0.6183    0.5270    0.4738
+         0    0.7477    0.8680       NaN    0.8051         0
+    0.9769         0    0.3230    0.1259       NaN         0
+    0.8394    0.5660    0.6116    0.7883         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -172,12 +171,12 @@ Instantaneous connectivity matrix:
      0     0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.2444    0.9120    0.3156    0.4020    0.1344
-    0.2444       NaN    0.7066    0.4581    0.3234    0.6585
-    0.9120    0.7066       NaN    0.5468    0.7509    0.3940
-    0.3156    0.4581    0.5468       NaN    0.9039    0.4736
-    0.4020    0.3234    0.7509    0.9039       NaN    0.4227
-    0.1344    0.6585    0.3940    0.4736    0.4227       NaN
+       NaN    0.5736    0.0959    0.8256    0.3792    0.5399
+    0.5736       NaN    0.6822    0.2393    0.2638    0.8481
+    0.0959    0.6822       NaN    0.4620    0.1162    0.3358
+    0.8256    0.2393    0.4620       NaN    0.6296    0.3954
+    0.3792    0.2638    0.1162    0.6296       NaN    0.0313
+    0.5399    0.8481    0.3358    0.3954    0.0313       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -188,7 +187,9 @@ Instantaneous Granger Causality test p-values:
 nFreqs = 128;
 alpha = 0.001;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Estimate PDC and asymptotic statistics</span>
-</pre><h2 id="10"><img src="baccala2001b_model2_variant_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 2 1 2]; <span class="comment">% overriding default setting</span>
+c.pvaluesgct = pValue_gct; <span class="comment">% Necessary for printing GCT</span>
+c.Tragct = Tr_gct;
+</pre><h2 id="10"><img src="baccala2001b_model2_variant_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 1 2]; <span class="comment">% overriding default setting</span>
 flgColor = 0;
 w_max=fs/2;
 
@@ -196,8 +197,8 @@ strTitle1 = [<span class="string">'6-dimensional linear VAR[4] Variant Model II:
 strTitle2 = [<span class="string">'[N='</span> int2str(nSegLength) <span class="string">'pts; IP='</span> int2str(c.p) <span class="string">']'</span>];
 strTitle =[strTitle1 strTitle2];
 
-strTitle = <span class="string">'Baccala &amp; Sameshima (2001) Model II Variant'</span>;
-[hxlabel hylabel] = xplot(strTitle,c,<span class="keyword">...</span>
+strWindowBar = <span class="string">'Baccala &amp; Sameshima (2001b) Model II Variant'</span>;
+[h,~,~] = xplot(strWindowBar,c,<span class="keyword">...</span>
                           flgPrinting,fs,w_max,chLabels,flgColor,2,<span class="string">'all'</span>);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>, strTitle);
 </pre><img vspace="5" hspace="5" src="baccala2001b_model2_variant_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
@@ -246,18 +247,18 @@ fs = 1;
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
 [nChannels,nSegLength] =size(u);
-if nChannels > nSegLength, 
+if nChannels > nSegLength
    u = u.'; 
    [nChannels,nSegLength]=size(u);
-end;
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 %
@@ -308,11 +309,13 @@ metric = 'euc';  % euc  = original PDC or DTF;
 nFreqs = 128;
 alpha = 0.001;
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Estimate PDC and asymptotic statistics
+c.pvaluesgct = pValue_gct; % Necessary for printing GCT
+c.Tragct = Tr_gct;
 
 %% $|PDC(\lambda)|^2$ Matrix Layout Plotting
 %
 
-flgPrinting = [1 1 1 2 2 1 2]; % overriding default setting
+flgPrinting = [1 1 1 2 3 1 2]; % overriding default setting
 flgColor = 0;
 w_max=fs/2;
 
@@ -320,8 +323,8 @@ strTitle1 = ['6-dimensional linear VAR[4] Variant Model II: '];
 strTitle2 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 strTitle =[strTitle1 strTitle2];
 
-strTitle = 'Baccala & Sameshima (2001) Model II Variant';
-[hxlabel hylabel] = xplot(strTitle,c,...
+strWindowBar = 'Baccala & Sameshima (2001b) Model II Variant';
+[h,~,~] = xplot(strWindowBar,c,...
                           flgPrinting,fs,w_max,chLabels,flgColor,2,'all');
 xplot_title(alpha,metric,'pdc', strTitle);
 
