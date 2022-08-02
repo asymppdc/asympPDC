@@ -4,7 +4,7 @@
 
 more off
 warning off
-
+clear all; clc
 tic;
 
 andrews_herzberg
@@ -16,16 +16,19 @@ pause(2)
 % structure determination. Biol. Cybern. 84:463-474, 2001.
 % 
 % Example VAR(5) with loop and feedback 4<=>5 Example 3
+clear all; clc
 baccala2001a_ex3
 shg
 pause(2)
 
 % Example VAR(5) with loop and feedback  (4<=>5) Example 4
+clear all; clc
 baccala2001a_ex4
 shg
 pause(2)
 
 % Example VAR(5) with loop and feedback
+clear all; clc
 baccala2001a_ex5
 shg
 pause(2)
@@ -37,16 +40,19 @@ pause(2)
 %
 % Example Model I - (VAR(5) + feedback) + independent VAR(2)
 
+clear all; clc
 baccala2001b_model1_feedback
 shg
 pause(2)
 
 % Example Model II Left and Right Hemispheres EEG emulation
+clear all; clc
 baccala2001b_model2
 pause(2)
 
 % Example Modified Model II Left and Right Hemispheres EEG emulation
 
+clear all; clc
 baccala2001b_model2_variant
 pause(2)
 
@@ -54,6 +60,7 @@ pause(2)
 % by the directed transfer function.
 %            Biol Cybern (2006) 94: 469?482
 %  Example - Three-dimensional VAR[2].
+clear all; clc
 eichler2006_ex1              
 pause(2)
 
@@ -62,6 +69,7 @@ pause(2)
 %            Biol Cybern (2006) 94: 469?482
 %
 %  Example - two-dimensional VAR[4].
+clear all; clc
 eichler2006_ex2              
 pause(2)
 
@@ -73,6 +81,8 @@ pause(2)
 
 % Example Model 2: Linear bivariate model with bidirectional influence 
 % with common source
+
+clear all; clc
 gourevitch2006_model2
 shg
 pause(2)
@@ -82,6 +92,8 @@ pause(2)
 % Computational Biology, 4(5):1-10, February 8, 2008. 
 %==========================================================================
 % Page 2 Toy Model Example VAR(5) + VAR(2) with loop and feedback
+
+clear all; clc
 guo2008_linear
 shg
 pause(2)
@@ -93,6 +105,8 @@ pause(2)
 % 152:210-218, 2005.
 %==========================================================================
 % Example VAR(4) 
+
+clear all; clc
 schelter2005
 shg
 pause(2)
@@ -105,6 +119,8 @@ pause(2)
 %==========================================================================
 % 
 % Example VAR(4) 
+
+clear all; clc
 schelter2006
 shg
 pause(2)
@@ -115,9 +131,13 @@ pause(2)
 % press). 
 %==========================================================================
 % 3.1 Vector autoregressive process I (pag. )
+
+clear all; clc
 schelter2009_vap1
 shg
 pause(2)
+
+clear all; clc
 schelter2009_vap2            
 pause(5)
 
@@ -131,6 +151,7 @@ pause(5)
 %
 % Example: Seven random independent variables 
 
+clear all; clc
 winterhalder2005_variant
 
 disp(repmat('=',1,100))
