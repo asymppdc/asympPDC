@@ -54,7 +54,13 @@ To get started, modify  the `analysis_template.m` script file to adapt it to you
 
 
 
-Good luck.
+### Examples
+
+A number of examples from the literature are provided in `./examples directory`  with complete m-files similar to the `analysis_template.m` script  with the hope that they will help the readers and users to understand and/or gain insight into the Granger causality, instantaneous Granger causality, PDC, and DTF concepts. Issue a help command to look up more detail of each function or scripts, which will also provide link to the corresponding literature materials.  
+
+
+
+We hope you enjoy it and good luck.
 
 
 
