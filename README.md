@@ -20,7 +20,7 @@ To run all main examples provided in ./examples subdiretory and verify if your i
 >> run_all_examples
 ```
 
-If `run_all_examples.m` completes successfully, congratulation, you should see 28 overlapped figures that could be examine, in MATLAB, issueing 
+If `run_all_examples.m` completes successfully, congratulation, you should see 41 overlapped figures you could examine, in MATLAB, through 
 
 ```matlab
 >> tilefigs1
@@ -44,47 +44,47 @@ To get started, modify  the `analysis_template.m` script file to adapt it to you
 
 2. Choose proper label for your data, assigning a value to `chLabels`  variable;
 
-3. Data pre-processing, filtering, detrending and standardization (unnecessary);
+3. Data pre-processing, filtering, detrending and standardization (optional);
 
 4. Multivariate autoregressive (MAR) model estimation, first choosing parameters, estimation algorithm and model order selection criterion;
 
-5. PDC or DTF estimation, choosing analysis parameters such as significance levels for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , metric for PDC/DTF,  and number of frequency points, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for your further analysis, or plot them; 
+5. PDC or DTF estimation, choosing analysis parameters such as significance levels for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , metric for PDC/DTF,  and number of frequency points, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for your further analysis, or to plot them; 
 
-6. To visualize analysis results, use `xplot`, `xplot_pvalues` and `xplot_title` functions to properly format and plot PDC/DTF and corresponding p-values results in `struct variable` obtained in the previous step in the frequency domain, by choosing `xplot` and `xplot_pvalues` plotting parameters, i.e.  `flgPrinting`, `w_max`,  `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`.  See further details in `xplot` function.
+6. To visualize analysis results, use `xplot`, `xplot_pvalues` and `xplot_title` functions to properly format and plot PDC/DTF and corresponding p-values results in `struct variable` obtained in the previous step in the frequency domain, by choosing `xplot` and `xplot_pvalues` plotting parameters, i.e.  `flgPrinting`, `w_max`,  `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`.  See further details in the `xplot` function.
 
 ### Examples
 
-A number of examples from the literature are provided in `./examples directory`  with complete m-files similar to the `analysis_template.m` script  with the hope that they will help the readers and users to understand and/or gain insight into the Granger causality, instantaneous Granger causality, PDC, and DTF concepts. Issue a help command to look up more detail of each function or scripts, which will also provide link to the corresponding literature materials.  
+A number of examples from the literature are provided in `./examples directory`  with complete m-files similar to the `analysis_template.m` script  with the hope that they will help readers and users to understand and/or gain insight into Granger causality, instantaneous Granger causality, PDC, and DTF concepts. Issue a help command to look up more detail of each function or script. This will also provide links to the corresponding literature materials.  
 
-We hope you enjoy it and good luck.
+We hope you enjoy it. Good luck.
 
 ## References
 
-The AsympPDC toolbox implementation is based mainly on the following articles and books:
+### A. The AsympPDC toolbox implementation is based mainly on the following articles and books
 
- [1] L.A. Baccala and K. Sameshima (2001a). Partial directed coherence: a new concept
+ [1] L.A. Baccalá and K. Sameshima (2001a). Partial directed coherence: a new concept
      in neural structure determination. *Biol Cybern* **84**:463--474.
      <https://doi.org/10.1007/PL00007990>
 
- [2] D.Y. Takahashi, L.A.B. Baccala and K. Sameshima (2007), Connectivity inference
+ [2] D.Y. Takahashi, L.A. Baccalá and K. Sameshima (2007), Connectivity inference
      between neural structures via partial directed coherence. *J Appl Stat*
      **34**:1259--1273. <https://doi.org/10.1080/02664760701593065>
 
- [3] L.A. Baccala, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima (2013). Unified
+ [3] L.A. Baccalá, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima (2013). Unified
      asymptotic theory for all partial directed coherence forms. *Philos T Roy
      Soc A* **371**:1--13. <https://doi.org/10.1098/rsta.2012.0158>
 
- [4] M.J. Kaminski and K.J. Blinowska (1991). A new method of the description of the
+ [4] M.J. Kamiński and K.J. Blinowska (1991). A new method of the description of the
     information flow in the brain structures. *Biol Cybern* **65**:203--210.
     <https://doi.org/10.1007/bf00198091>
 
-[5] L.A. Baccala, D.Y. Takahashi and K. Sameshima (2016). Directed transfer
+[5] L.A. Baccalá, D.Y. Takahashi and K. Sameshima (2016). Directed transfer
     function: unified asymptotic theory and some of its implications. *IEEE T
     Bio-Med Eng* **63**:2450--2460. 
     <https://doi.org/10.1109/TBME.2016.2550199>
 
-[6] H. Lutkepohl (2005). New Introduction to Multiple Time Series Analysis. 
-                         Springer-Verlag, New York. 
+[6] H. Lütkepohl (2005). New Introduction to Multiple Time Series Analysis. 
+                         Springer-Verlag, New York.  <https://doi.org/10.1007/978-3-540-27752-1>
 
 [7] S.L. Marple Jr (1987). Digital Spectral Analysis with Application.
                          Prentice-Hall, Englewood-Cliffs. 
@@ -97,6 +97,20 @@ The AsympPDC toolbox implementation is based mainly on the following articles an
 [9] K. Sameshima and L.A. Baccalá Eds. (2014). Methods in Brain Connectivity 
     Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton.
     <https://doi.org/10.1201/b16550>
+
+### B. Historical development: Biological Cybernetics 60th ANNIVERSARY RETROSPECTIVE
+
+[10] L.A. Baccalá and K. Sameshima (2021). Partial directed coherence: twenty years on some history and an
+appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-00880-y>
+
+
+
+### C. Things to come: Total PDC/DTF and Spectral Factorization
+
+[11] L.A. Baccalá and K. Sameshima (2021). Frequency domain repercussions of instantaneous
+Granger causality. *Entropy* **23**(8):[10.3390/e23081037]  <https://doi.org/10.3390/e23081037>
+
+[12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327>
 
 ## License
 
