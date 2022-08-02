@@ -38,7 +38,7 @@ The measures inside the yellow area have been implemented in the asympPDC packag
 
 ## Getting started road map
 
-To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be help to deal with you data set. The basic steps to set up and analyze a data set are:
+To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be help to deal with your data set. The basic steps to set up and analyze a data set using **asympPDC Package** are:
 
 1. Import or open row-vectors data file;
 
