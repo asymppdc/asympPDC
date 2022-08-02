@@ -30,13 +30,13 @@ that will spread the figures on the screen. The tilefigs1 or tilefigs2 function 
 
 
 
-## Our diagramatic view of connectivity measures
+## Our diagrammatic view of connectivity measures
 
 The measures inside the yellow area have been implemented in the asympPDC packages
 
 
 
-![](/home/koichi/Documents/asympPDC-main/connectivity_measures_in_asymppdc.png)
+![](./connectivity_measures_in_asymppdc.png)
 
 ## References
 
