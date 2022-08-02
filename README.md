@@ -108,7 +108,7 @@ appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-
 ### C. Things to come: Total PDC/DTF and Spectral Factorization
 
 [11] L.A. Baccalá and K. Sameshima (2021). Frequency domain repercussions of instantaneous
-Granger causality. *Entropy* **23**(8):[10.3390/e23081037]  <https://doi.org/10.3390/e23081037>
+Granger causality. *Entropy* **23**(8):10.3390/e23081037  <https://doi.org/10.3390/e23081037>
 
 [12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327>
 
