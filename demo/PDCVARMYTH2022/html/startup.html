@@ -1,0 +1,465 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Supplemental material "startup" script</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-19"><meta name="DC.source" content="startup.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Supplemental material "startup" script</h1><!--introduction--><p>This is part of supplemental material accompanying the article of the Special Issue of Frontiers in Network Physiology on Research Topic in <b>*Network Physiology, Insights in Information Theory: 2021</b>*:</p><pre>  Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
+  Autoregressive Modelling Myth and a Caveat.</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme file for license terms.</p><p>(C) Luiz A. Baccala and Koichi Sameshima, 2022. See Readme.pdf file in the installation directory for licensing terms.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Set path for MATLAB and Octave</a></li><li><a href="#3">Check for the requirements for Octave environment</a></li><li><a href="#4">Checking for dependencies for MATLAB&reg; toolbox required in PDCVARMYTH2022</a></li><li><a href="#5">For MATLAB Environment enable all warnings</a></li></ul></div><p>Run this script to initialize the setup of PDCVARMYTH2022 routines.</p><p>You may have to customize this script for your computing environment.</p><pre class="codeinput">clc
+warning <span class="string">off</span>
+fprintf(1,<span class="string">'\n'</span>)
+fprintf(<span class="string">'                 PDCVARMYTH2022 startup: SETTING UP PATH AND CHECKING REQUIREMENTS\n'</span>);
+fprintf(<span class="string">'                 =================================================================\n'</span>);
+fprintf(1,<span class="string">'\n'</span>)
+</pre><h2 id="2">Set path for MATLAB and Octave</h2><pre class="codeinput"><span class="comment">% Add PDCVARMYTH root directory and './others' subdirectory to the MATLAB path</span>
+
+<span class="keyword">global</span> pdcvarmyth_root;
+<span class="comment">%pdcvarmyth = fileparts(mfilename('fullpath')); % directory containing this file</span>
+
+pdcvarmyth_root = [pwd <span class="string">'/'</span>];
+
+<span class="comment">% essentials</span>
+addpath(pdcvarmyth_root);
+addpath(fullfile(pdcvarmyth_root,<span class="string">'others'</span>));
+flgRequirements = 1;
+fprintf(<span class="string">'[PDCVARMYTH startup] Added PDCVARMYTH root directory,\n'</span>);
+fprintf(<span class="string">'                        %s,\n'</span>,pdcvarmyth_root);
+<span class="keyword">if</span> isOctave()
+   fprintf(<span class="string">'                     and a subdirectory to the Octave search path.\n'</span>)
+<span class="keyword">else</span>
+fprintf(<span class="string">'                     and a subdirectory to the MATLAB search path.\n'</span>)
+   <span class="keyword">end</span>
+fprintf(<span class="string">'\n'</span>)
+</pre><h2 id="3">Check for the requirements for Octave environment</h2><pre class="codeinput"><span class="keyword">if</span> isOctave()
+   warning(<span class="string">'off'</span>, <span class="string">'all'</span>);
+   fprintf(<span class="string">'[PDCVARMYTH startup] As this is an Octave environment, checking whether control,\n'</span>)
+   fprintf(<span class="string">'                     statistics and signal packages are loaded or not.\n'</span>)
+   fprintf(1,<span class="string">'\n'</span>)
+   installed_packages = pkg(<span class="string">'list'</span>);
+   [dummy, N] = size(installed_packages);
+   <span class="keyword">if</span> N == 0
+      fprintf(2,<span class="string">'[PDCVARMYTHC startup] Warning: the control, statistics and signal packages are not load in \n'</span>)
+      fprintf(2,<span class="string">'                      the Octave environment. If packages are already installed, load them \n'</span>)
+      fprintf(2,<span class="string">'                      before proceeding with analysisthrough: \n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg load signal\n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg load control\n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg load statistics\n'</span>)
+      fprintf(2,<span class="string">'                      otherwise install them by executing \n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg install -forge io\n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg install -forge control\n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg install -forge signal\n'</span>)
+      fprintf(2,<span class="string">'                            &gt;&gt; pkg install -forge statistics\n'</span>)
+      fprintf(2,<span class="string">'                      then execute "pkg load &lt;package-name&gt; commands. \n'</span>)
+      fprintf(2,<span class="string">'                      See Octave documentation for loading packages on start up of Octave by \n'</span>)
+      fprintf(2,<span class="string">'                      editing ".octaverc" file. \n'</span>)
+     <span class="keyword">else</span>
+      kPkgs = 0;
+      pkglist = {<span class="string">'signal'</span>, <span class="string">'statistics'</span>, <span class="string">'control'</span>};  <span class="comment">% List of necessary Octave packages.</span>
+      <span class="keyword">for</span> k = 1:N
+         <span class="keyword">for</span> klist = 1:3
+            pkgstr = pkglist{klist};
+            <span class="keyword">if</span> strcmpi(installed_packages{k}.name,pkgstr)
+               fprintf(<span class="string">'                      * Package %s is installed and loaded.\n'</span>,pkgstr)
+               kPkgs = kPkgs + 1;
+            <span class="keyword">end</span>
+         <span class="keyword">end</span>
+      <span class="keyword">end</span>
+      fprintf(1,<span class="string">'\n'</span>)
+
+      <span class="keyword">if</span> kPkgs &lt; 3
+         fprintf(2,<span class="string">'[PDCVARMYTH startup] Warning: some of required packages were not installed or loaded.\n'</span>)
+         fprintf(2,<span class="string">'                     The required packages are statistics, signal and control. \n'</span>)
+         fprintf(2,<span class="string">'                     If the package is already installed, load them into Octave \n'</span>)
+         fprintf(2,<span class="string">'                     environment before proceeding by executing: \n'</span>)
+         fprintf(2,<span class="string">'                          &gt;&gt; pkg load &lt;package-name&gt;\n'</span>)
+         fprintf(1,<span class="string">'\n'</span>)
+         fprintf(2,<span class="string">'                     If not installed, install first ''io package'', then other packages\n'</span>)
+         fprintf(2,<span class="string">'                          &gt;&gt; pkg install -forge io\n'</span>)
+         fprintf(2,<span class="string">'                          &gt;&gt; pkg install -forge &lt;package-name&gt;\n'</span>)
+         fprintf(1,<span class="string">'\n'</span>)
+         fprintf(2,<span class="string">'                     See Octave documentation for loading packages on start up \n'</span>)
+         fprintf(2,<span class="string">'                     editing ".octaverc" file. \n'</span>)
+      <span class="keyword">else</span>
+         pkg <span class="string">load</span> <span class="string">signal</span> <span class="string">control</span> <span class="string">statistics</span>
+         fprintf(<span class="string">'[PDCVARMYTH startup] All necessary packages are already loaded into Octave environment!\n'</span>)
+         fprintf(<span class="string">'                     You are good to go.\n'</span>)
+
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+   fprintf(1,<span class="string">'\n'</span>)
+   fprintf(2,<span class="string">'                     If you see any error message concerning availability of package,\n'</span>)
+   fprintf(2,<span class="string">'                     please take proper action to correct it before continuing.\n'</span>)
+fprintf(1,<span class="string">'\n'</span>)
+<span class="keyword">end</span>
+</pre><h2 id="4">Checking for dependencies for MATLAB&reg; toolbox required in PDCVARMYTH2022</h2><pre class="codeinput"><span class="comment">% Check whether the Statistics Toolbox is available - the {ch2cdf,chi2inv,norminv}</span>
+<span class="comment">% functions are required.</span>
+<span class="keyword">if</span> ~isOctave()
+   <span class="keyword">if</span> ~isempty(which(<span class="string">'chi2cdf'</span>)) &amp;&amp; ~isempty(which(<span class="string">'chi2inv'</span>)) &amp;&amp; ~isempty(which(<span class="string">'norminv'</span>))
+      fprintf(<span class="string">'[PDCVARMYTH startup] Statistics Toolbox(TM) is [INSTALLED].\n'</span>);
+   <span class="keyword">else</span>
+      fprintf(2,<span class="string">'[PDCVARMYTH startup] WARNING: Statistics Toolbox(TM) NOT AVAILABLE,\n'</span>);
+      fprintf(2,<span class="string">'                              CHI2CDF, CHI2INV and NORMINV functions are required.\n'</span>);
+      flgRequirements = 0;
+   <span class="keyword">end</span>
+   fprintf(2,<span class="string">'\n'</span>)
+
+   <span class="comment">% Check whether the Signal Processing Toolbox(TM) is installed - the pwelch</span>
+   <span class="comment">% function is required.</span>
+
+   <span class="keyword">if</span> ~isempty(which(<span class="string">'hanning'</span>)) &amp;&amp; ~isempty(which(<span class="string">'cpsd'</span>))
+      fprintf(<span class="string">'[PDCVARMYTH startup] Signal Processing Toolbox(TM) is [INSTALLED].\n'</span>);
+   <span class="keyword">else</span>
+      fprintf(2,<span class="string">'[PDCVARMYTH startup] WARNING: Signal Processing Toolbox(TM) NOT AVAILABLE.\n'</span>);
+      fprintf(2,<span class="string">'                              CPSD and HANNING functions are required.\n'</span>);
+      flgRequirements = 0;
+   <span class="keyword">end</span>
+   fprintf(1,<span class="string">'\n'</span>)
+   <span class="comment">% Check whether the Control Package is installed - see if lyap</span>
+   <span class="comment">% function is present.</span>
+
+   <span class="keyword">if</span> ~isempty(which(<span class="string">'lyap'</span>))
+      fprintf(<span class="string">'[PDCVARMYTH startup] Control System Toolbox(TM) is [INSTALLED].\n'</span>);
+   <span class="keyword">else</span>
+      fprintf(2,<span class="string">'[PDCVARMYTH startup] WARNING: Control System Toolbox(TM) is NOT INSTALLED,\n'</span>);
+      fprintf(2,<span class="string">'                              LYAP function is required.\n'</span>);
+      flgRequirements = 0;
+   <span class="keyword">end</span>
+   fprintf(1,<span class="string">'\n'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> exist(<span class="string">'specfactorization_wilson'</span>) == 2
+   fprintf(<span class="string">'[PDCVARMYTH startup] This is a reminder that ''specfactorization_wilson.m'' function by [1]\n'</span>);
+   fprintf(<span class="string">'                     was included in this distribution. You may want to test/compare its \n'</span>);
+   fprintf(<span class="string">'                     behavior in Example*.m routines with our in-house AWilson.m function. \n'</span>);
+   fprintf(<span class="string">'                     To use it set ''flgWilson=0'' at the beginning of each Example*.m script.\n'</span>)
+   fprintf(1,<span class="string">'\n'</span>)
+   fprintf(<span class="string">'                 [1] Henderson JA, Dhamala M, and Robinson PA (2021). Brain dynamics and\n'</span>);
+   fprintf(<span class="string">'                     structure-function relationships via spectral factorization and\n'</span>);
+   fprintf(<span class="string">'                     the transfer function. NeuroImage, 235:117989.\n'</span>);
+   fprintf(<span class="string">'                         doi:10.1016/j.neuroimage.2021.117989.\n'</span>);
+<span class="keyword">end</span>
+fprintf(<span class="string">'\n'</span>)
+
+<span class="keyword">if</span> ~isOctave()
+   <span class="keyword">if</span> ~isempty(which(<span class="string">'tilefigs'</span>))
+      fprintf(<span class="string">'[PDCVARMYTH startup] You may conveniently visualize multiple figure windows by issuing\n'</span>);
+      fprintf(<span class="string">'                     ''tilefigs'' command (contributed by Peter J Acklam, 2003).\n'</span>);
+   <span class="keyword">end</span>
+   fprintf(1,<span class="string">'\n'</span>)
+<span class="keyword">end</span>
+</pre><h2 id="5">For MATLAB Environment enable all warnings</h2><pre class="codeinput">  <span class="keyword">if</span> flgRequirements,
+    <span class="keyword">if</span> ~isOctave()
+      warning <span class="string">on</span> <span class="string">all</span>
+      fprintf(<span class="string">'[PDCVARMYTH startup] All warning messages enabled\n'</span>);
+      fprintf(1,<span class="string">'\n'</span>)
+    <span class="keyword">end</span>
+    fprintf(<span class="string">'[PDCVARMYTH startup] Initialization completed (you may re-run ''startup.m'' at any time).\n'</span>);
+    fprintf(<span class="string">'\n'</span>)
+    fprintf(<span class="string">'       =====================================================================================\n'</span>);
+    fprintf(<span class="string">'\n'</span>)
+    fprintf(2,<span class="string">' Now you may want to execute the following line of code that will run all Example*.m scripts.\n'</span>)
+    fprintf(<span class="string">'\n'</span>)
+    fprintf(2,<span class="string">' &gt;&gt; Example1; pause(6); Example2; pause(6);  Example3; pause(6);  Example4\n'</span>)
+    fprintf(<span class="string">'\n'</span>)
+    a = input(<span class="string">'To run the above line of code press 1, or 0 otherwise, then press &lt;Enter&gt;: '</span>);
+    <span class="keyword">if</span> a==1
+       Example1; pause(6); Example2;pause(6);  Example3; pause(6);  Example4
+       fprintf(2,<span class="string">'       =====================================================================================\n'</span>);
+       fprintf(<span class="string">'\n'</span>)
+       fprintf(2,<span class="string">'                     Now you also can run ''Example1.m'', ''Example2.m'', \n'</span>);
+       fprintf(2,<span class="string">'                     ''Example3.m'' or ''Example4.m'' script individually.\n'</span>);
+       fprintf(2,<span class="string">'       =====================================================================================\n'</span>);
+    <span class="keyword">else</span>
+       fprintf(<span class="string">'       =====================================================================================\n'</span>);
+       fprintf(<span class="string">'\n'</span>)
+       fprintf(2,<span class="string">'                     Now you may run ''Example1.m'', ''Example2.m'' ''Example3.m''\n'</span>);
+       fprintf(2,<span class="string">'                     or ''Example4.m'' script individually from the command line bellow.\n'</span>);
+       fprintf(<span class="string">'       =====================================================================================\n'</span>);
+       fprintf(<span class="string">'\n'</span>)
+    <span class="keyword">end</span>
+  <span class="keyword">else</span>
+    fprintf(2,<span class="string">'[PDCVARMYTH startup] Requirements not satisfied. Please check THE WARNING MESSAGE(S) ABOVE,\n'</span>)
+    fprintf(2,<span class="string">'                     and correct them before proceeding.\n'</span>)
+    fprintf(2,<span class="string">'       =====================================================================================\n'</span>);
+    fprintf(<span class="string">'\n'</span>)
+  <span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Supplemental material "startup" script
+% This is part of supplemental material accompanying the article of
+% the Special Issue of Frontiers in Network Physiology on Research Topic in
+% **Network Physiology, Insights in Information Theory: 2021**:
+% 
+%    Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
+%    Autoregressive Modelling Myth and a Caveat.
+% 
+% This script should run on any recent version of MATLAB and also in most
+% recent versions of Octave. It was partially tested under Windows, Mac OSX
+% and Linux environments with MATLAB version 7.0 and higher, and with Octave
+% versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme file for license
+% terms.
+%
+% (C) Luiz A. Baccala and Koichi Sameshima, 2022. See Readme.pdf file in
+% the installation directory for licensing terms.
+%
+
+%%
+% Run this script to initialize the setup of PDCVARMYTH2022 routines.
+%
+% You may have to customize this script for your computing environment.
+%
+
+clc
+warning off
+fprintf(1,'\n')
+fprintf('                 PDCVARMYTH2022 startup: SETTING UP PATH AND CHECKING REQUIREMENTS\n');
+fprintf('                 =================================================================\n');
+fprintf(1,'\n')
+
+%% Set path for MATLAB and Octave
+
+% Add PDCVARMYTH root directory and './others' subdirectory to the MATLAB path
+
+global pdcvarmyth_root;
+%pdcvarmyth = fileparts(mfilename('fullpath')); % directory containing this file
+
+pdcvarmyth_root = [pwd '/'];
+
+% essentials
+addpath(pdcvarmyth_root);
+addpath(fullfile(pdcvarmyth_root,'others'));
+flgRequirements = 1;
+fprintf('[PDCVARMYTH startup] Added PDCVARMYTH root directory,\n');
+fprintf('                        %s,\n',pdcvarmyth_root);
+if isOctave()
+   fprintf('                     and a subdirectory to the Octave search path.\n')
+else
+fprintf('                     and a subdirectory to the MATLAB search path.\n')
+   end
+fprintf('\n')
+
+%% Check for the requirements for Octave environment
+%
+if isOctave()
+   warning('off', 'all');
+   fprintf('[PDCVARMYTH startup] As this is an Octave environment, checking whether control,\n')
+   fprintf('                     statistics and signal packages are loaded or not.\n')
+   fprintf(1,'\n')
+   installed_packages = pkg('list');
+   [dummy, N] = size(installed_packages);
+   if N == 0
+      fprintf(2,'[PDCVARMYTHC startup] Warning: the control, statistics and signal packages are not load in \n')
+      fprintf(2,'                      the Octave environment. If packages are already installed, load them \n')
+      fprintf(2,'                      before proceeding with analysisthrough: \n')
+      fprintf(2,'                            >> pkg load signal\n')
+      fprintf(2,'                            >> pkg load control\n')
+      fprintf(2,'                            >> pkg load statistics\n')
+      fprintf(2,'                      otherwise install them by executing \n')
+      fprintf(2,'                            >> pkg install -forge io\n')
+      fprintf(2,'                            >> pkg install -forge control\n')
+      fprintf(2,'                            >> pkg install -forge signal\n')
+      fprintf(2,'                            >> pkg install -forge statistics\n')
+      fprintf(2,'                      then execute "pkg load <package-name> commands. \n')
+      fprintf(2,'                      See Octave documentation for loading packages on start up of Octave by \n')
+      fprintf(2,'                      editing ".octaverc" file. \n')
+     else
+      kPkgs = 0;
+      pkglist = {'signal', 'statistics', 'control'};  % List of necessary Octave packages.
+      for k = 1:N
+         for klist = 1:3
+            pkgstr = pkglist{klist};
+            if strcmpi(installed_packages{k}.name,pkgstr)
+               fprintf('                      * Package %s is installed and loaded.\n',pkgstr)
+               kPkgs = kPkgs + 1;
+            end
+         end
+      end
+      fprintf(1,'\n')
+
+      if kPkgs < 3
+         fprintf(2,'[PDCVARMYTH startup] Warning: some of required packages were not installed or loaded.\n')
+         fprintf(2,'                     The required packages are statistics, signal and control. \n')
+         fprintf(2,'                     If the package is already installed, load them into Octave \n')
+         fprintf(2,'                     environment before proceeding by executing: \n')
+         fprintf(2,'                          >> pkg load <package-name>\n')
+         fprintf(1,'\n')
+         fprintf(2,'                     If not installed, install first ''io package'', then other packages\n')
+         fprintf(2,'                          >> pkg install -forge io\n')
+         fprintf(2,'                          >> pkg install -forge <package-name>\n')
+         fprintf(1,'\n')
+         fprintf(2,'                     See Octave documentation for loading packages on start up \n')
+         fprintf(2,'                     editing ".octaverc" file. \n')
+      else
+         pkg load signal control statistics
+         fprintf('[PDCVARMYTH startup] All necessary packages are already loaded into Octave environment!\n')
+         fprintf('                     You are good to go.\n')
+         
+      end
+   end
+   fprintf(1,'\n')
+   fprintf(2,'                     If you see any error message concerning availability of package,\n')
+   fprintf(2,'                     please take proper action to correct it before continuing.\n')
+fprintf(1,'\n')
+end
+
+%% Checking for dependencies for MATLAB(R) toolbox required in PDCVARMYTH2022
+
+% Check whether the Statistics Toolbox is available - the {ch2cdf,chi2inv,norminv} 
+% functions are required.
+if ~isOctave()
+   if ~isempty(which('chi2cdf')) && ~isempty(which('chi2inv')) && ~isempty(which('norminv'))
+      fprintf('[PDCVARMYTH startup] Statistics Toolbox(TM) is [INSTALLED].\n');
+   else
+      fprintf(2,'[PDCVARMYTH startup] WARNING: Statistics Toolbox(TM) NOT AVAILABLE,\n');
+      fprintf(2,'                              CHI2CDF, CHI2INV and NORMINV functions are required.\n');
+      flgRequirements = 0;
+   end
+   fprintf(2,'\n')
+   
+   % Check whether the Signal Processing Toolbox(TM) is installed - the pwelch
+   % function is required.
+   
+   if ~isempty(which('hanning')) && ~isempty(which('cpsd'))
+      fprintf('[PDCVARMYTH startup] Signal Processing Toolbox(TM) is [INSTALLED].\n');
+   else
+      fprintf(2,'[PDCVARMYTH startup] WARNING: Signal Processing Toolbox(TM) NOT AVAILABLE.\n');
+      fprintf(2,'                              CPSD and HANNING functions are required.\n');
+      flgRequirements = 0;
+   end
+   fprintf(1,'\n')
+   % Check whether the Control Package is installed - see if lyap 
+   % function is present.
+   
+   if ~isempty(which('lyap'))
+      fprintf('[PDCVARMYTH startup] Control System Toolbox(TM) is [INSTALLED].\n');
+   else
+      fprintf(2,'[PDCVARMYTH startup] WARNING: Control System Toolbox(TM) is NOT INSTALLED,\n');
+      fprintf(2,'                              LYAP function is required.\n');
+      flgRequirements = 0;
+   end
+   fprintf(1,'\n')
+end
+
+if exist('specfactorization_wilson') == 2
+   fprintf('[PDCVARMYTH startup] This is a reminder that ''specfactorization_wilson.m'' function by [1]\n');
+   fprintf('                     was included in this distribution. You may want to test/compare its \n');
+   fprintf('                     behavior in Example*.m routines with our in-house AWilson.m function. \n');
+   fprintf('                     To use it set ''flgWilson=0'' at the beginning of each Example*.m script.\n')
+   fprintf(1,'\n')
+   fprintf('                 [1] Henderson JA, Dhamala M, and Robinson PA (2021). Brain dynamics and\n');
+   fprintf('                     structure-function relationships via spectral factorization and\n');
+   fprintf('                     the transfer function. NeuroImage, 235:117989.\n');
+   fprintf('                         doi:10.1016/j.neuroimage.2021.117989.\n');
+end
+fprintf('\n')
+
+if ~isOctave()
+   if ~isempty(which('tilefigs'))
+      fprintf('[PDCVARMYTH startup] You may conveniently visualize multiple figure windows by issuing\n');
+      fprintf('                     ''tilefigs'' command (contributed by Peter J Acklam, 2003).\n');
+   end
+   fprintf(1,'\n')
+end
+  
+  %% For MATLAB Environment enable all warnings
+  if flgRequirements,
+    if ~isOctave()
+      warning on all
+      fprintf('[PDCVARMYTH startup] All warning messages enabled\n');
+      fprintf(1,'\n')
+    end
+    fprintf('[PDCVARMYTH startup] Initialization completed (you may re-run ''startup.m'' at any time).\n');
+    fprintf('\n')
+    fprintf('       =====================================================================================\n');
+    fprintf('\n')
+    fprintf(2,' Now you may want to execute the following line of code that will run all Example*.m scripts.\n')
+    fprintf('\n')
+    fprintf(2,' >> Example1; pause(6); Example2; pause(6);  Example3; pause(6);  Example4\n')
+    fprintf('\n')
+    a = input('To run the above line of code press 1, or 0 otherwise, then press <Enter>: ');
+    if a==1
+       Example1; pause(6); Example2;pause(6);  Example3; pause(6);  Example4
+       fprintf(2,'       =====================================================================================\n');
+       fprintf('\n')
+       fprintf(2,'                     Now you also can run ''Example1.m'', ''Example2.m'', \n');
+       fprintf(2,'                     ''Example3.m'' or ''Example4.m'' script individually.\n');
+       fprintf(2,'       =====================================================================================\n');
+    else
+       fprintf('       =====================================================================================\n');
+       fprintf('\n')
+       fprintf(2,'                     Now you may run ''Example1.m'', ''Example2.m'' ''Example3.m''\n');
+       fprintf(2,'                     or ''Example4.m'' script individually from the command line bellow.\n');
+       fprintf('       =====================================================================================\n');
+       fprintf('\n')
+    end
+  else
+    fprintf(2,'[PDCVARMYTH startup] Requirements not satisfied. Please check THE WARNING MESSAGE(S) ABOVE,\n')
+    fprintf(2,'                     and correct them before proceeding.\n')
+    fprintf(2,'       =====================================================================================\n');
+    fprintf('\n')
+  end
+
+##### SOURCE END #####
+--></body></html>

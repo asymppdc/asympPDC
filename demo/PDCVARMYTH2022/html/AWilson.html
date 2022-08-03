@@ -1,0 +1,255 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>AWilson function</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-18"><meta name="DC.source" content="AWilson.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>AWilson function</h1><!--introduction--><pre>     Implementation of Wilson method for spectral decomposition according to
+     [1] and translated from Python code from [2].</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input arguments</a></li><li><a href="#3">Output arguments</a></li><li><a href="#4">References:</a></li><li><a href="#6">plusOp</a></li></ul></div><h2 id="1">Syntax</h2><pre>     [H,Sigma,Psi_err,kmax]=AWilson(S,Niter,tol)</pre><h2 id="2">Input arguments</h2><pre>     S       - nChannels x nChannels spectral matrix in usual FFT format (bilateral)
+     Niter   - maximum number of iterations
+     tol     - numerical tolerance.
+               Cauchy-type H-infinity error tolerance</pre><h2 id="3">Output arguments</h2><pre>     H       - matrix
+     Sigma   - covariance matrix
+     Psi_err - maximum error
+     kmax    - last iteration</pre><h2 id="4">References:</h2><pre class="language-matlab">[1]  Wilson <span class="string">GT</span> <span class="string">(1972).</span> <span class="string">The</span> <span class="string">factorization</span> <span class="string">of</span> <span class="string">matricial</span> <span class="string">spectral</span> <span class="string">densities.</span>
+     SIAM <span class="string">J</span> <span class="string">Appl</span> <span class="string">Math</span> <span class="string">23:420--426.</span>
+                    https://doi.org/10.1137/0123044
+</pre><pre class="language-matlab">[2]  Lima <span class="string">V</span>, Dellajustina <span class="string">FJ</span>, Shimoura <span class="string">RO</span>, Girardi-Schappo M, Kamiji <span class="string">NL</span>,
+     Pena <span class="string">RFO</span>, et <span class="string">al</span> <span class="string">(2020).</span> <span class="string">Granger</span> <span class="string">causality</span> <span class="string">in</span> <span class="string">the</span> <span class="string">frequency</span> <span class="string">domain:</span>
+     Derivation <span class="string">and</span> <span class="string">applications.</span> <span class="string">Rev.</span> <span class="string">Bras</span> <span class="string">de</span> <span class="string">Ensino</span> <span class="string">de</span> <span class="string">Fis</span> <span class="string">42:e20200007.</span>
+             https://doi.org/10.1590/1806-9126-RBEF-2020-0007
+</pre><pre>         (These url links may not work from within MATLAB Web browser.
+        The  work-around is to copy the link into your favorite browser.)</pre><pre class="codeinput"><span class="comment">%        LAB 26/04/2020</span>
+
+<span class="keyword">function</span> [H,Sigma,Psi_err,kmax]=AWilson(S,Niter,tol)
+</pre><pre class="codeinput"><span class="keyword">if</span> nargin &lt; 2
+   tol = 1e-6;
+   Niter = 100;
+<span class="keyword">elseif</span> nargin &lt; 3
+   tol = 1e-6;
+<span class="keyword">end</span>
+
+<span class="comment">% Get input</span>
+[nChannels, ~, nFreqs] = size(S);
+R = zeros(nChannels,nChannels,nFreqs);
+R = real(ifft(S,[],3));
+Psi = zeros(nChannels,nChannels,nFreqs);
+
+RC = chol(R(:,:,1));
+Psi(:,:,1) = RC;
+<span class="keyword">for</span> i = 2:nFreqs
+   Psi(:,:,i) = RC;
+<span class="keyword">end</span>
+g = zeros(nChannels,nChannels,nFreqs);
+
+test = 1;
+k = 0;
+Psi_err = 0;
+RS = reshape(S,nChannels*nChannels*nFreqs,1,1);
+<span class="keyword">while</span> k &lt; Niter &amp;&amp; test
+   k = k+1;
+   <span class="keyword">for</span> i = 1:nFreqs
+      IPsi(:,:,i)  = inv(Psi(:,:,i));
+      g(:,:,i) = IPsi(:,:,i) * S(:,:,i) * IPsi(:,:,i)' + eye(nChannels);
+   <span class="keyword">end</span>
+   gp = plusOp(g);
+   Psi_old = Psi;
+   <span class="keyword">for</span> i = 1:nFreqs
+      Psi(:,:,i) = Psi(:,:,i)*gp(:,:,i);
+   <span class="keyword">end</span>
+   Psi_err = max(max(max(abs(Psi-Psi_old))));
+   test = Psi_err &gt; tol;
+<span class="keyword">end</span>
+
+A = real(ifft(Psi,[],3));
+A_zero = A(:,:,1);
+Sigma = A_zero*A_zero';
+iA_zero = inv(A_zero);
+
+<span class="keyword">for</span> i = 1:nFreqs
+   Psi(:,:,i) = Psi(:,:,i)*(iA_zero);
+<span class="keyword">end</span>
+
+H = Psi;
+kmax = k;
+</pre><h2 id="6">plusOp</h2><pre class="codeinput"><span class="keyword">function</span> gp=plusOp(g)
+<span class="comment">%</span>
+<span class="comment">% Used by AWilson.m</span>
+<span class="comment">%</span>
+<span class="comment">% 3/05/20</span>
+
+[nChannels,nChannels,nFreqs] = size(g);
+ beta_p = zeros(nChannels,nChannels,nFreqs);
+ beta = real(ifft(g,[],3));
+ beta_zero = .5*beta(:,:,1);
+ beta_p(:,:,1) = triu(beta_zero);
+ beta_p(:,:,2:nFreqs/2) = beta(:,:,2:nFreqs/2);
+ gp = fft(beta_p,[],3);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% AWilson function
+%       Implementation of Wilson method for spectral decomposition according to
+%       [1] and translated from Python code from [2].
+%
+%% Syntax
+%       [H,Sigma,Psi_err,kmax]=AWilson(S,Niter,tol)
+%
+%% Input arguments
+%       S       - nChannels x nChannels spectral matrix in usual FFT format (bilateral)
+%       Niter   - maximum number of iterations
+%       tol     - numerical tolerance.
+%                 Cauchy-type H-infinity error tolerance
+%
+%% Output arguments
+%       H       - matrix
+%       Sigma   - covariance matrix
+%       Psi_err - maximum error
+%       kmax    - last iteration
+%
+%% References:
+%   [1]  Wilson GT (1972). The factorization of matricial spectral densities.
+%        SIAM J Appl Math 23:420REPLACE_WITH_DASH_DASH426. 
+%                       https://doi.org/10.1137/0123044
+%
+%   [2]  Lima V, Dellajustina FJ, Shimoura RO, Girardi-Schappo M, Kamiji NL, 
+%        Pena RFO, et al (2020). Granger causality in the frequency domain: 
+%        Derivation and applications. Rev. Bras de Ensino de Fis 42:e20200007. 
+%                https://doi.org/10.1590/1806-9126-RBEF-2020-0007
+%
+%           (These url links may not work from within MATLAB Web browser.
+%          The  work-around is to copy the link into your favorite browser.)
+%
+
+%        LAB 26/04/2020
+
+function [H,Sigma,Psi_err,kmax]=AWilson(S,Niter,tol)
+if nargin < 2
+   tol = 1e-6;
+   Niter = 100;
+elseif nargin < 3
+   tol = 1e-6;
+end
+
+% Get input 
+[nChannels, ~, nFreqs] = size(S);
+R = zeros(nChannels,nChannels,nFreqs);
+R = real(ifft(S,[],3));
+Psi = zeros(nChannels,nChannels,nFreqs);
+
+RC = chol(R(:,:,1));
+Psi(:,:,1) = RC;
+for i = 2:nFreqs
+   Psi(:,:,i) = RC;
+end
+g = zeros(nChannels,nChannels,nFreqs);
+
+test = 1;
+k = 0;
+Psi_err = 0;
+RS = reshape(S,nChannels*nChannels*nFreqs,1,1);
+while k < Niter && test
+   k = k+1;
+   for i = 1:nFreqs
+      IPsi(:,:,i)  = inv(Psi(:,:,i));
+      g(:,:,i) = IPsi(:,:,i) * S(:,:,i) * IPsi(:,:,i)' + eye(nChannels);
+   end
+   gp = plusOp(g);
+   Psi_old = Psi;
+   for i = 1:nFreqs
+      Psi(:,:,i) = Psi(:,:,i)*gp(:,:,i);
+   end
+   Psi_err = max(max(max(abs(Psi-Psi_old))));
+   test = Psi_err > tol;
+end
+
+A = real(ifft(Psi,[],3));
+A_zero = A(:,:,1);
+Sigma = A_zero*A_zero';
+iA_zero = inv(A_zero);
+
+for i = 1:nFreqs
+   Psi(:,:,i) = Psi(:,:,i)*(iA_zero);
+end
+
+H = Psi;
+kmax = k;
+
+%% plusOp
+function gp=plusOp(g)
+%
+% Used by AWilson.m 
+% 
+% 3/05/20
+
+[nChannels,nChannels,nFreqs] = size(g);
+ beta_p = zeros(nChannels,nChannels,nFreqs);
+ beta = real(ifft(g,[],3));
+ beta_zero = .5*beta(:,:,1);
+ beta_p(:,:,1) = triu(beta_zero);
+ beta_p(:,:,2:nFreqs/2) = beta(:,:,2:nFreqs/2);
+ gp = fft(beta_p,[],3);
+ 
+##### SOURCE END #####
+--></body></html>

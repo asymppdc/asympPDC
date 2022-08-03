@@ -38,9 +38,9 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
 
 <img src="./connectivity_measures_in_asymppdc.png" title="" alt="" data-align="center">
 
-* **Legend**: **N**  number of time series; **RPC** - relative power contribution; **DC** - directed coherence = generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - Instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
+* **Legend**: **N**  number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
 
-* **Authors**: [Akaike 1968](https://doi.org/10.1007/BF02911655); [Granger 1969](https://www.jstor.org/stable/1912791); [Gersch 1970](https://doi.org/10.1126/science.169.3946.701); [Sims 1972](https://www.jstor.org/stable/1806097); [Geweke 1979](https://doi.org/10.1016/0304-4076(78)90067-2); [Saito and Harashima 1981](); [Geweke 1982](https://doi.org/10.2307/2287238); [Geweke 1984](https://doi.org/10.2307/2288723); [Kamiński and Blinowska 1991](https://doi.org/10.1007/bf00198091);  [Hosoya 1991](https://doi.org/10.1007/BF01192551); [Lütkepohl 1993 --> 2005](https://doi.org/10.1007/978-3-540-27752-1); [Hosoya 1994](); [Baccalá et al. 1998](); [Baccalá and Sameshima 2001](https://doi.org/10.1007/PL00007990); [Schelter et al. 2005](https://doi.org/10.1016/j.jneumeth.2005.09.001); [Baccalá et al. 2006](https://doi.org/10.1002/9783527609970.ch16);  [Takahashi et al. 2007](https://doi.org/10.1080/02664760701593065); [Baccalá et al. 2007](https://doi.org/10.1109/ICDSP.2007.4288544); [de Brito et al. 2010](https://doi.org/10.1109/IEMBS.2010.5626856); [Takahashi et al. 2010](https://doi.org/10.1007/s00422-010-0410-x); [Baccalá et al. 2013](https://doi.org/10.1098/rsta.2012.0158); [Baccalá et al. 2016](https://doi.org/10.1109/TBME.2016.2550199).
+* **Authors**(sorted by year): [Akaike 1968](https://doi.org/10.1007/BF02911655); [Granger 1969](https://www.jstor.org/stable/1912791); [Gersch and Goddard 1970](https://doi.org/10.1126/science.169.3946.701); [Sims 1972](https://www.jstor.org/stable/1806097); [Geweke 1979](https://doi.org/10.1016/0304-4076(78)90067-2); [Saito and Harashima 1981](); [Geweke 1982](https://doi.org/10.2307/2287238); [Geweke 1984](https://doi.org/10.2307/2288723); [Kamiński and Blinowska 1991](https://doi.org/10.1007/bf00198091);  [Hosoya 1991](https://doi.org/10.1007/BF01192551); [Lütkepohl 1993 --> 2005](https://doi.org/10.1007/978-3-540-27752-1); [Hosoya 1994](); [Baccalá et al. 1998](); [Baccalá and Sameshima 2001](https://doi.org/10.1007/PL00007990); [Schelter et al. 2005](https://doi.org/10.1016/j.jneumeth.2005.09.001); [Baccalá et al. 2006](https://doi.org/10.1002/9783527609970.ch16);  [Takahashi et al. 2007](https://doi.org/10.1080/02664760701593065); [Baccalá et al. 2007](https://doi.org/10.1109/ICDSP.2007.4288544); [de Brito et al. 2010](https://doi.org/10.1109/IEMBS.2010.5626856); [Takahashi et al. 2010](https://doi.org/10.1007/s00422-010-0410-x); [Baccalá et al. 2013](https://doi.org/10.1098/rsta.2012.0158); [Baccalá et al. 2016](https://doi.org/10.1109/TBME.2016.2550199).
 
 
 
@@ -70,7 +70,7 @@ To get started, modify  the `analysis_template.m` script file to adapt it to you
 
 ### Examples
 
-Several examples from the literature are provided in `./examples directory`  with complete m-files with program structure similar to the `analysis_template.m`. We hope that the examples may help readers and users to understand and/or gain further insight into Granger causality, instantaneous Granger causality, PDC, and DTF concepts and the realm of connectivity analysis. Use MATLAB/Octave `help` command to look up more detail of each function or script. The help itself will also provide links to the corresponding literature materials.  
+Examples from the literature are provided in `./examples directory`  with complete m-files with program structure similar to `analysis_template.m`. We hope that the examples may help readers and users to understand and/or gain further insight into Granger causality, instantaneous Granger causality, PDC, and DTF concepts and the realm of connectivity analysis. Use MATLAB/Octave `help` command to look up more detail of each function or script. The help itself will also provide links to the corresponding literature materials.  
 
 We hope you enjoy it. Good luck.
 
@@ -121,12 +121,12 @@ appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-
 
 
 
-### C. Things to come: Total PDC/DTF and Spectral Factorization
+### C. Things to come: Total PDC/DTF with asymptotic statistics, spectral factorization and faster PDC/DTF estimation algorithms . . . . .
 
 [11] L.A. Baccalá and K. Sameshima (2021). Frequency domain repercussions of instantaneous
 Granger causality. *Entropy* **23**(8):10.3390/e23081037  <https://doi.org/10.3390/e23081037>
 
-[12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327>
+[12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327> (**Note**: MATLAB scripts and functions used to generate all four figures of this article are provided in `./demo/PDCVARMYTH2022`  subdirectory. Follow the instructions in Readme file.)
 
 ## License
 

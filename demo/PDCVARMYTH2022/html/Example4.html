@@ -1,0 +1,608 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 4 -- Nonminimum Phase Data Model</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-06"><meta name="DC.source" content="Example4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Example 4 -- Nonminimum Phase Data Model</h1><!--introduction--><p>This is part of supplemental material accompanying the article of the Special Issue of Frontiers in Network Physiology on Research Topic in <b>*Network Physiology, Insights in Information Theory: 2021</b>*:</p><pre>  Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
+  Autoregressive Modelling Myth and a Caveat. _Front. Netw. Physiol._ 2:845327
+      &lt;https://doi.org/10.3389/fnetp.2022.845327&gt;</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme file for license terms.</p><p>See also EXAMPLE1, EXAMPLE2, EXAMPLE3          | <a href="Example1.html">Example1.html</a> | <a href="Example2.html">Example2.html</a> | <a href="Example3.html">Example3.html</a> |</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Start of Example 4 script</a></li><li><a href="#2">Choosing Wilson factorization routine</a></li><li><a href="#3">Set parameters for Nonminimum Phase Data model</a></li><li><a href="#4">Line width &amp; color space for plotting four measures</a></li><li><a href="#5">Set figures size for 2-by-2 subplot layout</a></li><li><a href="#6">Initialize figures with size and position to handle different screen sizes</a></li><li><a href="#7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</a></li><li><a href="#9">Plot 1 : VMA (black lines)</a></li><li><a href="#11">Plot 2 : Standard VAR (gray lines)</a></li><li><a href="#14">Plot 3 : Theoretical (blue lines)</a></li><li><a href="#17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</a></li><li><a href="#21">Figure 4A - total Partial Directed Coherence real component nonminimum phase model</a></li><li><a href="#22">Figure 4B - total Partial Directed Coherence imaginary component nonminimum phase model</a></li><li><a href="#23">Position the figure windows on screen for better visualization</a></li><li><a href="#24">To export the figures, uncomment following four lines, then rerun this script.</a></li><li><a href="#25">Clear local variables and parameters</a></li></ul></div><h2 id="1">Start of Example 4 script</h2><p>Note that existing figure windows are not close.</p><pre class="codeinput">disp(<span class="string">'==========================='</span>)
+disp(<span class="string">'        Example 4'</span>)
+
+<span class="keyword">if</span> isOctave()
+   warning <span class="string">off</span>
+<span class="keyword">end</span>
+</pre><h2 id="2">Choosing Wilson factorization routine</h2><pre class="codeinput">flgWilson = 1; <span class="comment">% 1: Awilson.m (in-house); 2: specfactorization_wilson.m by [1].</span>
+<span class="comment">%</span>
+<span class="comment">%               [1] Henderson JA, Dhamala M, and Robinson PA (2021). Brain</span>
+<span class="comment">%                   dynamics and structure-function relationships via spectral</span>
+<span class="comment">%                   factorization and the transfer function. NeuroImage,</span>
+<span class="comment">%                   235:117989.</span>
+</pre><h2 id="3">Set parameters for Nonminimum Phase Data model</h2><pre class="codeinput">pf = [1 1;1 5];
+A = [];
+
+B = zeros(2,2,2);
+B(:,:,1) = [2 1;0 0];
+B(:,:,2)=[4 2;0 2];
+BB(:,:,1) = eye(2);
+BB(:,:,2:3) = B;
+
+<span class="comment">% Data sample size and frequency scale resolution</span>
+Ndata = 1024*4*4;
+NFreqs = 1024;
+
+<span class="comment">% Data generation</span>
+[y,seed_out,epsilon0] = datagenAB(A,B,pf,Ndata,1); <span class="comment">% Note A=[].</span>
+</pre><h2 id="4">Line width &amp; color space for plotting four measures</h2><pre class="codeinput"><span class="comment">% Line width in point unit</span>
+lWidth = [3.003  4.507 3.507 1.752];
+<span class="comment">%         Theo   VMA   VAR   WN    -- measure</span>
+<span class="comment">%         blue   black gray  red   -- line color</span>
+
+<span class="comment">% Line color in RGB color model</span>
+C = [0.1961    0.8627    1.0000;    <span class="comment">% blue  Theoretical</span>
+     0         0         0;         <span class="comment">% black VMA</span>
+     0.6       0.6       0.6;       <span class="comment">% gray  VAR</span>
+     1.0000    0.0498    0.0498];   <span class="comment">% red   WN Wilson estimate</span>
+</pre><h2 id="5">Set figures size for 2-by-2 subplot layout</h2><pre class="codeinput"><span class="comment">% Screen dimension in pixel unit.</span>
+set(0,<span class="string">'units'</span>,<span class="string">'pixels'</span>);
+sz = get(0,<span class="string">'ScreenSize'</span>);
+
+<span class="comment">% Ad hoc check for the presence of multiple monitors in Octave.</span>
+khmon = round(sz(3)/1920); <span class="comment">% Possible # of horizontally aligned screens</span>
+<span class="keyword">if</span> khmon == 0, khmon = 1; <span class="keyword">end</span>
+
+kvmon = round(sz(4)/1000); <span class="comment">% Possible # of stacked screens</span>
+<span class="keyword">if</span> kvmon == 0, kvmon = 1; <span class="keyword">end</span>
+
+<span class="comment">% Scaling figure size on screen according to the monitor resolution</span>
+<span class="comment">% This has been implemented as 'tilefigs.m' does not work in Octave.</span>
+<span class="comment">% Reference monitor has width=sz(3)=1920 pxls</span>
+pxwidth2x2 = 576;  pxwidth2x2  = pxwidth2x2*sz(3)/1920;
+pxheight2x2 = 378; pxheight2x2 = pxheight2x2*sz(3)/1920;
+
+<span class="comment">% What follow is a kludge solution to determine figure size in normalized units</span>
+<span class="comment">% that allows handling the cases of multiple monitors set up in Octave (Ubuntu).</span>
+rwidth2x2 = pxwidth2x2/sz(3)/khmon/kvmon;
+rheight2x2 = pxheight2x2/sz(4)/khmon/kvmon;
+
+<span class="comment">% Windows horizontal spacing in normalized unit relative to full screen size</span>
+rspacing = 0.02882;
+
+<span class="comment">% Target Example 4 figure dimension in centimeters for publication</span>
+width = 9.0; height = 7.0;
+
+<span class="comment">% Equal x- and y-axis limits for all subplots</span>
+alimits = [0 .5 -0.25 1.25];
+</pre><h2 id="6">Initialize figures with size and position to handle different screen sizes</h2><pre class="codeinput"><span class="comment">% Create and position Figure 4A initially at the top of screen</span>
+h7 = figure;
+<span class="keyword">if</span> isOctave()
+   set(h7,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+          <span class="string">'Name'</span>,<span class="string">'Example 4 Figure A - tPDC real'</span>,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+          <span class="string">'position'</span>,[1/khmon-0.04/khmon-2*rwidth2x2 0 rwidth2x2 rheight2x2])
+    pause(.1); drawnow; shg; pause(.1)
+<span class="keyword">else</span>
+   set(0,<span class="string">'units'</span>,<span class="string">'centimeters'</span>); szcm = get(0,<span class="string">'ScreenSize'</span>);
+
+   set(h7,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+          <span class="string">'Name'</span>,<span class="string">'Example 4 Figure A - tPDC real'</span>,<span class="string">'units'</span>,<span class="string">'centimeters'</span>, <span class="keyword">...</span>
+          <span class="string">'position'</span>,[1/khmon-0.02/khmon-rwidth2x2 0 rwidth2x2 rheight2x2])
+<span class="keyword">end</span>
+
+<span class="comment">% Create and position Figure 4B initially at the top of screen</span>
+h8 = figure;
+<span class="keyword">if</span> isOctave()
+   set(h8,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+          <span class="string">'Name'</span>,<span class="string">'Example 4 Figure B - tPDC imag'</span>,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+          <span class="string">'position'</span>,[0.04/khmon+rwidth2x2 1-rheight2x2 rwidth2x2 rheight2x2])
+<span class="keyword">else</span>
+   set(h8,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'MenuBar'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+          <span class="string">'Name'</span>,<span class="string">'Example 4 Figure B - tPDC imag'</span>,<span class="string">'units'</span>,<span class="string">'centimeters'</span>, <span class="keyword">...</span>
+          <span class="string">'position'</span>,[3*szcm(3)/4-width/2 szcm(4)/2-height/2 width height])
+<span class="keyword">end</span>
+
+<span class="comment">% Change the 'units' to 'normalized'.</span>
+ set(h7,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+        <span class="string">'position'</span>,[rspacing/khmon 1-rheight2x2 rwidth2x2 rheight2x2])
+ set(h8,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+        <span class="string">'position'</span>,[2*rspacing/khmon+rwidth2x2 1-rheight2x2 <span class="keyword">...</span>
+                                                rwidth2x2 rheight2x2])
+</pre><h2 id="7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
+kk = 0; <span class="comment">% Counter</span>
+
+<span class="keyword">for</span> k = [2 3 1 4]
+
+   flghold = (kk == 0);
+   kk = kk+1;
+   flgYaxis = (kk == N || k==2); <span class="comment">% Set y-axis limits on the last plotting sequence.</span>
+
+   <span class="keyword">switch</span> k
+</pre><h2 id="9">Plot 1 : VMA (black lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 2
+</pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
+         disp([<span class="string">'('</span> int2str(kk) <span class="string">') VMA : black'</span>])
+
+         <span class="comment">% VMA(1) without order search</span>
+         [IP,pfx,Bx,vaic,Vaicv] = vma_best(y,2,1);
+
+         [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
+         ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,<span class="string">'info'</span>,0,SSx);
+
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+
+         figure(h7)
+         standplotx2(real(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8)
+         standplotx2(imag(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)
+</pre><h2 id="11">Plot 2 : Standard VAR (gray lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
+</pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
+         disp([<span class="string">'('</span> int2str(kk) <span class="string">') VAR : gray'</span>])
+
+         <span class="comment">% Standard VAR estimation using Nuttall-Strand algorithm</span>
+         [IPa,pfa,Aa] = mvar(y,30,1,2);
+
+         <span class="comment">% Information PDC estimation</span>
+         cy = asymp_pdc(y,Aa,pfa,1024,<span class="string">'info'</span>,0);
+
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+
+         figure(h7)
+         standplotx2(real(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8)
+         standplotx2(imag(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)
+</pre><h2 id="14">Plot 3 : Theoretical (blue lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 1
+</pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
+         disp([<span class="string">'('</span> int2str(kk) <span class="string">') Theoretical : blue'</span>])
+
+         [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);
+         ct = wasymp_pdc(y,VT,pf,1024,<span class="string">'info'</span>,0,SS);
+
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+
+         figure(h7);
+         standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8);
+         standplotx2(imag(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)
+</pre><h2 id="17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 4
+</pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
+         disp([<span class="string">'('</span> int2str(kk) <span class="string">') WN : red'</span>])
+
+         u = y;
+         [m,~] = size(u);
+         nFreqs = 128;
+         Su = zeros(m,m,2*nFreqs);
+         <span class="keyword">for</span> i = 1:m
+            <span class="keyword">for</span> j = 1:m
+               <span class="comment">% Beware the order of input variables x and y is inverted in</span>
+               <span class="comment">% MATLAB and Octave versions of cpsd function (bug or feature?).</span>
+               <span class="keyword">if</span> isOctave()
+                  <span class="comment">% In Octave, overlap is expressed in fraction of windows</span>
+                  <span class="comment">% length, [0, 1) ...</span>
+                  Su(i,j,:) = cpsd(u(j,:),u(i,:),hanning(2*nFreqs), <span class="keyword">...</span>
+                                                     0.5,2*nFreqs,1,<span class="string">'twosided'</span>);
+               <span class="keyword">else</span>
+                  <span class="comment">% while in MATLAB overlap should be a number &lt; window length</span>
+                  Su(i,j,:) = cpsd(u(i,:),u(j,:),hanning(2*nFreqs), <span class="keyword">...</span>
+                                                  nFreqs,2*nFreqs,<span class="string">'twosided'</span>);
+               <span class="keyword">end</span>
+            <span class="keyword">end</span>
+         <span class="keyword">end</span>
+
+         <span class="comment">% Wilson spectral factorization</span>
+         tol = 1e-6;   <span class="comment">% Cauchy-type H-infinity error tolerance</span>
+         <span class="keyword">if</span> flgWilson == 1
+            disp([<span class="string">'* Using in-house ''AWilson.m'' routine for spectral '</span> <span class="keyword">...</span>
+                  <span class="string">'factorization.'</span>])
+            [Hx,Sigma,Psi_err,kmax] = AWilson(Su,100,tol);
+         <span class="keyword">else</span>
+            disp([<span class="string">'* Using [1] Henderson et al. (2021)''s'</span> <span class="keyword">...</span>
+                  <span class="string">' ''specfactorization_wilson.m'' routine.'</span>])
+            [Hx,Sigma,ps,ps0,converged] = specfactorization_wilson(Su, 1, tol);
+         <span class="keyword">end</span>
+
+         Su = 2*pi*Su;
+         ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,<span class="string">'info'</span>,0,Su);
+
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+
+         figure(h7)
+         <span class="comment">% Set axis limits</span>
+         standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8)
+         <span class="comment">% Set axis limits</span>
+         standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)
+
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%          saveas(h7,'html/fig_Example4A.jpg')</span>
+<span class="comment">%          saveas(h8,'html/fig_Example4B.jpg')</span>
+</pre><h2 id="21">Figure 4A - total Partial Directed Coherence real component nonminimum phase model</h2><p><img vspace="5" hspace="5" src="fig_Example4A.jpg" alt=""> </p><h2 id="22">Figure 4B - total Partial Directed Coherence imaginary component nonminimum phase model</h2><p><img vspace="5" hspace="5" src="fig_Example4B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><p>Final position: bottom right quadrant</p><pre class="codeinput">set(h7,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+       <span class="string">'position'</span>,[1/khmon-2*rspacing/khmon-2*rwidth2x2 0 rwidth2x2 rheight2x2])
+set(h8,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+       <span class="string">'position'</span>,[1/khmon-rspacing/khmon-rwidth2x2     0 rwidth2x2 rheight2x2])
+</pre><h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h7)</span>
+<span class="comment">% print -depsc fig_example4_real.eps</span>
+<span class="comment">% figure(h8)</span>
+<span class="comment">% print -depsc fig_example4_imag.eps</span>
+</pre><h2 id="25">Clear local variables and parameters</h2><pre class="codeinput">clear <span class="string">A*</span> <span class="string">B*</span> <span class="string">C*</span> <span class="string">I*</span> <span class="string">N*</span> <span class="string">P*</span> <span class="string">S*</span> <span class="string">V*</span> <span class="string">Hx</span> <span class="string">m</span> <span class="string">tol</span> <span class="string">u</span> <span class="string">vaic</span> <span class="string">height</span> <span class="string">i</span> <span class="string">j</span> <span class="string">lWidth</span> <span class="string">m</span> <span class="string">nFreqs</span> <span class="keyword">...</span>
+      <span class="string">a*</span> <span class="string">c*</span> <span class="string">e*</span> <span class="string">f*</span> <span class="string">k*</span> <span class="string">p*</span> <span class="string">r*</span> <span class="string">s*</span> <span class="string">y*</span> <span class="string">w*</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 4 REPLACE_WITH_DASH_DASH Nonminimum Phase Data Model
+% This is part of supplemental material accompanying the article of
+% the Special Issue of Frontiers in Network Physiology on Research Topic in
+% **Network Physiology, Insights in Information Theory: 2021**:
+% 
+%    Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
+%    Autoregressive Modelling Myth and a Caveat. _Front. Netw. Physiol._ 2:845327
+%        <https://doi.org/10.3389/fnetp.2022.845327>
+%
+% This script should run on any recent version of MATLAB and also in most
+% recent versions of Octave. It was partially tested under Windows, Mac OSX
+% and Linux environments with MATLAB version 7.0 and higher, and with Octave
+% versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme file for license
+% terms.
+%
+% See also EXAMPLE1, EXAMPLE2, EXAMPLE3
+%          | <Example1.html> | <Example2.html> | <Example3.html> |
+%
+
+%% Start of Example 4 script
+% Note that existing figure windows are not close.
+disp('===========================')
+disp('        Example 4')
+
+if isOctave()
+   warning off
+end
+
+
+%% Choosing Wilson factorization routine
+flgWilson = 1; % 1: Awilson.m (in-house); 2: specfactorization_wilson.m by [1].
+%
+%               [1] Henderson JA, Dhamala M, and Robinson PA (2021). Brain
+%                   dynamics and structure-function relationships via spectral
+%                   factorization and the transfer function. NeuroImage,
+%                   235:117989.
+
+
+%% Set parameters for Nonminimum Phase Data model
+pf = [1 1;1 5];
+A = [];
+
+B = zeros(2,2,2);
+B(:,:,1) = [2 1;0 0];
+B(:,:,2)=[4 2;0 2];
+BB(:,:,1) = eye(2);
+BB(:,:,2:3) = B;
+
+% Data sample size and frequency scale resolution
+Ndata = 1024*4*4;
+NFreqs = 1024;
+
+% Data generation
+[y,seed_out,epsilon0] = datagenAB(A,B,pf,Ndata,1); % Note A=[].
+
+
+%% Line width & color space for plotting four measures
+
+% Line width in point unit
+lWidth = [3.003  4.507 3.507 1.752];
+%         Theo   VMA   VAR   WN    REPLACE_WITH_DASH_DASH measure
+%         blue   black gray  red   REPLACE_WITH_DASH_DASH line color
+
+% Line color in RGB color model
+C = [0.1961    0.8627    1.0000;    % blue  Theoretical
+     0         0         0;         % black VMA
+     0.6       0.6       0.6;       % gray  VAR
+     1.0000    0.0498    0.0498];   % red   WN Wilson estimate
+
+
+%% Set figures size for 2-by-2 subplot layout
+
+% Screen dimension in pixel unit.
+set(0,'units','pixels');
+sz = get(0,'ScreenSize');
+
+% Ad hoc check for the presence of multiple monitors in Octave.
+khmon = round(sz(3)/1920); % Possible # of horizontally aligned screens
+if khmon == 0, khmon = 1; end
+
+kvmon = round(sz(4)/1000); % Possible # of stacked screens
+if kvmon == 0, kvmon = 1; end
+
+% Scaling figure size on screen according to the monitor resolution
+% This has been implemented as 'tilefigs.m' does not work in Octave.
+% Reference monitor has width=sz(3)=1920 pxls
+pxwidth2x2 = 576;  pxwidth2x2  = pxwidth2x2*sz(3)/1920;
+pxheight2x2 = 378; pxheight2x2 = pxheight2x2*sz(3)/1920;
+
+% What follow is a kludge solution to determine figure size in normalized units
+% that allows handling the cases of multiple monitors set up in Octave (Ubuntu).
+rwidth2x2 = pxwidth2x2/sz(3)/khmon/kvmon;
+rheight2x2 = pxheight2x2/sz(4)/khmon/kvmon;
+
+% Windows horizontal spacing in normalized unit relative to full screen size
+rspacing = 0.02882;
+
+% Target Example 4 figure dimension in centimeters for publication
+width = 9.0; height = 7.0;
+
+% Equal x- and y-axis limits for all subplots
+alimits = [0 .5 -0.25 1.25]; 
+
+
+%% Initialize figures with size and position to handle different screen sizes
+
+% Create and position Figure 4A initially at the top of screen
+h7 = figure;
+if isOctave()
+   set(h7,'NumberTitle','off','MenuBar','none', ...
+          'Name','Example 4 Figure A - tPDC real','units','normalized', ...
+          'position',[1/khmon-0.04/khmon-2*rwidth2x2 0 rwidth2x2 rheight2x2])
+    pause(.1); drawnow; shg; pause(.1)
+else
+   set(0,'units','centimeters'); szcm = get(0,'ScreenSize');
+   
+   set(h7,'NumberTitle','off','MenuBar','none', ...
+          'Name','Example 4 Figure A - tPDC real','units','centimeters', ...
+          'position',[1/khmon-0.02/khmon-rwidth2x2 0 rwidth2x2 rheight2x2])
+end
+
+% Create and position Figure 4B initially at the top of screen
+h8 = figure;
+if isOctave()
+   set(h8,'NumberTitle','off','MenuBar','none', ...
+          'Name','Example 4 Figure B - tPDC imag','units','normalized', ...
+          'position',[0.04/khmon+rwidth2x2 1-rheight2x2 rwidth2x2 rheight2x2])
+else
+   set(h8,'NumberTitle','off','MenuBar','none', ...
+          'Name','Example 4 Figure B - tPDC imag','units','centimeters', ...
+          'position',[3*szcm(3)/4-width/2 szcm(4)/2-height/2 width height])
+end
+
+% Change the 'units' to 'normalized'.
+ set(h7,'units','normalized', ...
+        'position',[rspacing/khmon 1-rheight2x2 rwidth2x2 rheight2x2])
+ set(h8,'units','normalized', ...
+        'position',[2*rspacing/khmon+rwidth2x2 1-rheight2x2 ...
+                                                rwidth2x2 rheight2x2])
+
+ 
+%% Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)
+N  = length(lWidth);  % Number of plotted measures
+kk = 0; % Counter
+
+for k = [2 3 1 4]
+   
+   flghold = (kk == 0);
+   kk = kk+1;
+   flgYaxis = (kk == N || k==2); % Set y-axis limits on the last plotting sequence.
+   
+   switch k
+      
+      %% Plot 1 : VMA (black lines)
+      case 2
+         disp('===========================')
+         disp(['(' int2str(kk) ') VMA : black'])
+         
+         % VMA(1) without order search
+         [IP,pfx,Bx,vaic,Vaicv] = vma_best(y,2,1);
+         
+         [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
+         ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,'info',0,SSx);
+         
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+         
+         figure(h7)
+         standplotx2(real(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8)
+         standplotx2(imag(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)   
+
+     %% Plot 2 : Standard VAR (gray lines)
+      case 3
+         disp('===========================')
+         disp(['(' int2str(kk) ') VAR : gray'])
+         
+         % Standard VAR estimation using Nuttall-Strand algorithm
+         [IPa,pfa,Aa] = mvar(y,30,1,2);
+
+         % Information PDC estimation
+         cy = asymp_pdc(y,Aa,pfa,1024,'info',0);
+         
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+         
+         figure(h7)
+         standplotx2(real(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8)
+         standplotx2(imag(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)   
+
+      %% Plot 3 : Theoretical (blue lines)
+      case 1
+         disp('===========================')
+         disp(['(' int2str(kk) ') Theoretical : blue'])
+         
+         [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);
+         ct = wasymp_pdc(y,VT,pf,1024,'info',0,SS);
+         
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+         
+         figure(h7);
+         standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8);
+         standplotx2(imag(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)   
+         
+         
+      %% Plot 4 : WN REPLACE_WITH_DASH_DASH Nonparametric Wilson factorization estimate (red lines)
+      case 4
+         disp('===========================')
+         disp(['(' int2str(kk) ') WN : red'])
+         
+         u = y;
+         [m,~] = size(u);
+         nFreqs = 128;
+         Su = zeros(m,m,2*nFreqs);
+         for i = 1:m
+            for j = 1:m
+               % Beware the order of input variables x and y is inverted in 
+               % MATLAB and Octave versions of cpsd function (bug or feature?).
+               if isOctave()
+                  % In Octave, overlap is expressed in fraction of windows
+                  % length, [0, 1) ...
+                  Su(i,j,:) = cpsd(u(j,:),u(i,:),hanning(2*nFreqs), ...
+                                                     0.5,2*nFreqs,1,'twosided');
+               else
+                  % while in MATLAB overlap should be a number < window length
+                  Su(i,j,:) = cpsd(u(i,:),u(j,:),hanning(2*nFreqs), ...
+                                                  nFreqs,2*nFreqs,'twosided');
+               end
+            end
+         end
+         
+         % Wilson spectral factorization 
+         tol = 1e-6;   % Cauchy-type H-infinity error tolerance
+         if flgWilson == 1
+            disp(['* Using in-house ''AWilson.m'' routine for spectral ' ...
+                  'factorization.'])
+            [Hx,Sigma,Psi_err,kmax] = AWilson(Su,100,tol);
+         else
+            disp(['* Using [1] Henderson et al. (2021)''s' ...
+                  ' ''specfactorization_wilson.m'' routine.'])
+            [Hx,Sigma,ps,ps0,converged] = specfactorization_wilson(Su, 1, tol);
+         end
+  
+         Su = 2*pi*Su;
+         ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,'info',0,Su);
+         
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+         
+         figure(h7)
+         % Set axis limits
+         standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(.1)
+
+         figure(h8)
+         % Set axis limits
+         standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)   
+         
+   end
+end
+
+%          saveas(h7,'html/fig_Example4A.jpg')
+%          saveas(h8,'html/fig_Example4B.jpg')
+%%
+% 
+%% Figure 4A - total Partial Directed Coherence real component nonminimum phase model
+%
+% <<fig_Example4A.jpg>>
+%
+%% Figure 4B - total Partial Directed Coherence imaginary component nonminimum phase model
+%
+% <<fig_Example4B.jpg>>
+%
+
+%% Position the figure windows on screen for better visualization
+% Final position: bottom right quadrant
+set(h7,'units','normalized', ...
+       'position',[1/khmon-2*rspacing/khmon-2*rwidth2x2 0 rwidth2x2 rheight2x2])
+set(h8,'units','normalized', ...
+       'position',[1/khmon-rspacing/khmon-rwidth2x2     0 rwidth2x2 rheight2x2])
+
+
+%% To export the figures, uncomment following four lines, then rerun this script.
+
+% figure(h7)
+% print -depsc fig_example4_real.eps
+% figure(h8)
+% print -depsc fig_example4_imag.eps
+
+
+%% Clear local variables and parameters
+
+clear A* B* C* I* N* P* S* V* Hx m tol u vaic height i j lWidth m nFreqs ...
+      a* c* e* f* k* p* r* s* y* w*
+##### SOURCE END #####
+--></body></html>

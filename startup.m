@@ -34,7 +34,7 @@ addpath(fullfile(asymppdc_root,'core'));
 addpath(fullfile(asymppdc_root,'extras'));
 addpath(fullfile(asymppdc_root,'utils'));
 addpath(fullfile(asymppdc_root,'utils','arfit'));
-% addpath(fullfile(asymppdc_root,'utils','legacy'));
+addpath(fullfile(asymppdc_root,'utils','legacy'));
 addpath(fullfile(asymppdc_root,'examples'));
 addpath(fullfile(asymppdc_root,'examples','models'));
 
