@@ -32,25 +32,15 @@ This command will distribute the figures across screen. The `tilefigs1` or `tile
 
 The figure bellow shows  schematically the connectivity, Granger causality and allied concepts developed along the last half-century.  The measures inside the yellow area are those implemented in **The AsympPDC Package**.
 
-  
-
-  
-
 <img src="./connectivity_measures_in_asymppdc.png" title="" alt="" data-align="center">
 
 * **Legend**: **N**  number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
 
 * **Authors**(sorted by year): [Akaike 1968](https://doi.org/10.1007/BF02911655); [Granger 1969](https://www.jstor.org/stable/1912791); [Gersch and Goddard 1970](https://doi.org/10.1126/science.169.3946.701); [Sims 1972](https://www.jstor.org/stable/1806097); [Geweke 1979](https://doi.org/10.1016/0304-4076(78)90067-2); [Saito and Harashima 1981](); [Geweke 1982](https://doi.org/10.2307/2287238); [Geweke 1984](https://doi.org/10.2307/2288723); [Kamiński and Blinowska 1991](https://doi.org/10.1007/bf00198091);  [Hosoya 1991](https://doi.org/10.1007/BF01192551); [Lütkepohl 1993 --> 2005](https://doi.org/10.1007/978-3-540-27752-1); [Hosoya 1994](); [Baccalá et al. 1998](); [Baccalá and Sameshima 2001](https://doi.org/10.1007/PL00007990); [Schelter et al. 2005](https://doi.org/10.1016/j.jneumeth.2005.09.001); [Baccalá et al. 2006](https://doi.org/10.1002/9783527609970.ch16);  [Takahashi et al. 2007](https://doi.org/10.1080/02664760701593065); [Baccalá et al. 2007](https://doi.org/10.1109/ICDSP.2007.4288544); [de Brito et al. 2010](https://doi.org/10.1109/IEMBS.2010.5626856); [Takahashi et al. 2010](https://doi.org/10.1007/s00422-010-0410-x); [Baccalá et al. 2013](https://doi.org/10.1098/rsta.2012.0158); [Baccalá et al. 2016](https://doi.org/10.1109/TBME.2016.2550199).
 
-
-
 > 1. Lütkepohl, H. (1993) Introduction to Multiple Time Series Analysis. 2nd Edition, Springer, Berlin.
 > 
 > 2. Saito, Y. ad H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Hard to find !)
-
-
-
-
 
 ## Getting started road map
 
@@ -118,8 +108,6 @@ We hope you enjoy it. Good luck.
 
 [10] L.A. Baccalá and K. Sameshima (2021). Partial directed coherence: twenty years on some history and an
 appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-00880-y>
-
-
 
 ### C. Things to come: Total PDC/DTF with asymptotic statistics, spectral factorization and faster PDC/DTF estimation algorithms . . . . .
 
