@@ -40,7 +40,7 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
 
 > 1. Lütkepohl, H. (1993) Introduction to Multiple Time Series Analysis. 2nd Edition, Springer, Berlin.
 > 
-> 2. Saito, Y. ad H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Hard to find !)
+> 2. Saito, Y. and H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Hard to find !)
 
 ## Getting started road map
 
