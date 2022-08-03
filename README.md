@@ -114,7 +114,7 @@ appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-
 [11] L.A. Baccalá and K. Sameshima (2021). Frequency domain repercussions of instantaneous
 Granger causality. *Entropy* **23**(8):10.3390/e23081037  <https://doi.org/10.3390/e23081037>
 
-[12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327> (**Note**: MATLAB scripts and functions used to generate all four figures of this article are provided in `./demo/PDCVARMYTH2022`  subdirectory. Follow the instructions in Readme file.)
+[12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327> (**Note**: MATLAB scripts and functions used to generate all four figures of this article are provided in [`./demo/PDCVARMYTH2022`](https://github.com/asymppdc/asympPDC/tree/main/demo/PDCVARMYTH2022)  subdirectory. Follow the instructions in Readme file.)
 
 ## License
 
