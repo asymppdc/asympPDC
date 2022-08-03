@@ -2,7 +2,7 @@
 
 July 22, 2022
 
-**The AsympPDC Package** is MATLAB/Octave routines and functions for the analysis of time series or biological signals to infer directional interactions between structures through the Partial Directed Coherence (**PDC**), which is based on the concept of Granger causality, and the Directed Transfer Function (**DTF**) in the frequency domain, both in three metrics --- Euclidean, diagonal and information --- and rigorous asymptotic statistics providing p-values and confidence interval in the frequency domain. 
+**The AsympPDC Package** is [MATLAB](https://www.mathworks.com/products/matlab.html)/[Octave](https://octave.org/) routines and functions for the analysis of time series or biological signals to infer directional interactions between structures through the Partial Directed Coherence (**PDC**), which is based on the concept of Granger causality, and the Directed Transfer Function (**DTF**) in the frequency domain, both in three metrics --- Euclidean, diagonal and information --- and rigorous asymptotic statistics providing p-values and confidence interval in the frequency domain. 
 
 ## Installation and usage
 
@@ -40,7 +40,7 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
 
 > 1. Lütkepohl, H. (1993) Introduction to Multiple Time Series Analysis. 2nd Edition, Springer, Berlin.
 > 
-> 2. Saito, Y. and H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Hard to find !)
+> 2. Saito, Y. and H. Harashima (1981) Tracking of information within multichannel record: Causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam, Elsevier. (Hard to find!)
 
 ## Getting started road map
 
