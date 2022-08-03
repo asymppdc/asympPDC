@@ -60,7 +60,7 @@ To get started, modify  the `analysis_template.m` script file to adapt it to you
 
 ### Examples
 
-Examples from the literature are provided in `./examples directory`  with complete m-files with program structure similar to `analysis_template.m`. We hope that the examples may help readers and users to understand and/or gain further insight into Granger causality, instantaneous Granger causality, PDC, and DTF concepts and the realm of connectivity analysis. Use MATLAB/Octave `help` command to look up more detail of each function or script. The help itself will also provide links to the corresponding literature materials.  
+Examples from the literature are provided in `./examples directory`  with complete m-files with program structure similar to `analysis_template.m`. We hope that the examples may help readers and users to understand and/or gain further insight into Granger causality, instantaneous Granger causality, PDC, and DTF concepts and the realm of connectivity analysis. Use MATLAB/Octave `help` command to look up more detail of each function or script. The help itself will eventually provide links to the corresponding literature materials.  
 
 We hope you enjoy it. Good luck.
 
