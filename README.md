@@ -6,7 +6,7 @@ July 22, 2022
 
 ## Installation and usage
 
-The AsympPDC package contains MATLAB/Octave m-files and subfolders that you may copy into your local preferred working directory to execute them. To begin with you should go to the package directory and run the `startup.m` script in the MATLAB/Octave command line window that will set paths and check for the requirements.
+The AsympPDC package contains MATLAB/Octave m-files and subdirectories that you may download and copy into your local preferred working directory to execute them. To start, you should go to the package directory and run the `startup.m` script in the MATLAB/Octave command line window that will set paths and check for the requirements.
 
 ```matlab
 >> startup
@@ -20,7 +20,7 @@ To run all examples provided in `./examples` subdirectory and verify if your ins
 >> run_all_examples
 ```
 
-If `"run_all_examples.m"` completes successfully, congratulation, you should see over 40 overlapped figures that you could examine, in MATLAB, through 
+If `"run_all_examples.m"` completes successfully, congratulation, you should see 40+ overlapped figures that you could examine, in MATLAB, through 
 
 ```matlab
 >> tilefigs1
@@ -36,7 +36,7 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
 
   
 
-![](./connectivity_measures_in_asymppdc.png)
+<img src="./connectivity_measures_in_asymppdc.png" title="" alt="" data-align="center">
 
 * **Legend**: **N**  number of time series; **RPC** - relative power contribution; **DC** - directed coherence = generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - Instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
 
@@ -46,7 +46,7 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
 
 > 1. Lütkepohl, H. (1993) Introduction to Multiple Time Series Analysis. 2nd Edition, Springer, Berlin.
 > 
-> 2. Saito, Y. ad H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Not available in the Internet)
+> 2. Saito, Y. ad H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Hard to find !)
 
 
 
@@ -100,7 +100,7 @@ We hope you enjoy it. Good luck.
     <https://doi.org/10.1109/TBME.2016.2550199>
 
 [6] H. Lütkepohl (2005). New Introduction to Multiple Time Series Analysis. 
-                         Springer-Verlag, New York.  <https://doi.org/10.1007/978-3-540-27752-1>
+                         Springer-Verlag, Berlin.  <https://doi.org/10.1007/978-3-540-27752-1>
 
 [7] S.L. Marple Jr (1987). Digital Spectral Analysis with Application.
                          Prentice-Hall, Englewood-Cliffs. 
