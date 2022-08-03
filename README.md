@@ -32,7 +32,7 @@ This command will distribute the figures across screen. The `tilefigs1` or `tile
 
 The figure bellow shows  schematically the connectivity, Granger causality and allied concepts developed along the last half-century.  The measures inside the yellow area are those implemented in **The AsympPDC Package**.
 
-<img src="./connectivity_measures_in_asymppdc.png" title="" alt="" data-align="center">
+![](./connectivity_measures_in_asymppdc.png)
 
 * **Legend**: **N**  number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
 
