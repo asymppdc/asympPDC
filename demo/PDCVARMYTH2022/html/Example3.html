@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>EXAMPLE 3 -- Vector Autoregressive Model (VAR)</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-21"><meta name="DC.source" content="Example3.m"><style type="text/css">
+      --><title>EXAMPLE 3 -- Vector Autoregressive Model (VAR)</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="Example3.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,12 +68,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>EXAMPLE 3 -- Vector Autoregressive Model (VAR)</h1><!--introduction--><p>This is part of supplemental material accompanying the article of the Special Issue of Frontiers in Network Physiology on Research Topic in <b>*Network Physiology, Insights in Information Theory: 2021</b>*:</p><pre>  Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
-  Autoregressive Modelling Myth and a Caveat.</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme file for license terms.</p><p>See also EXAMPLE1, EXAMPLE2, EXAMPLE4          | <a href="Example1.html">Example1.html</a> | <a href="Example2.html">Example2.html</a> | <a href="Example4.html">Example4.html</a> |</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Start of Example 3 script</a></li><li><a href="#2">Choosing Wilson factorization routine</a></li><li><a href="#3">Set parameters for VAR model</a></li><li><a href="#4">Line width &amp; color space for plotting four measures</a></li><li><a href="#5">Setting figures size for 3-by-3 subplot layout</a></li><li><a href="#6">Initialize figures with size and position to handle different screen sizes</a></li><li><a href="#7">Plotting sequence: VAR(black), Theo(blue), VMA(dark-purple), WN(red)</a></li><li><a href="#9">Plot 1 : Theoretical (blue lines)</a></li><li><a href="#11">Plot 2 : VMA (dark-purple lines)</a></li><li><a href="#14">Plot 3 : VAR (black lines)</a></li><li><a href="#17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</a></li><li><a href="#21">Figure 3A - total Partial Directed Coherence real</a></li><li><a href="#22">Figure 3B - total Partial Directed Coherence real</a></li><li><a href="#23">Position the figure windows on screen for better visualization</a></li><li><a href="#24">To export the figures, uncomment following four lines, then rerun this script.</a></li><li><a href="#25">Clear local variables and parameters preparing for next Example's script.</a></li></ul></div><h2 id="1">Start of Example 3 script</h2><p>Note that existing figure windows are not close.</p><pre class="codeinput">disp(<span class="string">'==========================='</span>)
+  Autoregressive Modelling Myth and a Caveat. Front. Netw. Physiol. 2:845327
+      &lt;https://doi.org/10.3389/fnetp.2022.845327&gt;</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme file for license terms.</p><p>See also EXAMPLE1, EXAMPLE2, EXAMPLE4          | <a href="Example1.html">Example1.html</a> | <a href="Example2.html">Example2.html</a> | <a href="Example4.html">Example4.html</a> |</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Start of Example 3 script</a></li><li><a href="#2">Choosing Wilson factorization routine</a></li><li><a href="#3">Set parameters for VAR model</a></li><li><a href="#4">Line width &amp; color space for plotting four measures</a></li><li><a href="#5">Setting figures size for 3-by-3 subplot layout</a></li><li><a href="#6">Initialize figures with size and position to handle different screen sizes</a></li><li><a href="#7">Plotting sequence: VAR(black), Theo(blue), VMA(dark-purple), WN(red)</a></li><li><a href="#9">Plot 1 : Theoretical (blue lines)</a></li><li><a href="#11">Plot 2 : VMA (dark-purple lines)</a></li><li><a href="#14">Plot 3 : VAR (black lines)</a></li><li><a href="#17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</a></li><li><a href="#21">Figure 3A - total Partial Directed Coherence real</a></li><li><a href="#22">Figure 3B - total Partial Directed Coherence real</a></li><li><a href="#23">Position the figure windows on screen for better visualization</a></li><li><a href="#24">To export the figures, uncomment following four lines, then rerun this script.</a></li><li><a href="#25">Clear local variables and parameters preparing for next Example's script.</a></li></ul></div><h2 id="1">Start of Example 3 script</h2><p>Note that existing figure windows are not close.</p><pre class="codeinput">disp(<span class="string">'==========================='</span>)
 disp(<span class="string">'        Example 3'</span>)
 
 <span class="keyword">if</span> isOctave()
     warning <span class="string">off</span>
 <span class="keyword">end</span>
+</pre><pre class="codeoutput">===========================
+        Example 3
 </pre><h2 id="2">Choosing Wilson factorization routine</h2><pre class="codeinput">flgWilson = 1; <span class="comment">% 1: Awilson.m (in-house); 2: specfactorization_wilson.m by [1].</span>
 <span class="comment">%</span>
 <span class="comment">%            [1] Henderson JA, Dhamala M, and Robinson PA (2021). Brain dynamics</span>
@@ -188,7 +192,7 @@ set(h5,<span class="string">'units'</span>,<span class="string">'normalized'</sp
 set(h6,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
        <span class="string">'position'</span>,[2*rspacing/khmon+rwidth3x3 1-rheight3x3 <span class="keyword">...</span>
                                                           rwidth3x3 rheight3x3])
-</pre><h2 id="7">Plotting sequence: VAR(black), Theo(blue), VMA(dark-purple), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
+</pre><img vspace="5" hspace="5" src="Example3_01.png" alt=""> <img vspace="5" hspace="5" src="Example3_02.png" alt=""> <h2 id="7">Plotting sequence: VAR(black), Theo(blue), VMA(dark-purple), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
 kk = 0;
 
 <span class="keyword">for</span> k = [3 1 2 4]
@@ -205,7 +209,7 @@ kk = 0;
          [SS,VT,Coh] = SS_alg_AB(A,eye(3),pf,NFreqs,1);
          ct = wasymp_pdc(y,VT,pf,1024,<span class="string">'info'</span>,0,SS);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.pdc,pf);
 
          figure(h5)
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
@@ -214,7 +218,10 @@ kk = 0;
          figure(h6)
          standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(3)
-</pre><h2 id="11">Plot 2 : VMA (dark-purple lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 2
+</pre><pre class="codeoutput">===========================
+(2) Theoretical : blue
+* Information PDC estimation
+</pre><img vspace="5" hspace="5" src="Example3_03.png" alt=""> <img vspace="5" hspace="5" src="Example3_04.png" alt=""> <h2 id="11">Plot 2 : VMA (dark-purple lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 2
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') VMA : dark-purple'</span>])
 
@@ -223,7 +230,7 @@ kk = 0;
          [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
          ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,<span class="string">'info'</span>,0,SSx);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.pdc,pfx);
 
          figure(h5)
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
@@ -232,7 +239,10 @@ kk = 0;
          figure(h6)
          standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(3)
-</pre><h2 id="14">Plot 3 : VAR (black lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
+</pre><pre class="codeoutput">===========================
+(3) VMA : dark-purple
+* Information PDC estimation
+</pre><img vspace="5" hspace="5" src="Example3_05.png" alt=""> <img vspace="5" hspace="5" src="Example3_06.png" alt=""> <h2 id="14">Plot 3 : VAR (black lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') VAR : black'</span>])
 
@@ -242,7 +252,7 @@ kk = 0;
          <span class="comment">% Information PDC estimation</span>
          cy = asymp_pdc(y,Aa,pfa,1024,<span class="string">'info'</span>,0);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.pdc,pfa);
 
          figure(h5)
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
@@ -251,6 +261,13 @@ kk = 0;
          figure(h6)
          standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(3)
+</pre><pre class="codeoutput">===========================
+(1) VAR : black
+maxOrder limited to 30
+IP=1  vaic=530838.670275
+IP=2  vaic=505827.769163
+IP=3  vaic=505863.704539
+ 
 </pre><h2 id="17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 4
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') WN : red'</span>])
@@ -292,7 +309,7 @@ kk = 0;
          Su = 2*pi*Su;
          ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,<span class="string">'info'</span>,0,Su);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.pdc,Sigma);
 
          figure(h5)
          <span class="comment">% Set axis limits</span>
@@ -308,19 +325,23 @@ kk = 0;
 
 <span class="comment">%          saveas(h5,'html/fig_Example3A.jpg')</span>
 <span class="comment">%          saveas(h6,'html/fig_Example3B.jpg')</span>
-</pre><h2 id="21">Figure 3A - total Partial Directed Coherence real</h2><p><img vspace="5" hspace="5" src="fig_Example3A.jpg" alt=""> </p><h2 id="22">Figure 3B - total Partial Directed Coherence real</h2><p><img vspace="5" hspace="5" src="fig_Example3B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><pre class="codeinput">set(h5,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+</pre><pre class="codeoutput">===========================
+(4) WN : red
+* Using in-house 'AWilson.m' routine for spectral factorization.
+* Information PDC estimation
+</pre><img vspace="5" hspace="5" src="Example3_07.png" alt=""> <img vspace="5" hspace="5" src="Example3_08.png" alt=""> <h2 id="21">Figure 3A - total Partial Directed Coherence real</h2><p><img vspace="5" hspace="5" src="fig_Example3A.jpg" alt=""> </p><h2 id="22">Figure 3B - total Partial Directed Coherence real</h2><p><img vspace="5" hspace="5" src="fig_Example3B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><pre class="codeinput">set(h5,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
    <span class="string">'position'</span>,[rspacing/khmon  rheight2x2+dheight-rheight3x3  <span class="keyword">...</span>
                rwidth3x3       rheight3x3])
 set(h6,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
    <span class="string">'position'</span>,[2*rspacing/khmon+rwidth3x3  rheight2x2+dheight-rheight3x3 <span class="keyword">...</span>
                rwidth3x3                   rheight3x3])
-</pre><h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h5)</span>
+</pre><img vspace="5" hspace="5" src="Example3_09.png" alt=""> <img vspace="5" hspace="5" src="Example3_10.png" alt=""> <h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h5)</span>
 <span class="comment">% print -depsc fig_example3_real.eps</span>
 <span class="comment">% figure(h6)</span>
 <span class="comment">% print -depsc fig_example3_imag.eps</span>
 </pre><h2 id="25">Clear local variables and parameters preparing for next Example's script.</h2><pre class="codeinput">clear <span class="string">A*</span> <span class="string">B*</span> <span class="string">C*</span> <span class="string">I*</span> <span class="string">N*</span> <span class="string">P*</span> <span class="string">S*</span> <span class="string">V*</span> <span class="string">Hx</span> <span class="string">m</span> <span class="string">tol</span> <span class="string">u</span> <span class="string">vaic</span> <span class="string">height</span> <span class="string">i</span> <span class="string">j</span> <span class="string">lWidth</span> <span class="string">m</span> <span class="string">nFreqs</span> <span class="keyword">...</span>
       <span class="string">a*</span> <span class="string">c*</span> <span class="string">e*</span> <span class="string">f*</span> <span class="string">k*</span> <span class="string">p*</span> <span class="string">r*</span> <span class="string">s*</span> <span class="string">y*</span> <span class="string">w*</span>
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% EXAMPLE 3 REPLACE_WITH_DASH_DASH Vector Autoregressive Model (VAR)
 % This is part of supplemental material accompanying the article of
@@ -328,8 +349,8 @@ set(h6,<span class="string">'units'</span>,<span class="string">'normalized'</sp
 % **Network Physiology, Insights in Information Theory: 2021**:
 % 
 %    Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
-%    Autoregressive Modelling Myth and a Caveat.
-%
+%    Autoregressive Modelling Myth and a Caveat. Front. Netw. Physiol. 2:845327
+%        <https://doi.org/10.3389/fnetp.2022.845327>
 %
 % This script should run on any recent version of MATLAB and also in most
 % recent versions of Octave. It was partially tested under Windows, Mac OSX
@@ -505,7 +526,7 @@ for k = [3 1 2 4]
          [SS,VT,Coh] = SS_alg_AB(A,eye(3),pf,NFreqs,1);
          ct = wasymp_pdc(y,VT,pf,1024,'info',0,SS);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.pdc,pf);
          
          figure(h5)
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))       
@@ -525,7 +546,7 @@ for k = [3 1 2 4]
          [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
          ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,'info',0,SSx);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.pdc,pfx);
          
          figure(h5)
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
@@ -546,7 +567,7 @@ for k = [3 1 2 4]
          % Information PDC estimation
          cy = asymp_pdc(y,Aa,pfa,1024,'info',0);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.pdc,pfa);
          
          figure(h5)
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
@@ -598,7 +619,7 @@ for k = [3 1 2 4]
          Su = 2*pi*Su;
          ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,'info',0,Su);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.pdc,Sigma);
          
          figure(h5)
          % Set axis limits

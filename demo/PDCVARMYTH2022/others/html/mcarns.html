@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>MCARNS</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-18"><meta name="DC.source" content="mcarns.m"><style type="text/css">
+      --><title>MCARNS</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="mcarns.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,8 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>MCARNS</h1><!--introduction--><pre>  Nuttall-Strand algorithm for autoregressive model estimation.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Notes</a></li><li><a href="#6">References:</a></li></ul></div><h2 id="1">Syntax:</h2><pre class="language-matlab">[pf,A,pb,B,ef,eb] = MCARNS(u,IP)
-</pre><h2 id="2">Input Arguments</h2><pre>   IP     - Order of autoregressive model (integer)
+  </style></head><body><div class="content"><h1>MCARNS</h1><!--introduction--><pre>     Nuttall-Strand algorithm for autoregressive model estimation.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Notes</a></li><li><a href="#6">References:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>     [pf,A,pb,B,ef,eb] = MCARNS(u,IP)</pre><h2 id="2">Input Arguments</h2><pre>   IP     - Order of autoregressive model (integer)
    u      - Complex matrix with NUMCHS channels of sample data</pre><h2 id="3">Output Arguments:</h2><pre>   pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
             prediction error
    A      - Complex array of forward linear prediction matrix
@@ -81,15 +81,79 @@ matrix <span class="string">using</span> <span class="string">Nuttall-Strand</sp
 harmonic <span class="string">method).</span>
 </pre><h2 id="5">Notes</h2><pre class="language-matlab">This <span class="string">MATLAB</span> <span class="string">implementation</span> <span class="string">of</span> <span class="string">MCARNS</span> <span class="string">is</span> <span class="string">a</span> <span class="string">translation</span> <span class="string">of</span> <span class="string">FORTRAN</span> <span class="string">code</span> <span class="string">from</span>
 Appendix <span class="string">15.B</span> <span class="string">page</span> <span class="string">424</span> <span class="string">in</span> <span class="string">[1].</span> <span class="string">(KS, 1998)</span>
-</pre><h2 id="6">References:</h2><pre class="language-matlab">[1] Marple <span class="string">Jr.</span>, SL. Digital Spectral <span class="string">Analysis</span> <span class="string">with</span> <span class="string">Application.</span>
-    Prentice-Hall, Englewood-Cliffs, 1987.
-</pre><pre>Equation numbering refers to [1].</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+</pre><h2 id="6">References:</h2><pre class="language-matlab">[1] Marple <span class="string">Jr</span> <span class="string">SL</span> <span class="string">(1987).</span> <span class="string">Digital</span> <span class="string">Spectral</span> <span class="string">Analysis</span> <span class="string">with</span> <span class="string">Application.</span>
+    Prentice-Hall, Englewood-Cliffs.
+</pre><pre>Equation numbering refers to [1].</pre><pre class="codeinput"><span class="keyword">function</span> [pf,A,pb,B,ef,eb,ISTAT]=mcarns(u,IP)
+
+<span class="keyword">if</span> nargin ~= 2, error(<span class="string">'MCARNS requires 2 input parameters.'</span>); <span class="keyword">end</span>
+
+[lx,cx] = size(u);
+
+<span class="keyword">if</span> lx &gt; cx, error(<span class="string">'Input matrix is probably transposed.'</span>), <span class="keyword">end</span>
+NUMCHS = lx;          <span class="comment">% Number of channels.</span>
+MAXORDER = 200;       <span class="comment">% Maximum order of AR model allowed for calculation.</span>
+N = max(size(u));     <span class="comment">% N - Number of samples per channel.</span>
+
+<span class="comment">%   ** Initialization **</span>
+<span class="keyword">if</span> (IP &gt; MAXORDER)
+   error(<span class="string">'IP &gt; 200.'</span>);
+<span class="keyword">end</span>
+
+ef = u;        <span class="comment">% Eq. (15.91)</span>
+eb = u;        <span class="comment">% Eq. (15.91)</span>
+
+pf = u*u';     <span class="comment">% Eq. (15.90)</span>
+pb = pf;       <span class="comment">% Eq. (15.90)</span>
+
+M = 0;
+<span class="comment">%   ** Main Loop **</span>
+<span class="keyword">while</span> 1
+   <span class="comment">%  Update estimated covariance errors               Eq. (15.89)</span>
+   pfhat = ef(:,M+2:N)*ef(:,M+2:N)';
+   pbhat = eb(:,M+1:N-1)*eb(:,M+1:N-1)';
+   pfbhat = ef(:,M+2:N)*eb(:,M+1:N-1)';
+
+   M = M+1;
+
+   <span class="comment">%  Calculate estimated partial correlation matrix - Eq. (15.98)</span>
+   <span class="comment">%             (Nuttall-Strand algorithm only)</span>
+   RHO = lyap(pfhat*inv(pf),inv(pb)*pbhat,-2*pfbhat);
+
+   <span class="comment">%  Update forward and backward reflection coeficients</span>
+   <span class="comment">%  Eqs. (15.73),(15.74),(15.78) (algoritjm  by Nuttall-Strand)</span>
+   AM = -RHO*inv(pb);
+   BM = -RHO'*inv(pf);
+
+   A(:,:,M) = AM;
+   B(:,:,M) = BM;
+   <span class="comment">%</span>
+   <span class="comment">%  Update forward and backward covariance error  - Eqs. (15.75),(15.76)</span>
+   pf = pf-AM*BM*pf;
+   pb = pb-BM*AM*pb;
+
+   <span class="comment">%  Update forward and backward predictor coeficients - Eqs.(15.84),(15.85)</span>
+   <span class="keyword">if</span> M ~= 1
+      <span class="keyword">for</span> K = 1:M-1
+         temp1 = A(:,:,K);
+         A(:,:,K) = A(:,:,K)+AM*B(:,:,M-K);
+         B(:,:,M-K) = B(:,:,M-K)+BM*temp1;
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+   <span class="comment">%  Update residuals</span>
+   Tef = ef;
+   ef(1:NUMCHS,N:-1:M+1) = ef(:,N:-1:M+1)+AM*eb(:,N-1:-1:M);
+   eb(1:NUMCHS,N:-1:M+1) = eb(:,N-1:-1:M)+BM*Tef(:,N:-1:M+1);
+
+   <span class="comment">%  Verify if model order is adequate</span>
+   <span class="keyword">if</span> M == IP, A = -A; B = -B; <span class="keyword">break</span>, <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% MCARNS 
-%    Nuttall-Strand algorithm for autoregressive model estimation.
+%       Nuttall-Strand algorithm for autoregressive model estimation.
 %
 %% Syntax:
-%   [pf,A,pb,B,ef,eb] = MCARNS(u,IP)
+%       [pf,A,pb,B,ef,eb] = MCARNS(u,IP)
 %
 %% Input Arguments
 %     IP     - Order of autoregressive model (integer)
@@ -116,8 +180,8 @@ Appendix <span class="string">15.B</span> <span class="string">page</span> <span
 %   Appendix 15.B page 424 in [1]. (KS, 1998)
 %
 %% References:
-%   [1] Marple Jr., SL. Digital Spectral Analysis with Application.
-%       Prentice-Hall, Englewood-Cliffs, 1987. 
+%   [1] Marple Jr SL (1987). Digital Spectral Analysis with Application.
+%       Prentice-Hall, Englewood-Cliffs. 
 % 
 %  Equation numbering refers to [1].
 %

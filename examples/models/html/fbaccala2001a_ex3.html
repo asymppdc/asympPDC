@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>FBACCALA2001A_EX3</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-13"><meta name="DC.source" content="fbaccala2001a_ex3.m"><style type="text/css">
+      --><title>FBACCALA2001A_EX3</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="fbaccala2001a_ex3.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,65 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>FBACCALA2001A_EX3</h1><p>Linear five-dimensional VAR[3] with feedback model from Baccala &amp; Sameshima. Biol.Cybern.84:463-74, 2001. Example 3 (pag.468)') with following interactions x1--&gt;x2  x1--&gt;x3 x1--&gt;x4 x4--&gt;x5 x5--&gt;x4');                <a href="http://dx.doi.org/10.1007/PL00007990">http://dx.doi.org/10.1007/PL00007990</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>FBACCALA2001A_EX3</h1><p>Linear five-dimensional VAR[3] with feedback model from Baccala &amp; Sameshima. Biol.Cybern.84:463-74, 2001. Example 3 (pag.468)') with following interactions x1--&gt;x2  x1--&gt;x3 x1--&gt;x4 x4--&gt;x5 x5--&gt;x4');                <a href="http://dx.doi.org/10.1007/PL00007990">http://dx.doi.org/10.1007/PL00007990</a></p><pre class="codeinput"><span class="keyword">function</span> [ u ] = fbaccala2001a_ex3( nPoints, nDiscard )
+
+disp(<span class="string">'======================================================================'</span>);
+disp(<span class="string">'               Linear five-dimensional VAR[3] Model'</span>)
+disp(<span class="string">' Baccala &amp; Sameshima. Biol.Cybern.84:463-74, 2001. Example 3 (pag.468)'</span>)
+disp(<span class="string">'             x1--&gt;x2  x1--&gt;x3 x1--&gt;x4 x4--&gt;x5 x5--&gt;x4'</span>);
+disp(<span class="string">'======================================================================'</span>);
+
+<span class="keyword">if</span> (nargin == 0),
+   nPoints = 1000;
+   nDiscard = 5000;
+   disp([<span class="string">'Adopting default '</span> int2str(nDiscard) <span class="string">' discarding points, and'</span>])
+   disp([<span class="string">'generating '</span> int2str(nPoints) <span class="string">' simulation data point.'</span>])
+
+<span class="keyword">elseif</span>   (nargin &lt; 2),
+   nDiscard = 5000;
+   disp([<span class="string">'Adopting default '</span> int2str(nDiscard) <span class="string">' discarding points.'</span>])
+<span class="keyword">end</span>;
+
+<span class="keyword">if</span> (nDiscard &lt; 1),
+   nDiscard = 5000;
+   disp([<span class="string">'Adopting default '</span> int2str(nDiscard) <span class="string">' discarding points.'</span>])
+<span class="keyword">end</span>;
+
+<span class="keyword">if</span> nPoints &lt; 10,
+   nPoints = 100;
+   disp([<span class="string">'Adopting default '</span> int2str(nPoints) <span class="string">' simulation data points.'</span>])
+<span class="keyword">end</span>;
+
+N=nDiscard+nPoints; <span class="comment">% Number of data points to be generated.</span>
+
+<span class="comment">% Variables initialization.</span>
+randn(<span class="string">'state'</span>, sum(100*clock))
+ei=randn(5,N);
+x1=zeros(1,N);
+x2=zeros(1,N);
+x3=zeros(1,N);
+x4=zeros(1,N);
+x5=zeros(1,N);
+
+<span class="keyword">for</span> t=1:4,
+   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
+   x5(t)=randn(1);
+<span class="keyword">end</span>;
+
+<span class="keyword">for</span> t=5:N,
+   x1(t) = 0.95*sqrt(2)*x1(t-1) - 0.9025*x1(t-2) + ei(1,t);
+   x2(t) = 0.5*x1(t-2) + ei(2,t);
+   x3(t) = -0.4*x1(t-3) + ei(3,t);
+   x4(t) = -0.5*x1(t-2) + 0.25*sqrt(2)*x4(t-1) + 0.25*sqrt(2)*x5(t-1) + ei(4,t);
+   x5(t) = -0.25*sqrt(2)*x4(t-1) + 0.25*sqrt(2)*x5(t-1) + ei(5,t);
+<span class="keyword">end</span>;
+
+y=[x1' x2' x3' x4' x5']; <span class="comment">% data must be organized column-wise</span>
+
+u=y(nDiscard+1:N,:);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% FBACCALA2001A_EX3
 % Linear five-dimensional VAR[3] with feedback model from Baccala & Sameshima.

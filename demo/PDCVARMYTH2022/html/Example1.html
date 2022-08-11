@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example 1 -- Vector Moving Average Model (VMA)</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-06"><meta name="DC.source" content="Example1.m"><style type="text/css">
+      --><title>Example 1 -- Vector Moving Average Model (VMA)</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="Example1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,7 +68,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>Example 1 -- Vector Moving Average Model (VMA)</h1><!--introduction--><p>This is part of supplemental material accompanying the article of the Special Issue of Frontiers in Network Physiology on Research Topic in <b>*Network Physiology, Insights in Information Theory: 2021</b>* edited by Luca Faes:</p><pre>  Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
-  Autoregressive Modelling Myth and a Caveat.</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme.pdf file for license terms.</p><p>See also EXAMPLE2, EXAMPLE3, EXAMPLE4          | <a href="Example2.html">Example2.html</a> | <a href="Example3.html">Example3.html</a> | <a href="Example4.html">Example4.html</a> |</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Starting Example 1 script</a></li><li><a href="#2">Choosing Wilson factorization routine</a></li><li><a href="#3">Set parameters for VMA model</a></li><li><a href="#4">Line width &amp; color space for plotting four measures</a></li><li><a href="#5">Set figures size for 2-by-2 subplot layout</a></li><li><a href="#6">Initialize figures with size and position to handle different screen sizes</a></li><li><a href="#7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</a></li><li><a href="#9">Plot 1 : Theoretical (blue lines)</a></li><li><a href="#11">Plot 2 : VMA (black lines)</a></li><li><a href="#14">Plot 3 : Standard VAR (gray lines)</a></li><li><a href="#17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</a></li><li><a href="#21">Figure 1A - total Partial Directed Coherence real component</a></li><li><a href="#22">Figure 1B - total Partial Directed Coherence imaginary component</a></li><li><a href="#23">Position the figure windows on screen for better visualization</a></li><li><a href="#24">To export the figures, uncomment following four lines, then rerun this script.</a></li><li><a href="#25">Clear local variables and parameters preparing for next Example's script.</a></li></ul></div><h2 id="1">Starting Example 1 script</h2><p>Here all figures are closed and  all variables are removed from the workspace.</p><pre class="codeinput">clear; close <span class="string">all</span>
+  Autoregressive Modelling Myth and a Caveat. Front. Netw. Physiol. 2:845327
+      &lt;https://doi.org/10.3389/fnetp.2022.845327&gt;</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme.pdf file for license terms.</p><p>See also EXAMPLE2, EXAMPLE3, EXAMPLE4          | <a href="Example2.html">Example2.html</a> | <a href="Example3.html">Example3.html</a> | <a href="Example4.html">Example4.html</a> |</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Starting Example 1 script</a></li><li><a href="#2">Choosing Wilson factorization routine</a></li><li><a href="#3">Set parameters for VMA model</a></li><li><a href="#4">Line width &amp; color space for plotting four measures</a></li><li><a href="#5">Set figures size for 2-by-2 subplot layout</a></li><li><a href="#6">Initialize figures with size and position to handle different screen sizes</a></li><li><a href="#7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</a></li><li><a href="#9">Plot 1 : Theoretical (blue lines)</a></li><li><a href="#11">Plot 2 : VMA (black lines)</a></li><li><a href="#14">Plot 3 : Standard VAR (gray lines)</a></li><li><a href="#17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</a></li><li><a href="#21">Figure 1A - total Partial Directed Coherence real component</a></li><li><a href="#22">Figure 1B - total Partial Directed Coherence imaginary component</a></li><li><a href="#23">Position the figure windows on screen for better visualization</a></li><li><a href="#24">To export the figures, uncomment following four lines, then rerun this script.</a></li><li><a href="#25">Clear local variables and parameters preparing for next Example's script.</a></li></ul></div><h2 id="1">Starting Example 1 script</h2><p>Here all figures are closed and  all variables are removed from the workspace.</p><pre class="codeinput">clear; close <span class="string">all</span>
 disp(<span class="string">'==========================='</span>)
 disp(<span class="string">'        Example 1'</span>)
 
@@ -169,7 +171,7 @@ set(h1,<span class="string">'units'</span>,<span class="string">'normalized'</sp
 set(h2,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
        <span class="string">'position'</span>,[2*rspacing/khmon+rwidth2x2 1-rheight2x2 <span class="keyword">...</span>
                                                           rwidth2x2 rheight2x2])
-</pre><img vspace="5" hspace="5" src="Example1_01.png" style="width:15px;height:10px;" alt=""> <img vspace="5" hspace="5" src="Example1_02.png" style="width:16px;height:10px;" alt=""> <h2 id="7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
+</pre><img vspace="5" hspace="5" src="Example1_01.png" alt=""> <img vspace="5" hspace="5" src="Example1_02.png" alt=""> <h2 id="7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
 kk = 0; <span class="comment">% Counter</span>
 
 <span class="keyword">for</span> k = [2 3 1 4]
@@ -188,7 +190,7 @@ kk = 0; <span class="comment">% Counter</span>
          [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);
          ct = wasymp_pdc(y,VT,pf,1024,<span class="string">'info'</span>,0,SS);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.pdc,pf);
 
          figure(h1);
          standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
@@ -196,11 +198,11 @@ kk = 0; <span class="comment">% Counter</span>
 
          figure(h2);
          standplotx2(imag(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
-         snapnow; pause(3)
+         drawnow; pause(3)
 </pre><pre class="codeoutput">===========================
 (3) Theoretical : blue
 * Information PDC estimation
-</pre><img vspace="5" hspace="5" src="Example1_07.png" style="width:15px;height:10px;" alt=""> <img vspace="5" hspace="5" src="Example1_08.png" style="width:16px;height:10px;" alt=""> <h2 id="11">Plot 2 : VMA (black lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 2
+</pre><img vspace="5" hspace="5" src="Example1_05.png" alt=""> <img vspace="5" hspace="5" src="Example1_06.png" alt=""> <h2 id="11">Plot 2 : VMA (black lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 2
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') VMA : black'</span>])
 
@@ -210,7 +212,7 @@ kk = 0; <span class="comment">% Counter</span>
          [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
          ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,<span class="string">'info'</span>,0,SSx);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.pdc,pfx);
 
          figure(h1)
          standplotx2(real(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
@@ -218,11 +220,11 @@ kk = 0; <span class="comment">% Counter</span>
 
          figure(h2)
          standplotx2(imag(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
-         snapnow; shg; pause(3)
+         drawnow; shg; pause(3)
 </pre><pre class="codeoutput">===========================
 (1) VMA : black
 * Information PDC estimation
-</pre><img vspace="5" hspace="5" src="Example1_03.png" style="width:15px;height:10px;" alt=""> <img vspace="5" hspace="5" src="Example1_04.png" style="width:16px;height:10px;" alt=""> <h2 id="14">Plot 3 : Standard VAR (gray lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
+</pre><img vspace="5" hspace="5" src="Example1_03.png" alt=""> <img vspace="5" hspace="5" src="Example1_04.png" alt=""> <h2 id="14">Plot 3 : Standard VAR (gray lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') VAR : gray'</span>])
 
@@ -232,7 +234,7 @@ kk = 0; <span class="comment">% Counter</span>
          <span class="comment">% Information PDC estimation</span>
          cy = asymp_pdc(y,Aa,pfa,1024,<span class="string">'info'</span>,0);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.pdc,pfa);
 
          figure(h1)
          standplotx2(real(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
@@ -240,14 +242,14 @@ kk = 0; <span class="comment">% Counter</span>
 
          figure(h2)
          standplotx2(imag(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
-         snapnow; shg; pause(3)
+         drawnow; shg; pause(3)
 </pre><pre class="codeoutput">===========================
 (2) VAR : gray
 maxOrder limited to 30
-IP=1  vaic=340697.709861
-IP=2  vaic=340709.790041
+IP=1  vaic=341269.883212
+IP=2  vaic=341280.970955
  
-</pre><img vspace="5" hspace="5" src="Example1_05.png" style="width:15px;height:10px;" alt=""> <img vspace="5" hspace="5" src="Example1_06.png" style="width:16px;height:10px;" alt=""> <h2 id="17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 4
+</pre><h2 id="17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 4
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') WN : red'</span>])
 
@@ -288,17 +290,17 @@ IP=2  vaic=340709.790041
          Su = 2*pi*Su;
          ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,<span class="string">'info'</span>,0,Su);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.pdc,Sigma);
 
          figure(h1)
          <span class="comment">% Axis limits are set here</span>
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
-         drawnow; shg; pause(.1)
+         drawnow; pause(.1)
 
          figure(h2)
          <span class="comment">% Axis limits are set here</span>
          standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
-         snapnow; pause(3)
+         drawnow; shg; pause(3)
 
    <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -308,27 +310,27 @@ IP=2  vaic=340709.790041
 (4) WN : red
 * Using in-house 'AWilson.m' routine for spectral factorization.
 * Information PDC estimation
-</pre><img vspace="5" hspace="5" src="Example1_09.png" style="width:15px;height:10px;" alt=""> <img vspace="5" hspace="5" src="Example1_10.png" style="width:16px;height:10px;" alt=""> <h2 id="21">Figure 1A - total Partial Directed Coherence real component</h2><p><img vspace="5" hspace="5" src="fig_Example1A.jpg" alt=""> </p><h2 id="22">Figure 1B - total Partial Directed Coherence imaginary component</h2><p><img vspace="5" hspace="5" src="fig_Example1B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><pre class="codeinput">set(h1,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+</pre><img vspace="5" hspace="5" src="Example1_07.png" alt=""> <img vspace="5" hspace="5" src="Example1_08.png" alt=""> <h2 id="21">Figure 1A - total Partial Directed Coherence real component</h2><p><img vspace="5" hspace="5" src="fig_Example1A.jpg" alt=""> </p><h2 id="22">Figure 1B - total Partial Directed Coherence imaginary component</h2><p><img vspace="5" hspace="5" src="fig_Example1B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><pre class="codeinput">set(h1,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
        <span class="string">'position'</span>,[rspacing/khmon 1-rheight2x2 rwidth2x2 rheight2x2])
 set(h2,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
        <span class="string">'position'</span>,[2*rspacing/khmon+rwidth2x2 1-rheight2x2 <span class="keyword">...</span>
                                                           rwidth2x2 rheight2x2])
-</pre><img vspace="5" hspace="5" src="Example1_11.png" style="width:15px;height:10px;" alt=""> <img vspace="5" hspace="5" src="Example1_12.png" style="width:15px;height:10px;" alt=""> <h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h1)</span>
+</pre><img vspace="5" hspace="5" src="Example1_09.png" alt=""> <img vspace="5" hspace="5" src="Example1_10.png" alt=""> <h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h1)</span>
 <span class="comment">% print -depsc fig_example1_real.eps</span>
 <span class="comment">% figure(h2)</span>
 <span class="comment">% print -depsc fig_example1_imag.eps</span>
 </pre><h2 id="25">Clear local variables and parameters preparing for next Example's script.</h2><pre class="codeinput">clear <span class="string">A*</span> <span class="string">B*</span> <span class="string">C*</span> <span class="string">I*</span> <span class="string">N*</span> <span class="string">P*</span> <span class="string">S*</span> <span class="string">V*</span> <span class="string">Hx</span> <span class="string">m</span> <span class="string">tol</span> <span class="string">u</span> <span class="string">vaic</span> <span class="string">height</span> <span class="string">i</span> <span class="string">j</span> <span class="string">lWidth</span> <span class="string">m</span> <span class="string">nFreqs</span> <span class="keyword">...</span>
       <span class="string">a*</span> <span class="string">c*</span> <span class="string">e*</span> <span class="string">f*</span> <span class="string">k*</span> <span class="string">p*</span> <span class="string">r*</span> <span class="string">s*</span> <span class="string">y*</span> <span class="string">w*</span>
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Example 1 REPLACE_WITH_DASH_DASH Vector Moving Average Model (VMA) 
+%% Example 1 REPLACE_WITH_DASH_DASH Vector Moving Average Model (VMA)
 % This is part of supplemental material accompanying the article of the Special
 % Issue of Frontiers in Network Physiology on Research Topic in **Network
 % Physiology, Insights in Information Theory: 2021** edited by Luca Faes:
-% 
-%    Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
-%    Autoregressive Modelling Myth and a Caveat.
 %
+%    Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
+%    Autoregressive Modelling Myth and a Caveat. Front. Netw. Physiol. 2:845327
+%        <https://doi.org/10.3389/fnetp.2022.845327>
 %
 % This script should run on any recent version of MATLAB and also in most recent
 % versions of Octave. It was partially tested under Windows, Mac OSX and Linux
@@ -371,7 +373,7 @@ BB(:,:,2) = B;
 % Data sample size and frequency scale resolution
 Ndata  = 1024*4*4;
 NFreqs = 1024;
- 
+
 % Data generation
 [y,seed_out,epsilon0] = datagenAB(A,B,pf,Ndata,1); % Notice that A=[]
 
@@ -394,7 +396,7 @@ C = [0.1961    0.8627    1.0000;    % blue  Theoretical
 
 % Screen dimension in pixel.
 set(0,'units','pixels');
-sz = get(0,'ScreenSize'); 
+sz = get(0,'ScreenSize');
 
 % Ad hoc checking for the presence of multiple monitors in Octave.
 khmon = round(sz(3)/1920); % Guessed # of horizontally tiled screens
@@ -406,7 +408,7 @@ if kvmon < 1, kvmon = 1; end
 % Scale figure size on screen according to the monitor resolution
 % This has been implemented as 'tilefigs.m' does not work in Octave.
 % Reference monitor has width=sz(3)=1920 pxls
-pxwidth2x2 = 576;  pxwidth2x2  = pxwidth2x2*sz(3)/1920; 
+pxwidth2x2 = 576;  pxwidth2x2  = pxwidth2x2*sz(3)/1920;
 pxheight2x2 = 378; pxheight2x2 = pxheight2x2*sz(3)/1920;
 
 % What follow is a kludge solution to determine figure size in normalized units
@@ -418,9 +420,9 @@ rheight2x2 = pxheight2x2/sz(4)/khmon/kvmon;
 rspacing = 0.02882;
 
 % Target Example 1 figure dimension in centimeters for publication
-width = 9.0; height = 7.0; 
+width = 9.0; height = 7.0;
 
-% Same x- and y-axis limits for all subplots obtained from previous simulations. 
+% Same x- and y-axis limits for all subplots obtained from previous simulations.
 alimits = [0 .5 -0.25 1.25];
 
 %% Initialize figures with size and position to handle different screen sizes
@@ -433,7 +435,7 @@ if isOctave()
           'position',[rspacing/khmon  1-rheight2x2  rwidth2x2 rheight2x2])
 else
    set(0,'units','centimeters'); szcm = get(0,'ScreenSize');
-   
+
    set(h1,'NumberTitle','off','MenuBar','none', ...
           'Name','Example 1 Figure A - tPDC real','units','centimeters', ...
           'position',[szcm(3)/4-width/2  szcm(4)/2-height/2  width height])
@@ -445,7 +447,7 @@ if isOctave()
    set(h2,'NumberTitle','off','MenuBar','none', ...
           'Name','Example 1 Figure B - tPDC imag','units','normalized', ...
           'position',[2*rspacing/khmon+rwidth2x2 1-rheight2x2 ...
-                                                          rwidth2x2 rheight2x2]) 
+                                                          rwidth2x2 rheight2x2])
 else
    set(h2,'NumberTitle','off','MenuBar','none', ...
           'Name','Example 1 Figure B - tPDC imag','units','centimeters', ...
@@ -467,31 +469,31 @@ kk = 0; % Counter
 for k = [2 3 1 4]
 
    flghold = (kk == 0);
-   kk = kk+1; 
+   kk = kk+1;
 
    % Set y-axis limits on the last plotting sequence.
-   flgYaxis = (kk == N || k == 2);   
+   flgYaxis = (kk == N || k == 2);
 
    switch k
-      
+
       %% Plot 1 : Theoretical (blue lines)
       case 1
          disp('===========================')
          disp(['(' int2str(kk) ') Theoretical : blue'])
 
-         [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);         
+         [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);
          ct = wasymp_pdc(y,VT,pf,1024,'info',0,SS);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
-         
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.pdc,pf);
+
          figure(h1);
-         standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))  
+         standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(.1)
-         
+
          figure(h2);
          standplotx2(imag(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
-         snapnow; pause(3)   
-         
+         drawnow; pause(3)
+
       %% Plot 2 : VMA (black lines)
       case 2
          disp('===========================')
@@ -499,20 +501,20 @@ for k = [2 3 1 4]
 
          % VMA(1) without order search
          [IP,pfx,Bx,vaic,Vaicv] = vma_best(y,1,1);
-         
+
          [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
          ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,'info',0,SSx);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
-         
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.pdc,pfx);
+
          figure(h1)
          standplotx2(real(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(.1)
-         
+
          figure(h2)
-         standplotx2(imag(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))    
-         snapnow; shg; pause(3)   
-         
+         standplotx2(imag(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
+         drawnow; shg; pause(3)
+
       %% Plot 3 : Standard VAR (gray lines)
       case 3
          disp('===========================')
@@ -523,17 +525,17 @@ for k = [2 3 1 4]
 
          % Information PDC estimation
          cy = asymp_pdc(y,Aa,pfa,1024,'info',0);
-         
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
-         
+
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.pdc,pfa);
+
          figure(h1)
          standplotx2(real(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(.1)
-         
+
          figure(h2)
          standplotx2(imag(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
-         snapnow; shg; pause(3)   
-         
+         drawnow; shg; pause(3)
+
       %% Plot 4 : WN REPLACE_WITH_DASH_DASH Nonparametric Wilson factorization estimate (red lines)
       case 4
          disp('===========================')
@@ -545,7 +547,7 @@ for k = [2 3 1 4]
          Su = zeros(m,m,2*nFreqs);
          for i = 1:m
             for j = 1:m
-               % Beware the order of input arguments x and y  is inverted in 
+               % Beware the order of input arguments x and y  is inverted in
                % MATLAB and Octave versions of 'cpsd' function (bug or feature?).
                if isOctave()
                   % In Octave, overlap is expressed in fraction of windows
@@ -560,9 +562,9 @@ for k = [2 3 1 4]
             end
          end
 
-         % Wilson spectral factorization 
+         % Wilson spectral factorization
          tol = 1e-6;   % Cauchy-type H-infinity error tolerance
-         
+
          if flgWilson == 1
             disp(['* Using in-house ''AWilson.m'' routine for spectral ' ...
                   'factorization.'])
@@ -572,33 +574,33 @@ for k = [2 3 1 4]
                   ' ''specfactorization_wilson.m'' routine.'])
             [Hx,Sigma,ps,ps0,converged] = specfactorization_wilson(Su, 1, tol);
          end
-   
+
          Su = 2*pi*Su;
          ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,'info',0,Su);
-         
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
-         
+
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.pdc,Sigma);
+
          figure(h1)
          % Axis limits are set here
          standplotx2(real(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
-         drawnow; shg; pause(.1)   
-         
+         drawnow; pause(.1)
+
          figure(h2)
          % Axis limits are set here
          standplotx2(imag(pdct),[],alimits,flghold,C(k,:),flgYaxis,lWidth(k))
-         snapnow; pause(3)   
-         
+         drawnow; shg; pause(3)
+
    end
 end
 %           saveas(h1,'html/fig_Example1A.jpg')
 %           saveas(h2,'html/fig_Example1B.jpg')
 %%
-% 
+%
 %% Figure 1A - total Partial Directed Coherence real component
 %
 % <<fig_Example1A.jpg>>
-% 
-% 
+%
+%
 %% Figure 1B - total Partial Directed Coherence imaginary component
 %
 % <<fig_Example1B.jpg>>
@@ -624,5 +626,6 @@ set(h2,'units','normalized', ...
 
 clear A* B* C* I* N* P* S* V* Hx m tol u vaic height i j lWidth m nFreqs ...
       a* c* e* f* k* p* r* s* y* w*
+
 ##### SOURCE END #####
 --></body></html>

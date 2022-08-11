@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>AsympPDC Toolbox "startup" script</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-06-20"><meta name="DC.source" content="startup.m"><style type="text/css">
+      --><title>startup</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="startup.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>AsympPDC Toolbox "startup" script</h1><!--introduction--><p>Run this file to initialize the set up of AsympPDC Toolbox.</p><p>You may have to customize this script for your computing environment.</p><p>(C) Koichi Sameshima and  Luiz A. Baccala, 2021. See file license.txt in installation directory for licensing terms.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Set toolbox version</a></li><li><a href="#2">Set path</a></li><li><a href="#3">Check if Octave</a></li><li><a href="#4">Check for dependencies on other Matlab&reg; toolboxes and fileexchange routines</a></li><li><a href="#5">needed in AsympPDC</a></li><li><a href="#6">Initialize default random number stream</a></li><li><a href="#7">Enable all warnings</a></li></ul></div><h2 id="1">Set toolbox version</h2><pre class="codeinput"><span class="keyword">global</span> asymppdc_version;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">AsympPDC Toolbox "startup" script</a></li><li><a href="#2">Set toolbox version</a></li><li><a href="#3">Set path</a></li><li><a href="#4">Check if Octave</a></li><li><a href="#5">Check for dependencies on other Matlab&reg; toolboxes and fileexchange routines</a></li><li><a href="#6">needed in AsympPDC</a></li><li><a href="#7">Initialize default random number stream</a></li><li><a href="#8">Enable all warnings</a></li></ul></div><h2 id="1">AsympPDC Toolbox "startup" script</h2><p>Run this file to initialize the set up of AsympPDC Toolbox.</p><p>You may have to customize this script for your computing environment.</p><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima and  Luiz A. Baccala, 2021. See file license.txt in</span>
+<span class="comment">% installation directory for licensing terms.</span>
+<span class="comment">%</span>
+</pre><h2 id="2">Set toolbox version</h2><pre class="codeinput"><span class="keyword">global</span> asymppdc_version;
 asymppdc_version.major = 3;
 asymppdc_version.minor = 0;
 
@@ -78,15 +82,12 @@ fprintf(1,<span class="string">'\n'</span>)
 </pre><pre class="codeoutput">                   Initializing AsympPDC Package version 3.0
                    ==========================================
 
-</pre><h2 id="2">Set path</h2><pre class="codeinput"><span class="comment">% Add AsympPDC root directory and appropriate subdirectories to matlabpath</span>
+</pre><h2 id="3">Set path</h2><pre class="codeinput"><span class="comment">% Add AsympPDC root directory and appropriate subdirectories to matlabpath</span>
 
 <span class="keyword">global</span> asymppdc_root;
 <span class="comment">%asymppdc_root = fileparts(mfilename('fullpath')); % directory containing this file</span>
 asymppdc_root = [pwd <span class="string">'/'</span>];
 <span class="comment">% essentials</span>
-<span class="keyword">if</span> isOctave()
-   warning(<span class="string">'off'</span>, <span class="string">'all'</span>);
-<span class="keyword">end</span>
 
 addpath(asymppdc_root);
 addpath(fullfile(asymppdc_root,<span class="string">'core'</span>));
@@ -96,21 +97,21 @@ addpath(fullfile(asymppdc_root,<span class="string">'utils'</span>,<span class="
 addpath(fullfile(asymppdc_root,<span class="string">'utils'</span>,<span class="string">'legacy'</span>));
 addpath(fullfile(asymppdc_root,<span class="string">'examples'</span>));
 addpath(fullfile(asymppdc_root,<span class="string">'examples'</span>,<span class="string">'models'</span>));
-addpath(fullfile(asymppdc_root,<span class="string">'tests'</span>));
 
 fprintf(<span class="string">'[AsympPDC startup] Added asymppdc root directory, \n'</span>)
 fprintf(<span class="string">'                      %s, \n'</span>,asymppdc_root);
 <span class="keyword">if</span> isOctave()
+   warning(<span class="string">'off'</span>, <span class="string">'all'</span>);
    fprintf(<span class="string">'                   and its subdirectories to the OCTAVE search path.\n'</span>)
 <span class="keyword">else</span>
    fprintf(<span class="string">'                   and its subdirectories to the MATLAB search path.\n'</span>)
 <span class="keyword">end</span>
 fprintf(1,<span class="string">'\n'</span>)
 </pre><pre class="codeoutput">[AsympPDC startup] Added asymppdc root directory, 
-                      /home/koichi/Dropbox/Asymp_PDC_toolbox/code/examples/, 
+                      /home/koichi/Documents/GitHub/asympPDC2/, 
                    and its subdirectories to the MATLAB search path.
 
-</pre><h2 id="3">Check if Octave</h2><pre class="codeinput"><span class="keyword">if</span> isOctave()
+</pre><h2 id="4">Check if Octave</h2><pre class="codeinput"><span class="keyword">if</span> isOctave()
    fprintf(<span class="string">'[AsympPDC startup] As this is an Octave environment, checking whether control,\n'</span>)
    fprintf(<span class="string">'                   statistics and signal packages are loaded or not.\n'</span>)
    fprintf(1,<span class="string">'\n'</span>)
@@ -168,13 +169,15 @@ fprintf(1,<span class="string">'\n'</span>)
    fprintf(2,<span class="string">'                   please take proper action to correct it before continuing.\n'</span>)
 fprintf(1,<span class="string">'\n'</span>)
 <span class="keyword">end</span>
-</pre><h2 id="4">Check for dependencies on other Matlab&reg; toolboxes and fileexchange routines</h2><h2 id="5">needed in AsympPDC</h2><pre class="codeinput"><span class="comment">% Check if Statistics Toolbox is available - see if ch2cdf is present</span>
+</pre><h2 id="5">Check for dependencies on other Matlab&reg; toolboxes and fileexchange routines</h2><h2 id="6">needed in AsympPDC</h2><pre class="codeinput"><span class="comment">% Check if Statistics Toolbox is available - see if ch2cdf is present</span>
 <span class="keyword">if</span> ~isOctave()
    <span class="keyword">if</span> ~isempty(which(<span class="string">'chi2cdf'</span>)) &amp;&amp; ~isempty(which(<span class="string">'chi2inv'</span>)) <span class="keyword">...</span>
          &amp;&amp; ~isempty(which(<span class="string">'norminv'</span>))
-      fprintf(<span class="string">'[AsympPDC startup] Statistics Toolbox(TM) seems to be present.\n'</span>);
+      fprintf(<span class="string">'[AsympPDC startup] Statistics Toolbox(TM) or Statistics and Machine Learning Toolbox(TM) \n'</span>);
+      fprintf(<span class="string">'                   seems to be present.\n'</span>);
    <span class="keyword">else</span>
-      fprintf(2,<span class="string">'[AsympPDC startup] WARNING: Statistics Toolbox(TM) does not seem to be present.\n'</span>);
+      fprintf(2,<span class="string">'[AsympPDC startup] WARNING: Statistics Toolbox(TM) or Statistics and Machine \n'</span>);
+      fprintf(2,<span class="string">'[AsympPDC startup]          Learning Toolbox(TM) does not seem to be present.\n'</span>);
       fprintf(2,<span class="string">'[AsympPDC startup]          Will not be able to perform asymptotic statistical \n'</span>);
       fprintf(2,<span class="string">'[AsympPDC startup]          tests for PDC and DTF estimates. \n'</span>)
    <span class="keyword">end</span>
@@ -192,6 +195,15 @@ fprintf(1,<span class="string">'\n'</span>)
    fprintf(1,<span class="string">'\n'</span>)
 <span class="keyword">end</span>
 
+<span class="keyword">if</span> ~isempty(which(<span class="string">'dlyap'</span>)) &amp;&amp; ~isOctave()
+   fprintf(<span class="string">'[AsympPDC startup] Control System Toolbox(TM) seems to be present.\n'</span>);
+<span class="keyword">else</span>
+   fprintf(2,<span class="string">'[AsympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n\n'</span>);
+   fprintf(  <span class="string">'[AsympPDC startup] The lyap.m legacy code from 1986 Control System Toolbox(TM) will be used.\n'</span>);
+   addpath(fullfile(asymppdc_root,<span class="string">'utils'</span>,<span class="string">'legacy'</span>));
+   fprintf(  <span class="string">'[AsympPDC startup] Adding ./code/utils/legacy directory to MATLAB path with lyap.m.\n'</span>);
+<span class="keyword">end</span>
+
 <span class="keyword">if</span> ~isempty(which(<span class="string">'lyap'</span>))
    <span class="comment">% Testing lyap.m code using Example 1 from modern lyap help.</span>
    <span class="comment">%The A matrix is stable, and the Q matrix is positive definite.</span>
@@ -207,17 +219,14 @@ fprintf(1,<span class="string">'\n'</span>)
    Xcorrect = [   -0.2000   -0.0500];
 
    <span class="keyword">if</span> sum(abs(Xcorrect(:) - X(:))) &lt;= tol
-      fprintf(<span class="string">'[AsympPDC startup] Using lyap.m legacy code from 1986 Control System Toolbox(TM).\n'</span>);
+      fprintf(<span class="string">'                   The *lyap* function is present and working properly.\n'</span>);
    <span class="keyword">else</span>
-      error(<span class="string">'Problem with lyap.m routine. Verify if lyap.m is available'</span>)
+      error(<span class="string">'Problem with lyap.m function. Verify lyap.m function.'</span>)
    <span class="keyword">end</span>
    clear <span class="string">A</span> <span class="string">B</span> <span class="string">C</span> <span class="string">X</span> <span class="string">Q</span> <span class="string">Xcorrect</span> <span class="string">tol</span>
-
-<span class="keyword">elseif</span> ~isempty(which(<span class="string">'dlyap'</span>)) &amp;&amp; ~isOctave()
-   fprintf(<span class="string">'[AsympPDC startup] Control System Toolbox(TM) seems to be present.\n'</span>);
 <span class="keyword">else</span>
-   fprintf(2,<span class="string">'[AsympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n'</span>);
-   fprintf(2,<span class="string">'[AsympPDC startup]          Check if lyap.m is present in ./code/utils/legacy directory.\n'</span>);
+   fprintf(2,<span class="string">'[AsympPDC startup] WARNING: Control System Toolbox(TM) not installed,\n'</span>);
+   fprintf(2,<span class="string">'[AsympPDC startup]          and lyap function is not available.\n'</span>);
 <span class="keyword">end</span>
 fprintf(1,<span class="string">'\n'</span>)
 
@@ -235,17 +244,17 @@ fprintf(1,<span class="string">'\n'</span>)
 
 <span class="keyword">if</span> ~isempty(which(<span class="string">'suplabel'</span>)) &amp;&amp; ~isempty(which(<span class="string">'suptitle'</span>))
    <span class="keyword">if</span> isOctave()
-      fprintf(<span class="string">'[AsympPDC startup] xplot.m routine will use suptitle.m (Drea Thomas, 1995).\n\n'</span>);
+      fprintf(<span class="string">'[AsympPDC startup] The xplot function will use suptitle.m (Drea Thomas, 1995).\n\n'</span>);
       fprintf(<span class="string">'               (*) As suplabel.m (Ben Barrowes, 2004) does not work in Octave,\n'</span>);
-      fprintf(<span class="string">'                   in the matrix layout subplots, y- and x-axis labels will be missing.\n'</span>);
+      fprintf(<span class="string">'                   the y- and x-axis labels will be missing in the matrix layout subplots, .\n'</span>);
 
    <span class="keyword">else</span>
-      fprintf(<span class="string">'[AsympPDC startup] xplot.m routine will use suplabel.m (Ben Barrowes, 2004), and\n'</span>);
-      fprintf(<span class="string">'                                            suptitle.m (Drea Thomas, 1995).\n'</span>);
+      fprintf(<span class="string">'[AsympPDC startup] The xplot function will use suplabel.m (Ben Barrowes, 2004), and\n'</span>);
+      fprintf(<span class="string">'                                               suptitle.m (Drea Thomas, 1995).\n'</span>);
    <span class="keyword">end</span>
    fprintf(1,<span class="string">'\n'</span>)
 <span class="keyword">if</span> ~isempty(which(<span class="string">'shadedplot'</span>)) &amp;&amp; ~isempty(which(<span class="string">'boundedline'</span>))
-   fprintf(<span class="string">'                   And, also if required,   shadedplot.m (Dave Van Tol, 2008), and\n'</span>);
+   fprintf(<span class="string">'                   And, also, if required,  shadedplot.m (Dave Van Tol, 2008), and\n'</span>);
    fprintf(<span class="string">'                                            boundedline.m (Kelly Kearney, 2012).\n'</span>);
    fprintf(1,<span class="string">'\n'</span>)
 <span class="keyword">end</span>
@@ -254,49 +263,61 @@ fprintf(1,<span class="string">'\n'</span>)
 <span class="keyword">if</span> ~isOctave()
    <span class="keyword">if</span> ~isempty(which(<span class="string">'tilefigs'</span>)) || ~isempty(which(<span class="string">'tilefigs1'</span>)) || ~isempty(which(<span class="string">'tilefigs2'</span>))
       fprintf(<span class="string">'[AsympPDC startup] You may quickly visualize multiple figure windows issuing either\n'</span>);
-      fprintf(<span class="string">'                   tilefigs1 or tilefigs2 command (Peter J Acklam,2003; Brendan Tracey, 2012).\n'</span>);
+      fprintf(<span class="string">'                   tilefigs1 (Peter J Acklam,2003) or tilefigs2 (Brendan Tracey, 2012) command.\n'</span>);
    <span class="keyword">end</span>
 <span class="keyword">end</span>
 fprintf(1,<span class="string">'\n'</span>)
-</pre><pre class="codeoutput">[AsympPDC startup] Statistics Toolbox(TM) seems to be present.
+</pre><pre class="codeoutput">[AsympPDC startup] Statistics Toolbox(TM) or Statistics and Machine Learning Toolbox(TM) 
+                   seems to be present.
 
 [AsympPDC startup] Signal Processing Toolbox(TM) seems to be present.
 
-[AsympPDC startup] Using lyap.m legacy code from 1986 Control System Toolbox(TM).
+[AsympPDC startup] Control System Toolbox(TM) seems to be present.
+                   The *lyap* function is present and working properly.
 
 [AsympPDC startup] ARFit Toolbox(TM) seems to be present.
 
-[AsympPDC startup] xplot.m routine will use suplabel.m (Ben Barrowes, 2004), and
-                                            suptitle.m (Drea Thomas, 1995).
+[AsympPDC startup] The xplot function will use suplabel.m (Ben Barrowes, 2004), and
+                                               suptitle.m (Drea Thomas, 1995).
 
-                   And, also if required,   shadedplot.m (Dave Van Tol, 2008), and
+                   And, also, if required,  shadedplot.m (Dave Van Tol, 2008), and
                                             boundedline.m (Kelly Kearney, 2012).
 
 [AsympPDC startup] You may quickly visualize multiple figure windows issuing either
-                   tilefigs1 or tilefigs2 command (Peter J Acklam,2003; Brendan Tracey, 2012).
+                   tilefigs1 (Peter J Acklam,2003) or tilefigs2 (Brendan Tracey, 2012) command.
 
-</pre><h2 id="6">Initialize default random number stream</h2><p>Initialize rng to avoid predictability of sessions</p><pre class="codeinput"><span class="keyword">if</span> isOctave()
+</pre><h2 id="7">Initialize default random number stream</h2><p>Initialize rng to avoid predictability of sessions</p><pre class="codeinput"><span class="keyword">if</span> isOctave()
    randn(<span class="string">'seed'</span>,sum(100*clock)); <span class="comment">% set randn initial 'seed' randomization.</span>
    fprintf(<span class="string">'[AsympPDC startup] Random number generator uses ad hoc initialization for Octave.\n'</span>);
 
 <span class="keyword">else</span>
    rng(<span class="string">'default'</span>)
    rng(<span class="string">'shuffle'</span>)
-   fprintf(<span class="string">'[AsympPDC startup] Random number generator initialized using Matlab recommendation.\n'</span>);
+   fprintf(<span class="string">'[AsympPDC startup] Random number generator initialized using Matlab recommended procedure.\n'</span>);
 <span class="keyword">end</span>
 fprintf(1,<span class="string">'\n'</span>)
-</pre><pre class="codeoutput">[AsympPDC startup] Random number generator initialized using Matlab recommendation.
+</pre><pre class="codeoutput">[AsympPDC startup] Random number generator initialized using Matlab recommended procedure.
 
-</pre><h2 id="7">Enable all warnings</h2><pre class="codeinput">warning <span class="string">on</span> <span class="string">all</span>
+</pre><h2 id="8">Enable all warnings</h2><pre class="codeinput"><span class="keyword">if</span> isOctave()
+   warning(<span class="string">'off'</span>, <span class="string">'all'</span>);
+<span class="keyword">else</span>
+   warning <span class="string">on</span> <span class="string">all</span>
+<span class="keyword">end</span>
+
 fprintf(<span class="string">'[AsympPDC startup] All warnings enabled\n'</span>);
 fprintf(1,<span class="string">'\n'</span>)
-fprintf(<span class="string">'[AsympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n'</span>);
+fprintf(<span class="string">'[AsympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n\n\n'</span>);
 
 <span class="comment">% &lt;startup.html back to top&gt;</span>
 </pre><pre class="codeoutput">[AsympPDC startup] All warnings enabled
 
 [AsympPDC startup] Initialization completed (you may re-run 'startup.m' if necessary).
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+
+
+</pre><p>get(0,'ScreenSize')</p><pre class="codeinput"><span class="comment">% monitorPositions = get(0,'MonitorPositions');</span>
+<span class="comment">% matlabMonitorLocation = monitorPositions(:,1:2);</span>
+<span class="comment">% matlabMonitorSize = monitorPositions(:,3:4) - monitorPositions(:,1:2) + 1;</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% AsympPDC Toolbox "startup" script
 %
@@ -304,9 +325,11 @@ fprintf(<span class="string">'[AsympPDC startup] Initialization completed (you m
 %
 % You may have to customize this script for your computing environment.
 %
+
 % (C) Koichi Sameshima and  Luiz A. Baccala, 2021. See file license.txt in
 % installation directory for licensing terms.
 %
+
 %% Set toolbox version
 
 global asymppdc_version;
@@ -326,9 +349,6 @@ global asymppdc_root;
 %asymppdc_root = fileparts(mfilename('fullpath')); % directory containing this file
 asymppdc_root = [pwd '/'];
 % essentials
-if isOctave()
-   warning('off', 'all');
-end
 
 addpath(asymppdc_root);
 addpath(fullfile(asymppdc_root,'core'));
@@ -338,11 +358,11 @@ addpath(fullfile(asymppdc_root,'utils','arfit'));
 addpath(fullfile(asymppdc_root,'utils','legacy'));
 addpath(fullfile(asymppdc_root,'examples'));
 addpath(fullfile(asymppdc_root,'examples','models'));
-addpath(fullfile(asymppdc_root,'tests'));
 
 fprintf('[AsympPDC startup] Added asymppdc root directory, \n')
 fprintf('                      %s, \n',asymppdc_root);
 if isOctave()
+   warning('off', 'all');
    fprintf('                   and its subdirectories to the OCTAVE search path.\n')
 else
    fprintf('                   and its subdirectories to the MATLAB search path.\n')
@@ -387,7 +407,7 @@ if isOctave()
       else
          fprintf('[AsympPDC startup] All necessary packages are already loaded into Octave environment!\n')
          fprintf('                   You are good to go.\n')
-         
+
       end
    else
       fprintf(2,'[AsympPDC startup] Warning: the control, statistics and signal packages are not load in Octave environment.\n')
@@ -416,16 +436,18 @@ end
 if ~isOctave()
    if ~isempty(which('chi2cdf')) && ~isempty(which('chi2inv')) ...
          && ~isempty(which('norminv'))
-      fprintf('[AsympPDC startup] Statistics Toolbox(TM) seems to be present.\n');
+      fprintf('[AsympPDC startup] Statistics Toolbox(TM) or Statistics and Machine Learning Toolbox(TM) \n');
+      fprintf('                   seems to be present.\n');
    else
-      fprintf(2,'[AsympPDC startup] WARNING: Statistics Toolbox(TM) does not seem to be present.\n');
+      fprintf(2,'[AsympPDC startup] WARNING: Statistics Toolbox(TM) or Statistics and Machine \n');
+      fprintf(2,'[AsympPDC startup]          Learning Toolbox(TM) does not seem to be present.\n');
       fprintf(2,'[AsympPDC startup]          Will not be able to perform asymptotic statistical \n');
       fprintf(2,'[AsympPDC startup]          tests for PDC and DTF estimates. \n')
    end
    fprintf(1,'\n')
-   
+
    % Check if we have Signal Processing toolbox - see if pwelch is present
-   
+
    if ~isempty(which('xcorr')) && ~isempty(which('norminv'))
       fprintf('[AsympPDC startup] Signal Processing Toolbox(TM) seems to be present.\n');
    else
@@ -436,10 +458,19 @@ if ~isOctave()
    fprintf(1,'\n')
 end
 
+if ~isempty(which('dlyap')) && ~isOctave()
+   fprintf('[AsympPDC startup] Control System Toolbox(TM) seems to be present.\n');
+else
+   fprintf(2,'[AsympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n\n');
+   fprintf(  '[AsympPDC startup] The lyap.m legacy code from 1986 Control System Toolbox(TM) will be used.\n');
+   addpath(fullfile(asymppdc_root,'utils','legacy'));
+   fprintf(  '[AsympPDC startup] Adding ./code/utils/legacy directory to MATLAB path with lyap.m.\n');
+end
+
 if ~isempty(which('lyap'))
    % Testing lyap.m code using Example 1 from modern lyap help.
    %The A matrix is stable, and the Q matrix is positive definite.
-   
+
    % Define an absolute tolerance
    tol = 1e-10;
    % Three input arguments example
@@ -449,19 +480,16 @@ if ~isempty(which('lyap'))
    X = lyap(A,B,C);
    % If correct, these commands should return the following X matrix:
    Xcorrect = [   -0.2000   -0.0500];
-   
+
    if sum(abs(Xcorrect(:) - X(:))) <= tol
-      fprintf('[AsympPDC startup] Using lyap.m legacy code from 1986 Control System Toolbox(TM).\n');
+      fprintf('                   The *lyap* function is present and working properly.\n');
    else
-      error('Problem with lyap.m routine. Verify if lyap.m is available')
+      error('Problem with lyap.m function. Verify lyap.m function.')
    end
    clear A B C X Q Xcorrect tol
-   
-elseif ~isempty(which('dlyap')) && ~isOctave()
-   fprintf('[AsympPDC startup] Control System Toolbox(TM) seems to be present.\n');
 else
-   fprintf(2,'[AsympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n');
-   fprintf(2,'[AsympPDC startup]          Check if lyap.m is present in ./code/utils/legacy directory.\n');
+   fprintf(2,'[AsympPDC startup] WARNING: Control System Toolbox(TM) not installed,\n');
+   fprintf(2,'[AsympPDC startup]          and lyap function is not available.\n');
 end
 fprintf(1,'\n')
 
@@ -479,17 +507,17 @@ fprintf(1,'\n')
 
 if ~isempty(which('suplabel')) && ~isempty(which('suptitle'))
    if isOctave()
-      fprintf('[AsympPDC startup] xplot.m routine will use suptitle.m (Drea Thomas, 1995).\n\n');
+      fprintf('[AsympPDC startup] The xplot function will use suptitle.m (Drea Thomas, 1995).\n\n');
       fprintf('               (*) As suplabel.m (Ben Barrowes, 2004) does not work in Octave,\n');
-      fprintf('                   in the matrix layout subplots, y- and x-axis labels will be missing.\n');
-      
+      fprintf('                   the y- and x-axis labels will be missing in the matrix layout subplots, .\n');
+
    else
-      fprintf('[AsympPDC startup] xplot.m routine will use suplabel.m (Ben Barrowes, 2004), and\n');
-      fprintf('                                            suptitle.m (Drea Thomas, 1995).\n');
+      fprintf('[AsympPDC startup] The xplot function will use suplabel.m (Ben Barrowes, 2004), and\n');
+      fprintf('                                               suptitle.m (Drea Thomas, 1995).\n');
    end
    fprintf(1,'\n')
 if ~isempty(which('shadedplot')) && ~isempty(which('boundedline'))
-   fprintf('                   And, also if required,   shadedplot.m (Dave Van Tol, 2008), and\n');
+   fprintf('                   And, also, if required,  shadedplot.m (Dave Van Tol, 2008), and\n');
    fprintf('                                            boundedline.m (Kelly Kearney, 2012).\n');
    fprintf(1,'\n')
 end
@@ -498,7 +526,7 @@ end
 if ~isOctave()
    if ~isempty(which('tilefigs')) || ~isempty(which('tilefigs1')) || ~isempty(which('tilefigs2'))
       fprintf('[AsympPDC startup] You may quickly visualize multiple figure windows issuing either\n');
-      fprintf('                   tilefigs1 or tilefigs2 command (Peter J Acklam,2003; Brendan Tracey, 2012).\n');
+      fprintf('                   tilefigs1 (Peter J Acklam,2003) or tilefigs2 (Brendan Tracey, 2012) command.\n');
    end
 end
 fprintf(1,'\n')
@@ -508,21 +536,35 @@ fprintf(1,'\n')
 if isOctave()
    randn('seed',sum(100*clock)); % set randn initial 'seed' randomization.
    fprintf('[AsympPDC startup] Random number generator uses ad hoc initialization for Octave.\n');
-   
+
 else
    rng('default')
    rng('shuffle')
-   fprintf('[AsympPDC startup] Random number generator initialized using Matlab recommendation.\n');
+   fprintf('[AsympPDC startup] Random number generator initialized using Matlab recommended procedure.\n');
 end
 fprintf(1,'\n')
 
 %% Enable all warnings
-warning on all
+
+if isOctave()
+   warning('off', 'all');
+else
+   warning on all
+end
+
 fprintf('[AsympPDC startup] All warnings enabled\n');
 fprintf(1,'\n')
-fprintf('[AsympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n');
+fprintf('[AsympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n\n\n');
 
 % <startup.html back to top>
+
+
+%%
+% get(0,'ScreenSize')
+
+% monitorPositions = get(0,'MonitorPositions');
+% matlabMonitorLocation = monitorPositions(:,1:2);
+% matlabMonitorSize = monitorPositions(:,3:4) - monitorPositions(:,1:2) + 1;
 
 ##### SOURCE END #####
 --></body></html>

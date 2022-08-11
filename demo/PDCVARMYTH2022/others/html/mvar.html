@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>MVAR</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-18"><meta name="DC.source" content="mvar.m"><style type="text/css">
+      --><title>MVAR</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="mvar.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -68,23 +69,159 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
   </style></head><body><div class="content"><h1>MVAR</h1><!--introduction--><pre>  Estimate multivariate autoregressive model. Here, only the code for Nutall-
   Strand algorithm (mcarns.m) is provide. For other routines, refer to
-  AsympPDC toolbox.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">References</a></li></ul></div><h2 id="1">Syntax</h2><pre>  [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion)</pre><h2 id="2">Input Arguments</h2><pre>      u     - data rows
-      maxIP - externaly defined maximum IP model to explore
-      alg   - estimation algorithm 1: Nutall-Strand; 2: mlsm;
-                                   3: Vieira-Morf); 4: QR arfit.
-      criterion for order choice - 0: MDL (not implemented)
-                                   1: AIC; 2: Hanna-Quinn; 3 Schwarz;
-                                   4: FPE; 5: fixed order given by maxIP</pre><h2 id="3">Output Arguments:</h2><pre>   pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
-            prediction error
-   A      - Complex array of forward linear prediction matrix
-            coefficients
-   pb     - Complex backward linear prediction error covariance array
-   B      - Complex array of backward linear prediction matrix
-            coefficients
-   ef     - Forward residuals
-   eb     - Backward residuals
-   vaic   - Last model order decision criterion value.
-   Vaicv  - Criterion values up to the selected model order.</pre><h2 id="4">References</h2><p>[1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis.     Springer-Verlag.</p><p>[2] Marple Jr, SL (1987). Digital Spectral Analysis with Application.     Prentice-Hall, Englewood-Cliffs, 1987.</p><p>[3] Schneider, T &amp; Neumaier, A (2001): Algorithm 808: ARfit - A Matlab package     for the estimation of parameters and eigenmodes of multivariate     autoregressive models. ACM Trans. Math. Softw., 27:58-65.</p><p>See also MCARNS, ASYMP_PDC</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+  AsympPDC toolbox.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">References</a></li></ul></div><h2 id="1">Syntax</h2><pre>     [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion)</pre><h2 id="2">Input Arguments</h2><pre>     u     - data rows
+     maxIP - externaly defined maximum IP model to explore
+     alg   - estimation algorithm 1: Nutall-Strand; 2: mlsm;
+                                  3: Vieira-Morf;   4: QR arfit.
+     criterion for order choice - 0: MDL (not implemented);
+                                  1: AIC; 2: Hanna-Quinn; 3 Schwarz;
+                                  4: FPE; 5: fixed order given by maxIP</pre><h2 id="3">Output Arguments:</h2><pre>     pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
+              prediction error
+     A      - Complex array of forward linear prediction matrix
+              coefficients
+     pb     - Complex backward linear prediction error covariance array
+     B      - Complex array of backward linear prediction matrix
+              coefficients
+     ef     - Forward residuals
+     eb     - Backward residuals
+     vaic   - Last model order decision criterion value.
+     Vaicv  - Criterion values up to the selected model order.</pre><h2 id="4">References</h2><p>[1] Lutkepohl H (2005). New Introduction to Multiple Time Series Analysis.     Springer-Verlag.</p><p>[2] Marple Jr SL (1987). Digital Spectral Analysis with Application.     Prentice-Hall, Englewood-Cliffs.</p><p>[3] Schneider T and Neumaier A (2001). Algorithm 808: ARfit - A Matlab package     for the estimation of parameters and eigenmodes of multivariate     autoregressive models. ACM Trans. Math. Softw., 27:58-65.</p><p>See also MCARNS, ASYMP_PDC</p><pre class="codeinput"><span class="keyword">function</span> [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion)
+
+<span class="keyword">if</span> alg ~= 1,
+   disp(<span class="string">'To use estimation algorithm other than Nutall-Strand, see AsympPDC toolbox.'</span>)
+   error(<span class="string">'In the Examples only the Nutall-Strand were used.'</span>);
+<span class="keyword">end</span>
+
+[nSegLength,nChannels] = size(u');
+
+<span class="keyword">if</span> nargin&lt;3, alg=1; criterion = 1; <span class="keyword">end</span> <span class="comment">% default parameters</span>
+<span class="keyword">if</span> nargin&lt;4, criterion = 1; <span class="keyword">end</span>        <span class="comment">% default parameter choice</span>
+
+<span class="keyword">if</span> criterion == 5 <span class="comment">% Fixed order in maxIP</span>
+   <span class="keyword">if</span> maxIP == 0
+      pf = u * u';   <span class="comment">% Eq. (15.90) Equation numbering refers to Marple Jr.(1987)</span>
+      pb = pf;       <span class="comment">% Eq. (15.90)</span>
+      ef = u;
+      eb = u;
+      npf = size(pf);
+      A = zeros(npf,npf,0);
+      B = A;
+      vaic = det(pf);
+      Vaicv = det(pf);
+      IP = 0;
+      <span class="keyword">return</span>
+   <span class="keyword">end</span>
+   IP = maxIP;
+   <span class="keyword">switch</span> alg      <span class="comment">%  Formulas from Marple Jr. (1987)</span>
+      <span class="keyword">case</span> 1
+         [pf,A,pb,B,ef,eb] = mcarns(u,IP);
+         pf = pf(:,:)/nSegLength; <span class="comment">% Nuttall-Strand needs scaling.</span>
+      <span class="keyword">case</span> 2
+         [pf,A,ef] = cmlsm(u,IP);
+         B  = [ ]; eb = [ ]; pb = [ ];
+         pf = pf(:,:)/nSegLength;
+      <span class="keyword">case</span> 3
+         [pf,A,pb,B,ef,eb] = mcarvm(u,IP);
+         pf=pf(:,:)/nSegLength; <span class="comment">% Vieira-Morf needs scaling.</span>
+      <span class="keyword">case</span> 4
+         [pf,A,ef] = arfitcaps(u,IP);
+         B  = [ ]; eb = [ ]; pb = [ ];
+         <span class="comment">% Arfit does not require scaling. pf=pf;</span>
+   <span class="keyword">end</span>
+
+   vaic=length(u)*log(det(pf))+2*(nChannels*nChannels)*IP;
+   Vaicv=vaic;
+   <span class="keyword">return</span>
+<span class="keyword">end</span>
+<span class="comment">%</span>
+vaicv=0;
+<span class="keyword">if</span> nargin&lt;2
+   maxOrder=30;
+   disp([<span class="string">'maxOrder limited to '</span> int2str(maxOrder)])
+   UpperboundOrder = round(3*sqrt(nSegLength)/nChannels); <span class="comment">% Marple Jr (1987). p. 409</span>
+   <span class="comment">% Suggested by Nuttall, 1976.</span>
+   UpperboundOrder = min([maxOrder UpperboundOrder]);
+<span class="keyword">else</span>
+   maxOrder=maxIP;
+   UpperboundOrder=maxIP;
+   disp([<span class="string">'maxOrder limited to '</span> int2str(maxOrder)])
+<span class="keyword">end</span>
+
+IP=1;
+Vaicv=zeros(maxOrder+1,1);
+
+T = length(u);
+K = nChannels;
+
+
+<span class="keyword">while</span> IP &lt;= UpperboundOrder
+   m = IP;
+   <span class="keyword">switch</span> alg
+      <span class="keyword">case</span> 1
+         [npf,na,npb,nb,nef,neb] = mcarns(u,IP);
+      <span class="keyword">case</span> 2
+         [npf,na,nef] = cmlsm(u,IP);
+      <span class="keyword">case</span> 3
+         [npf,na,npb,nb,nef,neb] = mcarvm(u,IP);
+      <span class="keyword">case</span> 4
+         [npf,na,nef] = arfitcaps(u,IP);
+   <span class="keyword">end</span>
+
+   <span class="keyword">switch</span> criterion
+      <span class="keyword">case</span> 1  <span class="comment">% Akaike's Informaion Criterin (AIC)</span>
+         vaic = length(u)*log(det(npf)) <span class="keyword">...</span>
+                + 2*(nChannels*nChannels)*IP;             <span class="comment">%(4.3.2)(Lutkepohl'05)</span>
+      <span class="keyword">case</span> 2  <span class="comment">% Hannan-Quinn (HQ)</span>
+         vaic = length(u)*log(det(npf)) <span class="keyword">...</span>
+                + 2*log(log(length(u)))*(nChannels*nChannels)*IP;
+                                                          <span class="comment">%(4.3.8)(Lutkepohl'05)</span>
+      <span class="keyword">case</span> 3  <span class="comment">% Schwarz (SC) (Schwarz, 1978)</span>
+         vaic = length(u)*log(det(npf)) <span class="keyword">...</span>
+                + log(length(u))*(nChannels*nChannels)*IP;<span class="comment">%(4.3.9)(Lutkepohl'05)</span>
+      <span class="keyword">case</span> 4  <span class="comment">% FPE - Final prediction error (Akaike, 1970)</span>
+          vaic = log(det(npf)*((length(u)+nChannels*IP+1) <span class="keyword">...</span>
+                 /(length(u)-nChannels*IP-1))^nChannels); <span class="comment">%(4.3.1)(Lutkepohl'05)</span>
+      <span class="keyword">otherwise</span>
+         <span class="comment">%nop</span>
+   <span class="keyword">end</span>
+
+   Vaicv(IP+1) = vaic;
+   fprintf(<span class="string">'IP=%0.f  vaic=%f\n'</span>,IP,vaic);
+   <span class="keyword">if</span> (vaic&gt;vaicv) &amp;&amp; (IP~=1)
+      vaic = vaicv;
+      <span class="keyword">break</span>;
+   <span class="keyword">end</span> <span class="comment">% Akaike condition</span>
+   vaicv = vaic;
+   pf = npf;
+   A  = na;
+   ef = nef;
+   <span class="keyword">if</span> alg==1 || alg == 3
+      B  = nb;
+      eb = neb;
+      pb = npb;
+   <span class="keyword">else</span> <span class="comment">% review status for backward prediction in clmsm</span>
+      B  = [];
+      eb = [];
+      pb = [];
+   <span class="keyword">end</span>
+   IP = IP+1;
+<span class="keyword">end</span>
+
+disp(<span class="string">' '</span>)
+IP = IP-1;
+vaic = vaicv;
+Vaicv = Vaicv(2:IP+1);
+
+<span class="keyword">switch</span> alg
+   <span class="keyword">case</span> {1,3} <span class="comment">%Nuttall-Strand and Vieira-Morf need scaling.</span>
+      pf = pf(:,:)/nSegLength;
+   <span class="keyword">case</span> 4
+      <span class="comment">% nop</span>
+      <span class="comment">% pf = pf; % arfit does not need scaling.</span>
+   <span class="keyword">otherwise</span>  <span class="comment">%</span>
+      pf = pf(:,:)/nSegLength;
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% MVAR
 %    Estimate multivariate autoregressive model. Here, only the code for Nutall-
@@ -92,38 +229,38 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %    AsympPDC toolbox.
 %
 %% Syntax
-%    [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion)
+%       [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion)
 %
 %% Input Arguments
-%        u     - data rows
-%        maxIP - externaly defined maximum IP model to explore
-%        alg   - estimation algorithm 1: Nutall-Strand; 2: mlsm;
-%                                     3: Vieira-Morf); 4: QR arfit.
-%        criterion for order choice - 0: MDL (not implemented)
-%                                     1: AIC; 2: Hanna-Quinn; 3 Schwarz;
-%                                     4: FPE; 5: fixed order given by maxIP
+%       u     - data rows
+%       maxIP - externaly defined maximum IP model to explore
+%       alg   - estimation algorithm 1: Nutall-Strand; 2: mlsm;
+%                                    3: Vieira-Morf;   4: QR arfit.
+%       criterion for order choice - 0: MDL (not implemented);
+%                                    1: AIC; 2: Hanna-Quinn; 3 Schwarz;
+%                                    4: FPE; 5: fixed order given by maxIP
 %%  Output Arguments:
-%     pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
-%              prediction error
-%     A      - Complex array of forward linear prediction matrix
-%              coefficients
-%     pb     - Complex backward linear prediction error covariance array
-%     B      - Complex array of backward linear prediction matrix
-%              coefficients
-%     ef     - Forward residuals
-%     eb     - Backward residuals
-%     vaic   - Last model order decision criterion value.
-%     Vaicv  - Criterion values up to the selected model order.
+%       pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
+%                prediction error
+%       A      - Complex array of forward linear prediction matrix
+%                coefficients
+%       pb     - Complex backward linear prediction error covariance array
+%       B      - Complex array of backward linear prediction matrix
+%                coefficients
+%       ef     - Forward residuals
+%       eb     - Backward residuals
+%       vaic   - Last model order decision criterion value.
+%       Vaicv  - Criterion values up to the selected model order.
 %
 %% References
 %
-% [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis. 
+% [1] Lutkepohl H (2005). New Introduction to Multiple Time Series Analysis. 
 %     Springer-Verlag. 
 %
-% [2] Marple Jr, SL (1987). Digital Spectral Analysis with Application.
-%     Prentice-Hall, Englewood-Cliffs, 1987. 
+% [2] Marple Jr SL (1987). Digital Spectral Analysis with Application.
+%     Prentice-Hall, Englewood-Cliffs. 
 %
-% [3] Schneider, T & Neumaier, A (2001): Algorithm 808: ARfit - A Matlab package
+% [3] Schneider T and Neumaier A (2001). Algorithm 808: ARfit - A Matlab package
 %     for the estimation of parameters and eigenmodes of multivariate
 %     autoregressive models. ACM Trans. Math. Softw., 27:58-65.
 %

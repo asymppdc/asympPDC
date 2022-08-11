@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SS_alg_AB</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-18"><meta name="DC.source" content="SS_alg_AB.m"><style type="text/css">
+      --><title>SS_alg_AB</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="SS_alg_AB.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -71,13 +72,55 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
      B         - [nChannels,nChannels,q+1] - VMA repesentation part
      pf        - white input covariance matrix
      nFreqs    - number of desired frequency points
-     Ndata         - data length
+     Ndata     - data length
      flgNoCoh  - any value if complex coherence is not desired.</pre><h2 id="3">Output arguments</h2><pre>     SS        - spectral density matrix
      VT        - B(f) frequency domain representation of B
      Coh       - complex coherence</pre><h2 id="4">Used</h2><pre>     To compute dtf:
         c=wasymp_dtf(u,VT,pf,nFreqs,'diag',0,SS);
      To compute pdc:
-        c=wasymp_pdc(u,VT,pf,nFreqs,'diag',0,SS); % metric='diag'</pre><p>See also SS_ALG, SS_ALG2, SS_ALG_B</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+        c=wasymp_pdc(u,VT,pf,nFreqs,'diag',0,SS);</pre><p>See also SS_ALG, SS_ALG2, SS_ALG_B          | <a href="ss_alg.html">ss_alg.html</a> | <a href="ss_alg2.html">ss_alg2.html</a> | <a href="ss_alg_B.html">ss_alg_B.html</a> |</p><pre class="codeinput"><span class="keyword">function</span> [SS,VT,Coh]=SS_alg_AB(A,B,pf,nFreqs,Ndata,flgNoCoh)
+
+[nChannels,~,pt]  = size(A);
+[mt, ~, qt] = size(B);
+
+<span class="keyword">if</span> nChannels ~= mt, error(<span class="string">'A and B have different numbers of channel.'</span>); <span class="keyword">end</span>
+mt = nChannels * nChannels;
+
+AA = reshape(permute(A,[3 1 2]),pt,mt);
+AA = [reshape(eye(nChannels),1,mt); -AA; zeros(2*nFreqs-pt-1,mt)];
+fa = fft(AA); fa = fa(1:nFreqs,:);
+
+BB = reshape(permute(B,[3 1 2]),qt,mt);
+BB = [BB; zeros(2*nFreqs-qt,mt)];
+fb = fft(BB); fb = fb(1:nFreqs,:);
+
+<span class="keyword">if</span> nargin &lt; 6
+   Coh = zeros(nChannels,nChannels,nFreqs);
+<span class="keyword">else</span>
+   Coh = [];
+<span class="keyword">end</span>
+
+SS = zeros(nChannels,nChannels,nFreqs);
+
+<span class="keyword">for</span> i = 1:nFreqs
+   V  = reshape(fb(i,:),nChannels,nChannels);
+   VI = reshape(fa(i,:),nChannels,nChannels);
+   V  = inv(VI) * V;
+   VT(:,:,i) = V;
+   SS(:,:,i) = V * pf * V';
+   ST = SS(:,:,i);
+   <span class="keyword">if</span> nargin &lt; 6
+      U = real(diag(ST));
+      U = 1./sqrt(U);
+      U = diag(U);
+      Coh(:,:,i) = U * ST * U;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> Ndata ~= 1
+   SS = 2*pi*SS/Ndata;
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% SS_alg_AB
 %       Calculate the spectral density matrix (SS), B(f) and spectral coherence
@@ -91,7 +134,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %       B         - [nChannels,nChannels,q+1] - VMA repesentation part
 %       pf        - white input covariance matrix  
 %       nFreqs    - number of desired frequency points
-%       Ndata         - data length
+%       Ndata     - data length
 %       flgNoCoh  - any value if complex coherence is not desired.
 %
 %% Output arguments
@@ -103,31 +146,36 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %       To compute dtf:
 %          c=wasymp_dtf(u,VT,pf,nFreqs,'diag',0,SS);
 %       To compute pdc: 
-%          c=wasymp_pdc(u,VT,pf,nFreqs,'diag',0,SS); % metric='diag'
+%          c=wasymp_pdc(u,VT,pf,nFreqs,'diag',0,SS);
 %
 % See also SS_ALG, SS_ALG2, SS_ALG_B
+%          | <ss_alg.html> | <ss_alg2.html> | <ss_alg_B.html> |
 %
 
 function [SS,VT,Coh]=SS_alg_AB(A,B,pf,nFreqs,Ndata,flgNoCoh)
 
-Coh = [];
+[nChannels,~,pt]  = size(A);
+[mt, ~, qt] = size(B);
 
-[nChannels,~,pt] = size(A);
+if nChannels ~= mt, error('A and B have different numbers of channel.'); end
 mt = nChannels * nChannels;
+
 AA = reshape(permute(A,[3 1 2]),pt,mt);
-AA = [reshape(eye(nChannels),1,mt); -AA;zeros(2*nFreqs-pt-1,mt)];
+AA = [reshape(eye(nChannels),1,mt); -AA; zeros(2*nFreqs-pt-1,mt)];
 fa = fft(AA); fa = fa(1:nFreqs,:);
 
-[nChannels,~,qt] = size(B);
-mt = nChannels * nChannels;
 BB = reshape(permute(B,[3 1 2]),qt,mt);
-BB = [BB;zeros(2*nFreqs-qt,mt)];
+BB = [BB; zeros(2*nFreqs-qt,mt)];
 fb = fft(BB); fb = fb(1:nFreqs,:);
 
-SS = zeros(nChannels,nChannels,nFreqs);
-if nargin<6
-   Coh = SS;
+if nargin < 6
+   Coh = zeros(nChannels,nChannels,nFreqs);
+else
+   Coh = [];
 end
+
+SS = zeros(nChannels,nChannels,nFreqs);
+
 for i = 1:nFreqs
    V  = reshape(fb(i,:),nChannels,nChannels);
    VI = reshape(fa(i,:),nChannels,nChannels);
@@ -135,18 +183,17 @@ for i = 1:nFreqs
    VT(:,:,i) = V;
    SS(:,:,i) = V * pf * V';
    ST = SS(:,:,i);
-   if nargin<6
+   if nargin < 6
       U = real(diag(ST));
       U = 1./sqrt(U);
       U = diag(U);
       Coh(:,:,i) = U * ST * U;
    end
 end
+
 if Ndata ~= 1
    SS = 2*pi*SS/Ndata;
 end
-
-
 
 ##### SOURCE END #####
 --></body></html>

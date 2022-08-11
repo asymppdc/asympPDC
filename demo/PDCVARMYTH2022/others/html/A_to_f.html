@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>A_to_f</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-18"><meta name="DC.source" content="A_to_f.m"><style type="text/css">
+      --><title>A_to_f</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="A_to_f.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -68,7 +69,38 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
   </style></head><body><div class="content"><h1>A_to_f</h1><!--introduction--><pre>      Calculates A(f), in the positive frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input arguments</a></li><li><a href="#3">Output arguments</a></li></ul></div><h2 id="1">Syntax</h2><pre>     AL = A_to_f(A, nFreqs)</pre><h2 id="2">Input arguments</h2><pre>       A      - (nChannels x nChannels x p) Recurrence matrix
                 (nChannels - number of signals, p - model order)
-       nFreqs - frequency resolution</pre><h2 id="3">Output arguments</h2><pre>       AL    - (nFreqs, nChannels, nChannels) A(f)</pre><pre>      See also A_TO_F2.</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+       nFreqs - frequency resolution</pre><h2 id="3">Output arguments</h2><pre>       AL    - (nFreqs, nChannels, nChannels) A(f)</pre><pre>      See also A_TO_F2.
+        | &lt;A_to_f2.html&gt; |</pre><pre class="codeinput"><span class="keyword">function</span> AL = A_to_f(A, nFreqs)
+
+[nChannels,~,p] = size(A);
+Jimag = sqrt(-1);
+
+<span class="comment">% 'exponents' is an array of FFT exponents, on all frequency range for each lag.</span>
+exponents = reshape((-Jimag*pi*kron(0:(nFreqs-1),(1:p))/nFreqs),p,nFreqs).';
+
+Areshaped = reshape(A, nChannels,nChannels,1,p);
+Af = zeros(nChannels,nChannels,nFreqs,p);
+<span class="keyword">for</span> kk = 1:nFreqs
+   Af(:,:,kk,:) = Areshaped;
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:nChannels
+   <span class="keyword">for</span> k = 1:nChannels
+      Af(i,k,:,:) = reshape(Af(i,k,:,:),nFreqs,p).*exp(exponents);
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+Af = permute(Af, [3,1,2,4]);
+AL = zeros(nFreqs,nChannels,nChannels);
+<span class="keyword">for</span> kk = 1:nFreqs
+   temp = zeros(nChannels,nChannels);
+   <span class="keyword">for</span> k = 1:p
+      temp = temp+reshape(Af(kk,:,:,k),nChannels,nChannels);
+   <span class="keyword">end</span>
+   temp = eye(nChannels)-temp;
+   AL(kk,:,:) = reshape(temp,1,nChannels,nChannels);
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% A_to_f
 %        Calculates A(f), in the positive frequency domain.
@@ -85,6 +117,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %         AL    - (nFreqs, nChannels, nChannels) A(f)
 %
 %        See also A_TO_F2.
+%          | <A_to_f2.html> |
 %
 
 function AL = A_to_f(A, nFreqs)
@@ -99,17 +132,17 @@ Areshaped = reshape(A, nChannels,nChannels,1,p);
 Af = zeros(nChannels,nChannels,nFreqs,p);
 for kk = 1:nFreqs
    Af(:,:,kk,:) = Areshaped;
-end;
+end
 
-for i = 1:nChannels,
-   for k = 1:nChannels,
+for i = 1:nChannels
+   for k = 1:nChannels
       Af(i,k,:,:) = reshape(Af(i,k,:,:),nFreqs,p).*exp(exponents);
    end
 end
 
 Af = permute(Af, [3,1,2,4]);
 AL = zeros(nFreqs,nChannels,nChannels);
-for kk = 1:nFreqs,
+for kk = 1:nFreqs
    temp = zeros(nChannels,nChannels);
    for k = 1:p
       temp = temp+reshape(Af(kk,:,:,k),nChannels,nChannels);

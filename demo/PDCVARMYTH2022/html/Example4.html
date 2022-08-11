@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example 4 -- Nonminimum Phase Data Model</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-07-06"><meta name="DC.source" content="Example4.m"><style type="text/css">
+      --><title>Example 4 -- Nonminimum Phase Data Model</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="Example4.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -74,6 +75,8 @@ disp(<span class="string">'        Example 4'</span>)
 <span class="keyword">if</span> isOctave()
    warning <span class="string">off</span>
 <span class="keyword">end</span>
+</pre><pre class="codeoutput">===========================
+        Example 4
 </pre><h2 id="2">Choosing Wilson factorization routine</h2><pre class="codeinput">flgWilson = 1; <span class="comment">% 1: Awilson.m (in-house); 2: specfactorization_wilson.m by [1].</span>
 <span class="comment">%</span>
 <span class="comment">%               [1] Henderson JA, Dhamala M, and Robinson PA (2021). Brain</span>
@@ -95,6 +98,7 @@ NFreqs = 1024;
 
 <span class="comment">% Data generation</span>
 [y,seed_out,epsilon0] = datagenAB(A,B,pf,Ndata,1); <span class="comment">% Note A=[].</span>
+</pre><pre class="codeoutput">This is a model with A = [].
 </pre><h2 id="4">Line width &amp; color space for plotting four measures</h2><pre class="codeinput"><span class="comment">% Line width in point unit</span>
 lWidth = [3.003  4.507 3.507 1.752];
 <span class="comment">%         Theo   VMA   VAR   WN    -- measure</span>
@@ -168,7 +172,7 @@ h8 = figure;
  set(h8,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
         <span class="string">'position'</span>,[2*rspacing/khmon+rwidth2x2 1-rheight2x2 <span class="keyword">...</span>
                                                 rwidth2x2 rheight2x2])
-</pre><h2 id="7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
+</pre><img vspace="5" hspace="5" src="Example4_01.png" alt=""> <img vspace="5" hspace="5" src="Example4_02.png" alt=""> <h2 id="7">Plotting sequence: VMA(black), VAR(gray), Theo(blue), WN(red)</h2><pre class="codeinput">N  = length(lWidth);  <span class="comment">% Number of plotted measures</span>
 kk = 0; <span class="comment">% Counter</span>
 
 <span class="keyword">for</span> k = [2 3 1 4]
@@ -188,7 +192,7 @@ kk = 0; <span class="comment">% Counter</span>
          [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
          ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,<span class="string">'info'</span>,0,SSx);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.pdc,pfx);
 
          figure(h7)
          standplotx2(real(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
@@ -197,7 +201,10 @@ kk = 0; <span class="comment">% Counter</span>
          figure(h8)
          standplotx2(imag(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(3)
-</pre><h2 id="11">Plot 2 : Standard VAR (gray lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
+</pre><pre class="codeoutput">===========================
+(1) VMA : black
+* Information PDC estimation
+</pre><img vspace="5" hspace="5" src="Example4_03.png" alt=""> <img vspace="5" hspace="5" src="Example4_04.png" alt=""> <h2 id="11">Plot 2 : Standard VAR (gray lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 3
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') VAR : gray'</span>])
 
@@ -207,7 +214,7 @@ kk = 0; <span class="comment">% Counter</span>
          <span class="comment">% Information PDC estimation</span>
          cy = asymp_pdc(y,Aa,pfa,1024,<span class="string">'info'</span>,0);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.pdc,pfa);
 
          figure(h7)
          standplotx2(real(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
@@ -216,14 +223,28 @@ kk = 0; <span class="comment">% Counter</span>
          figure(h8)
          standplotx2(imag(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(3)
-</pre><h2 id="14">Plot 3 : Theoretical (blue lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 1
+</pre><pre class="codeoutput">===========================
+(2) VAR : gray
+maxOrder limited to 30
+IP=1  vaic=421280.332731
+IP=2  vaic=412043.858432
+IP=3  vaic=410999.569152
+IP=4  vaic=409579.954479
+IP=5  vaic=409103.390412
+IP=6  vaic=408851.710710
+IP=7  vaic=408765.659576
+IP=8  vaic=408738.767373
+IP=9  vaic=408728.786486
+IP=10  vaic=408737.311662
+ 
+</pre><img vspace="5" hspace="5" src="Example4_05.png" alt=""> <img vspace="5" hspace="5" src="Example4_06.png" alt=""> <h2 id="14">Plot 3 : Theoretical (blue lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 1
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') Theoretical : blue'</span>])
 
          [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);
          ct = wasymp_pdc(y,VT,pf,1024,<span class="string">'info'</span>,0,SS);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.pdc,pf);
 
          figure(h7);
          standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
@@ -232,7 +253,10 @@ kk = 0; <span class="comment">% Counter</span>
          figure(h8);
          standplotx2(imag(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
          drawnow; shg; pause(3)
-</pre><h2 id="17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 4
+</pre><pre class="codeoutput">===========================
+(3) Theoretical : blue
+* Information PDC estimation
+</pre><img vspace="5" hspace="5" src="Example4_07.png" alt=""> <img vspace="5" hspace="5" src="Example4_08.png" alt=""> <h2 id="17">Plot 4 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 4
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
          disp([<span class="string">'('</span> int2str(kk) <span class="string">') WN : red'</span>])
 
@@ -272,7 +296,7 @@ kk = 0; <span class="comment">% Counter</span>
          Su = 2*pi*Su;
          ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,<span class="string">'info'</span>,0,Su);
 
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.pdc,Sigma);
 
          figure(h7)
          <span class="comment">% Set axis limits</span>
@@ -289,17 +313,21 @@ kk = 0; <span class="comment">% Counter</span>
 
 <span class="comment">%          saveas(h7,'html/fig_Example4A.jpg')</span>
 <span class="comment">%          saveas(h8,'html/fig_Example4B.jpg')</span>
-</pre><h2 id="21">Figure 4A - total Partial Directed Coherence real component nonminimum phase model</h2><p><img vspace="5" hspace="5" src="fig_Example4A.jpg" alt=""> </p><h2 id="22">Figure 4B - total Partial Directed Coherence imaginary component nonminimum phase model</h2><p><img vspace="5" hspace="5" src="fig_Example4B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><p>Final position: bottom right quadrant</p><pre class="codeinput">set(h7,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
+</pre><pre class="codeoutput">===========================
+(4) WN : red
+* Using in-house 'AWilson.m' routine for spectral factorization.
+* Information PDC estimation
+</pre><img vspace="5" hspace="5" src="Example4_09.png" alt=""> <img vspace="5" hspace="5" src="Example4_10.png" alt=""> <h2 id="21">Figure 4A - total Partial Directed Coherence real component nonminimum phase model</h2><p><img vspace="5" hspace="5" src="fig_Example4A.jpg" alt=""> </p><h2 id="22">Figure 4B - total Partial Directed Coherence imaginary component nonminimum phase model</h2><p><img vspace="5" hspace="5" src="fig_Example4B.jpg" alt=""> </p><h2 id="23">Position the figure windows on screen for better visualization</h2><p>Final position: bottom right quadrant</p><pre class="codeinput">set(h7,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
        <span class="string">'position'</span>,[1/khmon-2*rspacing/khmon-2*rwidth2x2 0 rwidth2x2 rheight2x2])
 set(h8,<span class="string">'units'</span>,<span class="string">'normalized'</span>, <span class="keyword">...</span>
        <span class="string">'position'</span>,[1/khmon-rspacing/khmon-rwidth2x2     0 rwidth2x2 rheight2x2])
-</pre><h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h7)</span>
+</pre><img vspace="5" hspace="5" src="Example4_11.png" alt=""> <img vspace="5" hspace="5" src="Example4_12.png" alt=""> <h2 id="24">To export the figures, uncomment following four lines, then rerun this script.</h2><pre class="codeinput"><span class="comment">% figure(h7)</span>
 <span class="comment">% print -depsc fig_example4_real.eps</span>
 <span class="comment">% figure(h8)</span>
 <span class="comment">% print -depsc fig_example4_imag.eps</span>
 </pre><h2 id="25">Clear local variables and parameters</h2><pre class="codeinput">clear <span class="string">A*</span> <span class="string">B*</span> <span class="string">C*</span> <span class="string">I*</span> <span class="string">N*</span> <span class="string">P*</span> <span class="string">S*</span> <span class="string">V*</span> <span class="string">Hx</span> <span class="string">m</span> <span class="string">tol</span> <span class="string">u</span> <span class="string">vaic</span> <span class="string">height</span> <span class="string">i</span> <span class="string">j</span> <span class="string">lWidth</span> <span class="string">m</span> <span class="string">nFreqs</span> <span class="keyword">...</span>
       <span class="string">a*</span> <span class="string">c*</span> <span class="string">e*</span> <span class="string">f*</span> <span class="string">k*</span> <span class="string">p*</span> <span class="string">r*</span> <span class="string">s*</span> <span class="string">y*</span> <span class="string">w*</span>
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Example 4 REPLACE_WITH_DASH_DASH Nonminimum Phase Data Model
 % This is part of supplemental material accompanying the article of
@@ -465,7 +493,7 @@ for k = [2 3 1 4]
          [SSx,VTx,Cohx] = SS_alg_B(Bx,pfx/Ndata,1024,Ndata);
          ctx = wasymp_pdc(y,VTx,pfx/Ndata,1024,'info',0,SSx);
          
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.cpdc,pfx);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctx.pdc,pfx);
          
          figure(h7)
          standplotx2(real(pdct),[],alimits,flghold,C(2,:),flgYaxis,lWidth(k))
@@ -486,7 +514,7 @@ for k = [2 3 1 4]
          % Information PDC estimation
          cy = asymp_pdc(y,Aa,pfa,1024,'info',0);
          
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.cpdc,pfa);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(cy.pdc,pfa);
          
          figure(h7)
          standplotx2(real(pdct),[],alimits,flghold,C(3,:),flgYaxis,lWidth(k))
@@ -504,7 +532,7 @@ for k = [2 3 1 4]
          [SS,VT,Coh] = SS_alg_B(BB,pf,1024,Ndata);
          ct = wasymp_pdc(y,VT,pf,1024,'info',0,SS);
          
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.cpdc,pf);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ct.pdc,pf);
          
          figure(h7);
          standplotx2(real(pdct),[],alimits,flghold,C(1,:),flgYaxis,lWidth(k))
@@ -556,7 +584,7 @@ for k = [2 3 1 4]
          Su = 2*pi*Su;
          ctz = wasymp_pdc(u,Hx,Sigma,nFreqs,'info',0,Su);
          
-         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.cpdc,Sigma);
+         [pdct,pdc,pdcr,pdcp,spdc,y0i] = pdc_tot_p(ctz.pdc,Sigma);
          
          figure(h7)
          % Set axis limits

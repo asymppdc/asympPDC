@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>VARMALSET</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-21"><meta name="DC.source" content="varmalset.m"><style type="text/css">
+      --><title>VARMALSET</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="varmalset.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -73,7 +74,61 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
       q      - model order (q+1 output matrices)</pre><h2 id="3">Output arguments</h2><pre>      AA     - [m,m,p] array of AR parameters
       BB     - [m,m,q+1] array of parameters
       we     - model observation errors
-      pe     - model observation error covariance matrix</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+      pe     - model observation error covariance matrix</pre><pre class="codeinput"><span class="keyword">function</span> [AA,BB,we,pe]=varmalset(y,x,p,q)
+
+[m,n] = size(y);
+yo = y';
+
+xi = x';
+
+HB = [];HA = HB;
+<span class="keyword">for</span> i = 1:m
+   VA = toeplitz(yo(:,i),[yo(1,i) zeros(1,p)]);
+   VA = VA(:,2:end);
+   HA = [HA VA];
+<span class="keyword">end</span>
+
+GA = zeros(m*n,m*p);
+<span class="keyword">for</span> i = 1:m
+   GA(1+(i-1)*n:i*n, 1+(p)*m*(i-1):i*(p)*m) = HA;
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:m
+   VB = toeplitz(xi(:,i),[xi(1,i) zeros(1,q)]);
+   VB = VB(:,2:end);
+   HB = [HB VB];
+<span class="keyword">end</span>
+
+GB = zeros(m*n,m*(q));
+<span class="keyword">for</span> i = 1:m
+   GB(1+(i-1)*n:i*n, 1+(q)*m*(i-1):i*(q)*m) = HB;
+<span class="keyword">end</span>
+
+G = [GA GB];
+T = G'*(yo(:)-xi(:));
+B = inv(G'*G) * T;
+we = yo(:)-G*B; we = reshape(we,n,m)'; pe = we*we'/n;
+v = B(1:m*m*p);
+vv = reshape(v,p,m*m);
+
+k = 1;
+<span class="keyword">for</span> i = 1:m,
+   <span class="keyword">for</span> j = 1:m,
+      AA(i,j,:) = vv(:,k);
+      k = k+1;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+vt = B(m*m*p+1:end);
+vvt = reshape(vt,q,m*m);
+k = 1;
+<span class="keyword">for</span> i = 1:m
+   <span class="keyword">for</span> j = 1:m
+      BB(i,j,:) = vvt(:,k);
+      k = k+1;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% VARMALSET
 %        Fit a transfer matrix to multivariate inputs  via Least Squares
@@ -111,7 +166,7 @@ end
 
 GA = zeros(m*n,m*p);
 for i = 1:m
-   GA(1+(i-1)*n:i*n,1+(p)*m*(i-1):i*(p)*m) = HA;
+   GA(1+(i-1)*n:i*n, 1+(p)*m*(i-1):i*(p)*m) = HA;
 end
 
 for i = 1:m
@@ -122,7 +177,7 @@ end
 
 GB = zeros(m*n,m*(q));
 for i = 1:m
-   GB(1+(i-1)*n:i*n,1+(q)*m*(i-1):i*(q)*m) = HB;
+   GB(1+(i-1)*n:i*n, 1+(q)*m*(i-1):i*(q)*m) = HB;
 end
 
 G = [GA GB];

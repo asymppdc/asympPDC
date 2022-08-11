@@ -1,0 +1,211 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>fbaccala2001b_model2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="fbaccala2001b_model2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ u ] = fbaccala2001b_model2( nPoints, nDiscard )
+
+<span class="comment">% Baccala &amp; Sameshima. Overcoming the limitations of correlation analysis</span>
+<span class="comment">% for many simultaneously processed neural structures, Progress in Brain</span>
+<span class="comment">% Research, 130:33--47, 2001.</span>
+<span class="comment">%            http://dx.doi.org/10.1016/S0079-6123(01)30004-3</span>
+<span class="comment">%</span>
+<span class="comment">% Example 6-dimensional VAR[4] Scalp EEG model II</span>
+
+
+disp(<span class="string">'======================================================================'</span>);
+disp(<span class="string">'                       Linear VAR[4] Model II'</span>)
+disp(<span class="string">'        Baccala &amp; Sameshima. Prog Brain Research, 130:33--47, 2001.'</span>)
+disp(<span class="string">'        x1==&gt;x2  x1==&gt;x4  x2==&gt;x3 x2--&gt;x5 x5==&gt;x6 x6--&gt;x4  x6==&gt;x5'</span>);
+disp(<span class="string">'======================================================================'</span>);
+
+<span class="keyword">if</span> (nargin == 0),
+   nPoints = 1000;
+   nDiscard = 5000;
+   disp([<span class="string">'Adopting default '</span> int2str(nDiscard) <span class="string">' discarding points, and'</span>])
+   disp([<span class="string">'generating '</span> int2str(nPoints) <span class="string">' simulation data point.'</span>])
+
+<span class="keyword">elseif</span>   (nargin &lt; 2),
+   nDiscard = 5000;
+   disp([<span class="string">'Adopting default '</span> int2str(nDiscard) <span class="string">' discarding points.'</span>])
+<span class="keyword">end</span>;
+
+<span class="keyword">if</span> (nDiscard &lt; 1),
+   nDiscard = 5000;
+   disp([<span class="string">'Adopting default '</span> int2str(nDiscard) <span class="string">' discarding points.'</span>])
+<span class="keyword">end</span>;
+
+<span class="keyword">if</span> nPoints &lt; 10,
+   nPoints = 100;
+   disp([<span class="string">'Adopting default '</span> int2str(nPoints) <span class="string">' simulation data points.'</span>])
+<span class="keyword">end</span>;
+
+N = nDiscard+nPoints; <span class="comment">% number of simulated points.</span>
+
+
+randn(<span class="string">'state'</span>, sum(100*clock))
+ei=randn(6,N);
+x1=zeros(1,N);
+x2=zeros(1,N);
+x3=zeros(1,N);
+x4=zeros(1,N);
+x5=zeros(1,N);
+x6=zeros(1,N);
+
+<span class="comment">% Variables initialization</span>
+<span class="keyword">for</span> t=1:4,
+   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
+   x5(t)=randn(1); x6(t)=randn(1);;
+<span class="keyword">end</span>;
+
+<span class="keyword">for</span> t=5:N,
+   x1(t) = 1.8982*x1(t-1) - 0.9025*x1(t-2)+ ei(1,t);
+   x2(t) = 0.9*x1(t-2) + ei(2,t);
+   x3(t) = 0.85*x2(t-2) + ei(3,t);
+   x4(t) = 0.82*x1(t-2) + 0.6*x6(t-3) + ei(4,t);
+   x5(t) = -0.9*x6(t-2) + 0.4*x2(t-4) + ei(5,t);
+   x6(t) = 0.9*x5(t-2) + ei(6,t);
+<span class="keyword">end</span>;
+
+y=[x1' x2' x3' x4' x5' x6']; <span class="comment">% data must be organized column-wise</span>
+u=y(nDiscard+1:N,:);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [ u ] = fbaccala2001b_model2( nPoints, nDiscard )
+
+% Baccala & Sameshima. Overcoming the limitations of correlation analysis 
+% for many simultaneously processed neural structures, Progress in Brain 
+% Research, 130:33REPLACE_WITH_DASH_DASH47, 2001.
+%            http://dx.doi.org/10.1016/S0079-6123(01)30004-3
+% 
+% Example 6-dimensional VAR[4] Scalp EEG model II
+
+
+disp('======================================================================');
+disp('                       Linear VAR[4] Model II')
+disp('        Baccala & Sameshima. Prog Brain Research, 130:33REPLACE_WITH_DASH_DASH47, 2001.')
+disp('        x1==>x2  x1==>x4  x2==>x3 x2REPLACE_WITH_DASH_DASH>x5 x5==>x6 x6REPLACE_WITH_DASH_DASH>x4  x6==>x5');
+disp('======================================================================');
+
+if (nargin == 0),
+   nPoints = 1000;
+   nDiscard = 5000;
+   disp(['Adopting default ' int2str(nDiscard) ' discarding points, and'])
+   disp(['generating ' int2str(nPoints) ' simulation data point.'])
+   
+elseif   (nargin < 2),
+   nDiscard = 5000;
+   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+end;
+
+if (nDiscard < 1),
+   nDiscard = 5000;
+   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+end;
+
+if nPoints < 10,
+   nPoints = 100;
+   disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
+end;
+
+N = nDiscard+nPoints; % number of simulated points.
+
+
+randn('state', sum(100*clock))
+ei=randn(6,N);
+x1=zeros(1,N);
+x2=zeros(1,N);
+x3=zeros(1,N);
+x4=zeros(1,N);
+x5=zeros(1,N);
+x6=zeros(1,N);
+
+% Variables initialization
+for t=1:4,
+   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
+   x5(t)=randn(1); x6(t)=randn(1);; 
+end;
+
+for t=5:N,
+   x1(t) = 1.8982*x1(t-1) - 0.9025*x1(t-2)+ ei(1,t);
+   x2(t) = 0.9*x1(t-2) + ei(2,t);
+   x3(t) = 0.85*x2(t-2) + ei(3,t);
+   x4(t) = 0.82*x1(t-2) + 0.6*x6(t-3) + ei(4,t);
+   x5(t) = -0.9*x6(t-2) + 0.4*x2(t-4) + ei(5,t);
+   x6(t) = 0.9*x5(t-2) + ei(6,t);
+end;
+
+y=[x1' x2' x3' x4' x5' x6']; % data must be organized column-wise
+u=y(nDiscard+1:N,:);
+
+end
+
+
+##### SOURCE END #####
+--></body></html>

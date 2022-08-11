@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>PDC_TOT_P</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-18"><meta name="DC.source" content="pdc_tot_p.m"><style type="text/css">
+      --><title>PDC_TOT_P</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="pdc_tot_p.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -75,7 +76,33 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
       y0i  - second component of Residual directed iPDC in Eq. (27) [1]</pre><h2 id="4">References:</h2><pre>  [1] Baccala LA, Sameshima K (2021). Frequency domain repercussions of
       instantaneous Granger causality. Entropy 23(8), 1037
                     &lt;https://doi.org/10.3390/e23081037&gt;</pre><pre>          (This link may not work from within MATLAB Web browser. The
-          work-around is to copy the link into your favorite browser.)</pre><pre>      See also ASYMP_PDC.</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+          work-around is to copy the link into your favorite browser.)</pre><pre>      See also ASYMP_PDC.
+             | &lt;asymp_pdc.html&gt; |</pre><pre class="codeinput"><span class="comment">% This code segment will be incorporate into the 'asymp_pdc.m' function of</span>
+<span class="comment">% Asymp_PDC package.</span>
+
+<span class="keyword">function</span> [pdct,pdc,pdcr,pdcp,spdc,y0i]=pdc_tot_p(cipdc,pf)
+
+[nChannels,~,nFreqs] = size(cipdc);
+[ipf,g0] = dediag(pf,1);
+g0 = diag(g0);
+rho_I = ipf-eye(nChannels);
+y0 = cipdc;
+<span class="keyword">for</span> ff = 1:nFreqs
+    y01(:,:,ff) = g0 * y0(:,:,ff);
+    yi(:,:,ff)  = rho_I * y01(:,:,ff);
+    ye(:,:,ff)  = ipf * y01(:,:,ff);
+<span class="keyword">end</span>
+spdc = y01;
+y0i  = yi;
+yi   = yi.*conj(y01);
+y0   = conj(y01).*y01;
+y    = y0 + yi;
+pdct = y;
+pdc  = y0;
+pdcr = yi;
+pdcp = ye;
+spdc = cipdc;
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% PDC_TOT_P
 %        Calculate total information PDC as proposed in [1].
@@ -104,6 +131,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %            work-around is to copy the link into your favorite browser.)
 %
 %        See also ASYMP_PDC.
+%               | <asymp_pdc.html> |
 %
 
 % This code segment will be incorporate into the 'asymp_pdc.m' function of
@@ -111,10 +139,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 function [pdct,pdc,pdcr,pdcp,spdc,y0i]=pdc_tot_p(cipdc,pf)
 
-[n,~,nFreqs] = size(cipdc);
+[nChannels,~,nFreqs] = size(cipdc);
 [ipf,g0] = dediag(pf,1);
 g0 = diag(g0);
-rho_I = ipf-eye(n);
+rho_I = ipf-eye(nChannels);
 y0 = cipdc;
 for ff = 1:nFreqs
     y01(:,:,ff) = g0 * y0(:,:,ff);
