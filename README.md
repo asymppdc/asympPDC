@@ -1,7 +1,16 @@
 # MATLAB and Octave AsympPDC Package
+<<<<<<< HEAD
+=======
+
+by Koichi Sameshima and Luiz A. Baccalá
+>>>>>>> 4bf9836eb08fa069930f9d657e3ff83cd4f8a8d0
 
 by Koichi Sameshima and Luiz A. Baccalá
 July 22, 2022
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4bf9836eb08fa069930f9d657e3ff83cd4f8a8d0
 **The AsympPDC Package** is [MATLAB](https://www.mathworks.com/products/matlab.html)/[Octave](https://octave.org/) routines and functions for the analysis of time series or biological signals to infer directional interactions between structures through the Partial Directed Coherence (**PDC**), which is based on the concept of Granger causality, and the Directed Transfer Function (**DTF**) in the frequency domain, both in three metrics --- Euclidean, diagonal and information --- and rigorous asymptotic statistics providing p-values and confidence interval in the frequency domain. 
 
 ## Installation and usage
@@ -30,6 +39,7 @@ This command will distribute the figures across screen. The `tilefigs1` or `tile
 ## Our diagrammatic view of connectivity measures
 
 The figure bellow shows  schematically the connectivity, Granger causality and allied concepts developed along the last half-century.  The measures inside the yellow area are those implemented in **The AsympPDC Package**.
+<<<<<<< HEAD
 ![](./connectivity_measures_in_asymppdc.png)
 
 * **Legend**: **N**  number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
@@ -42,12 +52,30 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
   ## Getting started road map
   
   To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be of help to deal with your own data sets. The basic steps to set up and analyze a data set using **the asympPDC Package** are:
+=======
+
+![](./connectivity_measures_in_asymppdc.png)
+
+* **Legend**: **N**  number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function. 
+
+* **Authors**(sorted by year): [Akaike 1968](https://doi.org/10.1007/BF02911655); [Granger 1969](https://www.jstor.org/stable/1912791); [Gersch and Goddard 1970](https://doi.org/10.1126/science.169.3946.701); [Sims 1972](https://www.jstor.org/stable/1806097); [Geweke 1979](https://doi.org/10.1016/0304-4076(78)90067-2); Saito and Harashima 1981; [Geweke 1982](https://doi.org/10.2307/2287238); [Geweke 1984](https://doi.org/10.2307/2288723); [Kamiński and Blinowska 1991](https://doi.org/10.1007/bf00198091);  [Hosoya 1991](https://doi.org/10.1007/BF01192551); Lütkepohl 1993 --> [2005](https://doi.org/10.1007/978-3-540-27752-1); [Hosoya 1994](); [Baccalá et al. 1998](); [Baccalá and Sameshima 2001](https://doi.org/10.1007/PL00007990); [Schelter et al. 2005](https://doi.org/10.1016/j.jneumeth.2005.09.001); [Baccalá et al. 2006](https://doi.org/10.1002/9783527609970.ch16);  [Takahashi et al. 2007](https://doi.org/10.1080/02664760701593065); [Baccalá et al. 2007](https://doi.org/10.1109/ICDSP.2007.4288544); [de Brito et al. 2010](https://doi.org/10.1109/IEMBS.2010.5626856); [Takahashi et al. 2010](https://doi.org/10.1007/s00422-010-0410-x); [Baccalá et al. 2013](https://doi.org/10.1098/rsta.2012.0158); [Baccalá et al. 2016](https://doi.org/10.1109/TBME.2016.2550199).
+
+> 1. Lütkepohl, H. (1993) Introduction to Multiple Time Series Analysis. 2nd Edition, Springer, Berlin.
+> 
+> 2. Saito, Y. and H. Harashima (1981) Tracking of information within multichannel record: Causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam, Elsevier. (Hard to find!)
+
+## Getting started road map
+
+To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be of help to deal with your own data sets. The basic steps to set up and analyze a data set using **the asympPDC Package** are:
+
+>>>>>>> 4bf9836eb08fa069930f9d657e3ff83cd4f8a8d0
 1. Import or open row-vectors data file;
 2. Choose proper label for your data, assigning values to `chLabels`  variable;
 3. Data pre-processing: filtering, detrending and standardization (optional);
 4. Multivariate autoregressive (MAR) model estimation, by choosing parameters, estimation algorithm and model order selection criterion;
 5. PDC or DTF estimation, choosing analysis parameters such as significance levels for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , metric for PDC/DTF,  and number of frequency points, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for your further analysis, or to plot them; 
 6. To visualize analysis results, use `xplot`, `xplot_pvalues` and `xplot_title` functions to properly format and plot PDC/DTF and corresponding p-values results in `struct variable` obtained in the previous step in the frequency domain by choosing `xplot` and `xplot_pvalues` plotting parameters, i.e.  `flgPrinting`, `w_max`,  `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`.  See further details in the `xplot` function.
+<<<<<<< HEAD
    
    ### Examples
    
@@ -59,6 +87,20 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
    ### A. The AsympPDC toolbox implementation is based mainly on the following articles and books
    
    [1] L.A. Baccalá and K. Sameshima (2001a). Partial directed coherence: a new concept
+=======
+
+### Examples
+
+Examples from the literature are provided in `./examples directory`  with complete m-files with program structure similar to `analysis_template.m`. We hope that the examples may help readers and users to understand and/or gain further insight into Granger causality, instantaneous Granger causality, PDC, and DTF concepts and the realm of connectivity analysis. Use MATLAB/Octave `help` command to look up more detail of each function or script. The help itself will eventually provide links to the corresponding literature materials.  
+
+We hope you enjoy it. Good luck.
+
+## References
+
+### A. The AsympPDC toolbox implementation is based mainly on the following articles and books
+
+ [1] L.A. Baccalá and K. Sameshima (2001a). Partial directed coherence: a new concept
+>>>>>>> 4bf9836eb08fa069930f9d657e3ff83cd4f8a8d0
      in neural structure determination. *Biol Cybern* **84**:463--474.
      <https://doi.org/10.1007/PL00007990>
    [2] D.Y. Takahashi, L.A. Baccalá and K. Sameshima (2007), Connectivity inference
@@ -91,6 +133,7 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
    [9] K. Sameshima and L.A. Baccalá Eds. (2014). Methods in Brain Connectivity 
     Inference through Multivariate Time Series Analysis. CRC Press, Boca Raton.
     <https://doi.org/10.1201/b16550>
+<<<<<<< HEAD
    
    ### B. Historical development: Biological Cybernetics 60th ANNIVERSARY RETROSPECTIVE
    
@@ -111,3 +154,25 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
    ## Cite as
    
    Koichi Sameshima and Luiz A. Baccalá (2022). AsympPDC Package (https://github.com/asymppdc/asympPDC/releases/tag/v3.0.0), GitHub. Retrieved August 11, 2022.
+=======
+
+### B. Historical development: Biological Cybernetics 60th ANNIVERSARY RETROSPECTIVE
+
+[10] L.A. Baccalá and K. Sameshima (2021). Partial directed coherence: twenty years on some history and an
+appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-00880-y>
+
+### C. Things to come: Total PDC/DTF with asymptotic statistics, spectral factorization and faster PDC/DTF estimation algorithms . . . . .
+
+[11] L.A. Baccalá and K. Sameshima (2021). Frequency domain repercussions of instantaneous
+Granger causality. *Entropy* **23**(8):10.3390/e23081037  <https://doi.org/10.3390/e23081037>
+
+[12] L.A. Baccalá and K. Sameshima (2022).  Partial directed coherence and the vector autoregressive modelling myth and a caveat. *Front Netw Physiol* **2**:845327.  <https://doi.org/10.3389/fnetp.2022.845327> (**Note**: MATLAB scripts and functions used to generate all four figures of this article are provided in [`./demo/PDCVARMYTH2022`](https://github.com/asymppdc/asympPDC/tree/main/demo/PDCVARMYTH2022)  subdirectory. Follow the instructions in Readme file.)
+
+## License
+
+These routines are distributed under GNU General Public License v3.0 under
+authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
+
+## Cite as
+Koichi Sameshima and Luiz A. Baccalá (2022). AsympPDC Package (https://github.com/asymppdc/asympPDC/releases/tag/v3.0.0), GitHub. Retrieved August 11, 2022.
+>>>>>>> 4bf9836eb08fa069930f9d657e3ff83cd4f8a8d0
