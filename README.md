@@ -1,4 +1,6 @@
-# MATLAB and Octave AsympPDC Toolbox
+# MATLAB and Octave AsympPDC Package
+
+by Koichi Sameshima and Luiz A. Baccalá
 
 July 22, 2022
 
@@ -120,3 +122,6 @@ Granger causality. *Entropy* **23**(8):10.3390/e23081037  <https://doi.org/10.33
 
 These routines are distributed under GNU General Public License v3.0 under
 authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
+
+## Cite as
+Koichi Sameshima and Luiz A. Baccalá (2022). AsympPDC Package (https://github.com/asymppdc/asympPDC/releases/tag/v3.0.0), GitHub. Retrieved August 11, 2022.
