@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ASYMP_DTF</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-06-29"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
+      --><title>ASYMP_DTF</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,9 +68,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>ASYMP_DTF</h1><!--introduction--><pre>      Compute DTF connectivity measures magnitude, from series j--&gt; i, for
-      any of three types of metrics -- Euclidean, diagonal and information --
+      any of three of metrics -- Euclidean, diagonal and information --
       as well as asymptotic statistics from vector autoregressive (VAR)
-      coefficients in the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments</a></li><li><a href="#4">Description</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References</a></li><li><a href="#9">Change Log:</a></li></ul></div><h2 id="1">Syntax</h2><pre>      c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments</h2><pre>      u      - multiple time series
+      coefficients in the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments</a></li><li><a href="#4">Description</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References</a></li><li><a href="#8">Change Log:</a></li></ul></div><h2 id="1">Syntax</h2><pre>      c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments</h2><pre>      u      - multiple row vectors time series
       A      - AR estimate matrix obtained via MVAR routine
       pf     - covariance matrix provided via MVAR routine
       nFreqs - number of point in [0,fs/2) frequency scale
@@ -135,11 +136,432 @@ information <span class="string">flow</span> <span class="string">in</span> <spa
 <span class="keyword">function</span>: unified asymptotic <span class="string">theory</span> <span class="string">and</span> <span class="string">some</span> <span class="string">of</span> <span class="string">its</span> <span class="string">implications.</span> <span class="string">IEEE</span> <span class="string">T</span>
 Bio-Med Eng <span class="string">63:2450--2460</span>, 2016.
 &lt;https://doi.org/10.1109/TBME.2016.2550199&gt;
-</pre><p>See also DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT,          asymp_dtf | <a href="asymp_dtf.html">asymp_dtf.html</a> <tt><a href="asymp_pdc.html">asymp_pdc.html</a></tt>% See also MVAR,          asymp_pdc, <a href="ASYMP_DTF.html">ASYMP_DTF.html</a>, XPLOT</p><pre>      1         2         3         4         5         6         7         8         9</pre><h2 id="9">Change Log:</h2><p>[2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on              to match the frequency range with plotting routine, f = 0 was              included in the "frequency" for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [2021/09/02, LAB]: complex dtf calculation added</p><p>[2015/01/07]: Optimization \(^o^)/</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+</pre><p>See also DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT,          asymp_dtf | <a href="asymp_dtf.html">asymp_dtf.html</a> <tt><a href="asymp_pdc.html">asymp_pdc.html</a></tt>% See also MVAR,          asymp_pdc, <a href="ASYMP_DTF.html">ASYMP_DTF.html</a>, XPLOT</p><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2022. See file license.txt in</span>
+<span class="comment">% installation directory for licensing terms.</span>
+
+<span class="keyword">function</span> c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
+
+<span class="keyword">if</span> ~(nargin == 6)
+   error(<span class="string">'ASYMP_DTF requires six input arguments.'</span>)
+<span class="keyword">end</span>
+[m,n] = size(u);
+<span class="keyword">if</span> m &gt; n
+   u = u.';
+<span class="keyword">end</span>
+np = length(u);
+[nChannels,~,p] = size(A);
+Af = A_to_f(A, nFreqs);
+
+flgVerbose = 0;
+
+<span class="comment">% Variables pre-alocation</span>
+dtf  = zeros(nChannels,nChannels,nFreqs); <span class="comment">% dtf will hold complex DTF estimates</span>
+dtf2 = zeros(nChannels,nChannels,nFreqs);
+
+<span class="keyword">if</span> alpha ~= 0
+   th  = zeros(nChannels,nChannels,nFreqs);
+   ci1 = zeros(nChannels,nChannels,nFreqs);
+   ci2 = zeros(nChannels,nChannels,nFreqs);
+   varass1 = zeros(nChannels,nChannels,nFreqs);
+   varass2 = zeros(nChannels,nChannels,nFreqs);
+   patdfr = zeros(nChannels,nChannels,nFreqs);
+   patdenr = zeros(nChannels,nChannels,nFreqs);
+   pvalues = zeros(nChannels,nChannels,nFreqs);
+
+   <span class="keyword">if</span> flgVerbose
+      <span class="keyword">switch</span> lower(metric)
+         <span class="keyword">case</span> {<span class="string">'euc'</span>}
+            disp(<span class="string">'* Original DTF and asymptotic statistics'</span>)
+         <span class="keyword">case</span> {<span class="string">'diag'</span>}
+            disp(<span class="string">'* Generalized DTF or DC and asymptotic statistics'</span>)
+         <span class="keyword">case</span> {<span class="string">'info'</span>}
+            disp(<span class="string">'* Information DTF and asymptotic statistics'</span>)
+         <span class="keyword">otherwise</span>
+            error(<span class="string">'Unknown metric.'</span>)
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">elseif</span> flgVerbose
+   <span class="keyword">switch</span> lower(metric)
+      <span class="keyword">case</span> {<span class="string">'euc'</span>}
+         disp(<span class="string">'* Original DTF estimation'</span>)
+      <span class="keyword">case</span> {<span class="string">'diag'</span>}
+         disp(<span class="string">'* Generalized DTF/DC estimation'</span>)
+      <span class="keyword">case</span> {<span class="string">'info'</span>}
+         disp(<span class="string">'* Information DTF estimation'</span>)
+      <span class="keyword">otherwise</span>
+         error(<span class="string">'Unknown metric.'</span>)
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">switch</span> lower(metric)
+   <span class="keyword">case</span> {<span class="string">'euc'</span>}               <span class="comment">% for DTF</span>
+      ddtf_dev = zeros(1,nChannels^2);
+      pfe  = eye(nChannels);  <span class="comment">% for complex DTF calculation</span>
+
+   <span class="keyword">case</span> {<span class="string">'diag'</span>}              <span class="comment">% for DC</span>
+      evar_d = mdiag(pf);
+      evar_d_big = kron(eye(2),kron(evar_d,eye(nChannels)));
+
+      debig_de = fdebig_de_dtf(nChannels); <span class="comment">%New Theta_K</span>
+      dedinv_deh = debig_de*diag(vec(eye(nChannels)));
+      pfe = pf;                <span class="comment">% for complex DC calculation</span>
+
+   <span class="keyword">case</span> {<span class="string">'info'</span>}               <span class="comment">% for iDTF</span>
+      evar_d = mdiag(pf);
+      evar_d_big = kron(eye(2),kron(evar_d,eye(nChannels)));
+      evar_big = kron(eye(2),kron(pf,eye(nChannels)));
+
+      debig_de = fdebig_de_dtf(nChannels); <span class="comment">%New Theta_K</span>
+      dedinv_deh = debig_de*diag(vec(eye(nChannels)));
+      pfe = pf;                <span class="comment">% for complex iDTF calculation</span>
+
+   <span class="keyword">otherwise</span>
+      error(<span class="string">'Unknown metric.'</span>)
+<span class="keyword">end</span>
+
+gamma = bigautocorr(u, p);
+omega = kron(pinv(gamma), pf);
+omega_evar = 2*Dup(nChannels)*pinv(Dup(nChannels))*kron(pf, pf) <span class="keyword">...</span>
+                            *(pinv(Dup(nChannels)).')*Dup(nChannels).';
+
+icdf_norm_alpha = norminv(1 - alpha/2.0,0,1);
+
+<span class="keyword">for</span> ff = 1:nFreqs
+   f = (ff - 1)/(2*nFreqs); <span class="comment">% Corrected 7/25/2011, f starts at 0.</span>
+   Ca = fCa(f, p, nChannels);
+
+   Af_ff = reshape(Af(ff,:,:),[nChannels, nChannels]);
+   Hf = pinv(Af_ff); h = Hf(:);  <span class="comment">% Equivalent to h = vec(Af[ff, :, :].I)</span>
+
+   h = [real(h); imag(h)];    <span class="comment">% h = cat(h.real, h.imag, 0)</span>
+   H = fdh_da(Af_ff);         <span class="comment">% = ha; H = fdh_da(mat(Af[ff, :, :]), n)</span>
+
+   Omega_h = H*Ca*omega*Ca.'*H.';  <span class="comment">% \Omega_h</span>
+   L = fChol(Omega_h); <span class="comment">% real-part only</span>
+
+   <span class="keyword">for</span> i = 1:nChannels
+      Ii = fIi(i,nChannels);
+
+      <span class="keyword">switch</span> lower(metric)
+         <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% for DTF</span>
+            Iie  = Ii;
+         <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% for DC</span>
+            Iie  = Ii*evar_d_big*Ii;
+         <span class="keyword">case</span> {<span class="string">'info'</span>}          <span class="comment">% for iDTF</span>
+            Iie  = Ii*evar_big;
+         <span class="keyword">otherwise</span>
+            error(<span class="string">'Unknown metric.'</span>)
+      <span class="keyword">end</span>
+
+      <span class="keyword">for</span> j = 1:nChannels
+         Iij = fIij(i,j,nChannels);
+
+         <span class="keyword">switch</span> lower(metric)
+            <span class="keyword">case</span> {<span class="string">'euc'</span>}               <span class="comment">% for DTF</span>
+               Iije = Iij;
+
+            <span class="keyword">case</span> {<span class="string">'diag'</span>}              <span class="comment">% for DC</span>
+               Iije = Iij*evar_d_big*Iij;
+
+            <span class="keyword">case</span> {<span class="string">'info'</span>}              <span class="comment">% for iDTF</span>
+               Iije = Iij*evar_d_big;
+
+            <span class="keyword">otherwise</span>
+               error(<span class="string">'Unknown metric.'</span>)
+         <span class="keyword">end</span>
+
+         num = h.'*Iije*h;
+         den = h.'*Iie*h;
+
+         dtf2(i,j,ff) = num/den; <span class="comment">% |DTF_{ij}(ff)|^2 squared-|DTF|</span>
+         dtf(i,j,ff)  = Hf(i,j)*sqrt(pfe(j,j))/sqrt(den); <span class="comment">% complex-DTF</span>
+
+         <span class="comment">% If alpha == 0, do not calculate statistics for faster DTF computation.</span>
+         <span class="keyword">if</span> alpha ~= 0
+            <span class="comment">%'Add evar differentiation'</span>
+            <span class="keyword">switch</span> lower(metric)
+               <span class="keyword">case</span> {<span class="string">'euc'</span>}               <span class="comment">% for DTF</span>
+                  <span class="comment">%nop</span>
+
+               <span class="keyword">case</span> {<span class="string">'diag'</span>}              <span class="comment">% for DC</span>
+                  dnum_dev = kron((Iij*h).', h.'*Iij)*dedinv_deh;
+                  <span class="comment">%'derivative of den by vecE'</span>
+                  dden_dev = kron((Ii*h).', h.'*Ii)*dedinv_deh;
+                  ddtf_dev = (den*dnum_dev - num*dden_dev)/(den^2);
+
+               <span class="keyword">case</span> {<span class="string">'info'</span>}              <span class="comment">% for iDTF</span>
+                  <span class="comment">%'derivative of num by vecE'</span>
+                  dnum_dev = kron((Iij*h).', h.'*Iij) * dedinv_deh;
+                  <span class="comment">%'derivative of den by vecE'</span>
+                  dden_dev = kron((Ii*h).', h.'*Ii) * debig_de;
+                  ddtf_dev = (den*dnum_dev - num*dden_dev)/(den^2);
+
+               <span class="keyword">otherwise</span>
+                  error(<span class="string">'Unknown metric.'</span>)
+            <span class="keyword">end</span>
+
+            G1h = 2*h.'*Iije/den - 2*num*h.'*Iie/(den^2); <span class="comment">% Eq. (15)</span>
+            <span class="comment">%   G1 = -G1h*H*Ca;                           % (Cont.)</span>
+            varalpha = G1h*Omega_h*G1h.';
+            varevar = ddtf_dev*omega_evar*ddtf_dev.';
+            varass1(i,j,ff) = (varalpha + varevar)/np;    <span class="comment">% Eq. (14)</span>
+
+            ci1(i,j,ff) = dtf2(i,j,ff) <span class="keyword">...</span>
+                          - sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+            ci2(i,j,ff) = dtf2(i,j,ff) <span class="keyword">...</span>
+                          + sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+
+            G2h = Iije/den;
+            d = fEig(real(L), real(G2h)); <span class="comment">% real() 28May2013</span>
+
+            patdf = (sum(d).^2)./sum(d.^2);
+            patden = sum(d)./sum(d.^2);
+
+             th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np); <span class="comment">% original KS</span>
+<span class="comment">%            th(i,j,ff) = chi2inv((1 - alpha), patdf)./(np);</span>
+            pvalues(i,j,ff) = 1 - chi2cdf(dtf2(i,j,ff)*patden*np, patdf);
+
+            varass2(i,j,ff) = patdf/(patden*np).^2;
+            patdfr(i,j,ff) = patdf;
+            patdenr(i,j,ff) = patden;
+
+         <span class="keyword">else</span> <span class="comment">% as alpha == 0, do not compute asymptotics</span>
+            <span class="comment">%nop</span>
+         <span class="keyword">end</span>
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> alpha ~= 0
+   c.dtf = dtf;   <span class="comment">% Complex DTF2/DC2/iDTF2</span>
+   c.dtf2 = dtf2;
+   c.th = th;
+   c.ci1 = ci1;  <span class="comment">% Lower CI</span>
+   c.ci2 = ci2;  <span class="comment">% Upper CI</span>
+   c.metric = metric;
+   c.alpha = alpha;
+   c.p = p;
+   c.pvalues = pvalues; <span class="comment">% p-values associated to DTF2/DC2/iDTF2</span>
+   c.patden = patdenr;
+   c.patdf = patdfr;
+   c.varass1 = varass1;
+   c.varass2 = varass2;
+
+   <span class="comment">% Statistically significant DTF2 on frequency scale</span>
+   dtf2_temp = ((abs(dtf2) - abs(th)) &gt; 0).*dtf2 <span class="keyword">...</span>
+                                           + ((abs(dtf2) - abs(th)) &lt;= 0)*(-1);
+   dtf2_temp(dtf2_temp &lt; 0) = NaN; <span class="comment">% Octave</span>
+   c.dtf2_th = dtf2_temp;
+
+<span class="keyword">else</span>
+    c.dtf = dtf;
+    c.dtf2 = dtf2;
+    c.metric = metric;
+    c.alpha = 0;
+    c.p = p;
+    c.th = [];
+    c.ci1 = [];
+    c.ci2 = [];
+    c.pvalues = [];
+    c.patden = [];
+    c.patdf = [];
+    c.varass1 = [];
+    c.varass2 = [];
+<span class="keyword">end</span>
+
+<span class="comment">% Power spectra and coherence calculation</span>
+c.SS = ss_alg(A, pf, nFreqs);
+c.coh2 = coh_alg(c.SS);
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> gamma = bigautocorr(x, p)
+<span class="comment">%Autocorrelation. Data in rows. From order 0 to p-1.</span>
+<span class="comment">%Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''</span>
+[n, nd] = size(x);
+
+gamma = zeros(n*p, n*p);
+<span class="keyword">for</span> i = 1:p
+   <span class="keyword">for</span> j = 1:p
+      gamma(((i - 1)*n + 1):i*n, ((j - 1)*n + 1):j*n) = <span class="keyword">...</span>
+                                       xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> c = xlag(x,tlag)
+<span class="keyword">if</span> tlag == 0
+   c = x;
+<span class="keyword">else</span>
+   c = zeros(size(x));
+   c(:,(tlag + 1):end) = x(:,1:(end - tlag));
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> d = fEig(L, G2)
+<span class="comment">%'''Returns the eigenvalues'''</span>
+
+<span class="comment">%L = mat(cholesky(omega, lower=1))</span>
+D = L.'*G2*L;
+<span class="comment">%    d = eigh(D, eigvals_only=True)</span>
+<span class="comment">%disp('fEig: eig or svd?')</span>
+d = svd(D);
+d1 = sort(d);
+<span class="comment">%</span>
+<span class="comment">% the two biggest eigenvalues no matter which values (non negative by</span>
+<span class="comment">% construction</span>
+<span class="comment">%</span>
+d = d1(length(d) - 1:length(d));
+
+<span class="keyword">if</span> (size(d) &gt; 2)
+   disp(<span class="string">'More than two Chi-squares in the sum:'</span>)
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> c = fIij(i,j,n)
+<span class="comment">%'''Returns Iij of the formula'''</span>
+Iij = zeros(1,n^2);
+Iij(n*(j - 1) + i) = 1;
+Iij = diag(Iij);
+c = kron(eye(2), Iij);
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="comment">% function c = fIj(j,n)</span>
+<span class="comment">% %'''Returns Ij of the formula'''</span>
+<span class="comment">% Ij = zeros(1,n);</span>
+<span class="comment">% Ij(j) = 1;</span>
+<span class="comment">% Ij = diag(Ij);</span>
+<span class="comment">% Ij = kron(Ij,eye(n));</span>
+<span class="comment">% c = kron(eye(2), Ij);</span>
+<span class="comment">% end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> c = fIi(i,n)
+<span class="comment">%    '''Returns Ii of the formula'''</span>
+Ii = zeros(1,n);
+Ii(i) = 1;
+Ii = diag(Ii);
+Ii = kron(eye(n), Ii);
+c = kron(eye(2), Ii);
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> d = fCa(f, p, n)
+<span class="comment">%'''Returns C* of the formula'''</span>
+C1 = cos(-2*pi*f*(1:p));
+S1 = sin(-2*pi*f*(1:p));
+C2 = [C1; S1];
+d = kron(C2, eye(n^2));
+<span class="keyword">end</span>
+<span class="comment">%==========================================================================</span>
+<span class="comment">% function c = fdebig_de(n)</span>
+<span class="comment">% %'''Derivative of kron(I(2n), A) by A'''</span>
+<span class="comment">% %c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));</span>
+<span class="comment">% A=sparse(kron(TT(2*n, n), eye(n*2*n)));</span>
+<span class="comment">% B=sparse(kron(vec(eye(2*n)), eye(n)));</span>
+<span class="comment">% c = A * kron(eye(n), B);</span>
+<span class="comment">% c=sparse(c);</span>
+<span class="comment">% end</span>
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> c = fdebig_de_dtf(n)
+<span class="comment">%''' New \Theta_K for DTF asymptotics'''</span>
+<span class="comment">%c = kron(kron(eye(2*n),TT(n, 2*n)), eye(n)));</span>
+<span class="comment">%A=sparse(kron(eye(2*n), TT(n, 2*n)));</span>
+<span class="comment">%c=sparse(kron(A, eye(n)));</span>
+A=sparse(kron(TT(n^2,2),eye(n^2)));
+A1=sparse(kron(eye(2),A));
+A=sparse(kron(TT(n^2,1),eye(n)));
+<span class="comment">%A=sparse(kron(TT(1,n^2),eye(n)));</span>
+A2=sparse(kron(eye(n),A));
+A3=sparse(kron(eye(n^2),vec(eye(n))));
+A4=sparse(A2*A3);
+A5=sparse(kron(vec(eye(2)),A4));
+c=sparse(A1*A5);
+<span class="comment">% To generate sparse matrix</span>
+<span class="comment">%c=sparse(c*diag(vec(eye(n))));</span>
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> c = vec(x)
+<span class="comment">%vec = lambda x: mat(x.ravel('F')).T</span>
+c=x(:);
+<span class="keyword">end</span>
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> t = TT(a,b)
+<span class="comment">%''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''</span>
+t = zeros(a*b);
+<span class="keyword">for</span> i = 1:a
+   <span class="keyword">for</span> j =1:b
+      t((i - 1)*b + j,(j - 1)*a + i) = 1;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+t = sparse(t);
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> L = fChol(omega)
+<span class="comment">% Try Cholesky factorization</span>
+<span class="keyword">try</span>
+   L = chol(omega)';
+   <span class="comment">% If there's a small negative eigenvalue, diagonalize</span>
+<span class="keyword">catch</span> <span class="comment">% err</span>
+   <span class="comment">%   disp('linalgerror, probably IP = 1.')</span>
+   [v,d] = eig(omega);
+   L = zeros(size(v));
+   <span class="keyword">for</span> i =1:length(d)
+      <span class="keyword">if</span> d(i,i)&lt;0
+         d(i,i)=eps;
+      <span class="keyword">end</span>
+      L(:,i) = v(:,i)*sqrt(d(i,i));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> c = mdiag(a)
+<span class="comment">%  diagonal matrix</span>
+c = diag(diag(a));
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> d = Dup(n)
+<span class="comment">%     '''D*vech(A) = vec(A), with symmetric A'''</span>
+d = zeros(n*n, (n*(n + 1))/2);
+count = 1;
+<span class="keyword">for</span> j= 1:n
+   <span class="keyword">for</span> i = 1:n
+      <span class="keyword">if</span> i &gt;= j
+         d((j - 1)*n + i,count)=1;
+         count = count + 1;
+      <span class="keyword">else</span>
+         d((j - 1)*n + i,:)=d((i - 1)*n + j,:);
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%==========================================================================</span>
+<span class="keyword">function</span> hh=fdh_da(Af)
+<span class="comment">%    '''Derivative of vec(H) by vec(A), with $H = A^{-1}$ and complex A.'''</span>
+ha = pinv(Af);
+h = -kron(ha.', ha);
+
+h1 = [real(h) -imag(h)];
+h2 = [imag(h) real(h)];   <span class="comment">%h2 = cat(h.imag, h.real, 1)</span>
+hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
+<span class="keyword">end</span>
+<span class="comment">%==========================================================================</span>
+</pre><pre>      1         2         3         4         5         6         7         8         9</pre><pre class="codeinput"><span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
+</pre><h2 id="8">Change Log:</h2><p>[2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on              to match the frequency range with plotting routine, f = 0 was              included in the "frequency" for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [2021/09/02, LAB]: complex dtf calculation added</p><p>[2015/01/07]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% ASYMP_DTF
 %        Compute DTF connectivity measures magnitude, from series jREPLACE_WITH_DASH_DASH> i, for
-%        any of three types of metrics REPLACE_WITH_DASH_DASH Euclidean, diagonal and information REPLACE_WITH_DASH_DASH
+%        any of three of metrics REPLACE_WITH_DASH_DASH Euclidean, diagonal and information REPLACE_WITH_DASH_DASH
 %        as well as asymptotic statistics from vector autoregressive (VAR)
 %        coefficients in the frequency domain.
 %
@@ -147,7 +569,7 @@ Bio-Med Eng <span class="string">63:2450--2460</span>, 2016.
 %        c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)
 %
 %% Input Arguments
-%        u      - multiple time series
+%        u      - multiple row vectors time series
 %        A      - AR estimate matrix obtained via MVAR routine
 %        pf     - covariance matrix provided via MVAR routine
 %        nFreqs - number of point in [0,fs/2) frequency scale
@@ -242,7 +664,7 @@ Bio-Med Eng <span class="string">63:2450--2460</span>, 2016.
 %          asymp_pdc, <ASYMP_DTF.html>, XPLOT
 %
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. See file license.txt in
 % installation directory for licensing terms.
 
 function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
@@ -478,7 +900,7 @@ end
 % Power spectra and coherence calculation
 c.SS = ss_alg(A, pf, nFreqs);
 c.coh2 = coh_alg(c.SS);
-
+end
 
 %==========================================================================
 function gamma = bigautocorr(x, p)
@@ -493,6 +915,7 @@ for i = 1:p
                                        xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
    end
 end
+end
 
 %==========================================================================
 function c = xlag(x,tlag)
@@ -501,6 +924,7 @@ if tlag == 0
 else
    c = zeros(size(x));
    c(:,(tlag + 1):end) = x(:,1:(end - tlag));
+end
 end
 
 %==========================================================================
@@ -522,6 +946,7 @@ d = d1(length(d) - 1:length(d));
 if (size(d) > 2)
    disp('More than two Chi-squares in the sum:')
 end
+end
 
 %==========================================================================
 function c = fIij(i,j,n)
@@ -530,6 +955,7 @@ Iij = zeros(1,n^2);
 Iij(n*(j - 1) + i) = 1;
 Iij = diag(Iij);
 c = kron(eye(2), Iij);
+end
 
 %==========================================================================
 % function c = fIj(j,n)
@@ -539,6 +965,7 @@ c = kron(eye(2), Iij);
 % Ij = diag(Ij);
 % Ij = kron(Ij,eye(n));
 % c = kron(eye(2), Ij);
+% end
 
 %==========================================================================
 function c = fIi(i,n)
@@ -548,6 +975,7 @@ Ii(i) = 1;
 Ii = diag(Ii);
 Ii = kron(eye(n), Ii);
 c = kron(eye(2), Ii);
+end
 
 %==========================================================================
 function d = fCa(f, p, n)
@@ -556,7 +984,7 @@ C1 = cos(-2*pi*f*(1:p));
 S1 = sin(-2*pi*f*(1:p));
 C2 = [C1; S1];
 d = kron(C2, eye(n^2));
-
+end
 %==========================================================================
 % function c = fdebig_de(n)
 % %'''Derivative of kron(I(2n), A) by A'''
@@ -565,7 +993,7 @@ d = kron(C2, eye(n^2));
 % B=sparse(kron(vec(eye(2*n)), eye(n)));
 % c = A * kron(eye(n), B);
 % c=sparse(c);
-
+% end
 %==========================================================================
 function c = fdebig_de_dtf(n)
 %''' New \Theta_K for DTF asymptotics'''
@@ -583,12 +1011,13 @@ A5=sparse(kron(vec(eye(2)),A4));
 c=sparse(A1*A5);
 % To generate sparse matrix
 %c=sparse(c*diag(vec(eye(n))));
+end
 
 %==========================================================================
 function c = vec(x)
 %vec = lambda x: mat(x.ravel('F')).T
 c=x(:);
-
+end
 %==========================================================================
 function t = TT(a,b)
 %''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''
@@ -599,6 +1028,7 @@ for i = 1:a
    end
 end
 t = sparse(t);
+end
 
 %==========================================================================
 function L = fChol(omega)
@@ -617,11 +1047,13 @@ catch % err
       L(:,i) = v(:,i)*sqrt(d(i,i));
    end
 end
+end
 
 %==========================================================================
 function c = mdiag(a)
 %  diagonal matrix
 c = diag(diag(a));
+end
 
 %==========================================================================
 function d = Dup(n)
@@ -638,6 +1070,7 @@ for j= 1:n
       end
    end
 end
+end
 
 %==========================================================================
 function hh=fdh_da(Af)
@@ -648,7 +1081,7 @@ h = -kron(ha.', ha);
 h1 = [real(h) -imag(h)];
 h2 = [imag(h) real(h)];   %h2 = cat(h.imag, h.real, 1)
 hh = -[h1; h2];           %hh = cat(h1, h2, 0)
-
+end
 %==========================================================================
 
 %%

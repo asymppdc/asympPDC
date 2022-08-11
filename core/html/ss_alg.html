@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>CMLSM</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="cmlsm.m"><style type="text/css">
+      --><title>SS_ALG</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="ss_alg.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,114 +67,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>CMLSM</h1><!--introduction--><pre>      Multivariate autoregressive model minimum least squares estimator.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input arguments</a></li><li><a href="#3">Output arguments</a></li><li><a href="#4">Code</a></li></ul></div><h2 id="1">Syntax</h2><pre>     [npf,na,nef] = CMLSM(u,IP)</pre><h2 id="2">Input arguments</h2><pre>       u   - vector of rows
-       IP  - order</pre><h2 id="3">Output arguments</h2><pre>       npf - error covariance
-       na  - model
-       nef - residue</pre><h2 id="4">Code</h2><pre class="codeinput"><span class="keyword">function</span> [npf,na,nef] = cmlsm(u,IP)
+  </style></head><body><div class="content"><h1>SS_ALG</h1><!--introduction--><pre>      Calculate spectral coherence from spectral density function.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input arguments</a></li><li><a href="#3">Output arguments</a></li></ul></div><h2 id="1">Syntax</h2><pre>     SS = SS_ALG(A, e_cov, nf, nfcalc)</pre><h2 id="2">Input arguments</h2><pre>      A      - autoregressive matrix
+      e_cov  - residues
+      nf     - number of frequencies
+      nfcalc - fraction o frequency range to calculate</pre><h2 id="3">Output arguments</h2><pre>      SS     - (nChannels x nChannels x nfcalc) Power spectral density</pre><pre class="codeinput"><span class="keyword">function</span> SS = ss_alg(A, e_cov, nf, nfcalc)
 
-[m,n] = size(u);
-[b,SU,nfe] = mlsmx(u,IP);
-na = reshape(b,m,m,IP);
-npf = SU*n; <span class="comment">% see normalization</span>
+<span class="keyword">if</span> nargin &lt; 4, nfcalc = nf; <span class="keyword">end</span>
+[~, nChannels,~] = size(A);
+AL = A_to_f(A, nf);
+ss = zeros(size(AL));
+<span class="keyword">for</span> i = 1:nfcalc
+   H = inv(reshape(AL(i,:,:),nChannels,nChannels));
+   ss(i,:,:) = H * e_cov * H';
 <span class="keyword">end</span>
 
-<span class="comment">%==========================================================================</span>
-<span class="comment">%</span>
-<span class="comment">% 1998/01/30 (L.A.B.); 2000/04/11 (LAB reviewed)</span>
-
-<span class="keyword">function</span> [b,SU,nfe] = mlsmx(Y,p)
-[K,T] = size(Y);
-Z = zmatrm(Y,p);
-Gamma = Z*Z';
-U1 = Gamma\Z; <span class="comment">% Equivalent to inv(Gamma)*Z;</span>
-
-SU = (Y*Y'-Y*Z'*U1*Y');
-SU = SU/(T-K*p-1);
-b = kron(U1,eye(K))*reshape(Y,K*T,1);
-nfe = reshape(reshape(Y,K*T,1)-kron(Z',eye(K))*b,K,T);
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="comment">% Computation of Z - data structure (no estimation of the mean)</span>
-<span class="comment">%</span>
-<span class="comment">% function Z = zmatrm(Y,p);</span>
-<span class="comment">%</span>
-<span class="comment">% input:  Y - data in row vectors</span>
-<span class="comment">%         p - model covariance order</span>
-<span class="comment">%</span>
-<span class="comment">% output: Z</span>
-<span class="comment">%</span>
-<span class="comment">% [1998.01.30]: L.A.B.</span>
-<span class="comment">%</span>
-<span class="keyword">function</span> Z = zmatrm(Y,p)
-[K,T] = size(Y);
-y1 = [zeros(K*p,1);reshape(flipud(Y),K*T,1)];
-Z =  zeros(K*p,T);
-<span class="keyword">for</span> i = 0:T-1
-   Z(:,i+1) = flipud(y1(1+K*i:K*i+K*p));
-<span class="keyword">end</span>
+SS=permute(ss,[2,3,1]);
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% CMLSM
-%        Multivariate autoregressive model minimum least squares estimator.
+%% SS_ALG
+%        Calculate spectral coherence from spectral density function.
 %% Syntax
-%       [npf,na,nef] = CMLSM(u,IP)
-%
+%       SS = SS_ALG(A, e_cov, nf, nfcalc)
 %% Input arguments
-%         u   - vector of rows
-%         IP  - order
-%
+%        A      - autoregressive matrix
+%        e_cov  - residues
+%        nf     - number of frequencies
+%        nfcalc - fraction o frequency range to calculate 
 %% Output arguments
-%         npf - error covariance
-%         na  - model
-%         nef - residue
+%        SS     - (nChannels x nChannels x nfcalc) Power spectral density
+%
 
-%% Code
-function [npf,na,nef] = cmlsm(u,IP)
+function SS = ss_alg(A, e_cov, nf, nfcalc)
 
-[m,n] = size(u);
-[b,SU,nfe] = mlsmx(u,IP);
-na = reshape(b,m,m,IP);
-npf = SU*n; % see normalization
+if nargin < 4, nfcalc = nf; end
+[~, nChannels,~] = size(A);
+AL = A_to_f(A, nf);
+ss = zeros(size(AL));
+for i = 1:nfcalc
+   H = inv(reshape(AL(i,:,:),nChannels,nChannels));
+   ss(i,:,:) = H * e_cov * H';
 end
 
-%==========================================================================
-%
-% 1998/01/30 (L.A.B.); 2000/04/11 (LAB reviewed)
-
-function [b,SU,nfe] = mlsmx(Y,p)
-[K,T] = size(Y);
-Z = zmatrm(Y,p);
-Gamma = Z*Z';
-U1 = Gamma\Z; % Equivalent to inv(Gamma)*Z;
-
-SU = (Y*Y'-Y*Z'*U1*Y');
-SU = SU/(T-K*p-1);
-b = kron(U1,eye(K))*reshape(Y,K*T,1);
-nfe = reshape(reshape(Y,K*T,1)-kron(Z',eye(K))*b,K,T); 
+SS=permute(ss,[2,3,1]);
 end
-
-%==========================================================================
-% Computation of Z - data structure (no estimation of the mean)
-%
-% function Z = zmatrm(Y,p);
-%
-% input:  Y - data in row vectors 
-%         p - model covariance order
-%
-% output: Z
-%
-% [1998.01.30]: L.A.B.
-%
-function Z = zmatrm(Y,p)
-[K,T] = size(Y);
-y1 = [zeros(K*p,1);reshape(flipud(Y),K*T,1)];
-Z =  zeros(K*p,T);
-for i = 0:T-1
-   Z(:,i+1) = flipud(y1(1+K*i:K*i+K*p));
-end
-end
-
 ##### SOURCE END #####
 --></body></html>

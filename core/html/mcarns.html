@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>MCARNS</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-05-31"><meta name="DC.source" content="mcarns.m"><style type="text/css">
+      --><title>MCARNS</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="mcarns.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -85,7 +86,73 @@ harmonic <span class="string">method).</span>
     Prentice-Hall, Englewood-Cliffs, 1987.
 [2] Marple <span class="string">Jr.</span>, SL. Digital Spectral <span class="string">Analysis</span> <span class="string">with</span> <span class="string">Application.</span> <span class="string">2nd</span> <span class="string">Ed.</span>
     Dover <span class="string">Publications</span>, Inc., Mineola <span class="string">New</span> <span class="string">York</span>, 2019.
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+</pre><pre class="codeinput"><span class="keyword">function</span> [pf,A,pb,B,ef,eb,ISTAT] = mcarns(u,IP)
+
+<span class="keyword">if</span> nargin ~= 2, error(<span class="string">'MCARNS requires 2 input arguments.'</span>); <span class="keyword">end</span>
+
+[lx,cx] = size(u);
+<span class="keyword">if</span> lx &gt; cx, error(<span class="string">'Input matrix is possibly transposed.'</span>), <span class="keyword">end</span>
+
+NUMCHS   = lx;        <span class="comment">% Number of channels.</span>
+MAXORDER = 200;       <span class="comment">% Maximum order of AR model allowed for calculation.</span>
+N = max(size(u));     <span class="comment">% N - Number of samples per channel.</span>
+
+<span class="comment">%   ** Initialization **</span>
+<span class="keyword">if</span> (IP &gt; MAXORDER)
+   error(<span class="string">'IP &gt; 200.'</span>);
+<span class="keyword">end</span>
+
+ef = u;        <span class="comment">% Eq. (15.91)</span>
+eb = u;        <span class="comment">% Eq. (15.91)</span>
+
+pf = u * u';   <span class="comment">% Eq. (15.90)</span>
+pb = pf;       <span class="comment">% Eq. (15.90)</span>
+
+m = 0;
+
+<span class="comment">%   ** Main Loop **</span>
+<span class="keyword">while</span> 1
+   <span class="comment">%  Update estimated covariance errors               Eq. (15.89)</span>
+   pfhat  = ef(:,m+2:N)   * ef(:,m+2:N)';
+   pbhat  = eb(:,m+1:N-1) * eb(:,m+1:N-1)';
+   pfbhat = ef(:,m+2:N)   * eb(:,m+1:N-1)';
+
+   m = m + 1;
+
+   <span class="comment">%  Calculate estimated partial correlation matrix - Eq. (15.98)</span>
+   <span class="comment">%             (Nuttall-Strand algorithm only)</span>
+   RHO = lyap(pfhat*inv(pf),inv(pb)*pbhat,-2*pfbhat);
+
+   <span class="comment">%  Update forward and backward reflection coeficients</span>
+   <span class="comment">%  Eqs. (15.73),(15.74),(15.78) (algorithm  by Nuttall-Strand)</span>
+   AM = -RHO  * inv(pb);
+   BM = -RHO' * inv(pf);
+
+   A(:,:,m) = AM;
+   B(:,:,m) = BM;
+
+   <span class="comment">%  Update forward and backward covariance error  - Eqs. (15.75),(15.76)</span>
+   pf = pf - AM * BM * pf;
+   pb = pb - BM * AM * pb;
+
+   <span class="comment">%  Update forward and backward predictor coeficients - Eqs.(15.84),(15.85)</span>
+   <span class="keyword">if</span> m ~= 1
+      <span class="keyword">for</span> k = 1:m-1
+         temp1 = A(:,:,k);
+         A(:,:,k)   = A(:,:,k)   + AM * B(:,:,m-k);
+         B(:,:,m-k) = B(:,:,m-k) + BM * temp1;
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%  Update residuals</span>
+   Tef = ef;
+   ef(1:NUMCHS,N:-1:m+1) = ef(:,N:-1:m+1) + AM * eb(:,N-1:-1:m);
+   eb(1:NUMCHS,N:-1:m+1) = eb(:,N-1:-1:m) + BM * Tef(:,N:-1:m+1);
+
+   <span class="comment">%  Verify if model order is adequate</span>
+   <span class="keyword">if</span> m == IP, A = -A; B = -B; <span class="keyword">break</span>, <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% MCARNS 
 %    Nuttall-Strand algorithm for autoregressive model estimation 

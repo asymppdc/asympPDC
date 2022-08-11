@@ -23,8 +23,8 @@
 %   Calculate the coeficients of multi-channel auto-regressive matrix using
 %   Vieira Morf algorithm (a generalization of single channel geometric
 %                             method).
-
-%% Note
+%
+%% Notes
 %      * This implementation is a FORTRAN code translation from
 %        Appendix 15.B page 424 of Marple Jr.(1987). (KS 1998)
 %      * Equation numbers are identifical in references [1] and [2].

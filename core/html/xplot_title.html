@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>XPLOT_TITLE</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-08-27"><meta name="DC.source" content="xplot_title.m"><style type="text/css">
+      --><title>XPLOT_TITLE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="xplot_title.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,86 +67,151 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>XPLOT_TITLE</h1><!--introduction--><pre>      Put a title above all PDC/DTF subplots with measure and alpha-value.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">XPLOT_TITLE(alpha,metric,measure)
+  </style></head><body><div class="content"><h1>XPLOT_TITLE</h1><!--introduction--><pre>      Put a title above PDC/DTF matrix layout subplots with measure and
+      alpha-value information.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">XPLOT_TITLE(c)
+XPLOT_TITLE(alpha,metric,measure)
 </pre><h2 id="2">Input Arguments</h2><pre class="language-matlab">alpha:      significance level
-</pre><pre class="language-matlab">measure:    should be <span class="string">either</span> <span class="string">'pdc'|</span> <span class="string">'dtf'</span>
-</pre><pre class="language-matlab">metric:     <span class="string">'euc'</span>  -- Euclidean   ==&gt; |PDC|^2  or <span class="string">|DTF|^2</span>
+measure:    should be <span class="string">either</span> <span class="string">'pdc'|</span> <span class="string">'dtf'</span>
+metric:     <span class="string">'euc'</span>  -- Euclidean   ==&gt; |PDC|^2  or <span class="string">|DTF|^2</span>
             <span class="string">'diag'</span> -- diagonal    ==&gt; |gPDC|^2 or <span class="string">|DC|^2</span>
             <span class="string">'info'</span> -- information ==&gt; |iPDC|^2 or <span class="string">|iDTF|^2</span>
-</pre><h2 id="3">Output</h2><pre class="language-matlab">Title <span class="string">on</span> <span class="string">above</span> <span class="string">all</span> <span class="string">subplots</span> <span class="string">of</span> <span class="string">DTF/PDC.</span>
+</pre><h2 id="3">Output</h2><pre class="language-matlab">Print <span class="string">main</span> <span class="string">title</span> <span class="string">above</span> <span class="string">all</span> <span class="string">subplots</span> <span class="string">of</span> <span class="string">DTF/PDC.</span>
 </pre><p>See also XPLOT, PVALUES_XPLOT          xplot | <a href="xplot.html">xplot.html</a> |</p><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2021. See file license.txt in</span>
 <span class="comment">% installation directory for licensing terms.</span>
 <span class="comment">%</span>
 
-<span class="keyword">function</span> [] = xplot_title(alpha,metric,measure)
+<span class="keyword">function</span> [] = xplot_title(alpha,metric,measure,obs)
 
-<span class="keyword">if</span> nargin == 1,
-    c=alpha;
-    <span class="keyword">if</span> isfield(c,<span class="string">'dtf2'</span>)
-        measure = <span class="string">'DTF'</span>;
-        alpha = c.alpha;
-        metric =  c.metric;
-    <span class="keyword">elseif</span> isfield(c,<span class="string">'pdc2'</span>)
-        measure = <span class="string">'PDC'</span>;
-        alpha = c.alpha;
-        metric =  c.metric;
-    <span class="keyword">end</span>
-<span class="keyword">elseif</span> nargin &lt; 3,
-    measure = <span class="string">'PDC'</span>;
-<span class="keyword">end</span>;
+<span class="keyword">if</span> nargin == 1
+   c=alpha;
+   <span class="keyword">if</span> isfield(c,<span class="string">'dtf2'</span>)
+      measure = <span class="string">'DTF'</span>;
+      alpha = c.alpha;
+      metric =  c.metric;
+   <span class="keyword">elseif</span> isfield(c,<span class="string">'pdc2'</span>)
+      measure = <span class="string">'PDC'</span>;
+      alpha = c.alpha;
+      metric =  c.metric;
+   <span class="keyword">end</span>
+<span class="keyword">elseif</span> nargin &lt; 3
+   measure = <span class="string">'PDC'</span>;
+   obs = <span class="string">''</span>;
+<span class="keyword">elseif</span> nargin &lt; 4
+   <span class="keyword">if</span> ~(strcmp(upper(measure),<span class="string">'PDC'</span>) || strcmp(upper(measure),<span class="string">'DTF'</span>))
+      obs = measure;
+      measure = <span class="string">'pdc'</span>;
+   <span class="keyword">else</span>
+      obs = <span class="string">''</span>;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
 
-<span class="keyword">if</span> exist(<span class="string">'c'</span>) ~=0
-   alphapercentage = 100*(c.alpha);
+<span class="keyword">if</span> isempty(measure)
+   measure = <span class="string">'PDC'</span>;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> exist(<span class="string">'c'</span>) ~= 0
+   alphastr = sprintf(<span class="string">'%0.3g'</span>,100*(c.alpha));
 <span class="keyword">else</span>
-   alphapercentage = 100*alpha;
-<span class="keyword">end</span>;
+   alphastr = sprintf(<span class="string">'%0.3g'</span>,100*alpha);
+<span class="keyword">end</span>
 
-alphastr = int2str(alphapercentage);
-measure = upper(measure);
-metric = lower(metric);
-<span class="keyword">switch</span> metric
-    <span class="keyword">case</span> <span class="string">'euc'</span>
-        <span class="comment">%nop</span>
-    <span class="keyword">case</span> <span class="string">'diag'</span>
-        <span class="keyword">if</span> measure == <span class="string">'DTF'</span>,
-            measure = <span class="string">'DC'</span>;    <span class="comment">% generalized DTF or Directed Coherence (DC)</span>
-        <span class="keyword">else</span>
-            measure = <span class="string">'_gPDC'</span>; <span class="comment">% generalized PDC</span>
-        <span class="keyword">end</span>;
-    <span class="keyword">case</span> <span class="string">'info'</span>
-        measure = [<span class="string">'_i'</span> measure];
-    <span class="keyword">otherwise</span>
-        error(<span class="string">'Unknown metric.'</span>)
-<span class="keyword">end</span>;
+<span class="keyword">if</span> ~(strcmp(upper(measure),<span class="string">'PDC'</span>) || strcmp(upper(measure),<span class="string">'DTF'</span>))
+   strMeasure = measure;
+<span class="keyword">end</span>
 
-<span class="keyword">if</span> alpha &lt;= 0,
-   suptitle([<span class="string">'{|'</span> measure <span class="string">'|}^2'</span>])
-<span class="keyword">elseif</span> alpha &lt; 0.01,
-   suptitle([<span class="string">'{|'</span> measure <span class="string">'|}^2 ('</span> <span class="string">'{\alpha = '</span> sprintf(<span class="string">'%g'</span>,alpha) <span class="string">'})'</span>])
+<span class="keyword">switch</span> lower(metric)
+   <span class="keyword">case</span> <span class="string">'euc'</span>
+      <span class="keyword">switch</span> upper(measure)
+         <span class="keyword">case</span> {<span class="string">'DTF'</span>,<span class="string">'PDC'</span>}
+            strMeasure = [<span class="string">'{|'</span> upper(measure) <span class="string">'|}^2'</span>];
+         <span class="keyword">otherwise</span>
+            <span class="comment">%nop</span>
+      <span class="keyword">end</span>
+   <span class="keyword">case</span> <span class="string">'diag'</span>
+      <span class="keyword">switch</span> upper(measure)
+         <span class="keyword">case</span> <span class="string">'DTF'</span>
+            strMeasure = <span class="string">'{|DC|}^2'</span>;    <span class="comment">% generalized DTF or Directed Coherence (DC)</span>
+         <span class="keyword">case</span> <span class="string">'PDC'</span>
+            strMeasure = <span class="string">'{|_gPDC|}^2'</span>; <span class="comment">% generalized PDC</span>
+         <span class="keyword">otherwise</span>
+            <span class="comment">%nop</span>
+      <span class="keyword">end</span>
+   <span class="keyword">case</span> <span class="string">'info'</span>
+      <span class="keyword">switch</span> upper(measure)
+         <span class="keyword">case</span> {<span class="string">'DTF'</span>,<span class="string">'PDC'</span>}
+            strMeasure = [<span class="string">'{|_i'</span> upper(measure) <span class="string">'|}^2'</span>];
+         <span class="keyword">otherwise</span>
+            <span class="comment">%nop</span>
+      <span class="keyword">end</span>
+   <span class="keyword">otherwise</span>
+      error(<span class="string">'Unknown metric.'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~isempty(obs)
+   obs = [<span class="string">' '</span> obs];
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> alpha &lt;= 0
+   [ax,h] = suplabel([strMeasure obs],<span class="string">'t'</span>);
 <span class="keyword">else</span>
-   suptitle([<span class="string">'{|'</span> measure <span class="string">'|}^2 ('</span> <span class="string">'{\alpha = '</span> alphastr <span class="string">'%}'</span> <span class="string">')'</span>])
-<span class="keyword">end</span>;
-</pre><pre class="codeoutput error">Not enough input arguments.
-Error in xplot_title (line 46)
-   alphapercentage = 100*alpha;</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+   [ax,h] = suplabel([strMeasure <span class="string">' ('</span> <span class="string">'{\alpha = '</span> alphastr <span class="string">'%}'</span> <span class="string">')'</span> <span class="keyword">...</span>
+                      obs], <span class="string">'t'</span>);
+<span class="keyword">end</span>
+
+set(ax,<span class="string">'Units'</span>,<span class="string">'normalized'</span>)
+pos = get(ax,<span class="string">'Position'</span>);
+
+<span class="keyword">if</span> isOctave()
+   set(h,<span class="string">'FontSize'</span>,10)
+<span class="keyword">else</span>
+
+   <span class="keyword">switch</span> computer
+      <span class="keyword">case</span> <span class="string">'PCWIN64'</span>
+         set(h,<span class="string">'FontSize'</span>,8)
+         pos(4) = pos(4) + 0.0125;
+      <span class="keyword">case</span> {<span class="string">'GLNXA64'</span>,<span class="string">'x86_64-pc-linux-gnu'</span>}
+         set(h,<span class="string">'FontSize'</span>,8)
+         pos(4) = pos(4) + 0.0100;
+      <span class="keyword">case</span> <span class="string">'MACI64'</span>
+         set(h,<span class="string">'FontSize'</span>,10)
+         pos(4) = pos(4) + 0.0080;
+      <span class="keyword">otherwise</span>
+         set(h,<span class="string">'FontSize'</span>,8)
+   <span class="keyword">end</span>
+   set(ax,<span class="string">'Position'</span>,pos);
+<span class="keyword">end</span>
+
+drawnow
+
+<span class="keyword">end</span>
+<span class="comment">% ax : Axes (suplabel) with properties:</span>
+<span class="comment">%              XLim: [0 1]</span>
+<span class="comment">%              YLim: [0 1]</span>
+<span class="comment">%            XScale: 'linear'</span>
+<span class="comment">%            YScale: 'linear'</span>
+<span class="comment">%     GridLineStyle: '-'</span>
+<span class="comment">%          Position: [0.0900 0.0700 0.8550 0.8950]</span>
+<span class="comment">%             Units: 'normalized'</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% XPLOT_TITLE
-%        Put a title above all PDC/DTF subplots with measure and alpha-value.
+%        Put a title above PDC/DTF matrix layout subplots with measure and
+%        alpha-value information.
 %
 %% Syntax
+%
+%   XPLOT_TITLE(c)
 %   XPLOT_TITLE(alpha,metric,measure)
 %
 %% Input Arguments
 %   alpha:      significance level
-%
 %   measure:    should be either 'pdc'| 'dtf'
-%
 %   metric:     'euc'  REPLACE_WITH_DASH_DASH Euclidean   ==> |PDC|^2  or |DTF|^2
 %               'diag' REPLACE_WITH_DASH_DASH diagonal    ==> |gPDC|^2 or |DC|^2
 %               'info' REPLACE_WITH_DASH_DASH information ==> |iPDC|^2 or |iDTF|^2
 %
 %% Output 
-%   Title on above all subplots of DTF/PDC.
+%   Print main title above all subplots of DTF/PDC.
 %
 % See also XPLOT, PVALUES_XPLOT
 %          xplot | <xplot.html> |
@@ -154,55 +220,117 @@ Error in xplot_title (line 46)
 % installation directory for licensing terms.
 %
 
-function [] = xplot_title(alpha,metric,measure)
+function [] = xplot_title(alpha,metric,measure,obs)
 
-if nargin == 1,
-    c=alpha;
-    if isfield(c,'dtf2')
-        measure = 'DTF';
-        alpha = c.alpha;
-        metric =  c.metric;
-    elseif isfield(c,'pdc2')
-        measure = 'PDC';
-        alpha = c.alpha;
-        metric =  c.metric;
-    end
-elseif nargin < 3,
-    measure = 'PDC';
-end;
+if nargin == 1
+   c=alpha;
+   if isfield(c,'dtf2')
+      measure = 'DTF';
+      alpha = c.alpha;
+      metric =  c.metric;
+   elseif isfield(c,'pdc2')
+      measure = 'PDC';
+      alpha = c.alpha;
+      metric =  c.metric;
+   end
+elseif nargin < 3
+   measure = 'PDC';
+   obs = '';
+elseif nargin < 4
+   if ~(strcmp(upper(measure),'PDC') || strcmp(upper(measure),'DTF'))
+      obs = measure;
+      measure = 'pdc';
+   else
+      obs = '';
+   end
+end
 
-if exist('c') ~=0
-   alphapercentage = 100*(c.alpha);
+if isempty(measure)
+   measure = 'PDC';
+end
+
+if exist('c') ~= 0
+   alphastr = sprintf('%0.3g',100*(c.alpha));
 else
-   alphapercentage = 100*alpha;
-end;
+   alphastr = sprintf('%0.3g',100*alpha);
+end
 
-alphastr = int2str(alphapercentage);
-measure = upper(measure);
-metric = lower(metric);
-switch metric
-    case 'euc'
-        %nop
-    case 'diag'
-        if measure == 'DTF',
-            measure = 'DC';    % generalized DTF or Directed Coherence (DC)
-        else
-            measure = '_gPDC'; % generalized PDC
-        end;
-    case 'info'
-        measure = ['_i' measure];
-    otherwise
-        error('Unknown metric.')
-end;
+if ~(strcmp(upper(measure),'PDC') || strcmp(upper(measure),'DTF'))
+   strMeasure = measure;
+end
 
-if alpha <= 0,
-   suptitle(['{|' measure '|}^2'])
-elseif alpha < 0.01,
-   suptitle(['{|' measure '|}^2 (' '{\alpha = ' sprintf('%g',alpha) '})'])
+switch lower(metric)
+   case 'euc'
+      switch upper(measure)
+         case {'DTF','PDC'}
+            strMeasure = ['{|' upper(measure) '|}^2'];
+         otherwise
+            %nop
+      end
+   case 'diag'
+      switch upper(measure)
+         case 'DTF'
+            strMeasure = '{|DC|}^2';    % generalized DTF or Directed Coherence (DC)
+         case 'PDC'
+            strMeasure = '{|_gPDC|}^2'; % generalized PDC
+         otherwise
+            %nop
+      end
+   case 'info'
+      switch upper(measure)
+         case {'DTF','PDC'}
+            strMeasure = ['{|_i' upper(measure) '|}^2'];
+         otherwise
+            %nop
+      end      
+   otherwise
+      error('Unknown metric.')
+end
+
+if ~isempty(obs)
+   obs = [' ' obs];
+end
+
+if alpha <= 0
+   [ax,h] = suplabel([strMeasure obs],'t');
 else
-   suptitle(['{|' measure '|}^2 (' '{\alpha = ' alphastr '%}' ')'])
-end;
+   [ax,h] = suplabel([strMeasure ' (' '{\alpha = ' alphastr '%}' ')' ...
+                      obs], 't');
+end
 
+set(ax,'Units','normalized')
+pos = get(ax,'Position');
 
+if isOctave()
+   set(h,'FontSize',10)
+else
+   
+   switch computer
+      case 'PCWIN64'
+         set(h,'FontSize',8)
+         pos(4) = pos(4) + 0.0125;
+      case {'GLNXA64','x86_64-pc-linux-gnu'}
+         set(h,'FontSize',8)
+         pos(4) = pos(4) + 0.0100;
+      case 'MACI64'
+         set(h,'FontSize',10)
+         pos(4) = pos(4) + 0.0080;
+      otherwise
+         set(h,'FontSize',8)
+   end
+   set(ax,'Position',pos);
+end
+
+drawnow
+
+end
+% ax : Axes (suplabel) with properties:
+%              XLim: [0 1]
+%              YLim: [0 1]
+%            XScale: 'linear'
+%            YScale: 'linear'
+%     GridLineStyle: '-'
+%          Position: [0.0900 0.0700 0.8550 0.8950]
+%             Units: 'normalized'
 ##### SOURCE END #####
 --></body></html>
