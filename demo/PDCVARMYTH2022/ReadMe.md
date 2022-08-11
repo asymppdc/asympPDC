@@ -13,13 +13,13 @@ The PDCVARMYTH2022 package contains MATLAB mfiles and subfolders you may copy in
 
 `> startup`
 
-In addition to adding the paths, `startup.m` will also check for the existence of the required MATLAB toolboxes. All other routines, including data simulation and total PDC estimation are included. This is a standalone version. Most likely it will work in the recent versions of Octave 6.3.0 and 6.4.0 (Please report any issue related to compatibility with Octave to KS).
+Other than adding the paths, `startup.m` will also check for the existence of the required MATLAB toolboxes. All other routines, including data simulation and total PDC estimation are included. This is a standalone version. Most likely it will work in the recent versions of Octave 6.3.0, 6.4.0 and 7.1.0 (Please report any issue related to compatibility with Octave).
 
 To run all Examples, choose [1], and [0] otherwise, when requested on `startup.m` script execution.
 
 The figures it generates are similar to those in the [paper](https://www.frontiersin.org/articles/10.3389/fnetp.2022.845327). Differences are due to possibly different random seeds.
 
-To play with the scripts,  you may run each Example script individually
+To play with the scripts,  you may also run each Example script individually
 
 `> Example1 | Example2 | Example3 | Example4`
 
