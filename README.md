@@ -46,7 +46,7 @@ The figure bellow shows  schematically the connectivity, Granger causality and a
 > 
 > 2. Saito, Y. and H. Harashima (1981) Tacking of information within multichannel record: causal analysis in EEG. In *Recent Advances in EEG and EMG Data Processing.* pp. 133--146, Amsterdam: Elsevier. (Hard to find !)
 
-## Getting started road map
+## Getting started work flow
 
 To get started, modify  the `analysis_template.m` script file to adapt it to your needs and data sets. This template file contains four examples of data that might be of help to deal with your own data sets. The basic steps to set up and analyze a data set using **the asympPDC Package** are:
 
@@ -128,3 +128,7 @@ authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
 ## Cite as
 
 Koichi Sameshima and Luiz A. Baccalá (2022). AsympPDC Package ([Release v3.0.0 · asymppdc/asympPDC · GitHub](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.0)), GitHub. Retrieved August 11, 2022.
+
+
+
+[![View asympPDC on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116185-asymppdc)
