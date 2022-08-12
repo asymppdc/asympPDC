@@ -1,14 +1,14 @@
-# MATLAB and Octave AsympPDC Package
+# MATLAB and Octave asympPDC Package
 
 by Koichi Sameshima and Luiz A. Baccalá
 
 July 22, 2022
 
-**The AsympPDC package** consists of MATLAB/Octave routines and functions for the analysis of multiple time series, such as EEG, biological signals and climate data, to infer directed interactions between structures in the frequency domain using Partial Directed Coherence (**PDC**), based on the concept of Granger causality, and Directed Transfer Function (**DTF**), both in three metrics --- Euclidean, diagonal and information --- under strict asymptotic statistics with p-values and confidence intervals also provided in the frequency domain. 
+**The asympPDC Package** consists of MATLAB/Octave routines and functions collection for the analysis of multiple time series, such as EEG, biological signals and climate data, to infer directed interactions between structures in the frequency domain using Partial Directed Coherence (**PDC**), based on the concept of Granger causality, and Directed Transfer Function (**DTF**), both in three metrics --- Euclidean, diagonal and information --- under strict asymptotic statistics with p-values and confidence intervals also provided in the frequency domain. 
 
 ## Installation and usage
 
-The AsympPDC package contains MATLAB/Octave m-files and subdirectories that you may download and copy into your local preferred working directory to execute them. To start, you should go to the package directory and run the `startup.m` script in the MATLAB/Octave command line window that will set paths and check for the requirements.
+The asympPDC Package contains MATLAB/Octave m-files and subdirectories that you may download and copy into your local preferred working directory to execute them. To start, you should go to the package directory and run the `startup.m` script in the MATLAB/Octave command line window that will set paths and check for the requirements.
 
 ```matlab
 >> startup
@@ -32,7 +32,7 @@ This command will distribute the figures across screen. The `tilefigs1` or `tile
 
 ## Our diagrammatic view of connectivity measures
 
-The figure bellow shows  schematically the connectivity, Granger causality and allied concepts developed along the last half-century.  The measures inside the yellow area are those implemented in **The AsympPDC Package**.
+The figure bellow shows  schematically the connectivity, Granger causality and allied concepts developed along the last half-century.  The measures inside the yellow area are those implemented in **The asympPDC Package**.
 
 <img title="" src="./connectivity_measures_in_asymppdc.png" alt="" data-align="inline">
 
@@ -68,7 +68,7 @@ We hope you enjoy it. Good luck.
 
 ## References
 
-### A. The AsympPDC toolbox implementation is based mainly on the following articles and books
+### A. The asympPDC toolbox implementation is based mainly on the following articles and books
 
  [1] L.A. Baccalá and K. Sameshima (2001a). Partial directed coherence: a new concept
      in neural structure determination. *Biol Cybern* **84**:463--474.
@@ -125,6 +125,6 @@ authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
 
 ## Cite as
 
-Koichi Sameshima and Luiz A. Baccalá (2022). AsympPDC Package ([Release v3.0.0 · asymppdc/asympPDC · GitHub](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.0)), GitHub. Retrieved August 11, 2022.
+Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package ([Release v3.0.0 · asymppdc/asympPDC · GitHub](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.0)), GitHub. Retrieved August 11, 2022.
 
 [![View asympPDC on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116185-asymppdc)
