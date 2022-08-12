@@ -4,7 +4,7 @@ by Koichi Sameshima and Luiz A. Baccalá
 
 July 22, 2022
 
-**The AsympPDC package** consists of MATLAB/Octave routines and functions for the analysis of multiple time series, such as EEG and biological signals, to infer directed interactions between structures in the frequency domain using Partial Directed Coherence (**PDC**), based on the concept of Granger causality, and Directed Transfer Function (**DTF**), both in three metrics --- Euclidean, diagonal and information --- under strict asymptotic statistics with p-values and confidence intervals also provided in the frequency domain. 
+**The AsympPDC package** consists of MATLAB/Octave routines and functions for the analysis of multiple time series, such as EEG, biological signals and climate data, to infer directed interactions between structures in the frequency domain using Partial Directed Coherence (**PDC**), based on the concept of Granger causality, and Directed Transfer Function (**DTF**), both in three metrics --- Euclidean, diagonal and information --- under strict asymptotic statistics with p-values and confidence intervals also provided in the frequency domain. 
 
 ## Installation and usage
 
@@ -111,7 +111,7 @@ We hope you enjoy it. Good luck.
 [10] L.A. Baccalá and K. Sameshima (2021). Partial directed coherence: twenty years on some history and an
 appraisal. *Biol Cybern* **115**:195--204.  <https://doi.org/10.1007/s00422-021-00880-y>
 
-### C. Things to come: Total PDC/DTF with asymptotic statistics, spectral factorization and faster PDC/DTF estimation algorithms . . . . .
+### C. Things to come: Total PDC/DTF with asymptotic statistics, spectral factorization and faster PDC/DTF estimation algorithms . . .
 
 [11] L.A. Baccalá and K. Sameshima (2021). Frequency domain repercussions of instantaneous
 Granger causality. *Entropy* **23**(8):10.3390/e23081037  <https://doi.org/10.3390/e23081037>
