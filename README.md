@@ -30,9 +30,9 @@ If `"run_all_examples.m"` completes successfully, congratulation, you should see
 
 This command will distribute the figures across screen. The `tilefigs1` or `tilefigs2` function does not seem to work in the Octave environment.
 
-## Our diagrammatic view of connectivity measures
+## Schematic view of connectivity measures evolution
 
-The figure bellow shows  schematically the connectivity, Granger causality and allied concepts developed along the last half-century.  The measures inside the yellow area are those implemented in **The asympPDC Package**.
+The figure bellow shows  schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** ($N=2$) to **multivariate** ($N\geq2$) time series, and from **time domain** to **frequency domain** analysis.  The measures inside the yellow area are those implemented in **the asympPDC Package**.
 
 <img title="" src="./connectivity_measures_in_asymppdc.png" alt="" data-align="inline">
 
@@ -126,3 +126,7 @@ authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
 ## Cite as
 
 Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package (https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1), GitHub. Retrieved August 12, 2022.
+
+
+
+[![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
