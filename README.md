@@ -126,3 +126,5 @@ authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
 ## Cite as
 
 Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package (https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1), GitHub. Retrieved August 12, 2022.
+
+[![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
