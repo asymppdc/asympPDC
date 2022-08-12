@@ -70,7 +70,7 @@ We hope you enjoy it. Good luck.
 
 ### A. The asympPDC toolbox implementation is based mainly on the following articles and books
 
- [1] L.A. Baccalá and K. Sameshima (2001a). Partial directed coherence: a new concept
+ [1] L.A. Baccalá and K. Sameshima (2001). Partial directed coherence: a new concept
      in neural structure determination. *Biol Cybern* **84**:463--474.
      <https://doi.org/10.1007/PL00007990>
 
