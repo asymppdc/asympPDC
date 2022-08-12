@@ -25,14 +25,14 @@ To run all examples provided in `./examples` subdirectory and verify if your ins
 If `"run_all_examples.m"` completes successfully, congratulation, you should see 40+ overlapped figures that you could examine, in MATLAB, through
 
 ```matlab
->> tilefigs1
+>> tilefigs1 or tilefigs2
 ```
 
-This command will distribute the figures across screen. The `tilefigs1` or `tilefigs2` function does not seem to work in the Octave environment.
+This command will tile the screen with figure windows. The `tilefigs1` and `tilefigs2` functions do not seem to work in the Octave environment.
 
 ## Schematic view of connectivity measures evolution
 
-The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** ($N=2$) to **multivariate** ($N\geq2$) time series, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **the asympPDC Package**.
+The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (N=2) to **multivariate** (N>2) time series, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **the asympPDC Package**.
 
 ![](./connectivity_measures_in_asymppdc.png?msec=1660318416463)
 
