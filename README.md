@@ -1,4 +1,4 @@
-# [MATLAB and Octave asympPDC Package](https://github.com/asymppdc/asympPDC) [](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
+# [MATLAB and Octave asympPDC Package](https://github.com/asymppdc/asympPDC)[![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
 
 by Koichi Sameshima and Luiz A. Baccalá
 
