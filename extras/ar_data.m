@@ -11,12 +11,8 @@ function c = ar_data(A, er, m, ndiscard)
 %         data(n, m) - simulated time-series
 %     '''
 
-% if nargin == 6,
-%    [A, er] = ar_models(model);
-% elseif nargin < 5,
-%    error('Must specify ndiscard value.');
-% end;
-
+% (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 if ndims(A) == 2,
    [n,~]=size(A);

@@ -1,22 +1,23 @@
 %% BACCALA & SAMESHIMA (2001A) EXAMPLE 4
 %
 % DESCRIPTION:
-%
 % Five-dimensional linear VAR[2] Model Example 4
-%
 %    $x1==>x2  x2-->x3 x3-->x4 x4<-->x5$
 %
 % Example from
-%
 %        Baccala & Sameshima (2001). Partial directed coherence: a new
 %        concept in neural structure determination. _Biol. Cybern._
 %        *84*:463-474.
 %
 %                <https://dx.doi.org/10.1007/PL00007990>
-%% Other routines
-%  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
-%            xplot, xplot_pvalues
-%  <baccala2001a_ex4.html |baccala2001a_ex4|> |
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
+
 %%
 clear; clc; format compact; format short
 

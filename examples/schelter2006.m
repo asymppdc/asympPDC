@@ -12,6 +12,12 @@
 %
 %      Example 5-dimension VAR[4]
 % ==========================================================================
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 %% Generate data sample using fschelter2006 function
 %

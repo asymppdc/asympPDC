@@ -1,13 +1,13 @@
-%% AsympPDC Toolbox "startup" script
+%% asympPDC Package startup script
 %
 % Run this file to initialize the set up of AsympPDC Toolbox.
 %
 % You may have to customize this script for your computing environment.
 %
 
-% (C) Koichi Sameshima and  Luiz A. Baccala, 2021. See file license.txt in
-% installation directory for licensing terms.
-%
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 %% Set toolbox version
 

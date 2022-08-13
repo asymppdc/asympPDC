@@ -5,6 +5,9 @@
 % Thesis example: An invertible VMA process with an infinite order VAR process
 % representation was simulated
 
+% (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 function u=takahashi_thesis_dat(nPoints)
 N=30000;
 disp('======================================================================');

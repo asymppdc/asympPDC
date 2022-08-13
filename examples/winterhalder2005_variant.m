@@ -15,7 +15,14 @@
 %
 % $\sigma_1^2=\sigma_3^2=250,000; \sigma_2^2=\sigma_4^2=\sigma_5^2=\sigma_6^2=\sigma_7^2=1$
 %
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+%
 %%
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 %% Data sample generation
 

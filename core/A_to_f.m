@@ -1,19 +1,20 @@
 %% A_to_f
 %        Calculates A(f), A in the frequency domain.
 %
-%% Syntax
+%% Syntax:
 %       AL = A_to_f(A, nf)
 %
-%% Input arguments
+%% Input arguments:
 %         A     - (nChannels x nChannels x p) Recurrence matrix,
 %                  where nChannels is the number of signals, and p the model
 %                  order.
 %         nf    - frequency resolution
 %
-%% Output arguments
+%% Output argument:
 %         AL    - (nf, nChannels, nChannels) A(f)
 
-%% Code
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function AL = A_to_f(A, nf)
 

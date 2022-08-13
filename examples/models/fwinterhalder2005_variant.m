@@ -7,6 +7,9 @@ function [ u ] = fwinterhalder2005_variant( nPoints, nDiscard )
 %
 % Example: Seven random independent variables 
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 disp('======================================================================');
 disp('       Winterhalder et al. Signal Processing. 85:2137--60, 2005')

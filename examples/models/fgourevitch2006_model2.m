@@ -1,5 +1,8 @@
 function [ u ] = fschelter2006_model2( nPoints, nDiscard)
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 if (nargin == 0),
    nPoints = 1000;
    nDiscard = 5000;

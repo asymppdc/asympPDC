@@ -1,10 +1,10 @@
 %% MVARRESIDUE
 %        Portmanteau residues test for whiteness
 %
-%% Syntax
+%% Syntax:
 %        [Pass,Portmanteau,st,ths] = MVARRESIDUE(ef,ns,p,aValue,h,flgVerbose)
 %
-%% Input Arguments
+%% Input Arguments:
 %        ef       - matrix of column vectors - residues
 %        ns       - number of points estimated
 %        p        - model order
@@ -13,20 +13,24 @@
 %        flgVerbose - If 1: verbose for printing the testing results
 %                        0: perform tests silently
 %
-%% Output Argument 
+%% Output Arguments: 
 %         Pass    - number of computed correlation coefficients
 %         Portmanteau -result of Portmanteau test: 0 reject; 1 not rejected
 %                                                           (white hypothesis)
 %         st      - Portmanteau statistic
 %         ths     - threshold value
 %
-%% References
-%
+%% Reference:
 % [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis.
 %                         Springer-Verlag. Sec. 4.4.3, p. 169--171
-%                                                                                               4
+%
+%% See also: mvar
+%
 %         LAB 11/Apr/2000
 %         KS  28/Apr/2007
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
 

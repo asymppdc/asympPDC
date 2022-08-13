@@ -8,6 +8,9 @@ function [u ] = feichler2006_ex1 (nPoints, nDiscard, flgManual)
 % 
 %  Example - Three-dimensional VAR[2].
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 disp('======================================================================');
 disp('                   Three dimensional linear VAR[3] Model')

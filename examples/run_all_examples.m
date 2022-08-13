@@ -1,4 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% RUN_ALL_EXAMPLES
+%
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
+%==========================================================================
 %Sunspot and melanoma data 1936 - 1972
 %     sunspot --> melanoma 
 

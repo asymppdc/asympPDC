@@ -4,10 +4,10 @@
 %        as well as asymptotic statistics from vector autoregressive (VAR)
 %        coefficients in the frequency domain.
 %
-%% Syntax
+%% Syntax:
 %        c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)
 %
-%% Input Arguments
+%% Input Arguments:
 %        u      - multiple row vectors time series
 %        A      - AR estimate matrix obtained via MVAR routine
 %        pf     - covariance matrix provided via MVAR routine
@@ -18,7 +18,7 @@
 %        alpha  - significance level
 %                 if alpha is zero, statistical analysis won't be performed
 %
-%% Output Arguments 
+%% Output Arguments:
 %        c struct variable with following fields:
 %        |-- .dtf       - complex DTF estimates
 %        |-- .dtf2      - |DTF|^2 estimates
@@ -37,7 +37,7 @@
 %    or
 %        c.{dtf,dtf2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}
 %
-%% Description
+%% Description:
 %   Compute all three types of DTF --- Granger influentiability measure and
 %   their allied statistical measures of asymptotic statistics for metric
 %   option:
@@ -87,8 +87,7 @@
 %   xplot(c,flgPrinting,fs,fs/2,chLabels,flgColor,flgScale,flgMax, ...
 %                                                              flgSignifColor);
 %
-%% References
-%
+%% References:
 %   [1] M.J. Kaminski and K.J. Blinowska. A new method of the description of the
 %   information flow in the brain structures. Biol Cybern 65:203--210,1991.
 %   <https://doi.org/10.1007/bf00198091>
@@ -98,13 +97,10 @@
 %   Bio-Med Eng 63:2450--2460, 2016. 
 %   <https://doi.org/10.1109/TBME.2016.2550199>
 %
-% See also DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT,
-%          asymp_dtf | <asymp_dtf.html> |<asymp_pdc.html>|% See also MVAR,
-%          asymp_pdc, <ASYMP_DTF.html>, XPLOT
-%
+%% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2022. See file license.txt in
-% installation directory for licensing terms.
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 

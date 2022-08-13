@@ -6,7 +6,10 @@ function [ u] = fschelter2005( nPoints, nDiscard)
 %         [http://dx.doi.org/10.1016/j.jneumeth.2005.09.001]
 % 
 % Example Eq. (5) Five-dimensional VAR[4]-process 
-%
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 disp('======================================================================');
 disp('       Schelter et al. J Neurosci Methods. 152:210-9, 2005.')

@@ -2,27 +2,24 @@
 %        Put a title above PDC/DTF matrix layout subplots with measure and
 %        alpha-value information.
 %
-%% Syntax
-%
+%% Syntax:
 %   XPLOT_TITLE(c)
 %   XPLOT_TITLE(alpha,metric,measure)
 %
-%% Input Arguments
+%% Input Arguments:
 %   alpha:      significance level
 %   measure:    should be either 'pdc'| 'dtf'
 %   metric:     'euc'  -- Euclidean   ==> |PDC|^2  or |DTF|^2
 %               'diag' -- diagonal    ==> |gPDC|^2 or |DC|^2
 %               'info' -- information ==> |iPDC|^2 or |iDTF|^2
 %
-%% Output 
-%   Print main title above all subplots of DTF/PDC.
+%% Output: 
+%   Print main title above all subplots after xplot/xplot_pvalues execution.
 %
-% See also XPLOT, PVALUES_XPLOT
-%          xplot | <xplot.html> |
+%% See also: XPLOT, XPLOT_PVALUES
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
-% installation directory for licensing terms.
-%
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function [] = xplot_title(alpha,metric,measure,obs)
 

@@ -6,6 +6,9 @@ function [ u ] = fguo2008_linear( nPoints, nDiscard, flgManual )
 % 
 % Page 2 Toy Model Example 5-dimensional VAR[3] with large common exogenous input
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 disp(repmat('=',1,100))
 disp('                   Five dimensional linear VAR[3] Model')
 disp('                    with large common exogenous input')

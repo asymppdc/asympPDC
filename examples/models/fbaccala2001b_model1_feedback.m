@@ -8,6 +8,9 @@ function [ u ] = fbaccala2001b_model1_feedback( nPoints, nDiscard )
 % 
 % Example Model I - 7-dimensional VAR[2] model with loop and feedback
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 disp(repmat('=',1,100))
 disp('                       Linear VAR[2] Model I')

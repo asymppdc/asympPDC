@@ -45,10 +45,9 @@
 %       www.gps.caltech.edu/~tapio/arfit/index.html, 
 %  which is now obsolete.
 %
-%% See also ARFIT, MVAR, MCARNS, MCARVM, CMLSM
-%          arfit | <arfitcaps.html> |<mvar.html>|
+%% See also: ARFIT, MVAR, MCARNS, MCARVM, CMLSM
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2021. 
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
 %%

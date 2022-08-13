@@ -11,6 +11,14 @@
 % 
 % Example Eq. (5) Five-dimension VAR[4]-process 
 %
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+%
+%%
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %%
 
 clear; clc

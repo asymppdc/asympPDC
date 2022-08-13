@@ -21,7 +21,13 @@
 % Informatics (2015) 2:119--133.
 %
 % <http://dx.doi.org/10.1007/s40708-015-0015-1>
-% 
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 %% Data sample generation
 

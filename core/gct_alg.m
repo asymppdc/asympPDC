@@ -2,11 +2,11 @@
 %        Perform Granger causality test (GCT) from time series, AR model
 %        coefficients and covariance matrix.
 %
-%% Syntax
+%% Syntax:
 %        [Tr_gct, pValue_gct] = GCT_ALG(u,A,pf,gct_signif,igct_signif,
 %                                                                    flgVerbose)
 %
-%% Input arguments
+%% Input arguments:
 %        u           - data
 %        A           - Autoregressive model coefficient matrix
 %        pf          - Covariance matrix
@@ -15,15 +15,19 @@
 %        flgVerbose  - If 1: verbose for printing the testing results
 %                         0: perform tests silently
 %
-%% Output arguments
+%% Output arguments:
 %        Tr_gct      - GCT based connectivity matrix
 %        pValue_gct  - GCT p-values matrix
 %
-%% Reference
-% 
+%% Reference:
 % [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis. 
 %                         Springer-Verlag. 
 %
+%% See also: IGCT_ALG
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 function [Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgVerbose)
 %%

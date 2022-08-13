@@ -8,6 +8,12 @@
 %   [http://dx.doi.org/10.1016/j.jneumeth.2009.01.006]
 % 
 % 3.2 Vector autoregressive process II (Eqs. 16-20, page 124)
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 clear; clc
 

@@ -3,11 +3,11 @@
 %        and  Coh2 in the frequency domain using matrix layout, optionally with
 %        power spectra (and/or auto-PDC2/DTF2) plots along the main diagonal.
 %
-%% Syntax
+%% Syntax:
 %        [hfigure,hxlabel,hylabel] = XPLOT(strBarTitle,c,flgPrinting,fs,w_max, ...
 %                              chLabels,flgColor,flgScale,flgMax,flgSignifColor)
 %
-%% Input Arguments
+%% Input Arguments:
 %
 %   strBarTitle:  Title for the figure window bar
 %
@@ -67,16 +67,16 @@
 %               4: red   / black =>      "
 %               5: black / green =>      "
 %
-%% Output
+%% Output:
 %     Pretty matrix-layout plots and optionally p-values of GCT
 %     hfigure: figure handle
 %     hxlabel,hylabel: label's handles
 %
-%% Description
+%% Description:
 %     Cosmetic script to visualize results from 'asymp_pdc.m' or 'asymp_dtf.m'
 %     or FastAsympAlg0.m routines in a "standard" matrix-layout.
 %
-%% Examples
+%% Examples:
 %   %Try the following example:
 %
 %   % -------- Example script start here----------------------------------------
@@ -99,13 +99,11 @@
 %   % with normalized fs=1 Hz; default channel label;
 %   % flgColor=0 => no color or rescalling is used.
 %
-%% Other routines
-%     See also  xplot_title, asymp_pdc, asymp_dtf, FastAsympAlg0, subplot2, xstats,
-%            xplot_pvalues
-%     <xplot.html |xplot|> |
+%% See also: XPLOT_TITLE, XPLOT_PVALUES ASYMP_PDC, ASYMP_DTF, SUBPLOT2
+  
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
-% (C) Koichi Sameshima & Luiz A. Baccala', 2022. See file license.txt in
-%     installation directory for licensing terms.
 
 function [hfigure,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max, ...
                                chLabels,flgColor,flgScale,flgMax,flgSignifColor)

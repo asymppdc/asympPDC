@@ -1,14 +1,17 @@
 %% COH_ALG
 %        Calculate spectral coherence from spectral density function.
+%
 %% Syntax
 %       Coh = coh_alg(SS)
-%% Input arguments
+%
+%% Input argument:
 %         SS     - (nChannels x nChannels x nFreqs) Power spectral density
 %
-%% Output arguments
+%% Output argument:
 %         Coh    - Spectral coherence
 
-%% Code
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function Coh = coh_alg(SS)
 

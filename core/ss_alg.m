@@ -1,15 +1,23 @@
 %% SS_ALG
 %        Calculate spectral coherence from spectral density function.
-%% Syntax
+%
+%% Syntax:
 %       SS = SS_ALG(A, e_cov, nf, nfcalc)
-%% Input arguments
+%
+%% Input arguments:
 %        A      - autoregressive matrix
 %        e_cov  - residues
 %        nf     - number of frequencies
 %        nfcalc - fraction o frequency range to calculate 
-%% Output arguments
+%
+%% Output argument:
 %        SS     - (nChannels x nChannels x nfcalc) Power spectral density
 %
+%% See also: COH_ALG
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 function SS = ss_alg(A, e_cov, nf, nfcalc)
 

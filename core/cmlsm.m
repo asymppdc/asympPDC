@@ -1,16 +1,23 @@
 %% CMLSM
 %        Multivariate autoregressive model minimum least squares estimator.
-%% Syntax
+%
+%% Syntax:
 %       [npf,na,nef] = CMLSM(u,IP)
 %
-%% Input arguments
+%% Input arguments:
 %         u   - vector of rows
 %         IP  - order
 %
-%% Output arguments
+%% Output arguments:
 %         npf - error covariance
 %         na  - model
 %         nef - residue
+%
+%% See also: MVAR, MVARNS, MVARVM, ARFITCAPS, ARFIT
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 %% Code
 function [npf,na,nef] = cmlsm(u,IP)

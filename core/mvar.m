@@ -2,10 +2,10 @@
 %        Estimate AR model coefficients choosing estimation algorithm and model
 %        order selectio criterion.
 % 
-%% Syntax
+%% Syntax:
 %        [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion,flgVerbose)
 %
-%% Input Arguments
+%% Input Arguments:
 %        u     - data rows
 %        maxIP - externaly defined maximum IP
 %        alg   - estimation algorithm 1: Nutall-Strand; 
@@ -16,7 +16,7 @@
 %                                     4: FPE; 5: fixed order given by maxIP value
 %        flgVerbose - display model order limit value
 
-%% Output Argument 
+%% Output Arguments: 
 %     IP     - Autoregressive model order
 %     pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
 %              prediction error
@@ -30,20 +30,21 @@
 %     vaic   - Decision criterion value
 %     Vaicv  - All criterion values from p=2 up to p=IP
 %
-%% Description
+%% Description:
 %
 %
-%% References
-%
+%% References:
 % [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis. 
 %                         Springer-Verlag. 
 %
 % [2] Marple Jr, SL (1987). Digital Spectral Analysis with Application.
 %                         Prentice-Hall, Englewood-Cliffs, 1987. 
 %
-% See also MCARNS, MCARVM, CMLSM, ARFIT,
-%          <mcarns.html> | <mvar.html> |<mcarvm.html>|<cmlsm.html>
-%
+%% See also: MCARNS, MCARVM, CMLSM, ARFIT, MVARRESIDUES
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %
 %%
 

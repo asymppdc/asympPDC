@@ -7,6 +7,9 @@ function [ u ] = fbaccala2001b_model2( nPoints, nDiscard )
 % 
 % Example 6-dimensional VAR[4] Scalp EEG model II
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 disp('======================================================================');
 disp('                       Linear VAR[4] Model II')

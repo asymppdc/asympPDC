@@ -33,7 +33,7 @@
 %                                             max(abs(pvalues_log10)) value
 %                                             [0 -5], [0 -10] or [0 -15]
 %
-%% Output
+%% Output:
 %     Pretty matrix-layout plots of p-values of |PDC|^2 | |DTF|^2
 %     hfigure: figure handle
 %     hxlabel,hylabel: label's handles
@@ -48,12 +48,10 @@
 %                        % plotted. fs=200 Hz; default channel label;
 %                        % flgColor=0 => no color or rescaling is used.
 %
-%% Other routines
-%  See also  xplot_title, xplot, asymp_pdc, asymp_dtf, FastAsympAlg0, xstats
-%                   <xplot_pvalues.html |xplot_pvalues|> |
+%% See also: XPLOT, XPLOT_TITLE, ASYMP_PDC, ASYMP_DTF, SUBPLOT2
 
-% (C) Koichi Sameshima & Luiz A. Baccala', 2022. See file license.txt in
-% installation directory for licensing terms.
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function [hfigure,hxlabel,hylabel] = xplot_pvalues(vBarTitle, c,...
                                 flgPrinting,fs,w_max,chLabels,flgColor,flgScale)

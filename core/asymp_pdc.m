@@ -4,10 +4,10 @@
 %        asymptotic statistics from vector autoregressive (VAR) coefficients in
 %        the frequency domain.
 %
-%% Syntax
+%% Syntax:
 %        c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)
 %
-%% Input Arguments
+%% Input Arguments:
 %        u:          multiple row vectors time series
 %        A:          AR estimate matrix by MVAR routine
 %        pf:         covariance matrix provided by MVAR routine
@@ -19,7 +19,7 @@
 %                    if alpha is zero, statistical analysis will not be
 %                    performed for faster computation.
 %
-%% Output Arguments 
+%% Output Arguments:
 %        c: struct variable with following fields:
 %        |-- .pdc       - PDC complex estimates
 %        |-- .pdc2      - |PDC|^2 estimates
@@ -38,7 +38,7 @@
 %      i.e.
 %        .{pdc,pdc2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}
 %
-%% Description
+%% Description:
 %   Compute all three types of PDC --- connectivity measure --- and allied
 %   asymptotic statistics [2] measures for the chosen metric option: 
 %        * 'euc'  - original or Euclidean PDC as proposed in [1]; 
@@ -46,9 +46,8 @@
 %        * 'info' - information PDC. 
 %
 %% Example:
-% 
-% Annual sunspot numbers  and the melanoma cases (x10^5) in the State of
-% Connecticuts, USA, from 1936 to 1972, given by
+%  Annual sunspot numbers  and the melanoma cases (x10^5) in the State of
+%  Connecticuts, USA, from 1936 to 1972, given by
 %
 %   % -------- Example script start here---------------------------------------
 %
@@ -99,8 +98,7 @@
 %
 %   % -------- Second part of xplot example end here---------------------------
 %
-%% References
-%
+%% References:
 % [1] L.A. Baccala and K. Sameshima. Partial directed coherence: a new concept
 %     in neural structure determination. Biol Cybern 84:463--474,2001.
 %     <https://doi.org/10.1007/PL00007990>
@@ -113,11 +111,10 @@
 %     asymptotic theory for all partial directed coherence forms. Philos T Roy
 %     Soc A 371(1997):1--13, 2013. <https://doi.org/10.1098/rsta.2012.0158>
 %
-% See also PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
-%          | <asymp_pdc.html> |<asymp_dtf.html>|
+%% See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
-%     the installation directory for licensing terms.
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
 

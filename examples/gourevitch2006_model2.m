@@ -17,10 +17,12 @@
 %
 % <http://dx.doi.org/10.1007/s00422-006-0098-0>
 %
-%% Other routines
-%  See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
-%            xplot_pvalues
-% < gourevitch2006_model2.html |gourevitch2006_model2|> |
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %%
 
 clear; clc

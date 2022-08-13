@@ -29,7 +29,10 @@
 %% asympPDC analysis functions 
 %  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
 %            xplot, xplot_pvalues, xplot_title
-%
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %%
 
 

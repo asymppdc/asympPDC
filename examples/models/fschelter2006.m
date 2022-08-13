@@ -1,5 +1,9 @@
 function [ u aState] = fschelter2006( nPoints, nDiscard, flgRepeat)
 
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 if nargin < 3, flgRepeat = 0; end; 
 
 disp('======================================================================');

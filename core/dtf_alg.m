@@ -2,10 +2,10 @@
 %        Compute directed transfer function measure given by the metric option
 %        from series j--> i.
 %
-%% Syntax
+%% Syntax:
 %        c = dtf_alg(u,alg,criterion,nFreqs,metric,maxIP,alpha)
 %
-%% Input arguments
+%% Input arguments:
 %        u         - data
 %        alg       - algorithm (1: Nutall-Strand); (2: mlsm);
 %                              (3: Vieira Morf); (4: QR artfit)
@@ -21,7 +21,7 @@
 %                alpha = .05 is default; if alpha = zero, asymptotic statistics
 %                is not computed.
 %
-%% Output arguments
+%% Output arguments:
 %        c structure variable with following fields:
 %        |-- .dtf       - complex DTF estimates
 %        |-- .dtf2      - |DTF|^2 estimates
@@ -49,6 +49,12 @@
 %                 u = detrend(u);         % Detrend the series 
 %                 c = dtf_alg(u,64,'diag',1,1,30,0.01); 
 %                 figure; xplot(c); %pretty plotting     
+%
+%% See also: ASYMP_DTF, PDC_ALG
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 
 function c = dtf_alg(u,nFreqs,metric,alg,criterion,maxIP,alpha)

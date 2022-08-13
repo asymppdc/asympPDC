@@ -6,7 +6,10 @@ function [ u] = fschelter2009_vap2( nPoints, nDiscard)
 %         [http://dx.doi.org/10.1016/j.jneumeth.2005.09.001]
 % 
 % Example Eq. (5) Five-dimensional VAR[2]-process 
-%
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 disp('======================================================================');
 disp('                    Five-dimensional VAR[2] process')

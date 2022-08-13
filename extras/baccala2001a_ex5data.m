@@ -5,6 +5,9 @@ function u=baccala2001example5data(nPoints)
 % 
 % Example VAR(2) five-variable with loop and feedback
 
+% (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 N=10000;
 disp('======================================================================');
 disp('             Linear VAR(2) Model Example 5 - closed-loop')

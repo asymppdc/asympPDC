@@ -7,6 +7,9 @@ function [ u ] = fbaccala2001a_ex4( nPoints, nDiscard )
 % 
 % Example Five-dimensional VAR[2] with loop and feedback
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 disp('======================================================================');
 disp('        Pentavariate linear VAR[2] Model Example 5 - closed-loop')
 disp('         Baccala & Sameshima. Biol. Cybern. 84:463-474, 2001.')

@@ -5,7 +5,13 @@
 %           <https://dx.plos.org/10.1371/journal.pcbi.1000087> 
 % 
 % Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input
-%%
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 clear; clc; format compact; format short
 

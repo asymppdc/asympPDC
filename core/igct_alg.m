@@ -2,10 +2,10 @@
 %        Perform instantaneous Granger causality test (IGCT) from time series,
 %        AR model coefficients and covariance matrix.
 %
-%% Syntax
+%% Syntax:
 %        [Tr_igct, pValue_igct] = IGCT_ALG(u,A,pf,igct_signif,flgVerbose)
 %
-%% Input arguments
+%% Input arguments:
 %        u           - multivariate time series data
 %        A           - Autoregressive model coefficients matrix
 %        pf          - Covariance matrix
@@ -13,14 +13,18 @@
 %        flgVerbose  - If 1: verbose for printing the testing results on screen
 %                        0: perform tests silently
 %
-%% Output arguments
+%% Output arguments:
 %        Tr_igct     - IGCT based connectivity matrix
 %        pValue_igct - IGCT p-values matrix
 %
-%% Reference
-% 
+%% Reference:
 % [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis. 
 %                         Springer-Verlag. 
+%
+%% See also: GCT_ALG 
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 function [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgVerbose)
 

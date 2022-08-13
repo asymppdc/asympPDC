@@ -19,12 +19,12 @@
 %     ef     - Forward residuals
 %     eb     - Backward residuals
 %
-%% Description
+%% Description:
 %   Calculate the coeficients of multi-channel auto-regressive matrix using
 %   Vieira Morf algorithm (a generalization of single channel geometric
 %                             method).
 %
-%% Notes
+%% Notes:
 %      * This implementation is a FORTRAN code translation from
 %        Appendix 15.B page 424 of Marple Jr.(1987). (KS 1998)
 %      * Equation numbers are identifical in references [1] and [2].
@@ -35,6 +35,11 @@
 %   [2] Marple Jr., SL. Digital Spectral Analysis with Application. 2nd Ed.
 %       Dover Publications, Inc., Mineola - New York, 2019. 
 %
+%% See also: MVAR, MCARNS, ARTFITCAPS, CMLSM 
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 function [pf,A,pb,B,ef,eb,ISTAT] = mcarvm(u,IP)
 

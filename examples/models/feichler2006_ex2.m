@@ -9,6 +9,9 @@ function [ u ] = feichler2006_ex2( nPoints, nDiscard, flgManual)
 %
 %  Example - two-dimensional VAR[4].
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 disp('======================================================================');
 disp('                   Two-dimensional linear VAR[4] Model')
 disp('                           Eichler (2006).')

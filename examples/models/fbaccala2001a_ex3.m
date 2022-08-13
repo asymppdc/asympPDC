@@ -4,6 +4,9 @@
 % x1-->x2  x1-->x3 x1-->x4 x4-->x5 x5-->x4');
 %                http://dx.doi.org/10.1007/PL00007990
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 function [ u ] = fbaccala2001a_ex3( nPoints, nDiscard )
 

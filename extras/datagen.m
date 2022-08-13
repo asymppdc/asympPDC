@@ -24,6 +24,9 @@
 % future seed inclusion
 % default burn-in period to deal with transients
 
+% (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 function [y,seed_out]=datagen(A,pf,Ndata,R,seed)
 
 nBurnIn=10000;

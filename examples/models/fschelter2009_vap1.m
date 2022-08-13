@@ -8,7 +8,10 @@ function [ u] = fschelter2009_vap1( nPoints, nDiscard, flgVerbose)
 %        influences among neural signals using renormalized PDC. J Neurosci
 %        Methods, 179:121-130.
 %        [https://dx.doi.org/10.1016/j.jneumeth.2009.01.006]
-% 
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 if (nargin == 0)
    nPoints = 1000;

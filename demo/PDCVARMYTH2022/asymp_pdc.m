@@ -119,6 +119,9 @@
 % (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
 %     the installation directory for licensing terms.
 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
 
 if nargin < 6

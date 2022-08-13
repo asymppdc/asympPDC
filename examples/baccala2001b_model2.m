@@ -9,6 +9,12 @@
 % <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
 % 
 % Model II: 6-dimension VAR(4) Scalp model
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 clear; clc; format compact; format short
 
