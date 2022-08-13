@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # [MATLAB and Octave asympPDC Package](https://github.com/asymppdc/asympPDC) [![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
+=======
+# [MATLAB and Octave asympPDC Package ](https://github.com/asymppdc/asympPDC)[![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
+>>>>>>> 434e2504252fb8b3e471ad381d5e58843cad1bf6
 =======
 # [MATLAB and Octave asympPDC Package ](https://github.com/asymppdc/asympPDC)[![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
 >>>>>>> 434e2504252fb8b3e471ad381d5e58843cad1bf6
@@ -37,7 +41,11 @@ This command will tile the screen with figure windows. The `tilefigs1` and `tile
 ## Schematic view of connectivity measures evolution
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 The figure bellow shows  schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** ($N=2$) to **multivariate** ($N\geq2$) time series, and from **time domain** to **frequency domain** analysis.  The measures inside the yellow area are those implemented in **the asympPDC Package**.
+=======
+The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (N=2) to **multivariate** (N>2) time series, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **the asympPDC Package**.
+>>>>>>> 434e2504252fb8b3e471ad381d5e58843cad1bf6
 =======
 The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (N=2) to **multivariate** (N>2) time series, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **the asympPDC Package**.
 >>>>>>> 434e2504252fb8b3e471ad381d5e58843cad1bf6
@@ -139,8 +147,11 @@ authorship of Koichi Sameshima and Luiz A. Baccalá - July 2022.
 Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package (https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1), GitHub. Retrieved August 12, 2022.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 434e2504252fb8b3e471ad381d5e58843cad1bf6
 =======
 >>>>>>> 434e2504252fb8b3e471ad381d5e58843cad1bf6
 [![View asympPDC Package on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116220-asymppdc-package)
