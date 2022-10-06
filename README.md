@@ -5,32 +5,19 @@ by Koichi Sameshima and Luiz A. Baccalá
 July 22, 2022
 
 **The asympPDC Package** consists of MATLAB/Octave routines and functions collection for the analysis of 
-multiple time series, such as EEG, biological signals and climate data, 
-to infer directed interactions between structures in the frequency 
-domain using Partial Directed Coherence (**PDC**), based on the concept of Granger causality, and Directed Transfer Function (**DTF**),
- both in three metrics --- Euclidean, diagonal and information --- under
- strict asymptotic statistics with p-values and confidence intervals 
-also provided in the frequency domain.
+multiple time series, such as EEG, biological signals and climate data, to infer directed interactions between structures in the frequency domain using Partial Directed Coherence (**PDC**) --- based on the concept of Granger causality --- and Directed Transfer Function (**DTF**), both in three metrics (Euclidean, diagonal and information) under
+the strict asymptotic statistics with p-values and confidence intervals also provided in the frequency domain.
 
 ## Installation and usage
 
-The asympPDC Package contains MATLAB/Octave m-files and 
-subdirectories that you may download and copy into your local preferred 
-working directory to execute them. To start, you should go to the 
-package directory and run the `startup.m` script in the MATLAB/Octave command line window that will set paths and check for the requirements.
+The asympPDC Package contains MATLAB/Octave m-files and subdirectories that you may download and copy into your local preferred working directory to execute them. To start, you should go to the package directory and run the `startup.m` script in the MATLAB/Octave command line window that will set paths and check for the requirements.
 
 ```matlab
 >> startup
 ```
 
-Besides adding the paths, `startup.m` will also
- check for the presence of the required MATLAB toolboxes (Control System
- Toolbox(TM), Signal Processing Toolbox(TM), and Statistics Toolbox(TM) 
-or Statistics or Machine Learning Toolbox(TM)) or Octave packages 
-(control, signal, and statistics). This is a standalone package that 
-will most likely work in the recent versions of Octave --- 6.3.0, 6.4.0 
-and 7.1.0. (Please report or suggest corrections to any issues related 
-to compatibility with Octave).
+Besides adding the paths, `startup.m` will also check for the presence of the required MATLAB toolboxes (Control System
+ Toolbox(TM), Signal Processing Toolbox(TM), and Statistics Toolbox(TM) or Statistics or Machine Learning Toolbox(TM)) or Octave packages (control, signal, and statistics). This is a standalone package that will most likely work in the recent versions of Octave --- 6.3.0, 6.4.0 and 7.1.0. (Please report or suggest corrections to any issues related to compatibility with Octave).
 
 To run all examples provided in `./examples` subdirectory and verify if your installation is working properly, execute:
 
@@ -50,7 +37,11 @@ These commands tile the screen with figure windows. The `tilefigs1` and `tilefig
 
 The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (N=2) to **multivariate** (N>2) time series, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **the asympPDC Package**.
 
-![](./connectivity_measures_in_asymppdc.png)
+***
+
+![connectivity_measures_in_asymppdc.png](/home/koichi/Dropbox/Asymp_PDC_toolbox/github_site/asympPDC2/connectivity_measures_in_asymppdc.png)
+
+***
 
 * **Legend**: **N** number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function.
 
