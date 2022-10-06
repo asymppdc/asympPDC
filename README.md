@@ -1,8 +1,8 @@
-# [MATLAB and Octave asympPDC Package ](https://github.com/asymppdc/asympPDC) [![View asympPDC on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116290-asymppdc)
+# [asympPDC Package ](https://github.com/asymppdc/asympPDC) [![View asympPDC on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116290-asymppdc)
 
 by Koichi Sameshima and Luiz A. Baccalá
 
-July 22, 2022
+October 05, 2022
 
 **The asympPDC Package** consists of MATLAB/Octave routines and functions collection for the analysis of 
 multiple time series, such as EEG, biological signals and climate data, to infer directed interactions between structures in the frequency domain using Partial Directed Coherence (**PDC**) --- based on the concept of Granger causality --- and Directed Transfer Function (**DTF**), both in three metrics (Euclidean, diagonal and information) under
@@ -139,6 +139,6 @@ These routines are distributed under GNU General Public License v3.0 under autho
 
 ## Cite as
 
-Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package ([Release v3.0.1 for File Exchange purpose · asymppdc/asympPDC · GitHub](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1)), GitHub. Retrieved August 12, 2022.
+Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package ([Release v3.0 for File Exchange purpose · asymppdc/asympPDC · GitHub](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1)), GitHub. Retrieved August 12, 2022.
 
 [![View asympPDC on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116290-asymppdc)
