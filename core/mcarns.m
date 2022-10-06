@@ -20,7 +20,7 @@
 %     eb     - Backward residuals
 %
 %% Description:
-%   This function calculate the coeficients of multi-channel autoregressive
+%   This function calculate the coefficients of multi-channel autoregressive
 %   matrix using Nuttall-Strand algorithm (a generalization of single channel
 %   harmonic method).
 %
@@ -78,7 +78,7 @@ while 1
    %             (Nuttall-Strand algorithm only)
    RHO = lyap(pfhat*inv(pf),inv(pb)*pbhat,-2*pfbhat);
 
-   %  Update forward and backward reflection coeficients
+   %  Update forward and backward reflection coefficients
    %  Eqs. (15.73),(15.74),(15.78) (algorithm  by Nuttall-Strand)
    AM = -RHO  * inv(pb);
    BM = -RHO' * inv(pf);
@@ -90,7 +90,7 @@ while 1
    pf = pf - AM * BM * pf;
    pb = pb - BM * AM * pb;
 
-   %  Update forward and backward predictor coeficients - Eqs.(15.84),(15.85)
+   %  Update forward and backward predictor coefficients - Eqs.(15.84),(15.85)
    if m ~= 1
       for k = 1:m-1
          temp1 = A(:,:,k);

@@ -1,18 +1,18 @@
-% SUNMELADAT
+%% SUNMELADAT
 %   Return the skin.dat from Andrews and Herzberg (1985) book's year,
 %   melanoma and sunspot number series.
 %
-% Syntax
+%% Syntax
 %   u = SUNMELADAT(selection);
 %
-% Input Argument
+%% Input Argument
 %   selection:  four element row vector with 0 or 1
 %               [year male_melanoma total_melanoma sunspot_number]
 %
-% Output Argument
+%% Output Argument
 %   u:          matrix with Andrews and Herzberg data columns
 %
-% Examples 
+%% Examples 
 %   sunmeladat([1 1 1 1])  % or 
 %   sunmeladat()           % return all series
 %
@@ -23,14 +23,14 @@
 %   sunmeladat(1)     % or
 %   sunmeladat([1])   % yield year column
 %
-% Reference
+%% Reference
 %   Data sample borrowed from 
 %      Andrews DF, Herzberg AM. (1985) Data: A Collection of Problems from 
 %      Many Fields for the Student and Research Worker. Springer, New York.
-%      DOI:10.1007/978-1-4612-5098-2
+%      <https://doi.org/10.1007/978-1-4612-5098-2>
 %      ISBN: 978-1-4612-9563-1 (Print) 978-1-4612-5098-2 (Online) 
-          
-% Description
+%          
+%% Description
 %
 %  "This data is from skin.dat Data File in Andrews and Herzberg (1985).
 %   The aetiology of melanoma is complex and may include the influences 

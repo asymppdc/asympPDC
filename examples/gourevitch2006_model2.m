@@ -1,4 +1,4 @@
-%% GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE
+%% GOUREVITCH ET AL. (2006) - Linear 2-VAR with feedback and common sourcew
 %
 % DESCRIPTION:
 %

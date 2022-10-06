@@ -1,6 +1,6 @@
 %% MVAR
-%        Estimate AR model coefficients choosing estimation algorithm and model
-%        order selectio criterion.
+%        Estimate AR model coefficients based on chosen estimation
+%        algorithm, and model order selectio criterion.
 % 
 %% Syntax:
 %        [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion,flgVerbose)
@@ -14,7 +14,7 @@
 %        criterion for order choice - 0: MDL (not implemented)
 %                                     1: AIC; 2: Hanna-Quinn; 3 Schwarz;
 %                                     4: FPE; 5: fixed order given by maxIP value
-%        flgVerbose - display model order limit value
+%        flgVerbose - display model order limit values
 
 %% Output Arguments: 
 %     IP     - Autoregressive model order

@@ -20,7 +20,7 @@
 %     eb     - Backward residuals
 %
 %% Description:
-%   Calculate the coeficients of multi-channel auto-regressive matrix using
+%   Calculate the coefficients of multi-channel auto-regressive matrix using
 %   Vieira Morf algorithm (a generalization of single channel geometric
 %                             method).
 %

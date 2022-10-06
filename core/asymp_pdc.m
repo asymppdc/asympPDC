@@ -24,7 +24,7 @@
 %        |-- .pdc       - PDC complex estimates
 %        |-- .pdc2      - |PDC|^2 estimates
 %        |-- .pvalues   - p-values associated to PDC2 estimates. 
-%        |-- .th        - |PDC|^2 threshold value with (1-avalue) significance 
+%        |-- .th        - |PDC|^2 threshold value with (1-alpha) significance 
 %        |                level.
 %        |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of 
 %        |                |PDC|^2 estimates
@@ -330,7 +330,7 @@ for ff = 1:nFreqs
    end  % i = nChannels
 end  % ff = freqs
 
-% assigning values to the c structure.
+% assigning values to the c struct.
 if alpha ~= 0
    c.pdc = pdc;   % Complex PDC2/gPDC2/iPDC2
    c.pdc2 = pdc2;

@@ -1,4 +1,4 @@
-%% Schelter et al. (2005)  Five-dimension VAR[4]-process 
+%% SCHELTER ET AL.(2005) - Five-dimension VAR[4]-process 
 %
 % Description:
 % 

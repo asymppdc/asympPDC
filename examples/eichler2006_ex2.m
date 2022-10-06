@@ -1,4 +1,4 @@
-%% EICHLER (2006) Two-dimension VAR[2]
+%% EICHLER ET AL.(2006) - Two-dimension VAR[2]
 %
 % DESCRIPTION:
 %

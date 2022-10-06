@@ -1,4 +1,4 @@
-%% GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input
+%% GUO ET AL. (2008) - 5-dimension VAR[3] with large common exogenous input
 %
 % Guo, Wu, Ding & Feng. Uncovering interactions in frequency domains.
 %         PLoS Computational Biology, 4(5):1-10, February 8, 2008.

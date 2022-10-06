@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="guo2008_linear_test.m"><style type="text/css">
+      --><title>GUO ET AL. (2008) - 5-dimension VAR[3] with large common exogenous input</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="guo2008_linear_test.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input</h1><!--introduction--><p>Guo, Wu, Ding &amp; Feng. Uncovering interactions in frequency domains.         PLoS Computational Biology, 4(5):1-10, February 8, 2008.           <a href="https://dx.plos.org/10.1371/journal.pcbi.1000087">https://dx.plos.org/10.1371/journal.pcbi.1000087</a></p><p>Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="guo2008_linear_test_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> Matrix Layout Plotting</a></li><li><a href="#11">Result from Figure 1 (bottom) Guo et al.(2006)</a></li><li><a href="#12">Information PDC estimation</a></li><li><a href="#13">iPDC Matrix Layout Plotting</a></li><li><a href="#14">Original DTF estimation</a></li><li><a href="#15">DTF Matrix Layout Plotting</a></li><li><a href="#16">PDC p-values matrix layout plots</a></li><li><a href="#17">Concluding remarks</a></li></ul></div><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+  </style></head><body><div class="content"><h1>GUO ET AL. (2008) - 5-dimension VAR[3] with large common exogenous input</h1><!--introduction--><p>Guo, Wu, Ding &amp; Feng. Uncovering interactions in frequency domains.         PLoS Computational Biology, 4(5):1-10, February 8, 2008.           <a href="https://dx.plos.org/10.1371/journal.pcbi.1000087">https://dx.plos.org/10.1371/journal.pcbi.1000087</a></p><p>Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="guo2008_linear_test_eq09556325088033023315.png" alt="$|{PDC}(\lambda)|^2$"> Matrix Layout Plotting</a></li><li><a href="#11">Result from Figure 1 (bottom) Guo et al.(2006)</a></li><li><a href="#12">Information PDC estimation</a></li><li><a href="#13">iPDC Matrix Layout Plotting</a></li><li><a href="#14">Original DTF estimation</a></li><li><a href="#15">DTF Matrix Layout Plotting</a></li><li><a href="#16">PDC p-values matrix layout plots</a></li><li><a href="#17">Concluding remarks</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+
+
+clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
 </pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_guo2008_graph.png" alt=""> </p><h2 id="3">Equation system</h2><p><img vspace="5" hspace="5" src="fig_guo2008_eq.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 50000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 10000;   <span class="comment">% number of analyzed samples points</span>
 
@@ -86,7 +90,7 @@ alpha = 0.0001;
 ====================================================================================================
 Assigned "sum(100*clock)" initial state.2
 Model parameters:
-a1=0.351660; a2=0.830829; a3=0.585264; a4=0.549724; a5=0.917194;
+a1=0.157613; a2=0.970593; a3=0.957167; a4=0.485376; a5=0.800280;
 b1 = b2 = b3 = b4 = b5 = 2;
 c1 = c2 = c3 = c4 = c5 = 5;
  
@@ -119,10 +123,10 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=524406.700861
-IP=2  vaic=512066.006596
-IP=3  vaic=511266.342397
-IP=4  vaic=511292.665142
+IP=1  vaic=525852.365890
+IP=2  vaic=513774.092200
+IP=3  vaic=512805.122565
+IP=4  vaic=512836.705405
  
 Number of channels = 5 with 10000 data points; MAR model order = 3.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -138,8 +142,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.002
-  st = 396.68
+Pass = 0.04
+  st = 469.564
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -156,14 +160,14 @@ Connectivity matrix:
      1   NaN     0     0     0
      1     0   NaN     0     0
      1     0     0   NaN     1
-     0     0     0     1   NaN
+     1     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.6855    0.0092    0.0064    0.0577
-         0       NaN    0.0454    0.0078    0.1546
-    0.0000    0.5104       NaN    0.0033    0.1027
-         0    0.5651    0.0725       NaN    0.0000
-    0.0109    0.4190    0.0199    0.0000       NaN
+       NaN    0.3463    0.0017    0.7884    0.1883
+         0       NaN    0.0015    0.7448    0.4241
+         0    0.5597       NaN    0.8726    0.2213
+         0    0.3104    0.0029       NaN         0
+    0.0000    0.5697    0.0005    0.0000       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -234,14 +238,20 @@ xplot_title(alpha,metric,[<span class="string">'p-value_{iPDC}'</span>],strID);
 <span class="comment">%This completes Guo et al. (2008) example. ;</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% GUO ET AL. (2008) 5-dimension VAR[3] with large common exogenous input
+%% GUO ET AL. (2008) - 5-dimension VAR[3] with large common exogenous input
 %
 % Guo, Wu, Ding & Feng. Uncovering interactions in frequency domains.
 %         PLoS Computational Biology, 4(5):1-10, February 8, 2008.
 %           <https://dx.plos.org/10.1371/journal.pcbi.1000087> 
 % 
 % Page 2 Toy Model Example 5-dimension VAR[3] with large common exogenous input
-%%
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 
 clear; clc; format compact; format short
 

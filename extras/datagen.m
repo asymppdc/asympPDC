@@ -1,12 +1,11 @@
-% DATAGEN
+%% DATAGEN
 %        Generate multivariate time series from autoregressive coefficients A  and
 %        covariance matrix, pf.
 % 
-% Syntax:
-%
+%% Syntax:
 %         [y,seed_out]=DATAGEN(A,pf,Ndata,R,seed)
-% Input Arguments: 
 %
+%% Input Arguments: 
 %   A:          NxNxIP system definition matrix, IP is model order
 %   pf:         NxN Input covariance matrix
 %   Ndata:      Number of time samples
@@ -15,7 +14,7 @@
 %        
 %   nBurnIn=10000 (internally defined)
 %
-% Output Argument:
+%% Output Argument:
 %   y - N x Time (=Ndata) x R
 
 % July 09, 2021, LAB
@@ -33,13 +32,14 @@ nBurnIn=10000;
 
 %% Warning on rng usage
 %    Error using rng (line 96)
-% The current random number generator is the legacy generator.  This is because you have
-% executed a command such as rand('state',0), which activates MATLAB's legacy random
-% number behavior.  You may not use RNG to reseed the legacy random number generator.
+% The current random number generator is the legacy generator.  This is
+% because you have executed a command such as rand('state',0), which
+% activates MATLAB's legacy random number behavior.  You may not use RNG to
+% reseed the legacy random number generator.
 % 
-% Use rng('default') to reinitialize the random number generator to its startup
-% configuration, or call RNG using a specific generator type, such as
-% rng(seed,'twister').
+% Use rng('default') to reinitialize the random number generator to its
+% startup configuration, or call RNG using a specific generator type, such
+% as rng(seed,'twister').
 if nargin==5
    rng('default')
    rng(seed)
@@ -50,7 +50,7 @@ seed_out=rng;
 if nargin<4
    R=1;
 end
-[n,n,p]=size(A);
+[n,~,p]=size(A);
 V=chol(pf);
 epsilon=randn(n,Ndata + nBurnIn + p,R);
 y=zeros(size(epsilon));

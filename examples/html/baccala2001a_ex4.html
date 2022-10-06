@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>BACCALA &amp; SAMESHIMA (2001A) EXAMPLE 4</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="baccala2001a_ex4.m"><style type="text/css">
+      --><title>BACCALA &amp; SAMESHIMA (2001a) - Example 4</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="baccala2001a_ex4.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +67,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>BACCALA &amp; SAMESHIMA (2001A) EXAMPLE 4</h1><!--introduction--><p>DESCRIPTION:</p><p>Five-dimensional linear VAR[2] Model Example 4</p><pre>  $x1==&gt;x2  x2--&gt;x3 x3--&gt;x4 x4&lt;--&gt;x5$</pre><p>Example from</p><pre>      Baccala &amp; Sameshima (2001). Partial directed coherence: a new
-      concept in neural structure determination. _Biol. Cybern._
-      *84*:463-474.</pre><pre>              &lt;https://dx.doi.org/10.1007/PL00007990&gt;</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Other routines</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation 5-dimension VAR[2] with feedback</a></li><li><a href="#5">Data sample generation</a></li><li><a href="#6">Data pre-processing: detrending and normalization options</a></li><li><a href="#9">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#10">Original PDC definition estimation</a></li><li><a href="#11"><img src="baccala2001a_ex4_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$">  Matrix-Layout Plotting</a></li><li><a href="#12">Original DTF definition estimation</a></li><li><a href="#13"><img src="baccala2001a_ex4_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$">  Matrix Layout Plotting</a></li><li><a href="#15">Result from the original article, Baccala &amp; Sameshima (2001)</a></li></ul></div><h2 id="1">Other routines</h2><pre>See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg,
-          xplot, xplot_pvalues
-&lt;baccala2001a_ex4.html |baccala2001a_ex4|&gt; |</pre><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+  </style></head><body><div class="content"><h1>BACCALA &amp; SAMESHIMA (2001a) - Example 4</h1><!--introduction--><p>DESCRIPTION: Five-dimensional linear VAR[2] Model Example 4    <img src="baccala2001a_ex4_eq11899782262708120726.png" alt="$x1==&gt;x2  x2--&gt;x3 x3--&gt;x4 x4<--&gt;x5$"></p><p>Example from        Baccala &amp; Sameshima (2001). Partial directed coherence: a new        concept in neural structure determination. <i>Biol. Cybern.</i>        <b>84</b>:463-474.</p><pre>              &lt;https://dx.doi.org/10.1007/PL00007990&gt;</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation 5-dimension VAR[2] with feedback</a></li><li><a href="#5">Data sample generation</a></li><li><a href="#6">Data pre-processing: detrending and normalization options</a></li><li><a href="#9">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#10">Original PDC definition estimation</a></li><li><a href="#11"><img src="baccala2001a_ex4_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$">  Matrix-Layout Plotting</a></li><li><a href="#12">Original DTF definition estimation</a></li><li><a href="#13"><img src="baccala2001a_ex4_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$">  Matrix Layout Plotting</a></li><li><a href="#15">Result from the original article, Baccala &amp; Sameshima (2001)</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
 </pre><h2 id="3">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex4_graph.png" alt=""> </p><p>Figure 3a from Baccala &amp; Sameshima. <i>Biol. Cybern.</i> <b>84</b>:463-474, 2001.</p><h2 id="4">Equation 5-dimension VAR[2] with feedback</h2><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex4_eq.png" alt=""> </p><h2 id="5">Data sample generation</h2><pre class="codeinput">nDiscard = 1000;   <span class="comment">% number of points to be discarded at beginning of simulation</span>
 nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
 
@@ -111,9 +109,9 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=78235.253006
-IP=2  vaic=75917.699252
-IP=3  vaic=75939.982049
+IP=1  vaic=78367.984327
+IP=2  vaic=76043.838688
+IP=3  vaic=76066.076773
  
 Number of channels = 5 with 2000 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -128,8 +126,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.03
-  st = 441.327
+Pass = 0.04
+  st = 494.528
 </pre><h2 id="9">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -152,11 +150,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.6073    0.3553    0.6234    0.3766
-         0       NaN    0.3126    0.6544    0.4880
-    0.3881         0       NaN    0.2962    0.5299
-    0.3598    0.7724         0       NaN         0
-    0.1483    0.4440    0.0964         0       NaN
+       NaN    0.9508    0.9493    0.1201    0.4165
+         0       NaN    0.3590    0.7029    0.3706
+    0.9105         0       NaN    0.9448    0.2312
+    0.2556    0.2780         0       NaN         0
+    0.3135    0.6905    0.4984         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -169,11 +167,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.1409    0.1951    0.9567    0.7306
-    0.1409       NaN    0.6488    0.1758    0.5868
-    0.1951    0.6488       NaN    0.4944    0.2757
-    0.9567    0.1758    0.4944       NaN    0.9510
-    0.7306    0.5868    0.2757    0.9510       NaN
+       NaN    0.1668    0.3329    0.5643    0.6313
+    0.1668       NaN    0.9220    0.6290    0.0632
+    0.3329    0.9220       NaN    0.0624    0.7789
+    0.5643    0.6290    0.0624       NaN    0.9065
+    0.6313    0.0632    0.7789    0.9065       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -200,25 +198,26 @@ vBarTitle = <span class="string">'Baccala &amp; Sameshima (2001) - Example 4'</s
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,vBarTitle);
 </pre><img vspace="5" hspace="5" src="baccala2001a_ex4_02.png" alt=""> <div><ul><li>Check &amp; compare this results with Fig. 3b, page 469, Baccala &amp; Sameshima (2001).</li><li>Note that in the article the amplitude, <img src="baccala2001a_ex4_eq12264329191379926643.png" alt="$|PDC|$">, has been depicted.   While here we preferred to plot <img src="baccala2001a_ex4_eq06563705797252587072.png" alt="$|PDC|^2$"> and <img src="baccala2001a_ex4_eq15465123740211846091.png" alt="$|DTF|^2$">.</li></ul></div><h2 id="15">Result from the original article, Baccala &amp; Sameshima (2001)</h2><p>In the original article the results is as follow for comparison.</p><p><img vspace="5" hspace="5" src="fig_baccala2001a_ex4ab.png" alt=""> </p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% BACCALA & SAMESHIMA (2001A) EXAMPLE 4
+%% BACCALA & SAMESHIMA (2001a) - Example 4
 %
 % DESCRIPTION:
-%
 % Five-dimensional linear VAR[2] Model Example 4
-%
 %    $x1==>x2  x2REPLACE_WITH_DASH_DASH>x3 x3REPLACE_WITH_DASH_DASH>x4 x4<REPLACE_WITH_DASH_DASH>x5$
 %
 % Example from
-%
 %        Baccala & Sameshima (2001). Partial directed coherence: a new
 %        concept in neural structure determination. _Biol. Cybern._
 %        *84*:463-474.
 %
 %                <https://dx.doi.org/10.1007/PL00007990>
-%% Other routines
-%  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
-%            xplot, xplot_pvalues
-%  <baccala2001a_ex4.html |baccala2001a_ex4|> |
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
+
 %%
 clear; clc; format compact; format short
 

@@ -1,4 +1,4 @@
-%% Baccala & Sameshima (2001b) Model I: 7-dimensional VAR[2] model with loop and feedback
+%% BACCALA & SAMESHIMA (2001b) - Model 1: 7-dim VAR[2] model with loop and feedback
 %
 % **Description**:
 % This is a toy model example that "mimicks local field potential

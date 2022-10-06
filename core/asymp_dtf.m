@@ -23,7 +23,7 @@
 %        |-- .dtf       - complex DTF estimates
 %        |-- .dtf2      - |DTF|^2 estimates
 %        |-- .pvalues   - p-values associated to DTF2 estimates. 
-%        |-- .th        - |DTF|^2 threshold value with (1-avalue) significance 
+%        |-- .th        - |DTF|^2 threshold value with (1-alpha) significance 
 %        |                level.
 %        |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of 
 %        |                |DTF|^2 estimates

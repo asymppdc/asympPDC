@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>EICHLER (2006) Two-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="eichler2006_ex2.m"><style type="text/css">
+      --><title>EICHLER ET AL.(2006) - Two-dimension VAR[2]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="eichler2006_ex2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>EICHLER (2006) Two-dimension VAR[2]</h1><!--introduction--><p>DESCRIPTION:</p><p>Two variate linear VAR[4] Model</p><pre>          x1--&gt;x2</pre><p>Eichler. On the evaluation of information flow in multivariate systems by the directed transfer function.            Biol Cybern (2006) 94: 469?482</p><p><a href="http://dx.doi.org/10.1007/s00422-006-0062-z">http://dx.doi.org/10.1007/s00422-006-0062-z</a></p><pre>Example - two-dimension VAR[4].</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction</a></li><li><a href="#3">Equation (25) of Eichler (2006)</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original DTF estimation as in Eichler (2006)</a></li><li><a href="#10">DTF Matrix Layout Plotting with [0 1] y-axis scale.</a></li><li><a href="#11">DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI</a></li></ul></div><pre class="codeinput">clc; format <span class="string">compact</span>
-</pre><h2 id="2">Interaction</h2><p><img vspace="5" hspace="5" src="fig_eichler2006_2dim_graph.png" alt=""> </p><h2 id="3">Equation (25) of Eichler (2006)</h2><p><img vspace="5" hspace="5" src="fig_eichler2006b_eq26.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;      <span class="comment">% number of points discarded at beginning of simulation</span>
+  </style></head><body><div class="content"><h1>EICHLER ET AL.(2006) - Two-dimension VAR[2]</h1><!--introduction--><p>DESCRIPTION:</p><p>Two variate linear VAR[4] Model</p><pre>          x1--&gt;x2</pre><p>Eichler. On the evaluation of information flow in multivariate systems by the directed transfer function.            Biol Cybern (2006) 94: 469?482</p><p><a href="http://dx.doi.org/10.1007/s00422-006-0062-z">http://dx.doi.org/10.1007/s00422-006-0062-z</a></p><pre>Example - two-dimension VAR[4].</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#3">Interaction</a></li><li><a href="#4">Equation (25) of Eichler (2006)</a></li><li><a href="#5">Data sample generation</a></li><li><a href="#7">MVAR model estimation</a></li><li><a href="#9">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#10">Original DTF estimation as in Eichler (2006)</a></li><li><a href="#11">DTF Matrix Layout Plotting with [0 1] y-axis scale.</a></li><li><a href="#12">DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><pre class="codeinput">clc; format <span class="string">compact</span>
+</pre><h2 id="3">Interaction</h2><p><img vspace="5" hspace="5" src="fig_eichler2006_2dim_graph.png" alt=""> </p><h2 id="4">Equation (25) of Eichler (2006)</h2><p><img vspace="5" hspace="5" src="fig_eichler2006b_eq26.png" alt=""> </p><h2 id="5">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;      <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 2000;      <span class="comment">% number of analyzed samples points</span>
 
 flgManual  = 0;
@@ -98,7 +100,7 @@ flgStandardize = 0; <span class="comment">% No standardization</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
 <span class="keyword">end</span>;
 </pre><pre class="codeoutput">Time series were detrended.
-</pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+</pre><h2 id="7">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1: Nutall-Strand MVAR estimation algorithm</span>
 criterion = 1;      <span class="comment">% 1: AIC, Akaike Information Criteria</span>
 
@@ -113,14 +115,13 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=31616.739310
-IP=2  vaic=31428.576297
-IP=3  vaic=30902.800893
-IP=4  vaic=30376.292535
-IP=5  vaic=30373.729018
-IP=6  vaic=30379.205310
+IP=1  vaic=31586.114571
+IP=2  vaic=31373.014217
+IP=3  vaic=30848.238854
+IP=4  vaic=30355.952413
+IP=5  vaic=30362.304966
  
-Number of channels = 2 with 2000 data points; MAR model order = 5.
+Number of channels = 2 with 2000 data points; MAR model order = 4.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
 MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
                             <span class="comment">% level</span>
@@ -133,9 +134,9 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.05
-  st = 74.4124
-</pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">alpha = 0.05;
+Pass = 0.0375
+  st = 59.7339
+</pre><h2 id="9">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">alpha = 0.05;
 gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 metric = <span class="string">'info'</span>; <span class="comment">% euc  = original PDC or DTF;</span>
@@ -155,7 +156,7 @@ Connectivity matrix:
      1   NaN
 
 Granger causality test p-values:
-       NaN    0.8573
+       NaN    0.7356
     0.0000       NaN
 
 ====================================================================================================
@@ -166,13 +167,13 @@ Instantaneous connectivity matrix:
      0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.5246
-    0.5246       NaN
+       NaN    0.8682
+    0.8682       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-</pre><h2 id="9">Original DTF estimation as in Eichler (2006)</h2><pre class="codeinput">d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% DTF and asymptotic statistics</span>
+</pre><h2 id="10">Original DTF estimation as in Eichler (2006)</h2><pre class="codeinput">d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% DTF and asymptotic statistics</span>
 d.Tragct = Tr_gct;
 d.pvaluesgct = pValue_gct;
 <span class="comment">%=======Overriding some default parameters for plotting and analysis=======</span>
@@ -181,13 +182,13 @@ flgScale = 1;
 flgMax = <span class="string">'tci'</span>;
 flgSignifColor = 3;
 flgColor = [1];
-</pre><h2 id="10">DTF Matrix Layout Plotting with [0 1] y-axis scale.</h2><pre class="codeinput">w_max=fs/2;
+</pre><h2 id="11">DTF Matrix Layout Plotting with [0 1] y-axis scale.</h2><pre class="codeinput">w_max=fs/2;
 strID = <span class="string">'Eichler(2006) Linear model'</span>;
 
 [h1,~, ~] = xplot(strID,d,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                     flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,strID);
-</pre><img vspace="5" hspace="5" src="eichler2006_ex2_01.png" alt=""> <h2 id="11">DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI</h2><pre class="codeinput">flgPrinting=[1 1 1 2 2 0 1];
+</pre><img vspace="5" hspace="5" src="eichler2006_ex2_01.png" alt=""> <h2 id="12">DTF Matrix Layout Plotting with adjusted y-axis to max DTF+CI</h2><pre class="codeinput">flgPrinting=[1 1 1 2 2 0 1];
 flgColor = 1;
 flgScale = 3;
 flgMax = <span class="string">'tci'</span>;
@@ -202,7 +203,7 @@ strTitle =[strTitle1 strTitle2];
 xplot_title(alpha,metric, <span class="string">'dtf'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="eichler2006_ex2_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% EICHLER (2006) Two-dimension VAR[2]
+%% EICHLER ET AL.(2006) - Two-dimension VAR[2]
 %
 % DESCRIPTION:
 %
@@ -217,6 +218,12 @@ xplot_title(alpha,metric, <span class="string">'dtf'</span>,strTitle);
 % <http://dx.doi.org/10.1007/s00422-006-0062-z>
 %
 %  Example - two-dimension VAR[4].
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 %%
 clc; format compact

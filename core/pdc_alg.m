@@ -6,14 +6,14 @@
 %        c = PDC_ALG(u,alg,criterion,nFreqs,metric,maxIP,alpha)
 %
 %% Input arguments:
-%        u         - data
+%        u         - time series data
 %        alg       - algorithm (1: Nutall-Strand),(2: mlsm) ,
 %                              (3: Vieira Morf),  (4: QR artfit)
 %        criterion - AR order selection criteria =>
 %                                   1: AIC; 2: Hanna-Quinn; 3: Schwarz;
 %                                   4: FPE, 5: fixed order in MaxIP
-%        nFreqs - number of point in [0,fs/2] frequency scale
-%        metric   'euc'  - Euclidean ==> original PDC
+%        nFreqs - number of point in [0,fs/2) frequency scale
+%        metric - 'euc'  - Euclidean ==> original PDC
 %                 'diag' - diagonal ==> gPDC (generalized )
 %                 'info' - information ==> iPDC
 %        maxIP - externally defined maximum IP
@@ -27,7 +27,7 @@
 %        |-- .pdc2      - |PDC(f)|^2 estimate
 %        |-- .pdc2_th   - above threshold |PDC(f)|^2 otherwise PDC2(f) = NaN.
 %        |-- .pvalues   - p-values associated to PDC2 estimates. 
-%        |-- .th        - |PDC|^2 threshold value with (1-avalue) significance level.
+%        |-- .th        - |PDC|^2 threshold value with (1-alpha) significance level.
 %        |-- .{ic1,ic2} - upper and lower (1 - alpha) confidence interval of |PDC|^2 estimates
 %        |-- .metric    - metric used for PDC calculation 
 %        |-- .alpha     - significance level

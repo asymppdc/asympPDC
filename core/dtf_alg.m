@@ -22,12 +22,12 @@
 %                is not computed.
 %
 %% Output arguments:
-%        c structure variable with following fields:
+%        c struct variable with following fields:
 %        |-- .dtf       - complex DTF estimates
 %        |-- .dtf2      - |DTF|^2 estimates
 %        |-- .dtf2_th   - Statistically significant |DTF|^2 estimates on frequency scale
 %        |-- .pvalues   - p-values associated to DTF2 estimates. 
-%        |-- .th        - |DTF|^2 threshold value with (1-avalue) significance level.
+%        |-- .th        - |DTF|^2 threshold value with (1-alpha) significance level.
 %        |-- .{ic1,ic2} - upper and lower (1 - alpha) confidence interval of |DTF|^2 estimates
 %        |-- .metric    - metric used for DTF calculation 
 %        |-- .alpha     - significance level

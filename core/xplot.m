@@ -74,7 +74,7 @@
 %
 %% Description:
 %     Cosmetic script to visualize results from 'asymp_pdc.m' or 'asymp_dtf.m'
-%     or FastAsympAlg0.m routines in a "standard" matrix-layout.
+%     routines in a "standard" matrix-layout.
 %
 %% Examples:
 %   %Try the following example:
@@ -277,7 +277,7 @@ end
 
 if (flgPrinting(1) == 1) && (flgPrinting(5) == 1) && ~isfield(c,'Tragct')
    fprintf(2,['\n*** Warning: to print GCT p-values, assign ''gct_alg()''' ...
-                                               'results to c structure. ***\n'])
+                                               'results to c struct. ***\n'])
    fprintf(2,['\n    Tr_gct, pValue_gct, Tr_igct, pValue_igct] =' ...
                                'gct_alg(u,A,pf,gct_signif,flgPrintResults);'])
    fprintf(2,['\n   then, before calling xplot(), execute:'])

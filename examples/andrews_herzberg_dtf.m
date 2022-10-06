@@ -1,4 +1,4 @@
-%% Andrews and Herzberg Sunspot-Melanoma 1936-1872 Series
+%% ANDREWS & HERZBERG (1985) - Sunspot-Melanoma 1936-1972 Series DTF Demo
 %
 %% Data File: skin.dat
 % This data is from Andrews and Herzberg.

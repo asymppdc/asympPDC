@@ -1,4 +1,4 @@
-%% Schelter 2006 5-dimension VAR[4]
+%% SCHELTER ET AL.(2006) - 5-dimension VAR[4]
 %
 % An example taken from Schelter et al. (2006) 
 %

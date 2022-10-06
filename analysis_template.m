@@ -120,7 +120,8 @@ end
 
 flgDetrend = 1;     %<***> Usually it's recommended to detrend the time series.
 
-flgStandardize = 0; %<***> For gPDC and iPDC estimates normalization has no effect.
+flgStandardize = 0; %<***> For gPDC/DC and iPDC/iDTF estimates normalization has
+                    %      no effect.
 if flgStandardize
   disp('Be aware that the data standardization does not affect the generalized')
   disp('   and information PDC/DTF estimates nor its statistical results, ')
@@ -133,19 +134,18 @@ end
 
 %%
 % Choose one of algorithm for MAR model estimation
-% alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square
-% method),
+% alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square method),
 %                     (3: Vieira Morf),  (4: QR artfit)
 
-alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, our experience indicate that
+alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, our experience indicates that
          %      N-S seems to be a good and robust estimation algorithm.
 
 %% 
 % MAR model order selection criteria
 %
 % criterion - for AR order choice
-%  1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;
-%  4: FPE, 5: fixed MAR order given by MaxIP bellow
+%                              1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;
+%                              4: FPE, 5: fixed MAR order given by MaxIP bellow
 
 criterion = 1; %<***> AIC, Akaike information criterion (Our preferred one 
                %      along with BIC)

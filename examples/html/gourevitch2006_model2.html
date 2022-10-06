@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="gourevitch2006_model2.m"><style type="text/css">
+      --><title>GOUREVITCH ET AL. (2006) - Linear 2-VAR with feedback and common sourcew</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="gourevitch2006_model2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +67,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE</h1><!--introduction--><p>DESCRIPTION:</p><p>Example Model 2: Linear bivariate model with bidirectional influence                          with common source</p><pre>   x1&lt;==&gt;x2 (feedback)  x1==x2 (instantaneous Granger causality)</pre><pre>   x1&lt;==S==&gt;x2, which gives x1==x2 (iGC) from hidden source</pre><p>Example Model 2 was borrowed from:</p><pre>Gourevitch, Bouquin-Jeannes &amp; Faucon. Linear and nonlinear casuality between
+  </style></head><body><div class="content"><h1>GOUREVITCH ET AL. (2006) - Linear 2-VAR with feedback and common sourcew</h1><!--introduction--><p>DESCRIPTION:</p><p>Example Model 2: Linear bivariate model with bidirectional influence                          with common source</p><pre>   x1&lt;==&gt;x2 (feedback)  x1==x2 (instantaneous Granger causality)</pre><pre>   x1&lt;==S==&gt;x2, which gives x1==x2 (iGC) from hidden source</pre><p>Example Model 2 was borrowed from:</p><pre>Gourevitch, Bouquin-Jeannes &amp; Faucon. Linear and nonlinear casuality between
    signals: methods, examples and neurophysiological applications.
-   Biol Cybern 95:349--369, 2006.</pre><p><a href="http://dx.doi.org/10.1007/s00422-006-0098-0">http://dx.doi.org/10.1007/s00422-006-0098-0</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Other routines</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">Data sample generation</a></li><li><a href="#8">MVAR model estimation</a></li><li><a href="#10">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#11">Original PDC estimation</a></li><li><a href="#13">Generalized PDC estimation</a></li><li><a href="#15">Result from the original article, Gourevitch (2006)</a></li><li><a href="#17">gPDC p-values matrix layout plots</a></li><li><a href="#19">gDTF = DC estimation</a></li><li><a href="#20">DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range</a></li><li><a href="#22">Concluding remarks</a></li></ul></div><h2 id="1">Other routines</h2><pre>See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
-          xplot_pvalues
-&lt; gourevitch2006_model2.html |gourevitch2006_model2|&gt; |</pre><pre class="codeinput">clear; clc
+   Biol Cybern 95:349--369, 2006.</pre><p><a href="http://dx.doi.org/10.1007/s00422-006-0098-0">http://dx.doi.org/10.1007/s00422-006-0098-0</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">Data sample generation</a></li><li><a href="#8">MVAR model estimation</a></li><li><a href="#10">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#11">Original PDC estimation</a></li><li><a href="#13">Generalized PDC estimation</a></li><li><a href="#15">Result from the original article, Gourevitch (2006)</a></li><li><a href="#17">gPDC p-values matrix layout plots</a></li><li><a href="#19">gDTF = DC estimation</a></li><li><a href="#20">DTF Matrix Layout Plotting option with fixed y-axis scale on [0 1] range</a></li><li><a href="#22">Concluding remarks</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><pre class="codeinput">clear; clc
 </pre><h2 id="3">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_graph.png" alt=""> </p><p>Figure 4 from Gourevitch et al. <i>Biol. Cybern.</i> <b>95</b>:349-369, 2006.</p><h2 id="4">Equation</h2><p><img vspace="5" hspace="5" src="fig_gourevitch2006_model2_eq.png" alt=""> </p><p>Equations (38) and (39), Gourevitch et al. (2006)</p><h2 id="6">Data sample generation</h2><pre class="codeinput">nDiscard = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 800;     <span class="comment">% number of analyzed samples points</span>
 
@@ -124,12 +124,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=11892.724919
-IP=2  vaic=9379.607797
-IP=3  vaic=9377.789706
-IP=4  vaic=9379.695904
+IP=1  vaic=11734.758870
+IP=2  vaic=9228.957025
+IP=3  vaic=9234.946261
  
-Number of channels = 2 with 800 data points; MAR model order = 3.
+Number of channels = 2 with 800 data points; MAR model order = 2.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
 MVARadequacy_signif = 0.05; <span class="comment">% VAR model estimation adequacy significance</span>
                             <span class="comment">% level</span>
@@ -142,8 +141,8 @@ flgPrintResults = 1;
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.0375
-  st = 78.1488
+Pass = 0.0625
+  st = 84.3389
 </pre><h2 id="10">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">alpha = 0.01;
 
 gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
@@ -236,7 +235,7 @@ strTitle    = [<span class="string">'Model 2: Linear bivariate model with common
 xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="gourevitch2006_model2_04.png" alt=""> <p>Note significant Instantaneous Granger causality in between the pair  of processes. The common influence source in the model is 0.5*wi(3,t) Verify that the p-value (pValue) is or should be very small, i.e. <img src="gourevitch2006_model2_eq04678278548474686549.png" alt="$p << 0.001$">.</p><h2 id="22">Concluding remarks</h2><div><ul><li>Check the output obtained in this simulation with the one presented in Gourevitch et al.'s article</li></ul></div><div><ul><li>Try different sample size to see its influence on estimation and   threshold level. Try for instance, in the [80 to 2000] range to see   how the threshold value in PDC and DC varies.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% GOUREVITCH ET AL. (2006) LINEAR 2-VAR WITH FEEDBACK AND COMMON SOURCE
+%% GOUREVITCH ET AL. (2006) - Linear 2-VAR with feedback and common sourcew
 %
 % DESCRIPTION:
 %
@@ -255,10 +254,12 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>,strTitle);
 %
 % <http://dx.doi.org/10.1007/s00422-006-0098-0>
 %
-%% Other routines
-%  See also  asymp_pdc, asymp_dtf, gct_alg2, xplot
-%            xplot_pvalues
-% < gourevitch2006_model2.html |gourevitch2006_model2|> |
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %%
 
 clear; clc

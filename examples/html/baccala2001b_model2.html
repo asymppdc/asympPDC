@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>baccala2001b_model2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="baccala2001b_model2.m"><style type="text/css">
+      --><title>BACCALA &amp; SAMESHIMA (2001b) - Model 2: 6-dim VAR[4] Scalp Model</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="baccala2001b_model2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Baccala &amp; Sameshima (2001b) 6-dimension VAR[4] Scalp Model II</a></li><li><a href="#2">Data sample generation</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="baccala2001b_model2_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#12">Original DTF estimation</a></li><li><a href="#13"><img src="baccala2001b_model2_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#14">Animation</a></li></ul></div><h2 id="1">Baccala &amp; Sameshima (2001b) 6-dimension VAR[4] Scalp Model II</h2><p>Description:</p><p>Baccala &amp; Sameshima. Overcoming the limitations of correlation analysis for many simultaneously processed neural structures, Progress in Brain Research, 130:33--47, 2001.</p><p><a href="http://dx.doi.org/10.1016/S0079-6123(01)30004-3">http://dx.doi.org/10.1016/S0079-6123(01)30004-3</a></p><p>Model II: 6-dimension VAR(4) Scalp model</p><pre class="codeinput">clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
+  </style></head><body><div class="content"><h1>BACCALA &amp; SAMESHIMA (2001b) - Model 2: 6-dim VAR[4] Scalp Model</h1><!--introduction--><p>Description:</p><p>Baccala &amp; Sameshima. Overcoming the limitations of correlation analysis for many simultaneously processed neural structures, Progress in Brain Research, 130:33--47, 2001.</p><p><a href="http://dx.doi.org/10.1016/S0079-6123(01)30004-3">http://dx.doi.org/10.1016/S0079-6123(01)30004-3</a></p><p>Model II: 6-dimension VAR(4) Scalp model</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#2">Data sample generation</a></li><li><a href="#3">Interaction diagram</a></li><li><a href="#4">Equation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Original PDC estimation</a></li><li><a href="#10"><img src="baccala2001b_model2_eq04653255622943413630.png" alt="$|PDC(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#12">Original DTF estimation</a></li><li><a href="#13"><img src="baccala2001b_model2_eq07741536688981312772.png" alt="$|DTF(\lambda)|^2$"> Matrix-Layout Plotting</a></li><li><a href="#14">Animation</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+
+clear; clc; format <span class="string">compact</span>; format <span class="string">short</span>
 </pre><h2 id="2">Data sample generation</h2><pre class="codeinput">nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
 N=nDiscard+nPoints; <span class="comment">% number of simulated points</span>
@@ -108,11 +111,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation routine.
 maxOrder limited to 30
-IP=1  vaic=102042.619336
-IP=2  vaic=92151.147196
-IP=3  vaic=91236.642125
-IP=4  vaic=91087.291789
-IP=5  vaic=91136.267333
+IP=1  vaic=102001.171160
+IP=2  vaic=92433.773243
+IP=3  vaic=91542.563812
+IP=4  vaic=91358.805367
+IP=5  vaic=91389.028710
  
 Number of channels = 6 with 2000 data points; MAR model order = 4.
 </pre><p>Testing for adequacy of MAR model fitting through Portmanteau test</p><pre class="codeinput">h = 20; <span class="comment">% testing lag</span>
@@ -128,8 +131,8 @@ flgPrintResults = 1; <span class="comment">% Print results on Command Window</sp
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.0291667
-  st = 593.524
+Pass = 0.0208333
+  st = 571.395
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1;
@@ -141,41 +144,42 @@ flgPrintResults = 1;
                          GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
-   NaN     0     0     0     0     0
-     1   NaN     0     0     0     0
+   NaN     1     0     0     0     0
+     1   NaN     0     1     0     0
      1     1   NaN     0     0     0
-     1     0     0   NaN     0     1
-     0     1     0     0   NaN     1
+     1     1     0   NaN     0     1
+     1     1     0     1   NaN     1
      0     0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.6564    0.1039    0.9179    0.1532    0.5067
-         0       NaN    0.7405    0.5821    0.3186    0.3035
-    0.0098         0       NaN    0.3387    0.7681    0.9639
-         0    0.3323    0.9478       NaN    0.9359         0
-    0.7418         0    0.5543    0.4787       NaN         0
-    0.6327    0.1316    0.0439    0.0257         0       NaN
+       NaN    0.0094    0.2234    0.8569    0.4574    0.7262
+         0       NaN    0.8492    0.0024    0.1377    0.0870
+    0.0000         0       NaN    0.0273    0.8408    0.4952
+         0    0.0004    0.1541       NaN    0.9081         0
+    0.0024         0    0.4755    0.0056       NaN         0
+    0.7735    0.9276    0.2898    0.3775         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
 Instantaneous connectivity matrix:
    NaN     0     0     0     0     0
-     0   NaN     0     0     0     0
+     0   NaN     0     0     0     1
      0     0   NaN     0     0     0
      0     0     0   NaN     0     0
      0     0     0     0   NaN     0
-     0     0     0     0     0   NaN
+     0     1     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.3095    0.6757    0.8324    0.0766    0.7588
-    0.3095       NaN    0.7854    0.5445    0.0892    0.1623
-    0.6757    0.7854       NaN    0.6470    0.5017    0.1771
-    0.8324    0.5445    0.6470       NaN    0.5538    0.2410
-    0.0766    0.0892    0.5017    0.5538       NaN    0.2944
-    0.7588    0.1623    0.1771    0.2410    0.2944       NaN
+       NaN    0.9111    0.2752    0.8538    0.2406    0.5991
+    0.9111       NaN    0.5257    0.4133    0.4014    0.0009
+    0.2752    0.5257       NaN    0.4961    0.1276    0.4198
+    0.8538    0.4133    0.4961       NaN    0.9877    0.2176
+    0.2406    0.4014    0.1276    0.9877       NaN    0.5068
+    0.5991    0.0009    0.4198    0.2176    0.5068       NaN
 
-&gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
+&gt;&gt;&gt;&gt; There is a pair of channels with significant Instantaneous 
+     Granger Causality.
 
 ====================================================================================================
 </pre><h2 id="9">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> struct. See asymp_pdc.m for more detail.</p><pre class="codeinput">nFreqs = 128;  <span class="comment">% Number of points in the frequency scale.</span>
@@ -207,7 +211,7 @@ xplot_title(alpha,metric,<span class="string">'pdc'</span>, strTitle);
 xplot_title(alpha,metric,<span class="string">'dtf'</span>, strTitle);
 </pre><img vspace="5" hspace="5" src="baccala2001b_model2_02.png" alt=""> <h2 id="14">Animation</h2><p>Gif <a href="<fig_gif_baccala2001b_escalp_eeg_pdc.gif">&lt;fig_gif_baccala2001b_escalp_eeg_pdc.gif</a>&gt;</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Baccala & Sameshima (2001b) 6-dimension VAR[4] Scalp Model II
+%% BACCALA & SAMESHIMA (2001b) - Model 2: 6-dim VAR[4] Scalp Model
 %
 % Description:
 %
@@ -218,6 +222,12 @@ xplot_title(alpha,metric,<span class="string">'dtf'</span>, strTitle);
 % <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
 % 
 % Model II: 6-dimension VAR(4) Scalp model
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 clear; clc; format compact; format short
 

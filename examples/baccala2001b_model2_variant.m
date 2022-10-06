@@ -1,4 +1,4 @@
-%% Baccala & Sameshima (2001b) 6-dimensional VAR[4] Scalp Model II variant
+%% BACCALA & SAMESHIMA (2001b) - Model 2: 6-dim VAR[4] Scalp Model variant
 %
 % Description:
 %

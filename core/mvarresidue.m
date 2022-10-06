@@ -83,10 +83,10 @@ end
 %         reference:Luktpohl(1993) Chap. 4
 %
 %         LAB 11/4/2000
-%         Stein 27/10/2009 - Changes (h -> h+1 e ns-i -> ns-i+1)
+%         Stein 27/10/2009 - Changes (h -> h+1 and ns-i -> ns-i+1)
 %
 
-function [t,Portmanteau,s,ths,compr,X]= crosstest(u,h,ns,th,p);
+function [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p)
 if nargin==4
    p=0;
 end

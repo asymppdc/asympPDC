@@ -1,4 +1,4 @@
-%% Andrews and Herzberg Sunspot-Melanoma 1936-1972 Series Demonstration
+%% ANDREWS & HERZBERG (1985) - Sunspot-Melanoma 1936-1972 Series PDC Demo
 %
 %% Data File: skin.dat
 % This data is from:

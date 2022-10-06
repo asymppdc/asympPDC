@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Schelter 2006 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
+      --><title>SCHELTER ET AL.(2006) - 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +67,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Schelter 2006 5-dimension VAR[4]</h1><!--introduction--><p>An example taken from Schelter et al. (2006)</p><p>==========================================================================</p><pre>    Schelter, Winterhalder, Hellwig, Guschlbauer, Lucking, Timmer
+  </style></head><body><div class="content"><h1>SCHELTER ET AL.(2006) - 5-dimension VAR[4]</h1><!--introduction--><p>An example taken from Schelter et al. (2006)</p><p>==========================================================================</p><pre>    Schelter, Winterhalder, Hellwig, Guschlbauer, Lucking, Timmer
      Direct or indirect? Graphical models for neural oscillators
              J Physiology - Paris 99:37-46, 2006.
        &lt;http://dx.doi.org/10.1016/j.jphysparis.2005.06.006&gt;</pre><pre>    Example 5-dimension VAR[4]
-==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate data sample using fschelter2006 function</a></li><li><a href="#5">Original PDC estimation</a></li><li><a href="#6">PDCn Matrix Layout Plotting</a></li><li><a href="#7">PDC p-values matrix layout plots</a></li><li><a href="#8">Result from Schelter et al.(2006)</a></li><li><a href="#10">Some remarks</a></li></ul></div><h2 id="1">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
+==========================================================================</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#2">Generate data sample using fschelter2006 function</a></li><li><a href="#6">Original PDC estimation</a></li><li><a href="#7">PDCn Matrix Layout Plotting</a></li><li><a href="#8">PDC p-values matrix layout plots</a></li><li><a href="#9">Result from Schelter et al.(2006)</a></li><li><a href="#11">Some remarks</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><h2 id="2">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
 
 nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 5000;   <span class="comment">% number of analyzed samples points</span>
@@ -148,11 +150,11 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=227416.263057
-IP=2  vaic=219327.215717
-IP=3  vaic=213817.028276
-IP=4  vaic=213291.465438
-IP=5  vaic=213316.286798
+IP=1  vaic=227385.116683
+IP=2  vaic=218969.943605
+IP=3  vaic=213567.886637
+IP=4  vaic=213073.110343
+IP=5  vaic=213099.866038
  
 Number of channels = 5 with 5000 data points; MAR model order = 4.
 
@@ -160,8 +162,8 @@ Number of channels = 5 with 5000 data points; MAR model order = 4.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.046
-  st = 438.96
+Pass = 0.028
+  st = 427.159
 </pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -180,11 +182,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.5196    0.5542    0.2004         0
-         0       NaN    0.1515    0.6123         0
-    0.9473    0.3178       NaN    0.1203         0
-         0         0    0.9830       NaN    0.0504
-    0.4794    0.8296    0.2736         0       NaN
+       NaN    0.6544    0.3568    0.3726         0
+         0       NaN    0.1541    0.5474         0
+    0.8476    0.9315       NaN    0.3816         0
+         0         0    0.8104       NaN    0.7254
+    0.8712    0.4567    0.6132         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -197,16 +199,16 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.4983    0.0320    0.5981    0.4978
-    0.4983       NaN    0.2989    0.3038    0.7776
-    0.0320    0.2989       NaN    0.1547    0.4845
-    0.5981    0.3038    0.1547       NaN    0.6697
-    0.4978    0.7776    0.4845    0.6697       NaN
+       NaN    0.9653    0.4635    0.8279    0.8528
+    0.9653       NaN    0.4258    0.7450    0.4950
+    0.4635    0.4258       NaN    0.1315    0.2034
+    0.8279    0.7450    0.1315       NaN    0.7967
+    0.8528    0.4950    0.2034    0.7967       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-</pre><h2 id="5">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_pdc.m.</p><pre class="codeinput">nFreqs = 128;
+</pre><h2 id="6">Original PDC estimation</h2><p>PDC analysis results are saved in <b>c</b> structure. See asymp_pdc.m.</p><pre class="codeinput">nFreqs = 128;
 metric = <span class="string">'info'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
                  <span class="comment">% diag = generalized PDC (gPDC) or DC;</span>
                  <span class="comment">% info = information PDC (iPDC) or iDTF.</span>
@@ -214,7 +216,7 @@ alpha = 0.01;
 
 c=asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;  c.pvaluesgct = pValue_gct;
-</pre><h2 id="6">PDCn Matrix Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 2];
+</pre><h2 id="7">PDCn Matrix Layout Plotting</h2><pre class="codeinput">flgPrinting = [1 1 1 2 3 0 2];
 flgColor = 0;
 w_max=fs/2;
 alphastr = sprintf(<span class="string">'%0.3g'</span>,100*alpha);
@@ -225,15 +227,15 @@ strTitle = [<span class="string">'Linear pentavariate Model II: '</span> int2str
 
 [h,~,~] = xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
-</pre><img vspace="5" hspace="5" src="schelter2006_01.png" alt=""> <h2 id="7">PDC p-values matrix layout plots</h2><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
+</pre><img vspace="5" hspace="5" src="schelter2006_01.png" alt=""> <h2 id="8">PDC p-values matrix layout plots</h2><pre class="codeinput">flgPrinting  =   [1 1 1 2 3 0 0];
 flgScale = 2;
 
 [hp,~,~] = xplot_pvalues(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                                              flgColor,flgScale);
 xplot_title(alpha,metric,[<span class="string">'p-value PDC'</span>],strTitle);
-</pre><img vspace="5" hspace="5" src="schelter2006_02.png" alt=""> <h2 id="8">Result from Schelter et al.(2006)</h2><p>Figure 3, page 41.</p><p><img vspace="5" hspace="5" src="fig_schelter2006_result.png" alt=""> </p><p>Figure shows the results from Schelter et al. (2006) with the magnitudes mostly in agreement with the present simulation. See remarks listed bellow regardings the differences in the amplitudes.</p><h2 id="10">Some remarks</h2><div><ul><li>Compare this plot with Fig.3, page 41,in Schelter et al. (2006),   depicting PDC''s amplitude plots, while this example plots squared   PDC.</li></ul></div><div><ul><li>Note that, for linear model, the mean amplitude of PDC estimates   is roughly proportional to relative coefficient values of   the autoregressive model.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="schelter2006_02.png" alt=""> <h2 id="9">Result from Schelter et al.(2006)</h2><p>Figure 3, page 41.</p><p><img vspace="5" hspace="5" src="fig_schelter2006_result.png" alt=""> </p><p>Figure shows the results from Schelter et al. (2006) with the magnitudes mostly in agreement with the present simulation. See remarks listed bellow regardings the differences in the amplitudes.</p><h2 id="11">Some remarks</h2><div><ul><li>Compare this plot with Fig.3, page 41,in Schelter et al. (2006),   depicting PDC''s amplitude plots, while this example plots squared   PDC.</li></ul></div><div><ul><li>Note that, for linear model, the mean amplitude of PDC estimates   is roughly proportional to relative coefficient values of   the autoregressive model.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Schelter 2006 5-dimension VAR[4]
+%% SCHELTER ET AL.(2006) - 5-dimension VAR[4]
 %
 % An example taken from Schelter et al. (2006) 
 %
@@ -247,6 +249,12 @@ xplot_title(alpha,metric,[<span class="string">'p-value PDC'</span>],strTitle);
 %
 %      Example 5-dimension VAR[4]
 % ==========================================================================
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
 
 %% Generate data sample using fschelter2006 function
 %

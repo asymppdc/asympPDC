@@ -11,7 +11,7 @@
 %   strBarTitle:  Title for the figure window bar 
 %
 %   c.{Tragct,pvaluesgct,SS,Coh,L,Lpatnaik,LTra,
-%                                     L2vinf,L2vsup,metric}- results structure
+%                                     L2vinf,L2vsup,metric}- results struct
 %
 %   flgPrinting: [1 1 1 1 1 0 1];
 %           blue  | | | | | | 7-- {0:2} Spectra (0: wo; 1: Linear; 2: Log) 
@@ -97,7 +97,7 @@ end
 
 if (flgPrinting(1) == 1) && (flgPrinting(5) == 1) && ~isfield(c,'Tragct')
    fprintf(2,['\n*** Warning: to print GCT p-values, assign ''gct_alg()''' ...
-              'results to c structure. ***\n'])
+              'results to c struct. ***\n'])
    fprintf(2,['\n    Tr_gct, pValue_gct, Tr_igct, pValue_igct] =' ...
                                'gct_alg(u,A,pf,gct_signif,flgPrintResults);'])
    fprintf(2,'\n   then before calling xplot() function execute:')

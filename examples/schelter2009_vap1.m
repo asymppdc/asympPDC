@@ -1,4 +1,4 @@
-%% Schelter2009 VAP I 5-dimension VAR[3] process
+%% SCHELTER ET AL.(2009) - VAP I 5-dimension VAR[3] process
 %
 % An example borrowed from Schelter et al. (2009) 
 %

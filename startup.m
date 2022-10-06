@@ -1,6 +1,6 @@
 %% asympPDC Package startup script
 %
-% Run this file to initialize the set up of AsympPDC Toolbox.
+% Run this file to initialize the set up of AsympPDC Package.
 %
 % You may have to customize this script for your computing environment.
 %
@@ -9,7 +9,7 @@
 % See file license.txt in installation directory for licensing terms.
 
 
-%% Set toolbox version
+%% Set package version
 
 global asymppdc_version;
 asymppdc_version.major = 3;

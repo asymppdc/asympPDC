@@ -1,0 +1,306 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SUNMELADAT</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="sunmeladat.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SUNMELADAT</h1><!--introduction--><pre class="language-matlab">Return <span class="string">the</span> <span class="string">skin.dat</span> <span class="string">from</span> <span class="string">Andrews</span> <span class="string">and</span> <span class="string">Herzberg</span> <span class="string">(1985)</span> <span class="untermstring">book's year,</span>
+melanoma <span class="string">and</span> <span class="string">sunspot</span> <span class="string">number</span> <span class="string">series.</span>
+</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input Argument</a></li><li><a href="#3">Output Argument</a></li><li><a href="#4">Examples</a></li><li><a href="#5">Reference</a></li><li><a href="#6">Description</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">u = SUNMELADAT(selection);
+</pre><h2 id="2">Input Argument</h2><pre class="language-matlab">selection:  four element <span class="string">row</span> <span class="string">vector</span> <span class="string">with</span> <span class="string">0</span> <span class="string">or</span> <span class="string">1</span>
+            [year male_melanoma total_melanoma sunspot_number]
+</pre><h2 id="3">Output Argument</h2><pre class="language-matlab">u:          matrix with <span class="string">Andrews</span> <span class="string">and</span> <span class="string">Herzberg</span> <span class="string">data</span> <span class="string">columns</span>
+</pre><h2 id="4">Examples</h2><pre class="language-matlab">sunmeladat([1 1 1 1])  <span class="comment">% or</span>
+sunmeladat()           <span class="comment">% return all series</span>
+</pre><pre class="language-matlab">sunmeladat([0 0 1 1])  <span class="comment">% return total melanoma and sunspot series</span>
+</pre><pre class="language-matlab">sunmeladat([4 3]) <span class="comment">% return sunspot and melanoma series in this order</span>
+</pre><pre class="language-matlab">sunmeladat(1)     <span class="comment">% or</span>
+sunmeladat([1])   <span class="comment">% yield year column</span>
+</pre><h2 id="5">Reference</h2><pre class="language-matlab">Data <span class="string">sample</span> <span class="string">borrowed</span> <span class="string">from</span>
+   Andrews <span class="string">DF</span>, Herzberg <span class="string">AM.</span> <span class="string">(1985)</span> <span class="string">Data:</span> <span class="string">A</span> <span class="string">Collection</span> <span class="string">of</span> <span class="string">Problems</span> <span class="string">from</span>
+   Many <span class="string">Fields</span> <span class="string">for</span> <span class="string">the</span> <span class="string">Student</span> <span class="string">and</span> <span class="string">Research</span> <span class="string">Worker.</span> <span class="string">Springer</span>, New <span class="string">York.</span>
+   &lt;https://doi.org/10.1007/978-1-4612-5098-2&gt;
+   ISBN: 978-1-4612-9563-1 (Print) 978-1-4612-5098-2 (Online)
+</pre><h2 id="6">Description</h2><pre>"This data is from skin.dat Data File in Andrews and Herzberg (1985).
+ The aetiology of melanoma is complex and may include the influences
+ of trauma, heredity and hormonal activity. In particular, exposure
+ to solar radiation may be involved in the pathogenesis of melanoma.
+ Melanoma is more common in fair-skinned individuals and most frequent
+ in skin sites exposed to the sun. In white populations melanoma is
+ more common in areas closer to the equator where the intensity of
+ solar radiation is higher. Data from various parts of the world suggest
+ that the incidence of melanoma is increasing. The data below, giving
+ age-adjusted melanoma incidence, are from the Connecticut Tumor Registry
+ from 1936-1972. Connecticut has the longest record of state
+ population-based cancer statistics in the United States of America.
+ The data also includes the sunspot relative number. Houghton, Munster
+ and Viola (1978) have shown that the age-adjusted incidence rate for
+ malignant melanoma in the state of Connecticut has risen since 1935 and
+ that superimposed on the rise are 3-5 year periods in which the rise
+ in the rate of incidence is excessive. These periods have a cycle of
+ 8-11 years and follow times of maximum sunspot activity. The relationship
+ between solar cycles and melanoma supports the hypothesis that melanoma
+ is related to sun exposure and provides evidence that solar radiation
+ may trigger the development of clinically apparent melanoma. The columns
+ are the year, male incidence, total incidence, and sunspot relative
+ index. The incidence are rates per 100,000." (Andrews &amp; Herzberg, 1985)</pre><pre class="language-matlab">Below <span class="string">is</span> <span class="string">the</span> <span class="string">contents</span> <span class="string">of</span> <span class="string">the</span> <span class="string">file</span> <span class="string">skin.dat:</span>
+Year <span class="comment">% 1936-1972</span>
+ANNUAL <span class="string">MALE</span> <span class="string">MELANOMA</span> <span class="string">INCIDENCE(AGE-ADJUSTED PER 10**5)</span> <span class="string">CONNECTICUT</span>
+ANNUAL <span class="string">TOTAL</span> <span class="string">MELANOMA</span> <span class="string">INCIDENCE(AGE-ADJUSTED PER 10**5)</span> <span class="string">CONNECTICUT</span>
+ANNUAL <span class="string">SUNSPOT</span> <span class="string">RELATIVE</span> <span class="string">NUMBER</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> u = sunmeladat(selection)
+
+y=[1936   1.0   0.9    40;
+   1937   0.8   0.8   115;
+   1938   0.8   0.8   100;
+   1939   1.4   1.3    80;
+   1940   1.2   1.4    60;
+   1941   1.0   1.2    40;
+   1942   1.5   1.7    23;
+   1943   1.9   1.8    10;
+   1944   1.5   1.6    10;
+   1945   1.5   1.5    25;
+   1946   1.5   1.5    75;
+   1947   1.6   2.0   145;
+   1948   1.8   2.5   130;
+   1949   2.8   2.7   130;
+   1950   2.5   2.9    80;
+   1951   2.5   2.5    65;
+   1952   2.4   3.1    20;
+   1953   2.1   2.4    10;
+   1954   1.9   2.2     5;
+   1955   2.4   2.9    10;
+   1956   2.4   2.5    60;
+   1957   2.6   2.6   190;
+   1958   2.6   3.2   180;
+   1959   4.4   3.8   175;
+   1960   4.2   4.2   120;
+   1961   3.8   3.9    50;
+   1962   3.4   3.7    35;
+   1963   3.6   3.3    20;
+   1964   4.1   3.7    10;
+   1965   3.7   3.9    15;
+   1966   4.2   4.1    30;
+   1967   4.1   3.8    60;
+   1968   4.1   4.7   105;
+   1969   4.0   4.4   105;
+   1970   5.2   4.8   105;
+   1971   5.3   4.8    80;
+   1972   5.3   4.8    65];
+
+choice = [];
+
+<span class="keyword">if</span> nargin == 0
+   choice = [1 2 3 4];
+<span class="keyword">else</span>
+   <span class="keyword">if</span> max(selection) == 1,
+      <span class="keyword">for</span> i = 1:max(size(selection)),
+         <span class="keyword">if</span> selection(i)
+            choice = [choice i];
+         <span class="keyword">end</span>;
+      <span class="keyword">end</span>;
+   <span class="keyword">elseif</span> max(selection) &lt; 1,
+      error(<span class="string">'Choose at least one column of Andrews and Herzberg data.'</span>)
+   <span class="keyword">else</span>
+      choice = selection;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>;
+
+u = y(:,choice);
+
+<span class="comment">% These data correspond to Table 32.1 of</span>
+<span class="comment">% http://www.isds.duke.edu/courses/Spring01/sta114/data/andrews.html</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SUNMELADAT
+%   Return the skin.dat from Andrews and Herzberg (1985) book's year,
+%   melanoma and sunspot number series.
+%
+%% Syntax
+%   u = SUNMELADAT(selection);
+%
+%% Input Argument
+%   selection:  four element row vector with 0 or 1
+%               [year male_melanoma total_melanoma sunspot_number]
+%
+%% Output Argument
+%   u:          matrix with Andrews and Herzberg data columns
+%
+%% Examples 
+%   sunmeladat([1 1 1 1])  % or 
+%   sunmeladat()           % return all series
+%
+%   sunmeladat([0 0 1 1])  % return total melanoma and sunspot series
+%
+%   sunmeladat([4 3]) % return sunspot and melanoma series in this order
+%
+%   sunmeladat(1)     % or
+%   sunmeladat([1])   % yield year column
+%
+%% Reference
+%   Data sample borrowed from 
+%      Andrews DF, Herzberg AM. (1985) Data: A Collection of Problems from 
+%      Many Fields for the Student and Research Worker. Springer, New York.
+%      <https://doi.org/10.1007/978-1-4612-5098-2>
+%      ISBN: 978-1-4612-9563-1 (Print) 978-1-4612-5098-2 (Online) 
+%          
+%% Description
+%
+%  "This data is from skin.dat Data File in Andrews and Herzberg (1985).
+%   The aetiology of melanoma is complex and may include the influences 
+%   of trauma, heredity and hormonal activity. In particular, exposure 
+%   to solar radiation may be involved in the pathogenesis of melanoma. 
+%   Melanoma is more common in fair-skinned individuals and most frequent 
+%   in skin sites exposed to the sun. In white populations melanoma is 
+%   more common in areas closer to the equator where the intensity of 
+%   solar radiation is higher. Data from various parts of the world suggest 
+%   that the incidence of melanoma is increasing. The data below, giving 
+%   age-adjusted melanoma incidence, are from the Connecticut Tumor Registry 
+%   from 1936-1972. Connecticut has the longest record of state 
+%   population-based cancer statistics in the United States of America. 
+%   The data also includes the sunspot relative number. Houghton, Munster 
+%   and Viola (1978) have shown that the age-adjusted incidence rate for 
+%   malignant melanoma in the state of Connecticut has risen since 1935 and 
+%   that superimposed on the rise are 3-5 year periods in which the rise 
+%   in the rate of incidence is excessive. These periods have a cycle of 
+%   8-11 years and follow times of maximum sunspot activity. The relationship 
+%   between solar cycles and melanoma supports the hypothesis that melanoma 
+%   is related to sun exposure and provides evidence that solar radiation 
+%   may trigger the development of clinically apparent melanoma. The columns 
+%   are the year, male incidence, total incidence, and sunspot relative 
+%   index. The incidence are rates per 100,000." (Andrews & Herzberg, 1985)
+% 
+%   Below is the contents of the file skin.dat:
+%   Year % 1936-1972
+%   ANNUAL MALE MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
+%   ANNUAL TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
+%   ANNUAL SUNSPOT RELATIVE NUMBER 
+
+function u = sunmeladat(selection)
+
+y=[1936   1.0   0.9    40;
+   1937   0.8   0.8   115;
+   1938   0.8   0.8   100;
+   1939   1.4   1.3    80;
+   1940   1.2   1.4    60;
+   1941   1.0   1.2    40;
+   1942   1.5   1.7    23;
+   1943   1.9   1.8    10;
+   1944   1.5   1.6    10;
+   1945   1.5   1.5    25;
+   1946   1.5   1.5    75;
+   1947   1.6   2.0   145;
+   1948   1.8   2.5   130;
+   1949   2.8   2.7   130;
+   1950   2.5   2.9    80;
+   1951   2.5   2.5    65;
+   1952   2.4   3.1    20;
+   1953   2.1   2.4    10;
+   1954   1.9   2.2     5;
+   1955   2.4   2.9    10;
+   1956   2.4   2.5    60;
+   1957   2.6   2.6   190;
+   1958   2.6   3.2   180;
+   1959   4.4   3.8   175;
+   1960   4.2   4.2   120;
+   1961   3.8   3.9    50;
+   1962   3.4   3.7    35;
+   1963   3.6   3.3    20;
+   1964   4.1   3.7    10;
+   1965   3.7   3.9    15;
+   1966   4.2   4.1    30;
+   1967   4.1   3.8    60;
+   1968   4.1   4.7   105;
+   1969   4.0   4.4   105;
+   1970   5.2   4.8   105;
+   1971   5.3   4.8    80;
+   1972   5.3   4.8    65];
+
+choice = [];
+
+if nargin == 0
+   choice = [1 2 3 4];
+else
+   if max(selection) == 1,
+      for i = 1:max(size(selection)),
+         if selection(i)
+            choice = [choice i];
+         end;
+      end;
+   elseif max(selection) < 1,
+      error('Choose at least one column of Andrews and Herzberg data.')
+   else
+      choice = selection;
+   end
+end;
+
+u = y(:,choice);
+
+% These data correspond to Table 32.1 of
+% http://www.isds.duke.edu/courses/Spring01/sta114/data/andrews.html
+
+##### SOURCE END #####
+--></body></html>

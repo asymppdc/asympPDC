@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>PDC or DTF analysis getting started template file</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="analysis_template.m"><style type="text/css">
+      --><title>PDC or DTF analysis getting started template file</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="analysis_template.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -68,7 +68,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>PDC or DTF analysis getting started template file</h1><!--introduction--><p>Follow and edit this template to set up analysis or  your data. You might want to choose analysis parameters followed by comment containing "&lt;***&gt;". Check bellow.</p><p>Some important input and output parameters and variables: input:        u     - time series data  in row-wise orientation        fs    - Sampling frequency (=1 for normalized frequency)        maxIP - externally defined maximum IP        alg   - for algorithm (1: Nutall-Strand),(2: mlsm) ,                              (3: Vieira Morf),  (4: ARfit)        criterion - for AR order selection =&gt;                                   1: AIC; 2: Hanna-Quinn; 3: Schwarz;                                   4: FPE, 5: fixed order in MaxIP        alpha  -  PDC test significance level</p><p>output: c struct variable from asymp_pdc() or asymp_dtf() function         required fields:         c.{pdc2, dtf2} - squared original/generalized/information PDC         c.th -  threshold level by Patnaik approximation         c.{pdc_th,dtf_th} - above threshold pdc2 or dtf2 values otherwise equal NaN         c.ci1,c.ci2 - superior and inferior confidence interval         c.p - VAR model order         c.SS - Power spectrum         c.coh2 - coherece function</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">asympPDC analysis functions</a></li><li><a href="#3">Examples</a></li><li><a href="#5">Selecting Data Pre-processing Action flags</a></li><li><a href="#6">Set up Multivariate AutoRegressive (MAR) estimation algorithm parameters</a></li><li><a href="#10">PDC or DTF Analysis parameters</a></li><li><a href="#14">Pretty-plot option parameters for xplot and xplot_pvalues function</a></li><li><a href="#15">Adding further analysis details to the figure title.</a></li></ul></div><h2 id="1">asympPDC analysis functions</h2><pre>See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg,
-          xplot, xplot_pvalues, xplot_title</pre><pre class="codeinput"><span class="comment">%===========================#</span>
+          xplot, xplot_pvalues, xplot_title</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><pre class="codeinput"><span class="comment">%===========================#</span>
 <span class="comment">% Times series for analysis /</span>
 <span class="comment">%===========================#</span>
 <span class="comment">% u     - time series data in rows.</span>
@@ -116,6 +118,11 @@ fs = 1; <span class="comment">%&lt;***&gt; Sampling frequency</span>
          Baccala &amp; Sameshima. Biol. Cybern. 84:463-474, 2001.
            x1==&gt;x2  x2--&gt;x3 x3--&gt;x4 x4--&gt;x5 x5--&gt;x4 x5--&gt;x1
 ======================================================================
+Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
 </pre><p>Checking structure of input time series u</p><pre class="codeinput">[nChannels,nSegLength] =size(u);
 <span class="keyword">if</span> nChannels &gt; nSegLength
    disp(<span class="string">'The data might be transposed.'</span>);
@@ -151,15 +158,16 @@ flgLabels = ~isempty(chLabels);
 </pre><pre class="codeoutput">The data might be transposed.
 </pre><h2 id="5">Selecting Data Pre-processing Action flags</h2><pre class="codeinput">flgDetrend = 1;     <span class="comment">%&lt;***&gt; Usually it's recommended to detrend the time series.</span>
 
-flgStandardize = 0; <span class="comment">%&lt;***&gt; For gPDC and iPDC estimates normalization has no effect.</span>
+flgStandardize = 0; <span class="comment">%&lt;***&gt; For gPDC/DC and iPDC/iDTF estimates normalization has</span>
+                    <span class="comment">%      no effect.</span>
 <span class="keyword">if</span> flgStandardize
   disp(<span class="string">'Be aware that the data standardization does not affect the generalized'</span>)
   disp(<span class="string">'   and information PDC/DTF estimates nor its statistical results, '</span>)
   disp(<span class="string">'   so that data standardization is not necessary in these measures.'</span>)
 <span class="keyword">end</span>
-</pre><h2 id="6">Set up Multivariate AutoRegressive (MAR) estimation algorithm parameters</h2><p>Choose one of algorithm for MAR model estimation alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square method),                     (3: Vieira Morf),  (4: QR artfit)</p><pre class="codeinput">alg = 1; <span class="comment">%&lt;***&gt; Nuttall-Strand (alg=1) algorithm, our experience indicate that</span>
+</pre><h2 id="6">Set up Multivariate AutoRegressive (MAR) estimation algorithm parameters</h2><p>Choose one of algorithm for MAR model estimation alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square method),                     (3: Vieira Morf),  (4: QR artfit)</p><pre class="codeinput">alg = 1; <span class="comment">%&lt;***&gt; Nuttall-Strand (alg=1) algorithm, our experience indicates that</span>
          <span class="comment">%      N-S seems to be a good and robust estimation algorithm.</span>
-</pre><p>MAR model order selection criteria</p><p>criterion - for AR order choice  1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;  4: FPE, 5: fixed MAR order given by MaxIP bellow</p><pre class="codeinput">criterion = 1; <span class="comment">%&lt;***&gt; AIC, Akaike information criterion (Our preferred one</span>
+</pre><p>MAR model order selection criteria</p><p>criterion - for AR order choice                              1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;                              4: FPE, 5: fixed MAR order given by MaxIP bellow</p><pre class="codeinput">criterion = 1; <span class="comment">%&lt;***&gt; AIC, Akaike information criterion (Our preferred one</span>
                <span class="comment">%      along with BIC)</span>
 
 maxIP = 30; <span class="comment">% maxIP - externally defined maximum IP %&lt;***&gt;</span>
@@ -354,9 +362,9 @@ c.pvaluesgct = pValue_gct;
 VAR estimation using Nutall-Strand algorithm.
 Model order selection criteria: AIC.
 maxOrder limited to 30
-IP=1  vaic=78725.409631
-IP=2  vaic=75978.042250
-IP=3  vaic=75997.884324
+IP=1  vaic=79002.469527
+IP=2  vaic=76159.329122
+IP=3  vaic=76177.480879
  
 Number of channels = 5 with 2000 data points; MAR model order = 2.
 
@@ -364,8 +372,8 @@ Number of channels = 5 with 2000 data points; MAR model order = 2.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.038
-  st = 437.506
+Pass = 0.042
+  st = 446.208
 
 ====================================================================================================
                          GRANGER CAUSALITY TEST
@@ -378,11 +386,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.9872    0.2843    0.9463         0
-         0       NaN    0.7038    0.8642    0.1038
-    0.3861         0       NaN    0.2397    0.0897
-    0.0118    0.0547         0       NaN         0
-    0.7792    0.5140    0.1410         0       NaN
+       NaN    0.2207    0.3695    0.4423         0
+         0       NaN    0.9823    0.1611    0.7423
+    0.1403         0       NaN    0.4888    0.3768
+    0.2226    0.5680         0       NaN         0
+    0.6181    0.3276    0.7272         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -395,11 +403,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.8649    0.7968    0.4173    0.1674
-    0.8649       NaN    0.2890    0.1162    0.2779
-    0.7968    0.2890       NaN    0.2748    0.7064
-    0.4173    0.1162    0.2748       NaN    0.2408
-    0.1674    0.2779    0.7064    0.2408       NaN
+       NaN    0.2883    0.6963    0.8918    0.1652
+    0.2883       NaN    0.9407    0.0463    0.0661
+    0.6963    0.9407       NaN    0.2792    0.9866
+    0.8918    0.0463    0.2792       NaN    0.5280
+    0.1652    0.0661    0.9866    0.5280       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -553,7 +561,10 @@ disp(<span class="string">'=====================================================
 %% asympPDC analysis functions 
 %  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
 %            xplot, xplot_pvalues, xplot_title
-%
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %%
 
 
@@ -641,7 +652,8 @@ end
 
 flgDetrend = 1;     %<***> Usually it's recommended to detrend the time series.
 
-flgStandardize = 0; %<***> For gPDC and iPDC estimates normalization has no effect.
+flgStandardize = 0; %<***> For gPDC/DC and iPDC/iDTF estimates normalization has
+                    %      no effect.
 if flgStandardize
   disp('Be aware that the data standardization does not affect the generalized')
   disp('   and information PDC/DTF estimates nor its statistical results, ')
@@ -654,19 +666,18 @@ end
 
 %%
 % Choose one of algorithm for MAR model estimation
-% alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square
-% method),
+% alg - for algorithm (1: Nutall-Strand),(2: mlsm minimum least-square method),
 %                     (3: Vieira Morf),  (4: QR artfit)
 
-alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, our experience indicate that
+alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, our experience indicates that
          %      N-S seems to be a good and robust estimation algorithm.
 
 %% 
 % MAR model order selection criteria
 %
 % criterion - for AR order choice
-%  1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;
-%  4: FPE, 5: fixed MAR order given by MaxIP bellow
+%                              1: AIC; 2: Hanna-Quinn; 3: Schwarz or BIC;
+%                              4: FPE, 5: fixed MAR order given by MaxIP bellow
 
 criterion = 1; %<***> AIC, Akaike information criterion (Our preferred one 
                %      along with BIC)

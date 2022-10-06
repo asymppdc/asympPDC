@@ -14,7 +14,7 @@
 %               'info' -- information ==> |iPDC|^2 or |iDTF|^2
 %
 %% Output: 
-%   Print main title above all subplots after xplot/xplot_pvalues execution.
+%   Print main title above all subplots set after xplot/xplot_pvalues execution.
 %
 %% See also: XPLOT, XPLOT_PVALUES
 

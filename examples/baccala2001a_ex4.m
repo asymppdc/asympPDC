@@ -1,4 +1,4 @@
-%% BACCALA & SAMESHIMA (2001A) EXAMPLE 4
+%% BACCALA & SAMESHIMA (2001a) - Example 4
 %
 % DESCRIPTION:
 % Five-dimensional linear VAR[2] Model Example 4
