@@ -39,7 +39,7 @@ The figure bellow shows schematically the evolution path of **directed connectiv
 
 ***
 
-![connectivity_measures_in_asymppdc.png](/home/koichi/Dropbox/Asymp_PDC_toolbox/github_site/asympPDC2/connectivity_measures_in_asymppdc.png)
+![connectivity_measures_in_asymppdc.png](./connectivity_measures_in_asymppdc.png)
 
 ***
 
