@@ -2,7 +2,7 @@
 
 by Koichi Sameshima and Luiz A. Baccalá
 
-July 22, 2022
+October 05, 2022
 
 **The asympPDC Package** consists of MATLAB/Octave routines and functions collection for the analysis of 
 multiple time series, such as EEG, biological signals and climate data, 
