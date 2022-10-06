@@ -79,6 +79,10 @@ if flgVerbose,
 end
 end
 
+%% Subfunctions
+%
+
+%==========================================================================
 function [Tr,Va,v,th,pValue]=granmatx(b,G,SU,significance)
 
 % function [Tr,Va,v,th,pValue]=granmatx(b,G,SU);
@@ -115,11 +119,11 @@ for i=1:n
 end
 end
 
-
+%%
 % =========================================================================
 
 function [y,value,v,th,pValue]=grangt(CO,b,G,SU,significance)
-%%% Function GRANGT for Granger Causality Test
+% Function GRANGT for Granger Causality Test
 %function [y,value,v,th,pValue]=grangt(CO,b,G,SU,significance);
 %
 % Causality test
@@ -166,7 +170,7 @@ y = value >= th;
 pValue = 1 - chi2cdf(value,v);
 end
 
-
+%%
 %==========================================================================
 
 function [Tr,Va,v,th,pValue]=granmaty(pf,N,significance)
@@ -211,7 +215,9 @@ for i=1:n
 end
 end
 
+%%
 %==========================================================================
+
 function [y,value,v,th,pValue]=instata(CO,pf,N,significance)
 % Test for instataneous causality
 % input: CO - matrix describing the structure for testing - 1 position to test.
@@ -248,6 +254,7 @@ y = value >= th;
 pValue = 1-chi2cdf(value,v); % p-value of instantaneous Granger causality test
 end
 
+%%
 %==========================================================================
 %
 %  01/30/1998 - L.A.B.
@@ -279,6 +286,7 @@ for i = 1:m*m
 end
 end
 
+%%
 %==========================================================================
 % VECH or VEC is matrix column stacking operator function
 %
@@ -297,6 +305,7 @@ for i = 1:m
 end
 end
 
+%%
 %==========================================================================
 % Computation of Z - data structure (no estimation of the mean)
 %

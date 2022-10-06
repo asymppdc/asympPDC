@@ -1,0 +1,209 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ARFITCAPS</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="arfitcaps.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>ARFITCAPS</h1><!--introduction--><pre>      Capsule function to call the arfit.m routine, part of
+      "ARfit: Multivariate Autoregressive Model Fitting" package.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments</a></li><li><a href="#3">Output Arguments</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Note: As described by the authors, acf.m in ARfit needs Signal Processing</a></li><li><a href="#6">See also: ARFIT, MVAR, MCARNS, MCARVM, CMLSM</a></li></ul></div><h2 id="1">Syntax:</h2><pre>    [pf,A,ef] = ARFITCAPS(u,IP)</pre><h2 id="2">Input Arguments</h2><pre class="language-matlab">u:          time series
+IP:         VAR model <span class="string">order</span>
+</pre><h2 id="3">Output Arguments</h2><pre class="language-matlab">pf:         covariance matrix <span class="string">provided</span> <span class="string">by</span> <span class="string">ARFIT</span> <span class="string">routine</span>
+A:          AR estimate <span class="string">matrix</span> <span class="string">provided</span> <span class="string">by</span> <span class="string">ARFIT</span> <span class="string">routine</span>
+ef:         forward residuals <span class="string">provided</span> <span class="string">by</span> <span class="string">ARRES</span> <span class="string">routine</span>
+</pre><h2 id="4">Description:</h2><p>ARFITCAPS is capsule that calls arfit.m and arres.m routines, part of Autoregressive Model Fitting" package, which implements algorithms as described in the following articles:</p><pre>  [1] Neumaier A &amp; Schneider T, 2001. Estimation of parameters and
+       eigenmodes of multivariate autoregressive models. ACM Trans Math
+       Softw, 27:27-57.
+  [2] Schneider T &amp; Neumaier A, 2001. Algorithm 808: ARfit - A Matlab
+      package for the estimation of parameters and eigenmodes of multivariate
+      autoregressive models. ACM Trans Math Softw, 27:58-65.</pre><pre>If you are interested in using ARfit algorithm for VAR model estimation, we
+advise you to get the software from Tapio Schneider's website at
+               https://climate-dynamics.org/software/#arfit
+or from Mathworks.com File Exchange site (verified on August 27, 2021, but
+not tested)
+      https://www.mathworks.com/matlabcentral/fileexchange/174-arfit,</pre><pre>and, before using it, verify the license terms, it seems to be a copyrighted
+material by the Association for Computing Machinery, Inc.</pre><h2 id="5">Note: As described by the authors, acf.m in ARfit needs Signal Processing</h2><pre>Toolbox (TM), as it requires XCORR, a cross-correlation function estimator.</pre><pre>ARfit availability was checked on August 13, 2015, and August 27, 2021. KS</pre><pre>The version we have tested and included was obtained on February 24, 2011 from
+     www.gps.caltech.edu/~tapio/arfit/index.html,
+which is now obsolete.</pre><h2 id="6">See also: ARFIT, MVAR, MCARNS, MCARVM, CMLSM</h2><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> [pf,A,ef] = arfitcaps(u,IP)
+
+<span class="keyword">if</span> ~exist(<span class="string">'arfit.m'</span>,<span class="string">'file'</span>)
+   help <span class="string">arfitcaps</span>
+   error(<span class="string">'ARfit.m not found. Get the ARfit package from Tapio Schneider''s web site.'</span>)
+<span class="keyword">end</span>;
+
+v = u';
+[w, Au, C, sbc, fpe, th] = arfit(v,IP,IP);
+pf = C;
+
+<span class="keyword">if</span> IP &gt;= 20
+   [siglev,res] = arres(w,Au,v,IP+1);
+<span class="keyword">else</span>
+   [siglev,res] = arres(w,Au,v);
+<span class="keyword">end</span>;
+
+<span class="comment">% Variable 'siglev' is not used.</span>
+
+ef = res';
+A = zeros(length(w),length(w),IP);
+<span class="keyword">for</span> i = 1:IP
+   A(:,:,i) = Au(:,(i-1)*length(w)+1:i*length(w));
+   wu = ceil(length(ef)*rand(size(w)));
+   <span class="keyword">if</span> length(ef)&lt;length(v)
+      ef = [ef ef(:,wu(1))];
+   <span class="keyword">else</span>
+      ef = ef(:,1:length(v));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% ARFITCAPS 
+%        Capsule function to call the arfit.m routine, part of 
+%        "ARfit: Multivariate Autoregressive Model Fitting" package.
+%
+%% Syntax:
+%      [pf,A,ef] = ARFITCAPS(u,IP)
+%
+%% Input Arguments
+%   u:          time series
+%   IP:         VAR model order
+%
+%% Output Arguments 
+%   pf:         covariance matrix provided by ARFIT routine
+%   A:          AR estimate matrix provided by ARFIT routine
+%   ef:         forward residuals provided by ARRES routine
+%
+%% Description:
+% ARFITCAPS is capsule that calls arfit.m and arres.m routines, part of 
+% Autoregressive Model Fitting" package, which implements algorithms 
+% as described in the following articles:
+%
+%    [1] Neumaier A & Schneider T, 2001. Estimation of parameters and
+%         eigenmodes of multivariate autoregressive models. ACM Trans Math
+%         Softw, 27:27-57.
+%    [2] Schneider T & Neumaier A, 2001. Algorithm 808: ARfit - A Matlab
+%        package for the estimation of parameters and eigenmodes of multivariate
+%        autoregressive models. ACM Trans Math Softw, 27:58-65. 
+%
+%  If you are interested in using ARfit algorithm for VAR model estimation, we
+%  advise you to get the software from Tapio Schneider's website at
+%                 https://climate-dynamics.org/software/#arfit
+%  or from Mathworks.com File Exchange site (verified on August 27, 2021, but
+%  not tested)
+%        https://www.mathworks.com/matlabcentral/fileexchange/174-arfit,
+%
+%  and, before using it, verify the license terms, it seems to be a copyrighted
+%  material by the Association for Computing Machinery, Inc.
+%
+%%  Note: As described by the authors, acf.m in ARfit needs Signal Processing 
+%  Toolbox (TM), as it requires XCORR, a cross-correlation function estimator.
+%
+%  ARfit availability was checked on August 13, 2015, and August 27, 2021. KS
+%
+%  The version we have tested and included was obtained on February 24, 2011 from
+%       www.gps.caltech.edu/~tapio/arfit/index.html, 
+%  which is now obsolete.
+%
+%% See also: ARFIT, MVAR, MCARNS, MCARVM, CMLSM
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
+%%
+
+function [pf,A,ef] = arfitcaps(u,IP)
+
+if ~exist('arfit.m','file')
+   help arfitcaps
+   error('ARfit.m not found. Get the ARfit package from Tapio Schneider''s web site.')
+end;
+
+v = u';
+[w, Au, C, sbc, fpe, th] = arfit(v,IP,IP);
+pf = C;
+
+if IP >= 20
+   [siglev,res] = arres(w,Au,v,IP+1);
+else
+   [siglev,res] = arres(w,Au,v);
+end;
+
+% Variable 'siglev' is not used.
+
+ef = res'; 
+A = zeros(length(w),length(w),IP);
+for i = 1:IP
+   A(:,:,i) = Au(:,(i-1)*length(w)+1:i*length(w));
+   wu = ceil(length(ef)*rand(size(w)));
+   if length(ef)<length(v)
+      ef = [ef ef(:,wu(1))];
+   else
+      ef = ef(:,1:length(v));
+   end
+end
+
+##### SOURCE END #####
+--></body></html>

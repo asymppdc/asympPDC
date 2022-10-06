@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>MCARVM</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="mcarvm.m"><style type="text/css">
+      --><title>MCARVM</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="mcarvm.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>MCARVM</h1><!--introduction--><pre>  Estimate autoregressive model coefficients using Vieira-Morf algorithm</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input parameters:</a></li><li><a href="#3">Output parameters:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Notes:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: MVAR, MCARNS, ARTFITCAPS, CMLSM</a></li><li><a href="#9">Main Loop </a></li></ul></div><h2 id="1">Syntax</h2><pre>  [pf,A,pb,B,ef,eb] = MCARVM(u,IP)</pre><h2 id="2">Input parameters:</h2><pre>   u      - Complex matrix with NUMCHS channels of sample data
+  </style></head><body><div class="content"><h1>MCARVM</h1><!--introduction--><pre>  Estimate autoregressive model coefficients using Vieira-Morf algorithm</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input parameters:</a></li><li><a href="#3">Output parameters:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Notes:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: MVAR, MCARNS, ARTFITCAPS, CMLSM</a></li><li><a href="#10">Main Loop </a></li></ul></div><h2 id="1">Syntax</h2><pre>  [pf,A,pb,B,ef,eb] = MCARVM(u,IP)</pre><h2 id="2">Input parameters:</h2><pre>   u      - Complex matrix with NUMCHS channels of sample data
    IP     - Ordem of autoregressive model (integer)</pre><h2 id="3">Output parameters:</h2><pre>   pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
             prediction error
    A      - Complex array of forward linear prediction matrix
@@ -87,9 +87,7 @@ Vieira <span class="string">Morf</span> <span class="string">algorithm</span> <s
     Dover <span class="string">Publications</span>, Inc., Mineola - New York, 2019.
 </pre><h2 id="7">See also: MVAR, MCARNS, ARTFITCAPS, CMLSM</h2><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
-
-
-<span class="keyword">function</span> [pf,A,pb,B,ef,eb,ISTAT] = mcarvm(u,IP)
+</pre><pre class="codeinput"><span class="keyword">function</span> [pf,A,pb,B,ef,eb,ISTAT] = mcarvm(u,IP)
 </pre><pre class="codeinput"><span class="keyword">if</span> nargin ~= 2, error(<span class="string">'MCARvm requires 2 input arguments.'</span>); <span class="keyword">end</span>
 
 [lx,cx] = size(u);
@@ -112,7 +110,7 @@ pf = u * u';     <span class="comment">% Eq. (15.90)</span>
 pb = pf;       <span class="comment">% Eq. (15.90)</span>
 
 m  =  0;
-</pre><h2 id="9">Main Loop </h2><pre class="codeinput"><span class="keyword">while</span> 1
+</pre><h2 id="10">Main Loop </h2><pre class="codeinput"><span class="keyword">while</span> 1
    <span class="comment">%  Update estimated covariance errors               Eq. (15.89)</span>
    pfhat = ef(:,m+2:N) * ef(:,m+2:N)';
    pbhat = eb(:,m+1:N-1) * eb(:,m+1:N-1)';
@@ -210,6 +208,7 @@ m  =  0;
 % (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
 
 function [pf,A,pb,B,ef,eb,ISTAT] = mcarvm(u,IP)
 

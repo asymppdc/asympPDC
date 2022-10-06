@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ar_data</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="ar_data.m"><style type="text/css">
+      --><title>SS_ALG</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="ss_alg.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,102 +67,61 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> c = ar_data(A, er, m, ndiscard)
-<span class="comment">% function c = ar_data(A, er, m, ndiscard)</span>
-<span class="comment">%    '''Simulate ar-model from A matrix</span>
-<span class="comment">%</span>
-<span class="comment">%       Input:</span>
-<span class="comment">%         A(n, n, p) - AR model (n - number of signals, p - model order)</span>
-<span class="comment">%         er(n) - variance of innovations</span>
-<span class="comment">%         m - length of simulated time-series</span>
-<span class="comment">%</span>
-<span class="comment">%       Output:</span>
-<span class="comment">%         data(n, m) - simulated time-series</span>
-<span class="comment">%     '''</span>
-
-<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&Aacute;, 2022.</span>
+  </style></head><body><div class="content"><h1>SS_ALG</h1><!--introduction--><pre>      Calculate spectral coherence from spectral density function.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input arguments:</a></li><li><a href="#3">Output argument:</a></li><li><a href="#4">See also: COH_ALG</a></li></ul></div><h2 id="1">Syntax:</h2><pre>     SS = SS_ALG(A, e_cov, nf, nfcalc)</pre><h2 id="2">Input arguments:</h2><pre>      A      - autoregressive matrix
+      e_cov  - residues
+      nf     - number of frequencies
+      nfcalc - fraction o frequency range to calculate</pre><h2 id="3">Output argument:</h2><pre>      SS     - (nChannels x nChannels x nfcalc) Power spectral density</pre><h2 id="4">See also: COH_ALG</h2><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
 
-<span class="keyword">if</span> ndims(A) == 2
-   [n,~]=size(A);
-   p=1;
-<span class="keyword">elseif</span> ndims(A) == 3
-   [n,~,p] = size(A);
-<span class="keyword">else</span>
-   error(<span class="string">'A matrix dimension &gt; 3.'</span>);
+
+<span class="keyword">function</span> SS = ss_alg(A, e_cov, nf, nfcalc)
+
+<span class="keyword">if</span> nargin &lt; 4, nfcalc = nf; <span class="keyword">end</span>
+[~, nChannels,~] = size(A);
+AL = A_to_f(A, nf);
+ss = zeros(size(AL));
+<span class="keyword">for</span> i = 1:nfcalc
+   H = inv(reshape(AL(i,:,:),nChannels,nChannels));
+   ss(i,:,:) = H * e_cov * H';
 <span class="keyword">end</span>
 
-<span class="keyword">if</span> isempty(er)
-   er = eye(n); <span class="comment">%identity(n)</span>
+SS=permute(ss,[2,3,1]);
 <span class="keyword">end</span>
-<span class="keyword">if</span> min(size(er))==1
-   er = diag(er);
-<span class="keyword">end</span>
-randn(<span class="string">'state'</span>, sum(100*clock));
-er = diag(er);
-
-w = randn(n,m+ndiscard+p);
-
-<span class="keyword">for</span> kk=1:m+ndiscard-p, w(:,kk)=er.*w(:,kk); <span class="keyword">end</span>
-
-data = zeros(n, m+ndiscard);
-<span class="keyword">for</span> i =p+1:m+ndiscard
-   <span class="keyword">for</span> j=1:p
-       data(:,i) = data(:,i) + A(:,:,j)*data(:,i-j);
-   <span class="keyword">end</span>
-   data(:,i) = data(:,i) + w(:,i);
-<span class="keyword">end</span>
-
-c = data(:,ndiscard+1:m+ndiscard);
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function c = ar_data(A, er, m, ndiscard)
-% function c = ar_data(A, er, m, ndiscard)
-%    '''Simulate ar-model from A matrix
+%% SS_ALG
+%        Calculate spectral coherence from spectral density function.
 %
-%       Input:
-%         A(n, n, p) - AR model (n - number of signals, p - model order)
-%         er(n) - variance of innovations
-%         m - length of simulated time-series
+%% Syntax:
+%       SS = SS_ALG(A, e_cov, nf, nfcalc)
 %
-%       Output:
-%         data(n, m) - simulated time-series
-%     '''
+%% Input arguments:
+%        A      - autoregressive matrix
+%        e_cov  - residues
+%        nf     - number of frequencies
+%        nfcalc - fraction o frequency range to calculate 
+%
+%% Output argument:
+%        SS     - (nChannels x nChannels x nfcalc) Power spectral density
+%
+%% See also: COH_ALG
 
-% (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
-if ndims(A) == 2
-   [n,~]=size(A);
-   p=1;
-elseif ndims(A) == 3
-   [n,~,p] = size(A);
-else
-   error('A matrix dimension > 3.');
+
+function SS = ss_alg(A, e_cov, nf, nfcalc)
+
+if nargin < 4, nfcalc = nf; end
+[~, nChannels,~] = size(A);
+AL = A_to_f(A, nf);
+ss = zeros(size(AL));
+for i = 1:nfcalc
+   H = inv(reshape(AL(i,:,:),nChannels,nChannels));
+   ss(i,:,:) = H * e_cov * H';
 end
 
-if isempty(er)
-   er = eye(n); %identity(n)
+SS=permute(ss,[2,3,1]);
 end
-if min(size(er))==1
-   er = diag(er);
-end
-randn('state', sum(100*clock));
-er = diag(er);
-
-w = randn(n,m+ndiscard+p);
-
-for kk=1:m+ndiscard-p, w(:,kk)=er.*w(:,kk); end
-
-data = zeros(n, m+ndiscard);
-for i =p+1:m+ndiscard
-   for j=1:p
-       data(:,i) = data(:,i) + A(:,:,j)*data(:,i-j);
-   end
-   data(:,i) = data(:,i) + w(:,i);
-end
-
-c = data(:,ndiscard+1:m+ndiscard);
-
 ##### SOURCE END #####
 --></body></html>

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ASYMP_DTF</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
+      --><title>ASYMP_DTF</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>ASYMP_DTF</h1><!--introduction--><pre>      Compute DTF connectivity measures magnitude, from series j--&gt; i, for
-      any of three of metrics -- Euclidean, diagonal and information --
+  </style></head><body><div class="content"><h1>ASYMP_DTF</h1><!--introduction--><pre>      Compute DTF connectivity measures magnitude, from series j--&gt;i, for
+      any of three of metrics --- Euclidean, diagonal and information ---
       as well as asymptotic statistics from vector autoregressive (VAR)
       coefficients in the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</a></li><li><a href="#9">Change Log:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments:</h2><pre>      u      - multiple row vectors time series
       A      - AR estimate matrix obtained via MVAR routine
@@ -560,8 +560,8 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% ASYMP_DTF
-%        Compute DTF connectivity measures magnitude, from series jREPLACE_WITH_DASH_DASH> i, for
-%        any of three of metrics REPLACE_WITH_DASH_DASH Euclidean, diagonal and information REPLACE_WITH_DASH_DASH
+%        Compute DTF connectivity measures magnitude, from series jREPLACE_WITH_DASH_DASH>i, for
+%        any of three of metrics REPLACE_WITH_DASH_DASH- Euclidean, diagonal and information REPLACE_WITH_DASH_DASH-
 %        as well as asymptotic statistics from vector autoregressive (VAR)
 %        coefficients in the frequency domain.
 %

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ASYMP_PDC</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="asymp_pdc.m"><style type="text/css">
+      --><title>ASYMP_PDC</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="asymp_pdc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -70,7 +70,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   </style></head><body><div class="content"><h1>ASYMP_PDC</h1><!--introduction--><pre>      Compute complex and squared partial directed coherence for any of three
       metrics -- Euclidean, diagonal and informational -- along with
       asymptotic statistics from vector autoregressive (VAR) coefficients in
-      the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</a></li><li><a href="#10">Change Log:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments:</h2><pre>      u:          multiple row vectors time series
+      the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</a></li><li><a href="#9">Subfunctions</a></li><li><a href="#11">Change Log:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments:</h2><pre>      u:          multiple row vectors time series
       A:          AR estimate matrix by MVAR routine
       pf:         covariance matrix provided by MVAR routine
       nFreqs:     number of point in [0,fs/2) frequency scale range
@@ -143,8 +143,7 @@ xplot_title(alpha,metric,measure,<span class="string">'Sunspot-Melanoma Example'
 </pre><pre class="language-matlab"><span class="comment">% -------- Second part of xplot example end here---------------------------</span>
 </pre><h2 id="6">References:</h2><p>[1] L.A. Baccala and K. Sameshima. Partial directed coherence: a new concept     in neural structure determination. Biol Cybern 84:463--474,2001.     <a href="https://doi.org/10.1007/PL00007990">https://doi.org/10.1007/PL00007990</a></p><p>[2] D.Y. Takahashi, L.A.B. Baccala and K. Sameshima, Connectivity inference     between neural structures via partial directed coherence. J Appl Stat     34:1259--1273, 2007. <a href="https://doi.org/10.1080/02664760701593065">https://doi.org/10.1080/02664760701593065</a></p><p>[3] L.A. Baccala, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima. Unified     asymptotic theory for all partial directed coherence forms. Philos T Roy     Soc A 371(1997):1--13, 2013. <a href="https://doi.org/10.1098/rsta.2012.0158">https://doi.org/10.1098/rsta.2012.0158</a></p><h2 id="7">See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</h2><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
-
-<span class="keyword">function</span> c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
+</pre><pre class="codeinput"><span class="keyword">function</span> c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
 
 <span class="keyword">if</span> nargin &lt; 6
     error(<span class="string">'ASYMP_PDC requires six input arguments.'</span>)
@@ -400,7 +399,7 @@ c.SS = ss_alg(A, pf, nFreqs);
 c.coh2 = coh_alg(c.SS);
 <span class="comment">%</span>
 <span class="keyword">end</span>
-</pre><p>Subfunctions</p><pre class="codeinput"><span class="comment">%==========================================================================</span>
+</pre><h2 id="9">Subfunctions</h2><pre class="codeinput"><span class="comment">%==========================================================================</span>
 <span class="keyword">function</span> gamma = bigautocorr(x, p)
 <span class="comment">% Autocorrelation. Data in row-wise orientation. From order 0 to p-1.</span>
 <span class="comment">% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''</span>
@@ -558,7 +557,7 @@ count = 1;
 
 <span class="comment">%==========================================================================</span>
 </pre><pre>      1         2         3         4         5         6         7         8         9</pre><pre class="codeinput"><span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
-</pre><h2 id="10">Change Log:</h2><p>[20110725]: The asymp_pdc routine was corrected to match the frequency             range with plotting routine, f = 0 was included in the "frequency"              for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [20150107]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
+</pre><h2 id="11">Change Log:</h2><p>[20110725]: The asymp_pdc routine was corrected to match the frequency             range with plotting routine, f = 0 was included in the "frequency"              for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [20150107]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% ASYMP_PDC
@@ -678,6 +677,8 @@ count = 1;
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
+
+%%
 
 function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
 
@@ -936,8 +937,8 @@ c.coh2 = coh_alg(c.SS);
 %
 end
 
-%% 
-% Subfunctions
+
+%% Subfunctions
 %
 
 %==========================================================================

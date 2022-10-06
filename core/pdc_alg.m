@@ -55,6 +55,9 @@
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
+
 function c = pdc_alg(u,nFreqs,metric,alg,criterion,maxIP,alpha)
 
 % If the number of input parameters is smaller than seven, following default

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>DATAGEN</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="datagen.m"><style type="text/css">
+      --><title>DATAGEN</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="datagen.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -68,7 +68,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>DATAGEN</h1><!--introduction--><pre>      Generate multivariate time series from autoregressive coefficients A  and
-      covariance matrix, pf.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Argument:</a></li><li><a href="#5">Warning on rng usage</a></li></ul></div><h2 id="1">Syntax:</h2><pre>       [y,seed_out]=DATAGEN(A,pf,Ndata,R,seed)</pre><h2 id="2">Input Arguments:</h2><pre class="language-matlab">A:          NxNxIP system <span class="string">definition</span> <span class="string">matrix</span>, IP <span class="string">is</span> <span class="string">model</span> <span class="string">order</span>
+      covariance matrix, pf.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Argument:</a></li><li><a href="#6">Warning on rng usage</a></li></ul></div><h2 id="1">Syntax:</h2><pre>       [y,seed_out]=DATAGEN(A,pf,Ndata,R,seed)</pre><h2 id="2">Input Arguments:</h2><pre class="language-matlab">A:          NxNxIP system <span class="string">definition</span> <span class="string">matrix</span>, IP <span class="string">is</span> <span class="string">model</span> <span class="string">order</span>
 pf:         NxN Input <span class="string">covariance</span> <span class="string">matrix</span>
 Ndata:      Number of <span class="string">time</span> <span class="string">samples</span>
 R:          Number of <span class="string">realizations</span> <span class="string">(default = 1)</span>
@@ -83,10 +83,9 @@ seed:       Seed default - internally defined (nargin&lt;5)
 
 <span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&Aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
-
-<span class="keyword">function</span> [y,seed_out]=datagen(A,pf,Ndata,R,seed)
+</pre><pre class="codeinput"><span class="keyword">function</span> [y,seed_out]=datagen(A,pf,Ndata,R,seed)
 </pre><pre class="codeinput">nBurnIn=10000;
-</pre><h2 id="5">Warning on rng usage</h2><pre>  Error using rng (line 96)
+</pre><h2 id="6">Warning on rng usage</h2><pre>  Error using rng (line xx)
 The current random number generator is the legacy generator.  This is
 because you have executed a command such as rand('state',0), which
 activates MATLAB's legacy random number behavior.  You may not use RNG to
@@ -151,12 +150,15 @@ y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
 % (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
+
 function [y,seed_out]=datagen(A,pf,Ndata,R,seed)
 
 nBurnIn=10000;
 
 %% Warning on rng usage
-%    Error using rng (line 96)
+%    Error using rng (line xx)
 % The current random number generator is the legacy generator.  This is
 % because you have executed a command such as rand('state',0), which
 % activates MATLAB's legacy random number behavior.  You may not use RNG to

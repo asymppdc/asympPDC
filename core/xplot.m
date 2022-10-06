@@ -104,6 +104,8 @@
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
 
 function [hfigure,hxlabel,hylabel] = xplot(strBarTitle,c,flgPrinting,fs,w_max, ...
                                chLabels,flgColor,flgScale,flgMax,flgSignifColor)
@@ -147,7 +149,7 @@ end
 
 %%
 % <https://www.mathworks.com/matlabcentral/answers/312738-how-to-get-real-screen-size>
-% by 
+% by  
 %   <https://www.mathworks.com/matlabcentral/profile/authors/770850>
 while 0
    ScreenPixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution()
@@ -1612,9 +1614,10 @@ drawnow
 
 end
 
-%% labelitx
+%% LABELITX
 %      x-axis labeling function
 %
+
 function [hxlabel] = labelitx(j,chLabels) % Labels x-axis plottings
 if isOctave()
    vFontSize = 12;
@@ -1645,9 +1648,10 @@ set(hxlabel,'Position',pos);
 
 end
 
-%% latelity 
+%% LABELITY 
 % y-axis labeling function
 %
+
 function [hylabel] = labelity(i,chLabels) % Labels y-axis plottings
 if isOctave()
    vFontSize = 12;
@@ -1680,9 +1684,10 @@ end
 set(hylabel,'Position',pos)
 end
 
-%% plotci
+%% PLOTCI
 %      Plot upper and lower confidence interval limits
 %
+
 function plotCI(flgPrinting,flgSignif,w,r,s,Ltmp,L2vupper,L2vlower, ...
                nPlotPoints,indexNotSignif,vPatnaikLineWidth,versionNumberMatlab)
 

@@ -1,4 +1,4 @@
-%% Daniel Y. Takahashi  - Medidas de Fluxo de Informacao com Aplicacao em Neurociencia (Thesis in Portuguese)
+%% DANIEL Y TAKAHASHI - Medidas de Fluxo de Informacao com Aplicacao em Neurociencia (Thesis in Portuguese)
 %   [http://www.princeton.edu/~dtakahas/publications/TeseDYTFinal.pdf]
 %
 % Thesis example: An invertible VMA process with an infinite order VAR process
@@ -6,6 +6,9 @@
 
 % (C) Daniel Y. Takahashi, Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
 % See file license.txt in installation directory for licensing terms.
+
+%%
+
 
 function u = takahashi_thesis_dat(nPoints)
 N=30000;

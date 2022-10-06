@@ -116,6 +116,8 @@
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
 function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
 
 if nargin < 6
@@ -373,8 +375,8 @@ c.coh2 = coh_alg(c.SS);
 %
 end
 
-%% 
-% Subfunctions
+
+%% Subfunctions
 %
 
 %==========================================================================

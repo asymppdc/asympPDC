@@ -26,12 +26,15 @@
 % (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
+
 function [y,seed_out]=datagen(A,pf,Ndata,R,seed)
 
 nBurnIn=10000;
 
 %% Warning on rng usage
-%    Error using rng (line 96)
+%    Error using rng (line xx)
 % The current random number generator is the legacy generator.  This is
 % because you have executed a command such as rand('state',0), which
 % activates MATLAB's legacy random number behavior.  You may not use RNG to

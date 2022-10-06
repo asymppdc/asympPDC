@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>MVARRESIDUE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="mvarresidue.m"><style type="text/css">
+      --><title>MVARRESIDUE</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="mvarresidue.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>MVARRESIDUE</h1><!--introduction--><pre>      Portmanteau residues test for whiteness</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Reference:</a></li><li><a href="#5">See also: mvar</a></li><li><a href="#6">crosstest</a></li><li><a href="#7">Syntax</a></li><li><a href="#8">Input arguments</a></li><li><a href="#9">Output arguments</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      [Pass,Portmanteau,st,ths] = MVARRESIDUE(ef,ns,p,aValue,h,flgVerbose)</pre><h2 id="2">Input Arguments:</h2><pre>      ef       - matrix of column vectors - residues
+  </style></head><body><div class="content"><h1>MVARRESIDUE</h1><!--introduction--><pre>      Portmanteau residues test for whiteness</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Reference:</a></li><li><a href="#5">See also: mvar</a></li><li><a href="#7">crosstest</a></li><li><a href="#8">Syntax</a></li><li><a href="#9">Input arguments</a></li><li><a href="#10">Output arguments</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      [Pass,Portmanteau,st,ths] = MVARRESIDUE(ef,ns,p,aValue,h,flgVerbose)</pre><h2 id="2">Input Arguments:</h2><pre>      ef       - matrix of column vectors - residues
       ns       - number of points estimated
       p        - model order
       aValue   - confidence interval
@@ -80,8 +80,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
        ths     - threshold value</pre><h2 id="4">Reference:</h2><p>[1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis.                         Springer-Verlag. Sec. 4.4.3, p. 169--171</p><h2 id="5">See also: mvar</h2><pre>       LAB 11/Apr/2000
        KS  28/Apr/2007</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
-
-<span class="keyword">function</span> [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
+</pre><pre class="codeinput"><span class="keyword">function</span> [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
 
 <span class="keyword">if</span> ~exist(<span class="string">'h'</span>,<span class="string">'var'</span>), h=10; <span class="keyword">end</span>
 ef=ef';
@@ -106,11 +105,11 @@ Pass=t/compr;
    disp([<span class="string">'  st = '</span>, sprintf(<span class="string">'%g'</span>,st)])
 <span class="keyword">end</span>
 <span class="keyword">end</span>
-</pre><h2 id="6">crosstest</h2><pre>    Cross-correlation computation between data signal column vectors</pre><h2 id="7">Syntax</h2><pre>        [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p);</pre><h2 id="8">Input arguments</h2><pre>      u = matrix of column vectors - residues
+</pre><h2 id="7">crosstest</h2><pre>    Cross-correlation computation between data signal column vectors</pre><h2 id="8">Syntax</h2><pre>        [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p);</pre><h2 id="9">Input arguments</h2><pre>      u = matrix of column vectors - residues
       h - lag - maximu lag
       ns - number of points estimated
       th - confidence
-      p - model order</pre><h2 id="9">Output arguments</h2><pre>       t - correlation test - number of times the 2/sqrt(ns) threshold is exceeded
+      p - model order</pre><h2 id="10">Output arguments</h2><pre>       t - correlation test - number of times the 2/sqrt(ns) threshold is exceeded
        Portmanteau - test result - 0 - REJECT , 1 not rejected (white hypothesis)
        s - portamanteau statistic
        ths - threshold value
@@ -176,6 +175,8 @@ compr=n*n*h;
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
+
+%%
 
 function [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
 

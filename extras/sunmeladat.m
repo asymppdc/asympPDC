@@ -62,6 +62,9 @@
 %   ANNUAL TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
 %   ANNUAL SUNSPOT RELATIVE NUMBER 
 
+%%
+
+
 function u = sunmeladat(selection)
 
 y=[1936   1.0   0.9    40;

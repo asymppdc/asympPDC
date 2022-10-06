@@ -32,6 +32,8 @@
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
 function [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
 
 if ~exist('h','var'), h=10; end

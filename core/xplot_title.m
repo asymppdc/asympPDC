@@ -21,6 +21,9 @@
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
+%%
+
+
 function [] = xplot_title(alpha,metric,measure,obs)
 
 if nargin == 1

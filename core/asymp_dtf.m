@@ -1,6 +1,6 @@
 %% ASYMP_DTF
-%        Compute DTF connectivity measures magnitude, from series j--> i, for
-%        any of three of metrics -- Euclidean, diagonal and information --
+%        Compute DTF connectivity measures magnitude, from series j-->i, for
+%        any of three of metrics --- Euclidean, diagonal and information ---
 %        as well as asymptotic statistics from vector autoregressive (VAR)
 %        coefficients in the frequency domain.
 %
@@ -101,6 +101,8 @@
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
+
+%%
 
 function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 

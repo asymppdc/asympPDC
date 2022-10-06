@@ -55,7 +55,7 @@
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
-
+%%
 
 function c = dtf_alg(u,nFreqs,metric,alg,criterion,maxIP,alpha)
 

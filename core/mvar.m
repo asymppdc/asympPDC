@@ -45,7 +45,6 @@
 % (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
-%
 %%
 
 function [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion,flgVerbose)
