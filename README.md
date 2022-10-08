@@ -35,7 +35,7 @@ These commands tile the screen with figure windows. The `tilefigs1` and `tilefig
 
 ## Schematic view of connectivity measures evolution
 
-The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** ($N=2$) to **multivariate** ($N \ge 2$) **time series**, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **asympPDC Package**.
+The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (***N* = 2**) to **multivariate** (***N* ≥ 2**) **time series**, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **asympPDC Package**.
 
 ***
 
