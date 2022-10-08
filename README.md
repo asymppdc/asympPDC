@@ -139,6 +139,11 @@ These routines are distributed under GNU General Public License v3.0 under autho
 
 ## Cite as
 
+<<<<<<< HEAD
 Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package ([Release v3.0](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1)), GitHub. Retrieved August 12, 2022.
+=======
+Koichi Sameshima and Luiz A. Baccalá (2022). asympPDC Package ([Release v3.0 asymppdc/asympPDC · GitHub](https://github.com/asymppdc/asympPDC/releases/tag/v3.0.1)), GitHub. Retrieved August 12, 2022.
+
+> > > > > > > 84a45faf6d1d801ca26d0aacd051877d42022396
 
 [![View asympPDC on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/116290-asymppdc)
