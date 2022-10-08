@@ -1,18 +1,18 @@
-%% SUNMELADAT
-%   Return the skin.dat from Andrews and Herzberg (1985) book's year,
-%   melanoma and sunspot number series.
+function u = sunmeladat(selection)
+%SUNMELADAT   Return the skin.dat from Andrews and Herzberg (1985) book's year,
+%             melanoma and sunspot number series.
 %
-%% Syntax
+% Syntax:
 %   u = SUNMELADAT(selection);
 %
-%% Input Argument
+% Input Argument:
 %   selection:  four element row vector with 0 or 1
 %               [year male_melanoma total_melanoma sunspot_number]
 %
-%% Output Argument
+% Output Argument:
 %   u:          matrix with Andrews and Herzberg data columns
 %
-%% Examples 
+% Examples:
 %   sunmeladat([1 1 1 1])  % or 
 %   sunmeladat()           % return all series
 %
@@ -23,15 +23,14 @@
 %   sunmeladat(1)     % or
 %   sunmeladat([1])   % yield year column
 %
-%% Reference
+% Reference:
 %   Data sample borrowed from 
 %      Andrews DF, Herzberg AM. (1985) Data: A Collection of Problems from 
 %      Many Fields for the Student and Research Worker. Springer, New York.
 %      <https://doi.org/10.1007/978-1-4612-5098-2>
 %      ISBN: 978-1-4612-9563-1 (Print) 978-1-4612-5098-2 (Online) 
 %          
-%% Description
-%
+% Description
 %  "This data is from skin.dat Data File in Andrews and Herzberg (1985).
 %   The aetiology of melanoma is complex and may include the influences 
 %   of trauma, heredity and hormonal activity. In particular, exposure 
@@ -62,66 +61,62 @@
 %   ANNUAL TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
 %   ANNUAL SUNSPOT RELATIVE NUMBER 
 
-%%
 
+   y=[1936   1.0   0.9    40;
+      1937   0.8   0.8   115;
+      1938   0.8   0.8   100;
+      1939   1.4   1.3    80;
+      1940   1.2   1.4    60;
+      1941   1.0   1.2    40;
+      1942   1.5   1.7    23;
+      1943   1.9   1.8    10;
+      1944   1.5   1.6    10;
+      1945   1.5   1.5    25;
+      1946   1.5   1.5    75;
+      1947   1.6   2.0   145;
+      1948   1.8   2.5   130;
+      1949   2.8   2.7   130;
+      1950   2.5   2.9    80;
+      1951   2.5   2.5    65;
+      1952   2.4   3.1    20;
+      1953   2.1   2.4    10;
+      1954   1.9   2.2     5;
+      1955   2.4   2.9    10;
+      1956   2.4   2.5    60;
+      1957   2.6   2.6   190;
+      1958   2.6   3.2   180;
+      1959   4.4   3.8   175;
+      1960   4.2   4.2   120;
+      1961   3.8   3.9    50;
+      1962   3.4   3.7    35;
+      1963   3.6   3.3    20;
+      1964   4.1   3.7    10;
+      1965   3.7   3.9    15;
+      1966   4.2   4.1    30;
+      1967   4.1   3.8    60;
+      1968   4.1   4.7   105;
+      1969   4.0   4.4   105;
+      1970   5.2   4.8   105;
+      1971   5.3   4.8    80;
+      1972   5.3   4.8    65];
 
-function u = sunmeladat(selection)
+   choice = [];
 
-y=[1936   1.0   0.9    40;
-   1937   0.8   0.8   115;
-   1938   0.8   0.8   100;
-   1939   1.4   1.3    80;
-   1940   1.2   1.4    60;
-   1941   1.0   1.2    40;
-   1942   1.5   1.7    23;
-   1943   1.9   1.8    10;
-   1944   1.5   1.6    10;
-   1945   1.5   1.5    25;
-   1946   1.5   1.5    75;
-   1947   1.6   2.0   145;
-   1948   1.8   2.5   130;
-   1949   2.8   2.7   130;
-   1950   2.5   2.9    80;
-   1951   2.5   2.5    65;
-   1952   2.4   3.1    20;
-   1953   2.1   2.4    10;
-   1954   1.9   2.2     5;
-   1955   2.4   2.9    10;
-   1956   2.4   2.5    60;
-   1957   2.6   2.6   190;
-   1958   2.6   3.2   180;
-   1959   4.4   3.8   175;
-   1960   4.2   4.2   120;
-   1961   3.8   3.9    50;
-   1962   3.4   3.7    35;
-   1963   3.6   3.3    20;
-   1964   4.1   3.7    10;
-   1965   3.7   3.9    15;
-   1966   4.2   4.1    30;
-   1967   4.1   3.8    60;
-   1968   4.1   4.7   105;
-   1969   4.0   4.4   105;
-   1970   5.2   4.8   105;
-   1971   5.3   4.8    80;
-   1972   5.3   4.8    65];
-
-choice = [];
-
-if nargin == 0
-   choice = [1 2 3 4];
-else
-   if max(selection) == 1,
-      for i = 1:max(size(selection)),
-         if selection(i)
-            choice = [choice i];
-         end;
-      end;
-   elseif max(selection) < 1,
-      error('Choose at least one column of Andrews and Herzberg data.')
+   if nargin == 0
+      choice = [1 2 3 4];
    else
-      choice = selection;
-   end
-end;
+      if max(selection) == 1,
+         for i = 1:max(size(selection)),
+            if selection(i)
+               choice = [choice i];
+            end;
+         end;
+      elseif max(selection) < 1,
+         error('Choose at least one column of Andrews and Herzberg data.')
+      else
+         choice = selection;
+      end
+   end;
 
 u = y(:,choice);
 

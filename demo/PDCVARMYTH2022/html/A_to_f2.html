@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>getCij</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="getCij.m"><style type="text/css">
+      --><title>A_to_f2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="A_to_f2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,59 +67,87 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> c = getCij(C,r,s,nFreq)
-<span class="comment">%GETCIJ  Retrive C[r,s] element from 3D martrix C [NumChannel, NumChannel, nFreqs]</span>
-<span class="comment">%</span>
-<span class="comment">% Syntax:</span>
-<span class="comment">%        c = getCij(C,r,s,nFreq)</span>
-<span class="comment">%</span>
-<span class="comment">% Input arguments:</span>
-<span class="comment">%               C [NumChannel, NumChannel, nFreqs], either PDC,Lpatnaik</span>
-<span class="comment">%               Lv2inf, Lv2sup</span>
-<span class="comment">%             [r,s] index-pair</span>
-<span class="comment">%             nFreq - optional number of frequency values considered.</span>
-<span class="comment">%                     if not declared all freq values, i.e., nFreqs.</span>
-<span class="comment">%</span>
-<span class="comment">% Output argument:</span>
-<span class="comment">%      c - C[r,s] element</span>
+  </style></head><body><div class="content"><h1>A_to_f2</h1><!--introduction--><pre>      Calculates A(f), in two-sided frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Input arguments</a></li><li><a href="#3">Output arguments</a></li></ul></div><h2 id="1">Syntax</h2><pre>     AL = A_to_f2(A, nFreqs)</pre><h2 id="2">Input arguments</h2><pre>     A     - (nChannels x nChannels x p) Recurrence matrix
+                (nChannels - number of signals, p - model order)
+     nFreqs    - frequency resolution</pre><h2 id="3">Output arguments</h2><pre>     AL    - (2*nFreqs, nChannels, nChannels) two-sided A(f)</pre><pre>      See also A_TO_F.</pre><pre class="codeinput"><span class="keyword">function</span> AL = A_to_f2(A, nFreqs)
 
-<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2022.</span>
-<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+[nChannels,~,p] = size(A);
+Jimag = sqrt(-1);
 
+<span class="comment">% 'exponents' is an array of FFT exponents, on all frequency range for each lag.</span>
+exponents = reshape((-Jimag*pi*kron(0:(2*nFreqs)-1,(1:p))/nFreqs),p,2*nFreqs).';
 
-   <span class="keyword">if</span> nargin &lt; 4
-      [~,~,nFreq] = size(C);
+Areshaped = reshape(A, nChannels,nChannels,1,p);
+Af = zeros(nChannels,nChannels,2*nFreqs,p);
+<span class="keyword">for</span> kk = 1:2*nFreqs
+   Af(:,:,kk,:) = Areshaped;
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:nChannels
+   <span class="keyword">for</span> k = 1:nChannels
+      Af(i,k,:,:) = reshape(Af(i,k,:,:),2*nFreqs,p).*exp(exponents);
    <span class="keyword">end</span>
+<span class="keyword">end</span>
 
-   c=reshape(C(r,s,1:nFreq), nFreq,1,1,1,1);
+Af = permute(Af, [3,1,2,4]);
+AL = zeros(2*nFreqs,nChannels,nChannels);
+<span class="keyword">for</span> kk = 1:2*nFreqs
+   temp = zeros(nChannels,nChannels);
+   <span class="keyword">for</span> k = 1:p
+      temp = temp+reshape(Af(kk,:,:,k),nChannels,nChannels);
    <span class="keyword">end</span>
+   temp = eye(nChannels)-temp;
+   AL(kk,:,:) = reshape(temp,1,nChannels,nChannels);
+<span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function c = getCij(C,r,s,nFreq)
-%GETCIJ  Retrive C[r,s] element from 3D martrix C [NumChannel, NumChannel, nFreqs]
+%% A_to_f2
+%        Calculates A(f), in two-sided frequency domain.
 %
-% Syntax:
-%        c = getCij(C,r,s,nFreq)
+%% Syntax
+%       AL = A_to_f2(A, nFreqs)
 %
-% Input arguments:
-%               C [NumChannel, NumChannel, nFreqs], either PDC,Lpatnaik
-%               Lv2inf, Lv2sup
-%             [r,s] index-pair
-%             nFreq - optional number of frequency values considered. 
-%                     if not declared all freq values, i.e., nFreqs.
+%% Input arguments
+%       A     - (nChannels x nChannels x p) Recurrence matrix 
+%                  (nChannels - number of signals, p - model order)
+%       nFreqs    - frequency resolution
 %
-% Output argument:
-%      c - C[r,s] element
+%% Output arguments
+%       AL    - (2*nFreqs, nChannels, nChannels) two-sided A(f)
+%
+%        See also A_TO_F.
+%
 
-% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
-% See file license.txt in installation directory for licensing terms.
+function AL = A_to_f2(A, nFreqs)
 
+[nChannels,~,p] = size(A);
+Jimag = sqrt(-1);
 
-   if nargin < 4
-      [~,~,nFreq] = size(C);
+% 'exponents' is an array of FFT exponents, on all frequency range for each lag.
+exponents = reshape((-Jimag*pi*kron(0:(2*nFreqs)-1,(1:p))/nFreqs),p,2*nFreqs).';
+
+Areshaped = reshape(A, nChannels,nChannels,1,p);
+Af = zeros(nChannels,nChannels,2*nFreqs,p);
+for kk = 1:2*nFreqs
+   Af(:,:,kk,:) = Areshaped;
+end
+
+for i = 1:nChannels
+   for k = 1:nChannels
+      Af(i,k,:,:) = reshape(Af(i,k,:,:),2*nFreqs,p).*exp(exponents);
    end
+end
 
-   c=reshape(C(r,s,1:nFreq), nFreq,1,1,1,1);
+Af = permute(Af, [3,1,2,4]);
+AL = zeros(2*nFreqs,nChannels,nChannels);
+for kk = 1:2*nFreqs
+   temp = zeros(nChannels,nChannels);
+   for k = 1:p
+      temp = temp+reshape(Af(kk,:,:,k),nChannels,nChannels);
    end
+   temp = eye(nChannels)-temp;
+   AL(kk,:,:) = reshape(temp,1,nChannels,nChannels);
+end
+
 ##### SOURCE END #####
 --></body></html>

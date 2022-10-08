@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>asymp_dtf</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
+      --><title>asymp_dtf</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Change Log:</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 <span class="comment">%ASYMP_DTF   Compute DTF connectivity measures magnitude, from series j--&gt;i, for</span>
 <span class="comment">%            any of three of metrics --- Euclidean, diagonal and information ---</span>
 <span class="comment">%            as well as asymptotic statistics from vector autoregressive (VAR)</span>
@@ -586,8 +586,22 @@ h2 = [imag(h) real(h)];   <span class="comment">%h2 = cat(h.imag, h.real, 1)</sp
 hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 <span class="keyword">end</span>
 <span class="comment">%==========================================================================</span>
-</pre><pre>      1         2         3         4         5         6         7         8         9</pre><pre class="codeinput"><span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
-</pre><h2 id="3">Change Log:</h2><p>[2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on              to match the frequency range with plotting routine, f = 0 was              included in the "frequency" for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [2021/09/02, LAB]: complex dtf calculation added</p><p>[2015/01/07]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
+
+<span class="comment">%</span>
+<span class="comment">%        1         2         3         4         5         6         7         8         9</span>
+<span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
+<span class="comment">% Change Log:</span>
+<span class="comment">% [2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on</span>
+<span class="comment">%              to match the frequency range with plotting routine, f = 0 was</span>
+<span class="comment">%              included in the "frequency" for-loop:</span>
+<span class="comment">%                                for ff = 1:nFreqs,</span>
+<span class="comment">%                                   f = (ff-1)/(2*nFreqs); %</span>
+<span class="comment">%                                        ^?^^</span>
+<span class="comment">% [2021/09/02, LAB]: complex dtf calculation added</span>
+<span class="comment">%</span>
+<span class="comment">% [2015/01/07]: Optimization \(^o^)/</span>
+
+<span class="comment">% [EOF]</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
@@ -1110,10 +1124,10 @@ hh = -[h1; h2];           %hh = cat(h1, h2, 0)
 end
 %==========================================================================
 
-%%
+%
 %        1         2         3         4         5         6         7         8         9
 %23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-%% Change Log:
+% Change Log:
 % [2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on
 %              to match the frequency range with plotting routine, f = 0 was
 %              included in the "frequency" for-loop:

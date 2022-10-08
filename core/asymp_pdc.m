@@ -373,7 +373,7 @@ function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
    end
 
 
-   %% Subfunctions
+   % Subfunctions
    %
 
    %==========================================================================

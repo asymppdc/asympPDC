@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>tilefigs1</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="tilefigs1.m"><style type="text/css">
+      --><title>tilefigs1</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="tilefigs1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -83,9 +83,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">%   E-mail:	 pjacklam@online.no</span>
 <span class="comment">%   URL:	 http://home.online.no/~pjacklam</span>
 
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 <span class="comment">% Get the handles to the figures to process.</span>
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 
 <span class="keyword">if</span> ~nargin				<span class="comment">% If no input arguments...</span>
    figs = findobj(<span class="string">'Type'</span>, <span class="string">'figure'</span>);	<span class="comment">% ...find all figures.</span>
@@ -97,13 +97,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
    <span class="keyword">return</span>
 <span class="keyword">end</span>
 
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 <span class="comment">% The elements in the vector specifying the position.</span>
 <span class="comment">% 1 - Window left position</span>
 <span class="comment">% 2 - Window bottom position</span>
 <span class="comment">% 3 - Window horizontal size</span>
 <span class="comment">% 4 - Window vertical size</span>
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 
 <span class="comment">%hspc	= 20;		 % Horisontal space.</span>
 <span class="comment">%topspc = 20;		 % Space above top figure.</span>
@@ -118,9 +118,9 @@ medspc = 0.02;		<span class="comment">% Space between figures.</span>
 botspc = 0.05;		<span class="comment">% Space below bottom figure.</span>
 units  = <span class="string">'normalized'</span>;
 
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 <span class="comment">% Set miscellaneous parameter.</span>
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 
 nfigs = length(figs);		<span class="comment">% Number of figures.</span>
 
@@ -130,9 +130,9 @@ nv = ceil(nfigs / nh);		<span class="comment">% Number of figures vertically.</s
 nh = max(nh, 2);
 nv = max(nv, 2);
 
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 <span class="comment">% Get the screen size.</span>
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 
 old_root_units = get(0, <span class="string">'Units'</span>);	<span class="comment">% Get current root units.</span>
 set(0, <span class="string">'Units'</span>, units);			<span class="comment">% Set root units.</span>
@@ -144,9 +144,9 @@ scrhgt = scrdim(4);			<span class="comment">% Screen height.</span>
 figwid = (scrwid - (nh + 1) * hspc) / nh;
 fighgt = (scrhgt - (topspc + botspc) - (nv - 1) * medspc) / nv;
 
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 <span class="comment">% Put the figures where they belong.</span>
-<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%==============================================================================</span>
 
 <span class="keyword">for</span> row = 1 : nv
    <span class="keyword">for</span> col = 1 : nh
@@ -182,9 +182,9 @@ function tilefigs1(figs)
 %   E-mail:	 pjacklam@online.no
 %   URL:	 http://home.online.no/~pjacklam
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%==============================================================================
 % Get the handles to the figures to process.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%==============================================================================
 
 if ~nargin				% If no input arguments...
    figs = findobj('Type', 'figure');	% ...find all figures.
@@ -196,13 +196,13 @@ if isempty(figs)
    return
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%==============================================================================
 % The elements in the vector specifying the position.
 % 1 - Window left position
 % 2 - Window bottom position
 % 3 - Window horizontal size
 % 4 - Window vertical size
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%==============================================================================
 
 %hspc	= 20;		 % Horisontal space.
 %topspc = 20;		 % Space above top figure.
@@ -217,9 +217,9 @@ medspc = 0.02;		% Space between figures.
 botspc = 0.05;		% Space below bottom figure.
 units  = 'normalized';
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%============================================================================== 
 % Set miscellaneous parameter.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%============================================================================== 
 
 nfigs = length(figs);		% Number of figures.
 
@@ -229,9 +229,9 @@ nv = ceil(nfigs / nh);		% Number of figures vertically.
 nh = max(nh, 2);
 nv = max(nv, 2);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%============================================================================== 
 % Get the screen size.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%============================================================================== 
 
 old_root_units = get(0, 'Units');	% Get current root units.
 set(0, 'Units', units);			% Set root units.
@@ -243,9 +243,9 @@ scrhgt = scrdim(4);			% Screen height.
 figwid = (scrwid - (nh + 1) * hspc) / nh;
 fighgt = (scrhgt - (topspc + botspc) - (nv - 1) * medspc) / nv;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%============================================================================== 
 % Put the figures where they belong.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%============================================================================== 
 
 for row = 1 : nv
    for col = 1 : nh

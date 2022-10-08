@@ -518,10 +518,10 @@ hh = -[h1; h2];           %hh = cat(h1, h2, 0)
 end
 %==========================================================================
 
-%%
+%
 %        1         2         3         4         5         6         7         8         9
 %23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-%% Change Log:
+% Change Log:
 % [2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on
 %              to match the frequency range with plotting routine, f = 0 was
 %              included in the "frequency" for-loop:

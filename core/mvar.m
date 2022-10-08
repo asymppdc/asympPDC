@@ -89,7 +89,7 @@ function [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion,flgVerbose
       Vaicv = vaic;
       return
    end
-   %
+   
    vaicv = 0;
    if nargin < 2
       maxOrder = 30;

@@ -77,7 +77,7 @@ function [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgVerbose)
    end
    end
 
-   % Subfunctions:
+% Subfunctions:
 
    %==========================================================================
    function [Tr,Va,v,th,pValue]=granmaty(pf,N,significance)

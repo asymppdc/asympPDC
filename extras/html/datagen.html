@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>DATAGEN</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="datagen.m"><style type="text/css">
+      --><title>datagen</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="datagen.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,15 +67,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>DATAGEN</h1><!--introduction--><pre>      Generate multivariate time series from autoregressive coefficients A  and
-      covariance matrix, pf.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Argument:</a></li><li><a href="#6">Warning on rng usage</a></li></ul></div><h2 id="1">Syntax:</h2><pre>       [y,seed_out]=DATAGEN(A,pf,Ndata,R,seed)</pre><h2 id="2">Input Arguments:</h2><pre class="language-matlab">A:          NxNxIP system <span class="string">definition</span> <span class="string">matrix</span>, IP <span class="string">is</span> <span class="string">model</span> <span class="string">order</span>
-pf:         NxN Input <span class="string">covariance</span> <span class="string">matrix</span>
-Ndata:      Number of <span class="string">time</span> <span class="string">samples</span>
-R:          Number of <span class="string">realizations</span> <span class="string">(default = 1)</span>
-seed:       Seed default - internally defined (nargin&lt;5)
-</pre><pre class="language-matlab">nBurnIn=10000 (internally defined)
-</pre><h2 id="3">Output Argument:</h2><pre class="language-matlab">y - N x <span class="string">Time</span> <span class="string">(=Ndata)</span> <span class="string">x</span> <span class="string">R</span>
-</pre><pre class="codeinput"><span class="comment">% July 09, 2021, LAB</span>
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [y,seed_out]=datagen(A,pf,Ndata,R,seed)
+<span class="comment">%DATAGEN  Generate multivariate time series from autoregressive coefficients A  and</span>
+<span class="comment">%         covariance matrix, pf.</span>
+<span class="comment">%</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">%         [y,seed_out]=DATAGEN(A,pf,Ndata,R,seed)</span>
+<span class="comment">%</span>
+<span class="comment">% Input Arguments:</span>
+<span class="comment">%   A:          NxNxIP system definition matrix, IP is model order</span>
+<span class="comment">%   pf:         NxN Input covariance matrix</span>
+<span class="comment">%   Ndata:      Number of time samples</span>
+<span class="comment">%   R:          Number of realizations (default = 1)</span>
+<span class="comment">%   seed:       Seed default - internally defined (nargin&lt;5)</span>
+<span class="comment">%</span>
+<span class="comment">%   nBurnIn=10000 (internally defined)</span>
+<span class="comment">%</span>
+<span class="comment">% Output Argument:</span>
+<span class="comment">%   y - N x Time (=Ndata) x R</span>
+
+<span class="comment">% July 09, 2021, LAB</span>
 <span class="comment">%</span>
 
 <span class="comment">% future seed inclusion</span>
@@ -83,53 +94,61 @@ seed:       Seed default - internally defined (nargin&lt;5)
 
 <span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&Aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
-</pre><pre class="codeinput"><span class="keyword">function</span> [y,seed_out]=datagen(A,pf,Ndata,R,seed)
-</pre><pre class="codeinput">nBurnIn=10000;
-</pre><h2 id="6">Warning on rng usage</h2><pre>  Error using rng (line xx)
-The current random number generator is the legacy generator.  This is
-because you have executed a command such as rand('state',0), which
-activates MATLAB's legacy random number behavior.  You may not use RNG to
-reseed the legacy random number generator.</pre><p>Use rng('default') to reinitialize the random number generator to its startup configuration, or call RNG using a specific generator type, such as rng(seed,'twister').</p><pre class="codeinput"><span class="keyword">if</span> nargin==5
-   rng(<span class="string">'default'</span>)
-   rng(seed)
 
-<span class="keyword">end</span>
-seed_out=rng;
 
-<span class="keyword">if</span> nargin&lt;4
-   R=1;
-<span class="keyword">end</span>
-[n,~,p]=size(A);
-V=chol(pf);
-epsilon=randn(n,Ndata + nBurnIn + p,R);
-y=zeros(size(epsilon));
-<span class="keyword">for</span> r=1:R
-   epsilon(:,:,r)=V'*epsilon(:,:,r);
-<span class="keyword">end</span>
-<span class="keyword">for</span> r=1:R
-   u=zeros(n,Ndata + nBurnIn + p);v=epsilon(:,:,r);
-   <span class="keyword">for</span> t=p + 1:Ndata + nBurnIn + p
-      ut=zeros(n,1);
-      <span class="keyword">for</span> i=1:p
-         ut=A(:,:,i)*u(:,t-i) + ut;
-      <span class="keyword">end</span>
-      u(:,t)=ut;
-      u(:,t)=u(:,t) + v(:,t);
+nBurnIn=10000;
+
+<span class="comment">% Warning on rng usage</span>
+<span class="comment">%    Error using rng (line xx)</span>
+<span class="comment">% The current random number generator is the legacy generator.  This is</span>
+<span class="comment">% because you have executed a command such as rand('state',0), which</span>
+<span class="comment">% activates MATLAB's legacy random number behavior.  You may not use RNG to</span>
+<span class="comment">% reseed the legacy random number generator.</span>
+<span class="comment">%</span>
+<span class="comment">% Use rng('default') to reinitialize the random number generator to its</span>
+<span class="comment">% startup configuration, or call RNG using a specific generator type, such</span>
+<span class="comment">% as rng(seed,'twister').</span>
+   <span class="keyword">if</span> nargin==5
+      rng(<span class="string">'default'</span>)
+      rng(seed)
+
    <span class="keyword">end</span>
-   y(:,:,r)=u(:,:);
+   seed_out=rng;
+
+   <span class="keyword">if</span> nargin&lt;4
+      R=1;
+   <span class="keyword">end</span>
+   [n,~,p]=size(A);
+   V=chol(pf);
+   epsilon=randn(n,Ndata + nBurnIn + p,R);
+   y=zeros(size(epsilon));
+   <span class="keyword">for</span> r=1:R
+      epsilon(:,:,r)=V'*epsilon(:,:,r);
+   <span class="keyword">end</span>
+   <span class="keyword">for</span> r=1:R
+      u=zeros(n,Ndata + nBurnIn + p);v=epsilon(:,:,r);
+      <span class="keyword">for</span> t=p + 1:Ndata + nBurnIn + p
+         ut=zeros(n,1);
+         <span class="keyword">for</span> i=1:p
+            ut=A(:,:,i)*u(:,t-i) + ut;
+         <span class="keyword">end</span>
+         u(:,t)=ut;
+         u(:,t)=u(:,t) + v(:,t);
+      <span class="keyword">end</span>
+      y(:,:,r)=u(:,:);
+   <span class="keyword">end</span>
+   y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
 <span class="keyword">end</span>
-y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
-</pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% DATAGEN
-%        Generate multivariate time series from autoregressive coefficients A  and
-%        covariance matrix, pf.
+function [y,seed_out]=datagen(A,pf,Ndata,R,seed)
+%DATAGEN  Generate multivariate time series from autoregressive coefficients A  and
+%         covariance matrix, pf.
 % 
-%% Syntax:
+% Syntax:
 %         [y,seed_out]=DATAGEN(A,pf,Ndata,R,seed)
 %
-%% Input Arguments: 
+% Input Arguments: 
 %   A:          NxNxIP system definition matrix, IP is model order
 %   pf:         NxN Input covariance matrix
 %   Ndata:      Number of time samples
@@ -138,7 +157,7 @@ y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
 %        
 %   nBurnIn=10000 (internally defined)
 %
-%% Output Argument:
+% Output Argument:
 %   y - N x Time (=Ndata) x R
 
 % July 09, 2021, LAB
@@ -150,14 +169,10 @@ y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
 % (C) Koichi Sameshima & Luiz A. BaccalÁ, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
-%%
-
-
-function [y,seed_out]=datagen(A,pf,Ndata,R,seed)
 
 nBurnIn=10000;
 
-%% Warning on rng usage
+% Warning on rng usage
 %    Error using rng (line xx)
 % The current random number generator is the legacy generator.  This is
 % because you have executed a command such as rand('state',0), which
@@ -167,36 +182,36 @@ nBurnIn=10000;
 % Use rng('default') to reinitialize the random number generator to its
 % startup configuration, or call RNG using a specific generator type, such
 % as rng(seed,'twister').
-if nargin==5
-   rng('default')
-   rng(seed)
+   if nargin==5
+      rng('default')
+      rng(seed)
 
-end
-seed_out=rng;
-
-if nargin<4
-   R=1;
-end
-[n,~,p]=size(A);
-V=chol(pf);
-epsilon=randn(n,Ndata + nBurnIn + p,R);
-y=zeros(size(epsilon));
-for r=1:R
-   epsilon(:,:,r)=V'*epsilon(:,:,r);
-end
-for r=1:R
-   u=zeros(n,Ndata + nBurnIn + p);v=epsilon(:,:,r);
-   for t=p + 1:Ndata + nBurnIn + p
-      ut=zeros(n,1);
-      for i=1:p
-         ut=A(:,:,i)*u(:,t-i) + ut;
-      end
-      u(:,t)=ut;
-      u(:,t)=u(:,t) + v(:,t);
    end
-   y(:,:,r)=u(:,:);
-end
-y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
+   seed_out=rng;
+
+   if nargin<4
+      R=1;
+   end
+   [n,~,p]=size(A);
+   V=chol(pf);
+   epsilon=randn(n,Ndata + nBurnIn + p,R);
+   y=zeros(size(epsilon));
+   for r=1:R
+      epsilon(:,:,r)=V'*epsilon(:,:,r);
+   end
+   for r=1:R
+      u=zeros(n,Ndata + nBurnIn + p);v=epsilon(:,:,r);
+      for t=p + 1:Ndata + nBurnIn + p
+         ut=zeros(n,1);
+         for i=1:p
+            ut=A(:,:,i)*u(:,t-i) + ut;
+         end
+         u(:,t)=ut;
+         u(:,t)=u(:,t) + v(:,t);
+      end
+      y(:,:,r)=u(:,:);
+   end
+   y=y(:,nBurnIn + p + 1:Ndata + nBurnIn + p,:);
 end
 
 
