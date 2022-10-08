@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ss_alg</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="ss_alg.m"><style type="text/css">
+      --><title>getCij</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="getCij.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,71 +67,59 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> SS = ss_alg(A, e_cov, nf, nfcalc)
-<span class="comment">%SS_ALG  Calculate spectral coherence from spectral density function.</span>
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> c = getCij(C,r,s,nFreq)
+<span class="comment">%GETCIJ  Retrive C[r,s] element from 3D martrix C [NumChannel, NumChannel, nFreqs]</span>
 <span class="comment">%</span>
 <span class="comment">% Syntax:</span>
-<span class="comment">%       SS = SS_ALG(A, e_cov, nf, nfcalc)</span>
+<span class="comment">%        c = getCij(C,r,s,nFreq)</span>
 <span class="comment">%</span>
 <span class="comment">% Input arguments:</span>
-<span class="comment">%        A      - autoregressive matrix</span>
-<span class="comment">%        e_cov  - residues</span>
-<span class="comment">%        nf     - number of frequencies</span>
-<span class="comment">%        nfcalc - fraction o frequency range to calculate</span>
+<span class="comment">%               C [NumChannel, NumChannel, nFreqs], either PDC,Lpatnaik</span>
+<span class="comment">%               Lv2inf, Lv2sup</span>
+<span class="comment">%             [r,s] index-pair</span>
+<span class="comment">%             nFreq - optional number of frequency values considered.</span>
+<span class="comment">%                     if not declared all freq values, i.e., nFreqs.</span>
 <span class="comment">%</span>
 <span class="comment">% Output argument:</span>
-<span class="comment">%        SS     - (nChannels x nChannels x nfcalc) Power spectral density</span>
-<span class="comment">%</span>
-<span class="comment">% See also: COH_ALG</span>
+<span class="comment">%      c - C[r,s] element</span>
 
-<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
 
 
-   <span class="keyword">if</span> nargin &lt; 4, nfcalc = nf; <span class="keyword">end</span>
-   [~, nChannels,~] = size(A);
-   AL = A_to_f(A, nf);
-   ss = zeros(size(AL));
-   <span class="keyword">for</span> i = 1:nfcalc
-      H = inv(reshape(AL(i,:,:),nChannels,nChannels));
-      ss(i,:,:) = H * e_cov * H';
+   <span class="keyword">if</span> nargin &lt; 4
+      [~,~,nFreq] = size(C);
    <span class="keyword">end</span>
 
-   SS=permute(ss,[2,3,1]);
-<span class="keyword">end</span>
+   c=reshape(C(r,s,1:nFreq), nFreq,1,1,1,1);
+   <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function SS = ss_alg(A, e_cov, nf, nfcalc)
-%SS_ALG  Calculate spectral coherence from spectral density function.
+function c = getCij(C,r,s,nFreq)
+%GETCIJ  Retrive C[r,s] element from 3D martrix C [NumChannel, NumChannel, nFreqs]
 %
 % Syntax:
-%       SS = SS_ALG(A, e_cov, nf, nfcalc)
+%        c = getCij(C,r,s,nFreq)
 %
 % Input arguments:
-%        A      - autoregressive matrix
-%        e_cov  - residues
-%        nf     - number of frequencies
-%        nfcalc - fraction o frequency range to calculate 
+%               C [NumChannel, NumChannel, nFreqs], either PDC,Lpatnaik
+%               Lv2inf, Lv2sup
+%             [r,s] index-pair
+%             nFreq - optional number of frequency values considered. 
+%                     if not declared all freq values, i.e., nFreqs.
 %
 % Output argument:
-%        SS     - (nChannels x nChannels x nfcalc) Power spectral density
-%
-% See also: COH_ALG
+%      c - C[r,s] element
 
-% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
 
-   if nargin < 4, nfcalc = nf; end
-   [~, nChannels,~] = size(A);
-   AL = A_to_f(A, nf);
-   ss = zeros(size(AL));
-   for i = 1:nfcalc
-      H = inv(reshape(AL(i,:,:),nChannels,nChannels));
-      ss(i,:,:) = H * e_cov * H';
+   if nargin < 4
+      [~,~,nFreq] = size(C);
    end
 
-   SS=permute(ss,[2,3,1]);
-end
+   c=reshape(C(r,s,1:nFreq), nFreq,1,1,1,1);
+   end
 ##### SOURCE END #####
 --></body></html>

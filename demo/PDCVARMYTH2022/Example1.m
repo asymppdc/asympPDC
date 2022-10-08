@@ -1,4 +1,4 @@
-%% Example 1 -- Vector Moving Average Model (VMA)
+%% EXAMPLE 1 -- Vector Moving Average Model (VMA)
 % This is part of supplemental material accompanying the article of the Special
 % Issue of Frontiers in Network Physiology on Research Topic in **Network
 % Physiology, Insights in Information Theory: 2021** edited by Luca Faes:

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example 2 -- Vector Autoregressive Moving Average Model (VARMA)</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-11"><meta name="DC.source" content="Example2.m"><style type="text/css">
+      --><title>EXAMPLE 2 -- Vector Autoregressive Moving Average Model (VARMA)</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="Example2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Example 2 -- Vector Autoregressive Moving Average Model (VARMA)</h1><!--introduction--><p>This is part of supplemental material accompanying the article of the Special Issue of Frontiers in Network Physiology on Research Topic in <b>*Network Physiology, Insights in Information Theory: 2021</b>*:</p><pre>  Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
+  </style></head><body><div class="content"><h1>EXAMPLE 2 -- Vector Autoregressive Moving Average Model (VARMA)</h1><!--introduction--><p>This is part of supplemental material accompanying the article of the Special Issue of Frontiers in Network Physiology on Research Topic in <b>*Network Physiology, Insights in Information Theory: 2021</b>*:</p><pre>  Baccala LA, Sameshima K (2022). Partial Directed Coherence and the Vector
   Autoregressive Modelling Myth and a Caveat. Front. Netw. Physiol. 2:845327
       &lt;https://doi.org/10.3389/fnetp.2022.845327&gt;</pre><p>This script should run on any recent version of MATLAB and also in most recent versions of Octave. It was partially tested under Windows, Mac OSX and Linux environments with MATLAB version 7.0 and higher, and with Octave versions 6.3.0 and 6.4.0 under Linux Ubuntu 18.04. See Readme.pdf file for license terms.</p><p>See also EXAMPLE1, EXAMPLE3, EXAMPLE4          | <a href="Example1.html">Example1.html</a> | <a href="Example3.html">Example3.html</a> | <a href="Example4.html">Example4.html</a> |</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Start of Example 2 script</a></li><li><a href="#2">Choosing Wilson factorization routine</a></li><li><a href="#3">Set parameters for VARMA model</a></li><li><a href="#4">Line width &amp; color space for plotting five measures</a></li><li><a href="#5">Setting figures size for 3-by-3 subplot layout</a></li><li><a href="#6">Initialize figures with size and position to handle different screen sizes</a></li><li><a href="#7">Plotting sequence: VARMA(black), VAR(gray), Theo(blue), VMA(dark-purple), WN(red)</a></li><li><a href="#9">Plot 1 : Theoretical (blue lines)</a></li><li><a href="#11">Plot 2 : VMA (dark-purple lines)</a></li><li><a href="#14">Plot 3 : VARMA (black lines)</a></li><li><a href="#17">Plot 4 : VAR (gray lines)</a></li><li><a href="#20">Plot 5 : WN -- Nonparametric Wilson factorization estimate (red lines)</a></li><li><a href="#24">Figure 2A - total Partial Directed Coherence real component</a></li><li><a href="#25">Figure 2B - total Partial Directed Coherence imaginary component</a></li><li><a href="#26">Position the figure windows on screen for better visualization</a></li><li><a href="#27">To export the figures, uncomment following four lines, then rerun this script.</a></li><li><a href="#28">Clear local variables and parameters preparing for next Example's script.</a></li></ul></div><h2 id="1">Start of Example 2 script</h2><p>Notice that existing figure windows are not close.</p><pre class="codeinput">disp(<span class="string">'==========================='</span>)
 disp(<span class="string">'        Example 2'</span>)
@@ -307,11 +307,11 @@ kk = 0;
 </pre><pre class="codeoutput">===========================
 (2) VAR : gray
 maxOrder limited to 30
-IP=1  vaic=524541.783314
-IP=2  vaic=491982.469211
-IP=3  vaic=479338.968140
-IP=4  vaic=477036.013195
-IP=5  vaic=477064.418221
+IP=1  vaic=524385.709533
+IP=2  vaic=492005.008773
+IP=3  vaic=479353.206199
+IP=4  vaic=476896.855621
+IP=5  vaic=476932.448218
  
 </pre><h2 id="20">Plot 5 : WN -- Nonparametric Wilson factorization estimate (red lines)</h2><pre class="codeinput">      <span class="keyword">case</span> 5
 </pre><pre class="codeinput">         disp(<span class="string">'==========================='</span>)
@@ -387,7 +387,7 @@ set(h4,<span class="string">'units'</span>,<span class="string">'normalized'</sp
       <span class="string">a*</span> <span class="string">c*</span> <span class="string">e*</span> <span class="string">f*</span> <span class="string">k*</span> <span class="string">p*</span> <span class="string">r*</span> <span class="string">s*</span> <span class="string">y*</span> <span class="string">w*</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Example 2 REPLACE_WITH_DASH_DASH Vector Autoregressive Moving Average Model (VARMA)
+%% EXAMPLE 2 REPLACE_WITH_DASH_DASH Vector Autoregressive Moving Average Model (VARMA)
 %
 % This is part of supplemental material accompanying the article of
 % the Special Issue of Frontiers in Network Physiology on Research Topic in

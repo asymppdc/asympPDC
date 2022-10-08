@@ -1,0 +1,604 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>tilefigs2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="tilefigs2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> tilefigs2(handles,resize,nRows,nCols,leftRightSpacing,topBottomSpacing,<span class="keyword">...</span>
+    border,monitor,monitorLocation,monitorSize)
+<span class="comment">% TILEFIGS2 Tile figures (spread them out). Tile figs has a number of</span>
+<span class="comment">% arguments, which may either be specified, or entered as [] to use the</span>
+<span class="comment">% default</span>
+<span class="comment">%   TILEFIGS2(handles,resize,nRows,nCols,leftRightSpacing,...</span>
+<span class="comment">%       topBottomSpacing,border,monitor,monitorLocation,monitorSize)</span>
+<span class="comment">%   TILEFIGS2 , by itself, resizes and tiles all open figures on to the primary monitor</span>
+<span class="comment">%   TILEFIGS2(handles) Resizes and tiles the figures specified in handles,</span>
+<span class="comment">%   with the first handle in the upper left corner</span>
+<span class="comment">%   TILEFIGS2(...,resize) If resize is set to false, the figures will be</span>
+<span class="comment">%   moved but not resized. Effort has been made to have minimal overlap,</span>
+<span class="comment">%   but some may still occur.</span>
+<span class="comment">%   TILEFIGS2(...,nRows) Specifies a number of rows for the tile grid</span>
+<span class="comment">%   TILEFIGS2(...,nCols) Specifies a number of column for the tile grid.</span>
+<span class="comment">%   Note that the figures are still included row by row, so if one has 8</span>
+<span class="comment">%   open figures and tilefigs([],[],[],5) is called, the figures will be</span>
+<span class="comment">%   put into a 4 x 2 grid with space left for a 5th column.</span>
+<span class="comment">%   TILEFIGS2(...,leftRightSpacing) leaves a horizontal space between the</span>
+<span class="comment">%   figures. Spacing is specified in pixels. This may have no effect if</span>
+<span class="comment">%   resize is set to false.</span>
+<span class="comment">%   TILEFIGS2(...,topBottomSpacing) Same as above, except for vertical</span>
+<span class="comment">%   spacing</span>
+<span class="comment">%   TILEFIGS2(...,border) Leaves a border around the tiling of figures.</span>
+<span class="comment">%   border is a 1 x 4 matrix, which is [leftSpace bottomSpace rightSpace</span>
+<span class="comment">%   topSpace]. If the primary monitor is used, the default is [0 35 0 0]</span>
+<span class="comment">%   which is approximately the size of the taskbar in Windows 7. If a</span>
+<span class="comment">%   secondary monitor is used, the default is [0 0 0 0]</span>
+<span class="comment">%   TILEFIGS2(...,monitor , monitorLocation,monitorSize) Specifies a monitor to use,</span>
+<span class="comment">%   which is the row of the call get(0,'MonitorPositions'). MATLAB does not</span>
+<span class="comment">%   officially support dual monitors. The author has found that the</span>
+<span class="comment">%   MonitorPositions call correctly gets the size of the monitor (in</span>
+<span class="comment">%   pixels), but not the location of the monitor. monitorLocation and</span>
+<span class="comment">%   monitorSize overrides the location and size of the monitor.</span>
+
+<span class="comment">% Written by Brendan Tracey October 11th, 2012.</span>
+
+<span class="comment">% Inspirational credit to:</span>
+<span class="comment">%Charles Plum                    Nichols Research Corp.</span>
+<span class="comment">%&lt;cplum@nichols.com&gt;             70 Westview Street</span>
+<span class="comment">%Tel: (781) 862-9400             Kilnbrook IV</span>
+<span class="comment">%Fax: (781) 862-9485             Lexington, MA 02173</span>
+
+<span class="comment">% Nomenclature -- first number is width, second is length</span>
+<span class="comment">% x is left to right, y is up and down</span>
+
+<span class="keyword">if</span> ~exist(<span class="string">'topBottomSpacing'</span>,<span class="string">'var'</span>) || isempty(topBottomSpacing)
+    topBottomSpacing = 0;
+<span class="keyword">end</span>
+<span class="keyword">if</span> ~exist(<span class="string">'leftRightSpacing'</span>,<span class="string">'var'</span>) || isempty(leftRightSpacing)
+    leftRightSpacing = 0;
+<span class="keyword">end</span>
+
+<span class="comment">% Select the monitor and get the location and size of the monitor</span>
+
+monitorPositions = get(0,<span class="string">'MonitorPositions'</span>);
+matlabMonitorLocation = monitorPositions(:,1:2);
+matlabMonitorSize = monitorPositions(:,3:4) - monitorPositions(:,1:2) + 1;
+
+<span class="keyword">if</span> ~exist(<span class="string">'monitor'</span>,<span class="string">'var'</span>) || isempty(monitor)
+    <span class="comment">% No monitor specified, use the primary</span>
+    monitor = 1;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~exist(<span class="string">'monitorSize'</span>,<span class="string">'var'</span>) || isempty(monitorSize)
+    <span class="comment">% No monitor size specified, use what Matlab says</span>
+    monitorSize = matlabMonitorSize(monitor,:);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~exist(<span class="string">'monitorLocation'</span>,<span class="string">'var'</span>) || isempty(monitorLocation)
+    <span class="comment">% No monitor location specified, use what Matlab says</span>
+    monitorLocation = matlabMonitorLocation(monitor,1:2);
+<span class="keyword">end</span>
+
+<span class="comment">% Set the default border if none is specified [left, bottom, right, top]</span>
+<span class="keyword">if</span> monitor &gt; 1
+    <span class="keyword">if</span> ~exist(<span class="string">'border'</span>,<span class="string">'var'</span>) || isempty(border)
+        border = [0 0 0 0];
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    <span class="keyword">if</span> ~exist(<span class="string">'border'</span>,<span class="string">'var'</span>) || isempty(border)
+        border = [0 30 0 0];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">% Modify the monitor size and location to account for the border</span>
+monitorLocation = monitorLocation + border(1:2);
+monitorSize(1) = monitorSize(1) - border(1) - border(3);
+monitorSize(2) = monitorSize(2) - border(2) - border(4);
+
+<span class="comment">% Select figures to use</span>
+<span class="keyword">if</span> ~exist(<span class="string">'handles'</span>,<span class="string">'var'</span>) || isempty(handles)
+    <span class="comment">% No figure handles specified, select all figures</span>
+    handles = get (0,<span class="string">'Children'</span>); <span class="comment">% locate all open figure handles</span>
+    handles = handles(end:-1:1); <span class="comment">% Re-order so that first created is in upper left</span>
+<span class="keyword">end</span>
+nFigures = length(handles);
+
+<span class="comment">% Put all of the figures in pixel units</span>
+units = get(handles, <span class="string">'units'</span>);
+set(handles,<span class="string">'units'</span>,<span class="string">'pixels'</span>);
+
+<span class="comment">% Determine the grid for figures</span>
+<span class="keyword">if</span> (~exist(<span class="string">'nRows'</span>,<span class="string">'var'</span>) || isempty(nRows)) &amp;&amp; (~exist(<span class="string">'nCols'</span>,<span class="string">'var'</span>) || isempty(nCols))
+    <span class="comment">% No grid specified, choose the grid which roughly matches the monitor</span>
+    <span class="comment">% aspect ratio</span>
+    monitorAspectRatio = monitorSize(1) / monitorSize(2);
+    <span class="keyword">if</span> monitorAspectRatio &lt; 1
+       nCols = round(sqrt(nFigures));
+       nRows = ceil(nFigures/nCols);
+    <span class="keyword">else</span>
+       nRows = round(sqrt(nFigures));
+       nCols = ceil(nFigures/nRows);
+    <span class="keyword">end</span>
+<span class="keyword">elseif</span> (exist(<span class="string">'nRows'</span>,<span class="string">'var'</span>) &amp;&amp; ~isempty(nRows)) &amp;&amp; (~exist(<span class="string">'nCols'</span>,<span class="string">'var'</span>) || isempty(nCols))
+    nCols = ceil(nFigures/nRows);
+<span class="keyword">elseif</span> (~exist(<span class="string">'nRows'</span>,<span class="string">'var'</span>) || isempty(nRows)) &amp;&amp; (exist(<span class="string">'nCols'</span>,<span class="string">'var'</span>) &amp;&amp; ~isempty(nCols))
+    nRows = ceil(nFigures/nCols);
+<span class="keyword">elseif</span> (exist(<span class="string">'nRows'</span>,<span class="string">'var'</span>) &amp;&amp; ~isempty(nRows)) &amp;&amp; (exist(<span class="string">'nCols'</span>,<span class="string">'var'</span>) &amp;&amp; ~isempty(nCols))
+    <span class="keyword">if</span> nRows*nCols &lt; nFigures
+        error(<span class="string">'Grid size not big enough'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    error(<span class="string">'Should not be here'</span>)
+<span class="keyword">end</span>
+
+<span class="comment">% Calculate the grid sizing</span>
+<span class="keyword">if</span> ~exist(<span class="string">'resize'</span>,<span class="string">'var'</span>) || isempty(resize)
+    <span class="comment">% Resize not set, default is to resize</span>
+    resize = 1;
+<span class="keyword">end</span>
+<span class="keyword">if</span> resize
+    width = (monitorSize(1) - leftRightSpacing*(nCols - 1))/nCols;
+    height = (monitorSize(2) - topBottomSpacing*(nRows - 1))/nRows;
+<span class="keyword">else</span>
+    <span class="comment">% Make the spacing equal with the constraint that the figures do not go</span>
+    <span class="comment">% off the edge of the screen.</span>
+    figureWidths = zeros(nFigures,1);
+    figureHeights = zeros(nFigures,1);
+    <span class="keyword">for</span> ii = 1:nFigures
+        figSize = get(handles(ii),<span class="string">'OuterPosition'</span>);
+        figureWidths(ii) = figSize(3);
+        figureHeights(ii) = figSize(4);
+    <span class="keyword">end</span>
+    widthEndInds = nCols:nCols:nFigures;
+    heightEndInds = 1:nCols;
+    maxWidth = max(figureWidths(widthEndInds));
+    maxHeight = max(figureHeights(heightEndInds));
+    width = (monitorSize(1) - maxWidth)/max(nCols-1,1);
+    <span class="keyword">if</span> nRows ==1
+        height = 0;
+    <span class="keyword">else</span>
+        height = (monitorSize(2) - maxHeight)/(nRows-1);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Move and resize the figures</span>
+<span class="keyword">if</span> resize
+    pnum = 0;
+    <span class="keyword">for</span> row = 1:nRows
+        <span class="keyword">for</span> col = 1:nCols
+            pnum = pnum+1;
+            <span class="keyword">if</span> (pnum&gt;nFigures)
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+            xLocation = monitorLocation(1) + (col - 1)*width + (col - 1)*leftRightSpacing;
+            yLocation = monitorLocation(2) + monitorSize(2) - row*height <span class="keyword">...</span>
+                - (row - 1)*topBottomSpacing;
+            figure(handles(pnum))
+            set(handles(pnum),<span class="string">'OuterPosition'</span>,[xLocation yLocation width height]);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    <span class="comment">% Not resizing, set initial locations</span>
+    xLocations = inf*ones(nRows,nCols);
+    yLocations = inf*ones(nRows,nCols);
+    widthMat = zeros(nRows,nCols);
+    heightMat = zeros(nRows,nCols);
+    pnum = 0;
+    <span class="keyword">for</span> row = 1:nRows
+        <span class="keyword">for</span> col = 1:nCols
+            pnum = pnum+1;
+            <span class="keyword">if</span> (pnum&gt;nFigures)
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+            widthMat(row,col) = figureWidths(pnum);
+            heightMat(row,col) = figureHeights(pnum);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    pnum = 0;
+    <span class="keyword">for</span> row = 1:nRows
+        <span class="keyword">for</span> col = 1:nCols
+            pnum = pnum+1;
+            <span class="keyword">if</span> (pnum&gt;nFigures)
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+            xLocation = (col - 1)*width;
+            yLocation = monitorSize(2) - (row - 1)*height - heightMat(row,col);
+            xLocations(row,col) = xLocation;
+            yLocations(row,col) = yLocation;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% Modify the positions to make it look nicer.</span>
+    <span class="comment">% First, if the figures are too big to not overlap, spread the rows and</span>
+    <span class="comment">% columns out to use up all of the space at the border to minimize</span>
+    <span class="comment">% overlap. The subtraction of the width if there are no figures is to</span>
+    <span class="comment">% avoid the issue of both the column and the row being moved into the</span>
+    <span class="comment">% empty spot</span>
+    <span class="keyword">if</span> (sum(sum(widthMat,2) &gt; monitorSize(1)) &gt; 0)
+        <span class="keyword">for</span> row = 1:nRows
+            lastNonemptyCol = find(xLocations(row,:) &lt; inf,1,<span class="string">'Last'</span>);
+            whitespace = monitorSize(1) - xLocations(row,lastNonemptyCol) - widthMat(row,lastNonemptyCol) - width*(nCols-lastNonemptyCol);
+            <span class="keyword">if</span> lastNonemptyCol&gt;1
+                <span class="keyword">for</span> col = 1:lastNonemptyCol
+                    xLocations(row,col) = xLocations(row,col) + (col-1)/(lastNonemptyCol-1) * whitespace;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> sum(sum(heightMat,1) &gt; monitorSize(2)) &gt; 0
+        <span class="keyword">for</span> col = 1:nCols
+            lastNonemptyRow = find(xLocations(:,col) &lt; inf,1,<span class="string">'Last'</span>);
+            whitespace = yLocations(lastNonemptyRow,col) - 1 - height*(nRows - lastNonemptyRow);
+            <span class="keyword">if</span> lastNonemptyRow&gt;1
+                <span class="keyword">for</span> row = 1:lastNonemptyRow
+                    yLocations(row,col) = yLocations(row,col) - ((row-1)/(nRows-1)) * whitespace;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="comment">% If the figures can be condensed, slide the rows and columns in.</span>
+    <span class="keyword">for</span> col = 1:nCols - 1
+        lastNonemptyRow = find(xLocations(:,col) &lt; inf,1,<span class="string">'Last'</span>);
+        endOfPlot = xLocations(1:lastNonemptyRow,col) + widthMat(1:lastNonemptyRow,col) + leftRightSpacing;
+        beginningOfNextPlot = xLocations(1:lastNonemptyRow,col + 1);
+        gap = beginningOfNextPlot - endOfPlot;
+        minGap = max(min(gap),0);
+        xLocations(1:lastNonemptyRow,col+1) = xLocations(1:lastNonemptyRow,col+1) - minGap;
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> row = 2:nRows
+        lastNonemptyCol = find(xLocations(row,:) &lt; inf,1,<span class="string">'Last'</span>);
+        bottomOfUpperRow = yLocations(row-1,1:lastNonemptyCol) - topBottomSpacing;
+        topOfThisRow = yLocations(row,1:lastNonemptyCol) + heightMat(row,1:lastNonemptyCol);
+        gap =  bottomOfUpperRow - topOfThisRow;
+        minGap = max(min(gap),0);
+        yLocations(row,1:lastNonemptyCol) = yLocations(row,1:lastNonemptyCol) + minGap;
+    <span class="keyword">end</span>
+    <span class="comment">% Finally, actually move and replot the figures.</span>
+    pnum = 0;
+    <span class="keyword">for</span> row = 1:nRows
+        <span class="keyword">for</span> col = 1:nCols
+            pnum = pnum+1;
+            <span class="keyword">if</span> (pnum&gt;nFigures)
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+            figure(handles(pnum))
+            xloc = xLocations(row,col);
+            yloc = yLocations(row,col);
+            set(handles(pnum),<span class="string">'OuterPosition'</span>,[monitorLocation(1)+xloc monitorLocation(2) + yloc figureWidths(pnum) figureHeights(pnum)]);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">for</span> ii = 1:nFigures
+    set(handles(ii),<span class="string">'units'</span>,units{ii});
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function tilefigs2(handles,resize,nRows,nCols,leftRightSpacing,topBottomSpacing,...
+    border,monitor,monitorLocation,monitorSize)
+% TILEFIGS2 Tile figures (spread them out). Tile figs has a number of
+% arguments, which may either be specified, or entered as [] to use the
+% default
+%   TILEFIGS2(handles,resize,nRows,nCols,leftRightSpacing,...
+%       topBottomSpacing,border,monitor,monitorLocation,monitorSize)
+%   TILEFIGS2 , by itself, resizes and tiles all open figures on to the primary monitor
+%   TILEFIGS2(handles) Resizes and tiles the figures specified in handles,
+%   with the first handle in the upper left corner
+%   TILEFIGS2(...,resize) If resize is set to false, the figures will be
+%   moved but not resized. Effort has been made to have minimal overlap,
+%   but some may still occur.
+%   TILEFIGS2(...,nRows) Specifies a number of rows for the tile grid
+%   TILEFIGS2(...,nCols) Specifies a number of column for the tile grid.
+%   Note that the figures are still included row by row, so if one has 8
+%   open figures and tilefigs([],[],[],5) is called, the figures will be
+%   put into a 4 x 2 grid with space left for a 5th column.
+%   TILEFIGS2(...,leftRightSpacing) leaves a horizontal space between the
+%   figures. Spacing is specified in pixels. This may have no effect if
+%   resize is set to false.
+%   TILEFIGS2(...,topBottomSpacing) Same as above, except for vertical
+%   spacing
+%   TILEFIGS2(...,border) Leaves a border around the tiling of figures.
+%   border is a 1 x 4 matrix, which is [leftSpace bottomSpace rightSpace
+%   topSpace]. If the primary monitor is used, the default is [0 35 0 0] 
+%   which is approximately the size of the taskbar in Windows 7. If a
+%   secondary monitor is used, the default is [0 0 0 0]
+%   TILEFIGS2(...,monitor , monitorLocation,monitorSize) Specifies a monitor to use, 
+%   which is the row of the call get(0,'MonitorPositions'). MATLAB does not
+%   officially support dual monitors. The author has found that the
+%   MonitorPositions call correctly gets the size of the monitor (in
+%   pixels), but not the location of the monitor. monitorLocation and
+%   monitorSize overrides the location and size of the monitor.
+
+% Written by Brendan Tracey October 11th, 2012.
+
+% Inspirational credit to:
+%Charles Plum                    Nichols Research Corp.
+%<cplum@nichols.com>             70 Westview Street
+%Tel: (781) 862-9400             Kilnbrook IV
+%Fax: (781) 862-9485             Lexington, MA 02173
+
+% Nomenclature REPLACE_WITH_DASH_DASH first number is width, second is length
+% x is left to right, y is up and down
+
+if ~exist('topBottomSpacing','var') || isempty(topBottomSpacing)
+    topBottomSpacing = 0;
+end
+if ~exist('leftRightSpacing','var') || isempty(leftRightSpacing)
+    leftRightSpacing = 0;
+end
+
+% Select the monitor and get the location and size of the monitor
+
+monitorPositions = get(0,'MonitorPositions');
+matlabMonitorLocation = monitorPositions(:,1:2);
+matlabMonitorSize = monitorPositions(:,3:4) - monitorPositions(:,1:2) + 1;
+
+if ~exist('monitor','var') || isempty(monitor)
+    % No monitor specified, use the primary
+    monitor = 1;
+end
+
+if ~exist('monitorSize','var') || isempty(monitorSize)
+    % No monitor size specified, use what Matlab says
+    monitorSize = matlabMonitorSize(monitor,:);
+end
+
+if ~exist('monitorLocation','var') || isempty(monitorLocation)
+    % No monitor location specified, use what Matlab says
+    monitorLocation = matlabMonitorLocation(monitor,1:2);
+end
+
+% Set the default border if none is specified [left, bottom, right, top]
+if monitor > 1
+    if ~exist('border','var') || isempty(border)
+        border = [0 0 0 0];
+    end
+else
+    if ~exist('border','var') || isempty(border)
+        border = [0 30 0 0];
+    end
+end
+% Modify the monitor size and location to account for the border
+monitorLocation = monitorLocation + border(1:2);
+monitorSize(1) = monitorSize(1) - border(1) - border(3);
+monitorSize(2) = monitorSize(2) - border(2) - border(4);
+
+% Select figures to use
+if ~exist('handles','var') || isempty(handles)
+    % No figure handles specified, select all figures
+    handles = get (0,'Children'); % locate all open figure handles
+    handles = handles(end:-1:1); % Re-order so that first created is in upper left
+end
+nFigures = length(handles);
+
+% Put all of the figures in pixel units
+units = get(handles, 'units');
+set(handles,'units','pixels');
+
+% Determine the grid for figures
+if (~exist('nRows','var') || isempty(nRows)) && (~exist('nCols','var') || isempty(nCols))
+    % No grid specified, choose the grid which roughly matches the monitor
+    % aspect ratio
+    monitorAspectRatio = monitorSize(1) / monitorSize(2);
+    if monitorAspectRatio < 1
+       nCols = round(sqrt(nFigures));
+       nRows = ceil(nFigures/nCols);
+    else
+       nRows = round(sqrt(nFigures));
+       nCols = ceil(nFigures/nRows);
+    end
+elseif (exist('nRows','var') && ~isempty(nRows)) && (~exist('nCols','var') || isempty(nCols))
+    nCols = ceil(nFigures/nRows);
+elseif (~exist('nRows','var') || isempty(nRows)) && (exist('nCols','var') && ~isempty(nCols))
+    nRows = ceil(nFigures/nCols);
+elseif (exist('nRows','var') && ~isempty(nRows)) && (exist('nCols','var') && ~isempty(nCols))
+    if nRows*nCols < nFigures
+        error('Grid size not big enough')
+    end
+else
+    error('Should not be here')
+end
+
+% Calculate the grid sizing
+if ~exist('resize','var') || isempty(resize)
+    % Resize not set, default is to resize
+    resize = 1;
+end
+if resize
+    width = (monitorSize(1) - leftRightSpacing*(nCols - 1))/nCols;
+    height = (monitorSize(2) - topBottomSpacing*(nRows - 1))/nRows;
+else
+    % Make the spacing equal with the constraint that the figures do not go
+    % off the edge of the screen.
+    figureWidths = zeros(nFigures,1);
+    figureHeights = zeros(nFigures,1);
+    for ii = 1:nFigures
+        figSize = get(handles(ii),'OuterPosition');
+        figureWidths(ii) = figSize(3);
+        figureHeights(ii) = figSize(4);
+    end
+    widthEndInds = nCols:nCols:nFigures;
+    heightEndInds = 1:nCols;
+    maxWidth = max(figureWidths(widthEndInds));
+    maxHeight = max(figureHeights(heightEndInds));
+    width = (monitorSize(1) - maxWidth)/max(nCols-1,1);
+    if nRows ==1
+        height = 0;
+    else
+        height = (monitorSize(2) - maxHeight)/(nRows-1);
+    end
+end
+
+% Move and resize the figures
+if resize
+    pnum = 0;
+    for row = 1:nRows
+        for col = 1:nCols
+            pnum = pnum+1;
+            if (pnum>nFigures)
+                break
+            end
+            xLocation = monitorLocation(1) + (col - 1)*width + (col - 1)*leftRightSpacing;
+            yLocation = monitorLocation(2) + monitorSize(2) - row*height ...
+                - (row - 1)*topBottomSpacing;
+            figure(handles(pnum))
+            set(handles(pnum),'OuterPosition',[xLocation yLocation width height]);
+        end
+    end
+else
+    % Not resizing, set initial locations
+    xLocations = inf*ones(nRows,nCols);
+    yLocations = inf*ones(nRows,nCols);
+    widthMat = zeros(nRows,nCols);
+    heightMat = zeros(nRows,nCols);
+    pnum = 0;
+    for row = 1:nRows
+        for col = 1:nCols
+            pnum = pnum+1;
+            if (pnum>nFigures)
+                break
+            end
+            widthMat(row,col) = figureWidths(pnum);
+            heightMat(row,col) = figureHeights(pnum);
+        end
+    end
+    pnum = 0;
+    for row = 1:nRows
+        for col = 1:nCols
+            pnum = pnum+1;
+            if (pnum>nFigures)
+                break
+            end
+            xLocation = (col - 1)*width;
+            yLocation = monitorSize(2) - (row - 1)*height - heightMat(row,col);
+            xLocations(row,col) = xLocation;
+            yLocations(row,col) = yLocation;
+        end
+    end
+    
+    % Modify the positions to make it look nicer.
+    % First, if the figures are too big to not overlap, spread the rows and
+    % columns out to use up all of the space at the border to minimize
+    % overlap. The subtraction of the width if there are no figures is to 
+    % avoid the issue of both the column and the row being moved into the
+    % empty spot
+    if (sum(sum(widthMat,2) > monitorSize(1)) > 0)
+        for row = 1:nRows
+            lastNonemptyCol = find(xLocations(row,:) < inf,1,'Last');
+            whitespace = monitorSize(1) - xLocations(row,lastNonemptyCol) - widthMat(row,lastNonemptyCol) - width*(nCols-lastNonemptyCol);
+            if lastNonemptyCol>1
+                for col = 1:lastNonemptyCol
+                    xLocations(row,col) = xLocations(row,col) + (col-1)/(lastNonemptyCol-1) * whitespace;
+                end
+            end
+        end
+    end
+    if sum(sum(heightMat,1) > monitorSize(2)) > 0
+        for col = 1:nCols
+            lastNonemptyRow = find(xLocations(:,col) < inf,1,'Last');
+            whitespace = yLocations(lastNonemptyRow,col) - 1 - height*(nRows - lastNonemptyRow);
+            if lastNonemptyRow>1
+                for row = 1:lastNonemptyRow
+                    yLocations(row,col) = yLocations(row,col) - ((row-1)/(nRows-1)) * whitespace;
+                end
+            end
+        end
+    end
+    % If the figures can be condensed, slide the rows and columns in.
+    for col = 1:nCols - 1
+        lastNonemptyRow = find(xLocations(:,col) < inf,1,'Last');
+        endOfPlot = xLocations(1:lastNonemptyRow,col) + widthMat(1:lastNonemptyRow,col) + leftRightSpacing;
+        beginningOfNextPlot = xLocations(1:lastNonemptyRow,col + 1);
+        gap = beginningOfNextPlot - endOfPlot;
+        minGap = max(min(gap),0);
+        xLocations(1:lastNonemptyRow,col+1) = xLocations(1:lastNonemptyRow,col+1) - minGap;
+    end
+    for row = 2:nRows
+        lastNonemptyCol = find(xLocations(row,:) < inf,1,'Last');
+        bottomOfUpperRow = yLocations(row-1,1:lastNonemptyCol) - topBottomSpacing;
+        topOfThisRow = yLocations(row,1:lastNonemptyCol) + heightMat(row,1:lastNonemptyCol);
+        gap =  bottomOfUpperRow - topOfThisRow;
+        minGap = max(min(gap),0);
+        yLocations(row,1:lastNonemptyCol) = yLocations(row,1:lastNonemptyCol) + minGap;
+    end
+    % Finally, actually move and replot the figures.
+    pnum = 0;
+    for row = 1:nRows
+        for col = 1:nCols
+            pnum = pnum+1;
+            if (pnum>nFigures)
+                break
+            end
+            figure(handles(pnum))
+            xloc = xLocations(row,col);
+            yloc = yLocations(row,col);
+            set(handles(pnum),'OuterPosition',[monitorLocation(1)+xloc monitorLocation(2) + yloc figureWidths(pnum) figureHeights(pnum)]);
+        end
+    end
+end
+for ii = 1:nFigures
+    set(handles(ii),'units',units{ii});
+end
+
+##### SOURCE END #####
+--></body></html>

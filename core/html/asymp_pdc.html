@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ASYMP_PDC</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="asymp_pdc.m"><style type="text/css">
+      --><title>asymp_pdc</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="asymp_pdc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,509 +67,565 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>ASYMP_PDC</h1><!--introduction--><pre>      Compute complex and squared partial directed coherence for any of three
-      metrics -- Euclidean, diagonal and informational -- along with
-      asymptotic statistics from vector autoregressive (VAR) coefficients in
-      the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</a></li><li><a href="#9">Subfunctions</a></li><li><a href="#11">Change Log:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments:</h2><pre>      u:          multiple row vectors time series
-      A:          AR estimate matrix by MVAR routine
-      pf:         covariance matrix provided by MVAR routine
-      nFreqs:     number of point in [0,fs/2) frequency scale range
-      metric:     'euc'  -- Euclidean   ==&gt; original PDC
-                  'diag' -- diagonal    ==&gt; gPDC (generalized)
-                  'info' -- information ==&gt; iPDC
-      alpha:      significance level
-                  if alpha is zero, statistical analysis will not be
-                  performed for faster computation.</pre><h2 id="3">Output Arguments:</h2><pre>      c: struct variable with following fields:
-      |-- .pdc       - PDC complex estimates
-      |-- .pdc2      - |PDC|^2 estimates
-      |-- .pvalues   - p-values associated to PDC2 estimates.
-      |-- .th        - |PDC|^2 threshold value with (1-alpha) significance
-      |                level.
-      |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of
-      |                |PDC|^2 estimates
-      |-- .metric    - metric used for PDC calculation
-      |-- .alpha     - significance level
-      |-- .p         - VAR model order
-      |-- .patdenr   -
-      |-- .patdfr    - degree of freedom
-      |-- .SS        - power spectra
-      +-- .coh2      - squared spectral coherence,
-    i.e.
-      .{pdc,pdc2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}</pre><h2 id="4">Description:</h2><pre class="language-matlab">Compute <span class="string">all</span> <span class="string">three</span> <span class="string">types</span> <span class="string">of</span> <span class="string">PDC</span> <span class="string">---</span> <span class="string">connectivity</span> <span class="string">measure</span> <span class="string">---</span> <span class="string">and</span> <span class="string">allied</span>
-asymptotic <span class="string">statistics</span> <span class="string">[2]</span> <span class="string">measures</span> <span class="string">for</span> <span class="string">the</span> <span class="string">chosen</span> <span class="string">metric</span> <span class="string">option:</span>
-     * <span class="string">'euc'</span>  - original or <span class="string">Euclidean</span> <span class="string">PDC</span> <span class="string">as</span> <span class="string">proposed</span> <span class="string">in</span> <span class="string">[1]</span>;
-     * <span class="string">'diag'</span> - generalized PDC;
-     * <span class="string">'info'</span> - information PDC.
-</pre><h2 id="5">Example:</h2><pre>Annual sunspot numbers  and the melanoma cases (x10^5) in the State of
-Connecticuts, USA, from 1936 to 1972, given by</pre><pre class="language-matlab"><span class="comment">% -------- Example script start here---------------------------------------</span>
-</pre><pre class="language-matlab"><span class="comment">% Data and pre-processing</span>
-u = [ 40 115 100  80  60  40  23  10  10  25  75 145 130 130  80  65  20 <span class="keyword">...</span>
-      10   5  10  60 190 180 175 120  50  35  20  10  15  30  60 105 105 <span class="keyword">...</span>
-      105  80  65; <span class="keyword">...</span>
-     0.9 0.8 0.8 1.3 1.4 1.2 1.7 1.8 1.6 1.5 1.5 2.0 2.5 2.7 2.9 2.5 3.1 <span class="keyword">...</span>
-     2.4 2.2 2.9 2.5 2.6 3.2 3.8 4.2 3.9 3.7 3.3 3.7 3.9 4.1 3.8 4.7 4.4 <span class="keyword">...</span>
-     4.8 4.8 4.8];
-[nChannels,nSegLength] =size(u);
-<span class="keyword">if</span> nChannels &gt; nSegLength, u = u.'; [nChannels,nSegLength]=size(u); <span class="keyword">end</span>;
-<span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>;
-</pre><pre class="language-matlab"><span class="comment">% Pre-calculated AR model coefficients, A and pf</span>
-A        = [ 0.8280  -12.1097; 0.0009   -0.1258]; <span class="comment">% VAR model estimate.</span>
-A(:,:,2) = [-0.0724   13.4798; 0.0036   -0.1391];
-A(:,:,3) = [-0.3561  -36.4805; 0.0013   -0.0735];
-pf = [568.0873  -1.5815; -1.5815 0.0474];
-</pre><pre class="language-matlab"><span class="comment">% Analysis parameters</span>
-nFreqs = 128;    <span class="comment">% number of points to calculate PDC in the frequency scale</span>
-measure = <span class="string">'pdc'</span>; <span class="comment">% Connectivity measure</span>
-metric = <span class="string">'info'</span>; <span class="comment">% calculating information PDC</span>
-alpha  = 0.01;   <span class="comment">% significance level</span>
-c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Calculate |iPDC|^2 with</span>
-                                           <span class="comment">% statistics</span>
-</pre><pre class="language-matlab"><span class="comment">% Let's visualize PDC plots with default parameters. Try this first.</span>
-xplot([],c);
-</pre><pre class="language-matlab"><span class="comment">% -------- Example end here------------------------------------------------</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Subfunctions</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
+<span class="comment">%ASYMP_PDC  Compute complex and squared partial directed coherence for any</span>
+<span class="comment">%           of three metrics -- Euclidean, diagonal and informational --</span>
+<span class="comment">%           along with asymptotic statistics from vector autoregressive</span>
+<span class="comment">%           (VAR) coefficients in the frequency domain.</span>
 <span class="comment">%</span>
-<span class="comment">% -------- Further xplot options example start here------------------------</span>
-</pre><pre class="language-matlab"><span class="comment">% Then let's xplot PDC2 with threshold, confidence interval, and labels,</span>
-<span class="comment">% also with spectral coherence.</span>
-<span class="comment">% First, let's set some "xplotting" parameters:</span>
-</pre><pre class="language-matlab">chLabels    = {<span class="string">'Sunspot'</span>;<span class="string">'Melanoma'</span>}; <span class="comment">% Channel labels</span>
-flgColor    = 0;      fs = 1;    w_max = 0.5;
-flgPrinting = [1 1 1 2 2 1 1]; flgScale = 1;
-flgMax      = <span class="string">'all'</span>;    flgSignifColor = 4;
-xplot(<span class="string">'THIS IS A WINDOW TITLE'</span>,c,flgPrinting,fs,fs/2,chLabels,flgColor, <span class="keyword">...</span>
-                                            flgScale,flgMax,flgSignifColor);
-<span class="comment">% and let's add an informative title</span>
-xplot_title(alpha,metric,measure,<span class="string">'Sunspot-Melanoma Example'</span>)
-</pre><pre class="language-matlab"><span class="comment">% -------- Second part of xplot example end here---------------------------</span>
-</pre><h2 id="6">References:</h2><p>[1] L.A. Baccala and K. Sameshima. Partial directed coherence: a new concept     in neural structure determination. Biol Cybern 84:463--474,2001.     <a href="https://doi.org/10.1007/PL00007990">https://doi.org/10.1007/PL00007990</a></p><p>[2] D.Y. Takahashi, L.A.B. Baccala and K. Sameshima, Connectivity inference     between neural structures via partial directed coherence. J Appl Stat     34:1259--1273, 2007. <a href="https://doi.org/10.1080/02664760701593065">https://doi.org/10.1080/02664760701593065</a></p><p>[3] L.A. Baccala, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima. Unified     asymptotic theory for all partial directed coherence forms. Philos T Roy     Soc A 371(1997):1--13, 2013. <a href="https://doi.org/10.1098/rsta.2012.0158">https://doi.org/10.1098/rsta.2012.0158</a></p><h2 id="7">See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</h2><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">%        c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)</span>
+<span class="comment">%</span>
+<span class="comment">% Input Arguments:</span>
+<span class="comment">%        u:          multiple row vectors time series</span>
+<span class="comment">%        A:          AR estimate matrix by MVAR routine</span>
+<span class="comment">%        pf:         covariance matrix provided by MVAR routine</span>
+<span class="comment">%        nFreqs:     number of point in [0,fs/2) frequency scale range</span>
+<span class="comment">%        metric:     'euc'  -- Euclidean   ==&gt; original PDC</span>
+<span class="comment">%                    'diag' -- diagonal    ==&gt; gPDC (generalized)</span>
+<span class="comment">%                    'info' -- information ==&gt; iPDC</span>
+<span class="comment">%        alpha:      significance level</span>
+<span class="comment">%                    if alpha is zero, statistical analysis will not be</span>
+<span class="comment">%                    performed for faster computation.</span>
+<span class="comment">%</span>
+<span class="comment">% Output Arguments:</span>
+<span class="comment">%        c: struct variable with following fields:</span>
+<span class="comment">%        |-- .pdc       - PDC complex estimates</span>
+<span class="comment">%        |-- .pdc2      - |PDC|^2 estimates</span>
+<span class="comment">%        |-- .pvalues   - p-values associated to PDC2 estimates.</span>
+<span class="comment">%        |-- .th        - |PDC|^2 threshold value with (1-alpha) significance</span>
+<span class="comment">%        |                level.</span>
+<span class="comment">%        |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of</span>
+<span class="comment">%        |                |PDC|^2 estimates</span>
+<span class="comment">%        |-- .metric    - metric used for PDC calculation</span>
+<span class="comment">%        |-- .alpha     - significance level</span>
+<span class="comment">%        |-- .p         - VAR model order</span>
+<span class="comment">%        |-- .patdenr   -</span>
+<span class="comment">%        |-- .patdfr    - degree of freedom</span>
+<span class="comment">%        |-- .SS        - power spectra</span>
+<span class="comment">%        +-- .coh2      - squared spectral coherence,</span>
+<span class="comment">%      i.e.</span>
+<span class="comment">%        .{pdc,pdc2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}</span>
+<span class="comment">%</span>
+<span class="comment">% Description:</span>
+<span class="comment">%   Compute all three types of PDC --- connectivity measure --- and allied</span>
+<span class="comment">%   asymptotic statistics [2] measures for the chosen metric option:</span>
+<span class="comment">%        * 'euc'  - original or Euclidean PDC as proposed in [1];</span>
+<span class="comment">%        * 'diag' - generalized PDC;</span>
+<span class="comment">%        * 'info' - information PDC.</span>
+<span class="comment">%</span>
+<span class="comment">% Example:</span>
+<span class="comment">%  Annual sunspot numbers  and the melanoma cases (x10^5) in the State of</span>
+<span class="comment">%  Connecticuts, USA, from 1936 to 1972, given by</span>
+<span class="comment">%</span>
+<span class="comment">%   % -------- Example script start here---------------------------------------</span>
+<span class="comment">%</span>
+<span class="comment">%   % Data and pre-processing</span>
+<span class="comment">%   u = [ 40 115 100  80  60  40  23  10  10  25  75 145 130 130  80  65  20 ...</span>
+<span class="comment">%         10   5  10  60 190 180 175 120  50  35  20  10  15  30  60 105 105 ...</span>
+<span class="comment">%         105  80  65; ...</span>
+<span class="comment">%        0.9 0.8 0.8 1.3 1.4 1.2 1.7 1.8 1.6 1.5 1.5 2.0 2.5 2.7 2.9 2.5 3.1 ...</span>
+<span class="comment">%        2.4 2.2 2.9 2.5 2.6 3.2 3.8 4.2 3.9 3.7 3.3 3.7 3.9 4.1 3.8 4.7 4.4 ...</span>
+<span class="comment">%        4.8 4.8 4.8];</span>
+<span class="comment">%   [nChannels,nSegLength] =size(u);</span>
+<span class="comment">%   if nChannels &gt; nSegLength, u = u.'; [nChannels,nSegLength]=size(u); end;</span>
+<span class="comment">%   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;</span>
+<span class="comment">%</span>
+<span class="comment">%   % Pre-calculated AR model coefficients, A and pf</span>
+<span class="comment">%   A        = [ 0.8280  -12.1097; 0.0009   -0.1258]; % VAR model estimate.</span>
+<span class="comment">%   A(:,:,2) = [-0.0724   13.4798; 0.0036   -0.1391];</span>
+<span class="comment">%   A(:,:,3) = [-0.3561  -36.4805; 0.0013   -0.0735];</span>
+<span class="comment">%   pf = [568.0873  -1.5815; -1.5815 0.0474];</span>
+<span class="comment">%</span>
+<span class="comment">%   % Analysis parameters</span>
+<span class="comment">%   nFreqs = 128;    % number of points to calculate PDC in the frequency scale</span>
+<span class="comment">%   measure = 'pdc'; % Connectivity measure</span>
+<span class="comment">%   metric = 'info'; % calculating information PDC</span>
+<span class="comment">%   alpha  = 0.01;   % significance level</span>
+<span class="comment">%   c = asymp_pdc(u,A,pf,nFreqs,metric,alpha); % Calculate |iPDC|^2 with</span>
+<span class="comment">%                                              % statistics</span>
+<span class="comment">%</span>
+<span class="comment">%   % Let's visualize PDC plots with default parameters. Try this first.</span>
+<span class="comment">%   xplot([],c);</span>
+<span class="comment">%</span>
+<span class="comment">%   % -------- Example end here------------------------------------------------</span>
+<span class="comment">%   %</span>
+<span class="comment">%   % -------- Further xplot options example start here------------------------</span>
+<span class="comment">%</span>
+<span class="comment">%   % Then let's xplot PDC2 with threshold, confidence interval, and labels,</span>
+<span class="comment">%   % also with spectral coherence.</span>
+<span class="comment">%   % First, let's set some "xplotting" parameters:</span>
+<span class="comment">%</span>
+<span class="comment">%   chLabels    = {'Sunspot';'Melanoma'}; % Channel labels</span>
+<span class="comment">%   flgColor    = 0;      fs = 1;    w_max = 0.5;</span>
+<span class="comment">%   flgPrinting = [1 1 1 2 2 1 1]; flgScale = 1;</span>
+<span class="comment">%   flgMax      = 'all';    flgSignifColor = 4;</span>
+<span class="comment">%   xplot('THIS IS A WINDOW TITLE',c,flgPrinting,fs,fs/2,chLabels,flgColor, ...</span>
+<span class="comment">%                                               flgScale,flgMax,flgSignifColor);</span>
+<span class="comment">%   % and let's add an informative title</span>
+<span class="comment">%   xplot_title(alpha,metric,measure,'Sunspot-Melanoma Example')</span>
+<span class="comment">%</span>
+<span class="comment">%   % -------- Second part of xplot example end here---------------------------</span>
+<span class="comment">%</span>
+<span class="comment">% References:</span>
+<span class="comment">% [1] L.A. Baccala and K. Sameshima. Partial directed coherence: a new concept</span>
+<span class="comment">%     in neural structure determination. Biol Cybern 84:463--474,2001.</span>
+<span class="comment">%     &lt;https://doi.org/10.1007/PL00007990&gt;</span>
+<span class="comment">%</span>
+<span class="comment">% [2] D.Y. Takahashi, L.A.B. Baccala and K. Sameshima, Connectivity inference</span>
+<span class="comment">%     between neural structures via partial directed coherence. J Appl Stat</span>
+<span class="comment">%     34:1259--1273, 2007. &lt;https://doi.org/10.1080/02664760701593065&gt;</span>
+<span class="comment">%</span>
+<span class="comment">% [3] L.A. Baccala, C.S.N. De Brito, D.Y. Takahashi and K. Sameshima. Unified</span>
+<span class="comment">%     asymptotic theory for all partial directed coherence forms. Philos T Roy</span>
+<span class="comment">%     Soc A 371(1997):1--13, 2013. &lt;https://doi.org/10.1098/rsta.2012.0158&gt;</span>
+<span class="comment">%</span>
+<span class="comment">% See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</span>
+
+<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
-</pre><pre class="codeinput"><span class="keyword">function</span> c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
 
-<span class="keyword">if</span> nargin &lt; 6
-    error(<span class="string">'ASYMP_PDC requires six input arguments.'</span>)
-<span class="keyword">end</span>
-[m,n] = size(u);
-<span class="keyword">if</span> m &gt; n
-    u = u.';
-<span class="keyword">end</span>
-np = length(u);
-[nChannels, ~, p] = size(A);  <span class="comment">% ~ = dummy variable == nChannels</span>
-Af = A_to_f(A, nFreqs);
 
-flgVerbose = 0;
+   <span class="keyword">if</span> nargin &lt; 6
+       error(<span class="string">'ASYMP_PDC requires six input arguments.'</span>)
+   <span class="keyword">end</span>
+   [m,n] = size(u);
+   <span class="keyword">if</span> m &gt; n
+       u = u.';
+   <span class="keyword">end</span>
+   np = length(u);
+   [nChannels, ~, p] = size(A);  <span class="comment">% ~ = dummy variable == nChannels</span>
+   Af = A_to_f(A, nFreqs);
 
-<span class="comment">% Variables pre-alocation</span>
-pdc = zeros(nChannels,nChannels,nFreqs);  <span class="comment">% To hold complex PDC</span>
-pdc2 = zeros(nChannels,nChannels,nFreqs); <span class="comment">% for squared-PDC</span>
+   flgVerbose = 0;
 
-<span class="keyword">if</span> alpha ~= 0
-   th      = zeros(nChannels,nChannels,nFreqs);
-   ci1     = zeros(nChannels,nChannels,nFreqs);
-   ci2     = zeros(nChannels,nChannels,nFreqs);
-   varass1 = zeros(nChannels,nChannels,nFreqs);
-   varass2 = zeros(nChannels,nChannels,nFreqs);
-   patdfr  = zeros(nChannels,nChannels,nFreqs);
-   patdenr = zeros(nChannels,nChannels,nFreqs);
-   pvalues = zeros(nChannels,nChannels,nFreqs);
-   <span class="keyword">if</span> flgVerbose
+   <span class="comment">% Variables pre-alocation</span>
+   pdc = zeros(nChannels,nChannels,nFreqs);  <span class="comment">% To hold complex PDC</span>
+   pdc2 = zeros(nChannels,nChannels,nFreqs); <span class="comment">% for squared-PDC</span>
+
+   <span class="keyword">if</span> alpha ~= 0
+      th      = zeros(nChannels,nChannels,nFreqs);
+      ci1     = zeros(nChannels,nChannels,nFreqs);
+      ci2     = zeros(nChannels,nChannels,nFreqs);
+      varass1 = zeros(nChannels,nChannels,nFreqs);
+      varass2 = zeros(nChannels,nChannels,nFreqs);
+      patdfr  = zeros(nChannels,nChannels,nFreqs);
+      patdenr = zeros(nChannels,nChannels,nFreqs);
+      pvalues = zeros(nChannels,nChannels,nFreqs);
+      <span class="keyword">if</span> flgVerbose
+         <span class="keyword">switch</span> lower(metric)
+            <span class="keyword">case</span> {<span class="string">'euc'</span>}
+               disp(<span class="string">'* Original PDC and asymptotic statistics'</span>)
+            <span class="keyword">case</span> {<span class="string">'diag'</span>}
+               disp(<span class="string">'* Generalized PDC and asymptotic statistics'</span>)
+            <span class="keyword">case</span> {<span class="string">'info'</span>}
+               disp(<span class="string">'* Information PDC and asymptotic statistics'</span>)
+            <span class="keyword">otherwise</span>
+               error(<span class="string">'Unknown metric.'</span>)
+         <span class="keyword">end</span>
+      <span class="keyword">end</span>
+   <span class="keyword">elseif</span> flgVerbose
       <span class="keyword">switch</span> lower(metric)
          <span class="keyword">case</span> {<span class="string">'euc'</span>}
-            disp(<span class="string">'* Original PDC and asymptotic statistics'</span>)
+            disp(<span class="string">'* Original PDC estimation'</span>)
          <span class="keyword">case</span> {<span class="string">'diag'</span>}
-            disp(<span class="string">'* Generalized PDC and asymptotic statistics'</span>)
+            disp(<span class="string">'* Generalized PDC estimation'</span>)
          <span class="keyword">case</span> {<span class="string">'info'</span>}
-            disp(<span class="string">'* Information PDC and asymptotic statistics'</span>)
+            disp(<span class="string">'* Information PDC estimation'</span>)
          <span class="keyword">otherwise</span>
             error(<span class="string">'Unknown metric.'</span>)
       <span class="keyword">end</span>
    <span class="keyword">end</span>
-<span class="keyword">elseif</span> flgVerbose
+
+   <span class="comment">% ======================================================================</span>
+
    <span class="keyword">switch</span> lower(metric)
-      <span class="keyword">case</span> {<span class="string">'euc'</span>}
-         disp(<span class="string">'* Original PDC estimation'</span>)
-      <span class="keyword">case</span> {<span class="string">'diag'</span>}
-         disp(<span class="string">'* Generalized PDC estimation'</span>)
-      <span class="keyword">case</span> {<span class="string">'info'</span>}
-         disp(<span class="string">'* Information PDC estimation'</span>)
+      <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% for original PDC</span>
+         dpdc_dev = zeros(1,(nChannels*(nChannels + 1))/2);
+         pfe = eye(nChannels);  <span class="comment">% for complex PDC calculation</span>
+
+      <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% for gPDC</span>
+         evar_d = mdiag(pf);
+         evar_d_big = kron(eye(2*nChannels), evar_d);
+         pinv_evar_d_big = pinv(evar_d_big);
+
+         <span class="comment">%'derivative of vec(Ed-1) by vecE'</span>
+         de_deh = Dup(nChannels);
+         debig_de = fdebig_de(nChannels);
+
+         dedinv_dev = diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big));
+         dedinv_deh = dedinv_dev*debig_de*de_deh;
+         pfe = pf;          <span class="comment">% for complex gPDC calculation</span>
+
+      <span class="keyword">case</span> {<span class="string">'info'</span>}         <span class="comment">% for iPDC</span>
+         evar_d = mdiag(pf);
+         evar_d_big = kron(eye(2*nChannels), evar_d);
+         pinv_evar_d_big = pinv(evar_d_big);
+
+         evar_big = kron(eye(2*nChannels), pf);
+         pinv_evar_big = sparse(pinv(evar_big));
+
+         <span class="comment">%'derivative of vec(Ed-1) by vecE'</span>
+         de_deh = Dup(nChannels);
+         debig_de = fdebig_de(nChannels);
+
+         dedinv_devd = sparse(diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big)));
+         dedinv_dehd = sparse(dedinv_devd*debig_de*de_deh);
+
+         <span class="comment">%dedinv_dev = sparse(-kron(inv_e.', inv_e));</span>
+         dedinv_dev = sparse(-kron(pinv_evar_big.', pinv_evar_big));
+         dedinv_deh = sparse(dedinv_dev*debig_de*de_deh);
+         pfe = pf;   <span class="comment">% necessary for complex iPDC calculation</span>
+
       <span class="keyword">otherwise</span>
          error(<span class="string">'Unknown metric.'</span>)
    <span class="keyword">end</span>
-<span class="keyword">end</span>
 
-<span class="comment">% ======================================================================</span>
+   gamma = bigautocorr(u, p);
+   omega = kron(inv(gamma), pf);
+   omega_evar = 2*pinv(Dup(nChannels))*kron(pf, pf) * pinv(Dup(nChannels)).';
 
-<span class="keyword">switch</span> lower(metric)
-   <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% for original PDC</span>
-      dpdc_dev = zeros(1,(nChannels*(nChannels + 1))/2);
-      pfe = eye(nChannels);  <span class="comment">% for complex PDC calculation</span>
+   <span class="comment">%if (isOctave())</span>
+   icdf_norm_alpha = norminv(1 - alpha/2.0,0,1);
+   <span class="comment">%else</span>
+   <span class="comment">%   icdf_norm_alpha = icdf('norm',1 - alpha/2.0,0,1);</span>
+   <span class="comment">%end</span>
 
-   <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% for gPDC</span>
-      evar_d = mdiag(pf);
-      evar_d_big = kron(eye(2*nChannels), evar_d);
-      pinv_evar_d_big = pinv(evar_d_big);
+   <span class="keyword">for</span> ff = 1:nFreqs
+      f = (ff - 1)/(2*nFreqs);     <span class="comment">%Corrected 7/25/2011, f starting at 0 rad/s.</span>
+      Ca = fCa(f, p, nChannels);
 
-      <span class="comment">%'derivative of vec(Ed-1) by vecE'</span>
-      de_deh = Dup(nChannels);
-      debig_de = fdebig_de(nChannels);
+      a = Af(ff,:,:); a = a(:);
+      a = [real(a); imag(a)];
 
-      dedinv_dev = diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big));
-      dedinv_deh = dedinv_dev*debig_de*de_deh;
-      pfe = pf;          <span class="comment">% for complex gPDC calculation</span>
+      omega2 = Ca*omega*Ca.';
+      L = fChol(omega2);
 
-   <span class="keyword">case</span> {<span class="string">'info'</span>}         <span class="comment">% for iPDC</span>
-      evar_d = mdiag(pf);
-      evar_d_big = kron(eye(2*nChannels), evar_d);
-      pinv_evar_d_big = pinv(evar_d_big);
-
-      evar_big = kron(eye(2*nChannels), pf);
-      pinv_evar_big = sparse(pinv(evar_big));
-
-      <span class="comment">%'derivative of vec(Ed-1) by vecE'</span>
-      de_deh = Dup(nChannels);
-      debig_de = fdebig_de(nChannels);
-
-      dedinv_devd = sparse(diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big)));
-      dedinv_dehd = sparse(dedinv_devd*debig_de*de_deh);
-
-      <span class="comment">%dedinv_dev = sparse(-kron(inv_e.', inv_e));</span>
-      dedinv_dev = sparse(-kron(pinv_evar_big.', pinv_evar_big));
-      dedinv_deh = sparse(dedinv_dev*debig_de*de_deh);
-      pfe = pf;   <span class="comment">% necessary for complex iPDC calculation</span>
-
-   <span class="keyword">otherwise</span>
-      error(<span class="string">'Unknown metric.'</span>)
-<span class="keyword">end</span>
-
-gamma = bigautocorr(u, p);
-omega = kron(inv(gamma), pf);
-omega_evar = 2*pinv(Dup(nChannels))*kron(pf, pf) * pinv(Dup(nChannels)).';
-
-<span class="comment">%if (isOctave())</span>
-icdf_norm_alpha = norminv(1 - alpha/2.0,0,1);
-<span class="comment">%else</span>
-<span class="comment">%   icdf_norm_alpha = icdf('norm',1 - alpha/2.0,0,1);</span>
-<span class="comment">%end</span>
-
-<span class="keyword">for</span> ff = 1:nFreqs
-   f = (ff - 1)/(2*nFreqs);     <span class="comment">%Corrected 7/25/2011, f starting at 0 rad/s.</span>
-   Ca = fCa(f, p, nChannels);
-
-   a = Af(ff,:,:); a = a(:);
-   a = [real(a); imag(a)];
-
-   omega2 = Ca*omega*Ca.';
-   L = fChol(omega2);
-
-   <span class="keyword">for</span> j = 1:nChannels
-      Ij = fIj(j,nChannels);
-      <span class="keyword">switch</span> lower(metric)
-         <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% for PDC</span>
-            Ije = Ij;
-
-         <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% for gPDC</span>
-            Ije = Ij*pinv_evar_d_big;
-
-         <span class="keyword">case</span> {<span class="string">'info'</span>}          <span class="comment">% for iPDC</span>
-            Ije = Ij*pinv_evar_big*Ij;
-
-         <span class="keyword">otherwise</span>
-            error(<span class="string">'Unknown metric.'</span>)
-      <span class="keyword">end</span>
-
-      <span class="keyword">for</span> i = 1:nChannels
-         Iij = fIij(i,j,nChannels);
-         <span class="comment">%For metric = diag or info case, include evar in the expression'</span>
+      <span class="keyword">for</span> j = 1:nChannels
+         Ij = fIj(j,nChannels);
          <span class="keyword">switch</span> lower(metric)
-            <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% PDC</span>
-               Iije = Iij;
+            <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% for PDC</span>
+               Ije = Ij;
 
-            <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% gPDC</span>
-               Iije = Iij*pinv_evar_d_big;
+            <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% for gPDC</span>
+               Ije = Ij*pinv_evar_d_big;
 
-            <span class="keyword">case</span> {<span class="string">'info'</span>}          <span class="comment">% iPDC</span>
-               Iije = Iij*pinv_evar_d_big;
+            <span class="keyword">case</span> {<span class="string">'info'</span>}          <span class="comment">% for iPDC</span>
+               Ije = Ij*pinv_evar_big*Ij;
 
             <span class="keyword">otherwise</span>
                error(<span class="string">'Unknown metric.'</span>)
          <span class="keyword">end</span>
 
-         num = a.'*Iije*a;
-         den = a.'*Ije*a;
-         pdc2(i,j,ff) = num/den; <span class="comment">% $|PDC_{ij}(ff)|^2$</span>
-
-         numd = Af(ff,i,j)/sqrt(pfe(i,i));
-         pdc(i,j,ff) = numd/sqrt(den); <span class="comment">% complex PDC calculation</span>
-
-         <span class="comment">% If alpha == 0, no statistical calculation for faster computation.</span>
-         <span class="keyword">if</span> alpha ~= 0
-            <span class="comment">%'Add evar derivation'</span>
+         <span class="keyword">for</span> i = 1:nChannels
+            Iij = fIij(i,j,nChannels);
+            <span class="comment">%For metric = diag or info case, include evar in the expression'</span>
             <span class="keyword">switch</span> lower(metric)
-               <span class="keyword">case</span> {<span class="string">'euc'</span>}
-                  <span class="comment">%nop</span>
+               <span class="keyword">case</span> {<span class="string">'euc'</span>}           <span class="comment">% PDC</span>
+                  Iije = Iij;
 
-               <span class="keyword">case</span> {<span class="string">'diag'</span>}
-                  <span class="comment">%'derivative of num by vecE'</span>
-                  dnum_dev = kron((Iij*a).', a.')*dedinv_deh;
-                  <span class="comment">%'derivative by den by vecE'</span>
-                  dden_dev = kron((Ij*a).', a.')*dedinv_deh;
-                  dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
+               <span class="keyword">case</span> {<span class="string">'diag'</span>}          <span class="comment">% gPDC</span>
+                  Iije = Iij*pinv_evar_d_big;
 
-               <span class="keyword">case</span> {<span class="string">'info'</span>}
-                  <span class="comment">%'derivative of num by vecE'</span>
-                  dnum_dev = kron((Iij*a).', a.')*dedinv_dehd;
-                  <span class="comment">%'derivative of den by vecE'</span>
-                  dden_dev = kron((Ij*a).', a.'*Ij)*dedinv_deh;
-                  dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
+               <span class="keyword">case</span> {<span class="string">'info'</span>}          <span class="comment">% iPDC</span>
+                  Iije = Iij*pinv_evar_d_big;
 
                <span class="keyword">otherwise</span>
                   error(<span class="string">'Unknown metric.'</span>)
             <span class="keyword">end</span>
 
-            G1a = 2 * a.' * Iije/den - 2*num*a.'*Ije/(den^2);
-            G1 = -G1a * Ca;
-            varalpha = G1 * omega * G1.';
-            varevar = dpdc_dev * omega_evar * dpdc_dev.';
-            varass1(i,j,ff) = (varalpha + varevar)/np;
+            num = a.'*Iije*a;
+            den = a.'*Ije*a;
+            pdc2(i,j,ff) = num/den; <span class="comment">% $|PDC_{ij}(ff)|^2$</span>
 
-            ci1(i,j,ff) = pdc2(i,j,ff) <span class="keyword">...</span>
-                    - sqrt(varass1(i,j,ff))*icdf_norm_alpha;
-            ci2(i,j,ff) = pdc2(i,j,ff) <span class="keyword">...</span>
-                    + sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+            numd = Af(ff,i,j)/sqrt(pfe(i,i));
+            pdc(i,j,ff) = numd/sqrt(den); <span class="comment">% complex PDC calculation</span>
 
-            G2a = Iije/den;
+            <span class="comment">% If alpha == 0, no statistical calculation for faster computation.</span>
+            <span class="keyword">if</span> alpha ~= 0
+               <span class="comment">%'Add evar derivation'</span>
+               <span class="keyword">switch</span> lower(metric)
+                  <span class="keyword">case</span> {<span class="string">'euc'</span>}
+                     <span class="comment">%nop</span>
 
-            d = fEig(real(L), real(G2a)); <span class="comment">% real() 28May2013</span>
+                  <span class="keyword">case</span> {<span class="string">'diag'</span>}
+                     <span class="comment">%'derivative of num by vecE'</span>
+                     dnum_dev = kron((Iij*a).', a.')*dedinv_deh;
+                     <span class="comment">%'derivative by den by vecE'</span>
+                     dden_dev = kron((Ij*a).', a.')*dedinv_deh;
+                     dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
 
-            patdf = (sum(d).^2)./sum(d.^2);
-            patden = sum(d)./sum(d.^2);
+                  <span class="keyword">case</span> {<span class="string">'info'</span>}
+                     <span class="comment">%'derivative of num by vecE'</span>
+                     dnum_dev = kron((Iij*a).', a.')*dedinv_dehd;
+                     <span class="comment">%'derivative of den by vecE'</span>
+                     dden_dev = kron((Ij*a).', a.'*Ij)*dedinv_deh;
+                     dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
 
-            th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np);
+                  <span class="keyword">otherwise</span>
+                     error(<span class="string">'Unknown metric.'</span>)
+               <span class="keyword">end</span>
 
-            pvalues(i,j,ff) = 1 - chi2cdf(pdc2(i,j,ff)*patden*np, patdf);
+               G1a = 2 * a.' * Iije/den - 2*num*a.'*Ije/(den^2);
+               G1 = -G1a * Ca;
+               varalpha = G1 * omega * G1.';
+               varevar = dpdc_dev * omega_evar * dpdc_dev.';
+               varass1(i,j,ff) = (varalpha + varevar)/np;
 
-            varass2(i,j,ff) = patdf/(patden*np).^2;
-            patdfr(i,j,ff) = patdf;
-            patdenr(i,j,ff) = patden;
-         <span class="keyword">else</span> <span class="comment">% alpha is zero, no asymptotics calculation</span>
-            <span class="comment">% nop;</span>
+               ci1(i,j,ff) = pdc2(i,j,ff) <span class="keyword">...</span>
+                       - sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+               ci2(i,j,ff) = pdc2(i,j,ff) <span class="keyword">...</span>
+                       + sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+
+               G2a = Iije/den;
+
+               d = fEig(real(L), real(G2a)); <span class="comment">% real() 28May2013</span>
+
+               patdf = (sum(d).^2)./sum(d.^2);
+               patden = sum(d)./sum(d.^2);
+
+               th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np);
+
+               pvalues(i,j,ff) = 1 - chi2cdf(pdc2(i,j,ff)*patden*np, patdf);
+
+               varass2(i,j,ff) = patdf/(patden*np).^2;
+               patdfr(i,j,ff) = patdf;
+               patdenr(i,j,ff) = patden;
+            <span class="keyword">else</span> <span class="comment">% alpha is zero, no asymptotics calculation</span>
+               <span class="comment">% nop;</span>
+            <span class="keyword">end</span>
+         <span class="keyword">end</span>  <span class="comment">% j = nChannels</span>
+      <span class="keyword">end</span>  <span class="comment">% i = nChannels</span>
+   <span class="keyword">end</span>  <span class="comment">% ff = freqs</span>
+
+   <span class="comment">% assigning values to the c struct.</span>
+   <span class="keyword">if</span> alpha ~= 0
+      c.pdc = pdc;   <span class="comment">% Complex PDC2/gPDC2/iPDC2</span>
+      c.pdc2 = pdc2;
+      c.th = th;
+      c.ci1 = ci1;
+      c.ci2 = ci2;
+      c.metric = metric;
+      c.alpha = alpha;
+      c.p = p;
+      c.pvalues = pvalues; <span class="comment">% p-values associated to PDC2/gPDC2/iPDC2</span>
+      c.patden = patdenr;
+      c.patdf = patdfr;
+      c.varass1 = varass1;
+      c.varass2 = varass2;
+   <span class="comment">%  Statistically significant PDC2 on frequency scale</span>
+      pdc2_temp = ((abs(pdc2) - abs(th)) &gt; 0).*pdc2 <span class="keyword">...</span>
+                                              + ((abs(pdc2) - abs(th)) &lt;= 0)*(-1);
+      pdc2_temp(pdc2_temp &lt; 0) = NaN;
+      c.pdc2_th = pdc2_temp;
+
+   <span class="keyword">else</span> <span class="comment">% No statistics, just the |PDC^2| values/</span>
+      c.pdc = pdc;
+      c.pdc2 = pdc2;
+      c.metric = metric;
+      c.alpha = 0;
+      c.p = p;
+      c.pvalues = [];
+      c.th = [];
+      c.ci1 = [];
+      c.ci2 = [];
+      c.patdenr = [];
+      c.patdfr = [];
+      c.varass1 = [];
+      c.varass2 = [];
+   <span class="keyword">end</span>
+
+   <span class="comment">% Power spectra and coherence assignments to c struct.</span>
+   c.SS = ss_alg(A, pf, nFreqs);
+   c.coh2 = coh_alg(c.SS);
+   <span class="comment">%</span>
+   <span class="keyword">end</span>
+</pre><h2 id="2">Subfunctions</h2><pre class="codeinput">   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> gamma = bigautocorr(x, p)
+   <span class="comment">% Autocorrelation. Data in row-wise orientation. From order 0 to p-1.</span>
+   <span class="comment">% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''</span>
+
+   [n, nd] = size(x);
+
+   gamma = zeros(n*p, n*p);
+   <span class="keyword">for</span> i = 1:p
+      <span class="keyword">for</span> j = 1:p
+         gamma(((i - 1)*n + 1):i*n, ((j - 1)*n + 1):j*n) = <span class="keyword">...</span>
+                                              xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = xlag(x,tlag)
+   <span class="keyword">if</span> tlag == 0
+      c = x;
+   <span class="keyword">else</span>
+      c = zeros(size(x));
+      c(:,(tlag + 1):end) = x(:,1:(end - tlag));
+   <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> d = fEig(L, G2)
+   <span class="comment">%'''Returns the eigenvalues'''</span>
+
+   <span class="comment">%L = mat(cholesky(omega, lower=1))</span>
+   D = L.'*G2*L;
+
+   <span class="comment">%disp('fEig: eig or svd?')</span>
+
+   d  = svd(D);
+   d1 = sort(d);
+   <span class="comment">%</span>
+   <span class="comment">% the two biggest eigenvalues no matter which values (non negative by</span>
+   <span class="comment">% construction</span>
+   <span class="comment">%</span>
+   d = d1(length(d) - 1:length(d));
+
+   <span class="keyword">if</span> (size(d) &gt; 2)
+      disp(<span class="string">'More than two Chi-squares in the sum:'</span>)
+   <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = fIij(i,j,n)
+   <span class="comment">%'''Returns Iij of the formula'''</span>
+   Iij = zeros(1,n^2);
+   Iij(n*(j - 1) + i) = 1;
+   Iij = diag(Iij);
+   c = kron(eye(2), Iij);
+
+   c = sparse(c);  <span class="comment">% SPARSED</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = fIj(j,n)
+   <span class="comment">%'''Returns Ij of the formula'''</span>
+   Ij = zeros(1,n);
+   Ij(j) = 1;
+   Ij = diag(Ij);
+   Ij = kron(Ij,eye(n));
+   c = kron(eye(2), Ij);
+
+   c = sparse(c);  <span class="comment">% SPARSED</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> d = fCa(f, p, n)
+   <span class="comment">%'''Returns C* of the formula'''</span>
+   C1 = cos(-2*pi*f*(1:p));
+   S1 = sin(-2*pi*f*(1:p));
+   C2 = [C1; S1];
+   d = kron(C2, eye(n^2));
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = fdebig_de(n)
+   <span class="comment">%'''Derivative of kron(I(2n), A) by A'''</span>
+   <span class="comment">%c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));</span>
+   A = sparse(kron(TT(2*n, n), eye(n*2*n)));
+   B = sparse(kron(vec(eye(2*n)), eye(n)));
+   c = A * kron(eye(n), B);
+   c = sparse(c);
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = vec(x)
+   <span class="comment">%vec = lambda x: mat(x.ravel('F')).T</span>
+   c = x(:);
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> t = TT(a,b)
+   <span class="comment">%''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''</span>
+   t = zeros(a*b);
+   <span class="keyword">for</span> i = 1:a
+      <span class="keyword">for</span> j = 1:b
+         t((i - 1)*b + j,(j - 1)*a + i) = 1;
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+   t = sparse(t);
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> L = fChol(omega)
+   <span class="comment">% Try Cholesky factorization</span>
+   <span class="keyword">try</span>
+      L = chol(omega)';
+      <span class="comment">% If there's a small negative eigenvalue, diagonalize</span>
+   <span class="keyword">catch</span>
+      <span class="comment">%   disp('linalgerror, probably IP = 1.')</span>
+      [v,d] = eig(omega);
+      L = zeros(size(v));
+      <span class="keyword">for</span> i = 1:length(d)
+         <span class="keyword">if</span> d(i,i) &lt; 0
+            d(i,i) = eps;
          <span class="keyword">end</span>
-      <span class="keyword">end</span>  <span class="comment">% j = nChannels</span>
-   <span class="keyword">end</span>  <span class="comment">% i = nChannels</span>
-<span class="keyword">end</span>  <span class="comment">% ff = freqs</span>
-
-<span class="comment">% assigning values to the c struct.</span>
-<span class="keyword">if</span> alpha ~= 0
-   c.pdc = pdc;   <span class="comment">% Complex PDC2/gPDC2/iPDC2</span>
-   c.pdc2 = pdc2;
-   c.th = th;
-   c.ci1 = ci1;
-   c.ci2 = ci2;
-   c.metric = metric;
-   c.alpha = alpha;
-   c.p = p;
-   c.pvalues = pvalues; <span class="comment">% p-values associated to PDC2/gPDC2/iPDC2</span>
-   c.patden = patdenr;
-   c.patdf = patdfr;
-   c.varass1 = varass1;
-   c.varass2 = varass2;
-<span class="comment">%  Statistically significant PDC2 on frequency scale</span>
-   pdc2_temp = ((abs(pdc2) - abs(th)) &gt; 0).*pdc2 <span class="keyword">...</span>
-                                           + ((abs(pdc2) - abs(th)) &lt;= 0)*(-1);
-   pdc2_temp(pdc2_temp &lt; 0) = NaN;
-   c.pdc2_th = pdc2_temp;
-
-<span class="keyword">else</span> <span class="comment">% No statistics, just the |PDC^2| values/</span>
-   c.pdc = pdc;
-   c.pdc2 = pdc2;
-   c.metric = metric;
-   c.alpha = 0;
-   c.p = p;
-   c.pvalues = [];
-   c.th = [];
-   c.ci1 = [];
-   c.ci2 = [];
-   c.patdenr = [];
-   c.patdfr = [];
-   c.varass1 = [];
-   c.varass2 = [];
-<span class="keyword">end</span>
-
-<span class="comment">% Power spectra and coherence assignments to c struct.</span>
-c.SS = ss_alg(A, pf, nFreqs);
-c.coh2 = coh_alg(c.SS);
-<span class="comment">%</span>
-<span class="keyword">end</span>
-</pre><h2 id="9">Subfunctions</h2><pre class="codeinput"><span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> gamma = bigautocorr(x, p)
-<span class="comment">% Autocorrelation. Data in row-wise orientation. From order 0 to p-1.</span>
-<span class="comment">% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''</span>
-
-[n, nd] = size(x);
-
-gamma = zeros(n*p, n*p);
-<span class="keyword">for</span> i = 1:p
-   <span class="keyword">for</span> j = 1:p
-      gamma(((i - 1)*n + 1):i*n, ((j - 1)*n + 1):j*n) = <span class="keyword">...</span>
-                                           xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
-   <span class="keyword">end</span>
-<span class="keyword">end</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = xlag(x,tlag)
-<span class="keyword">if</span> tlag == 0
-   c = x;
-<span class="keyword">else</span>
-   c = zeros(size(x));
-   c(:,(tlag + 1):end) = x(:,1:(end - tlag));
-<span class="keyword">end</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> d = fEig(L, G2)
-<span class="comment">%'''Returns the eigenvalues'''</span>
-
-<span class="comment">%L = mat(cholesky(omega, lower=1))</span>
-D = L.'*G2*L;
-
-<span class="comment">%disp('fEig: eig or svd?')</span>
-
-d  = svd(D);
-d1 = sort(d);
-<span class="comment">%</span>
-<span class="comment">% the two biggest eigenvalues no matter which values (non negative by</span>
-<span class="comment">% construction</span>
-<span class="comment">%</span>
-d = d1(length(d) - 1:length(d));
-
-<span class="keyword">if</span> (size(d) &gt; 2)
-   disp(<span class="string">'More than two Chi-squares in the sum:'</span>)
-<span class="keyword">end</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = fIij(i,j,n)
-<span class="comment">%'''Returns Iij of the formula'''</span>
-Iij = zeros(1,n^2);
-Iij(n*(j - 1) + i) = 1;
-Iij = diag(Iij);
-c = kron(eye(2), Iij);
-
-c = sparse(c);  <span class="comment">% SPARSED</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = fIj(j,n)
-<span class="comment">%'''Returns Ij of the formula'''</span>
-Ij = zeros(1,n);
-Ij(j) = 1;
-Ij = diag(Ij);
-Ij = kron(Ij,eye(n));
-c = kron(eye(2), Ij);
-
-c = sparse(c);  <span class="comment">% SPARSED</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> d = fCa(f, p, n)
-<span class="comment">%'''Returns C* of the formula'''</span>
-C1 = cos(-2*pi*f*(1:p));
-S1 = sin(-2*pi*f*(1:p));
-C2 = [C1; S1];
-d = kron(C2, eye(n^2));
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = fdebig_de(n)
-<span class="comment">%'''Derivative of kron(I(2n), A) by A'''</span>
-<span class="comment">%c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));</span>
-A = sparse(kron(TT(2*n, n), eye(n*2*n)));
-B = sparse(kron(vec(eye(2*n)), eye(n)));
-c = A * kron(eye(n), B);
-c = sparse(c);
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = vec(x)
-<span class="comment">%vec = lambda x: mat(x.ravel('F')).T</span>
-c = x(:);
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> t = TT(a,b)
-<span class="comment">%''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''</span>
-t = zeros(a*b);
-<span class="keyword">for</span> i = 1:a
-   <span class="keyword">for</span> j = 1:b
-      t((i - 1)*b + j,(j - 1)*a + i) = 1;
-   <span class="keyword">end</span>
-<span class="keyword">end</span>
-t = sparse(t);
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> L = fChol(omega)
-<span class="comment">% Try Cholesky factorization</span>
-<span class="keyword">try</span>
-   L = chol(omega)';
-   <span class="comment">% If there's a small negative eigenvalue, diagonalize</span>
-<span class="keyword">catch</span>
-   <span class="comment">%   disp('linalgerror, probably IP = 1.')</span>
-   [v,d] = eig(omega);
-   L = zeros(size(v));
-   <span class="keyword">for</span> i = 1:length(d)
-      <span class="keyword">if</span> d(i,i) &lt; 0
-         d(i,i) = eps;
-      <span class="keyword">end</span>
-      L(:,i) = v(:,i)*sqrt(d(i,i));
-   <span class="keyword">end</span>
-<span class="keyword">end</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = diagtom(a)
-b = sparse(a');
-c = sparse(diag(b(:)));
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> c = mdiag(a)
-<span class="comment">%  diagonal matrix</span>
-c = diag(diag(a)); <span class="comment">% UNSPARSED</span>
-<span class="keyword">end</span>
-
-<span class="comment">%==========================================================================</span>
-<span class="keyword">function</span> d=Dup(n)
-<span class="comment">% '''D*vech(A) = vec(A), with symmetric A'''</span>
-d = zeros(n*n, (n*(n + 1))/2);
-count = 1;
-<span class="keyword">for</span> j = 1:n
-   <span class="keyword">for</span> i = 1:n
-      <span class="keyword">if</span> i &gt;= j
-         d((j - 1)*n + i,count) = 1;
-         count = count + 1;
-      <span class="keyword">else</span>
-         d((j - 1)*n + i,:) = d((i - 1)*n + j,:);
+         L(:,i) = v(:,i)*sqrt(d(i,i));
       <span class="keyword">end</span>
    <span class="keyword">end</span>
-<span class="keyword">end</span>
-<span class="keyword">end</span>
+   <span class="keyword">end</span>
 
-<span class="comment">%==========================================================================</span>
-</pre><pre>      1         2         3         4         5         6         7         8         9</pre><pre class="codeinput"><span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
-</pre><h2 id="11">Change Log:</h2><p>[20110725]: The asymp_pdc routine was corrected to match the frequency             range with plotting routine, f = 0 was included in the "frequency"              for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [20150107]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = diagtom(a)
+   b = sparse(a');
+   c = sparse(diag(b(:)));
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> c = mdiag(a)
+   <span class="comment">%  diagonal matrix</span>
+   c = diag(diag(a)); <span class="comment">% UNSPARSED</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+   <span class="keyword">function</span> d=Dup(n)
+   <span class="comment">% '''D*vech(A) = vec(A), with symmetric A'''</span>
+   d = zeros(n*n, (n*(n + 1))/2);
+   count = 1;
+   <span class="keyword">for</span> j = 1:n
+      <span class="keyword">for</span> i = 1:n
+         <span class="keyword">if</span> i &gt;= j
+            d((j - 1)*n + i,count) = 1;
+            count = count + 1;
+         <span class="keyword">else</span>
+            d((j - 1)*n + i,:) = d((i - 1)*n + j,:);
+         <span class="keyword">end</span>
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   <span class="comment">%==========================================================================</span>
+
+   <span class="comment">%</span>
+   <span class="comment">%</span>
+   <span class="comment">%        1         2         3         4         5         6         7         8         9</span>
+   <span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
+
+   <span class="comment">% Change Log:</span>
+   <span class="comment">%</span>
+   <span class="comment">% [20110725]: The asymp_pdc routine was corrected to match the frequency</span>
+   <span class="comment">%             range with plotting routine, f = 0 was included in the "frequency"</span>
+   <span class="comment">%              for-loop:</span>
+   <span class="comment">%                                for ff = 1:nFreqs,</span>
+   <span class="comment">%                                   f = (ff-1)/(2*nFreqs); %</span>
+   <span class="comment">%                                        ^?^^</span>
+   <span class="comment">% [20150107]: Optimization \(^o^)/</span>
+
+   <span class="comment">% [EOF]</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% ASYMP_PDC
-%        Compute complex and squared partial directed coherence for any of three
-%        metrics REPLACE_WITH_DASH_DASH Euclidean, diagonal and informational REPLACE_WITH_DASH_DASH along with
-%        asymptotic statistics from vector autoregressive (VAR) coefficients in
-%        the frequency domain.
+function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
+%ASYMP_PDC  Compute complex and squared partial directed coherence for any
+%           of three metrics REPLACE_WITH_DASH_DASH Euclidean, diagonal and informational REPLACE_WITH_DASH_DASH
+%           along with asymptotic statistics from vector autoregressive
+%           (VAR) coefficients in the frequency domain.
 %
-%% Syntax:
+% Syntax:
 %        c = ASYMP_PDC(u,A,pf,nFreqs,metric,alpha)
 %
-%% Input Arguments:
+% Input Arguments:
 %        u:          multiple row vectors time series
 %        A:          AR estimate matrix by MVAR routine
 %        pf:         covariance matrix provided by MVAR routine
@@ -581,7 +637,7 @@ count = 1;
 %                    if alpha is zero, statistical analysis will not be
 %                    performed for faster computation.
 %
-%% Output Arguments:
+% Output Arguments:
 %        c: struct variable with following fields:
 %        |REPLACE_WITH_DASH_DASH .pdc       - PDC complex estimates
 %        |REPLACE_WITH_DASH_DASH .pdc2      - |PDC|^2 estimates
@@ -600,14 +656,14 @@ count = 1;
 %      i.e.
 %        .{pdc,pdc2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}
 %
-%% Description:
+% Description:
 %   Compute all three types of PDC REPLACE_WITH_DASH_DASH- connectivity measure REPLACE_WITH_DASH_DASH- and allied
 %   asymptotic statistics [2] measures for the chosen metric option: 
 %        * 'euc'  - original or Euclidean PDC as proposed in [1]; 
 %        * 'diag' - generalized PDC; 
 %        * 'info' - information PDC. 
 %
-%% Example:
+% Example:
 %  Annual sunspot numbers  and the melanoma cases (x10^5) in the State of
 %  Connecticuts, USA, from 1936 to 1972, given by
 %
@@ -660,7 +716,7 @@ count = 1;
 %
 %   % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Second part of xplot example end hereREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
 %
-%% References:
+% References:
 % [1] L.A. Baccala and K. Sameshima. Partial directed coherence: a new concept
 %     in neural structure determination. Biol Cybern 84:463REPLACE_WITH_DASH_DASH474,2001.
 %     <https://doi.org/10.1007/PL00007990>
@@ -673,447 +729,444 @@ count = 1;
 %     asymptotic theory for all partial directed coherence forms. Philos T Roy
 %     Soc A 371(1997):1REPLACE_WITH_DASH_DASH13, 2013. <https://doi.org/10.1098/rsta.2012.0158>
 %
-%% See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
+% See also: PDC_ALG, ASYMP_DTF, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
-%%
 
-function c = asymp_pdc(u,A,pf,nFreqs,metric,alpha)
+   if nargin < 6
+       error('ASYMP_PDC requires six input arguments.')
+   end
+   [m,n] = size(u);
+   if m > n
+       u = u.';
+   end
+   np = length(u);
+   [nChannels, ~, p] = size(A);  % ~ = dummy variable == nChannels
+   Af = A_to_f(A, nFreqs);
 
-if nargin < 6
-    error('ASYMP_PDC requires six input arguments.')
-end
-[m,n] = size(u);
-if m > n
-    u = u.';
-end
-np = length(u);
-[nChannels, ~, p] = size(A);  % ~ = dummy variable == nChannels
-Af = A_to_f(A, nFreqs);
+   flgVerbose = 0;
 
-flgVerbose = 0;
+   % Variables pre-alocation
+   pdc = zeros(nChannels,nChannels,nFreqs);  % To hold complex PDC
+   pdc2 = zeros(nChannels,nChannels,nFreqs); % for squared-PDC
 
-% Variables pre-alocation
-pdc = zeros(nChannels,nChannels,nFreqs);  % To hold complex PDC
-pdc2 = zeros(nChannels,nChannels,nFreqs); % for squared-PDC
-
-if alpha ~= 0
-   th      = zeros(nChannels,nChannels,nFreqs);
-   ci1     = zeros(nChannels,nChannels,nFreqs);
-   ci2     = zeros(nChannels,nChannels,nFreqs);
-   varass1 = zeros(nChannels,nChannels,nFreqs);
-   varass2 = zeros(nChannels,nChannels,nFreqs);
-   patdfr  = zeros(nChannels,nChannels,nFreqs);
-   patdenr = zeros(nChannels,nChannels,nFreqs);
-   pvalues = zeros(nChannels,nChannels,nFreqs);
-   if flgVerbose
+   if alpha ~= 0
+      th      = zeros(nChannels,nChannels,nFreqs);
+      ci1     = zeros(nChannels,nChannels,nFreqs);
+      ci2     = zeros(nChannels,nChannels,nFreqs);
+      varass1 = zeros(nChannels,nChannels,nFreqs);
+      varass2 = zeros(nChannels,nChannels,nFreqs);
+      patdfr  = zeros(nChannels,nChannels,nFreqs);
+      patdenr = zeros(nChannels,nChannels,nFreqs);
+      pvalues = zeros(nChannels,nChannels,nFreqs);
+      if flgVerbose
+         switch lower(metric)
+            case {'euc'}
+               disp('* Original PDC and asymptotic statistics')
+            case {'diag'}
+               disp('* Generalized PDC and asymptotic statistics')
+            case {'info'}
+               disp('* Information PDC and asymptotic statistics')
+            otherwise
+               error('Unknown metric.')
+         end
+      end
+   elseif flgVerbose
       switch lower(metric)
          case {'euc'}
-            disp('* Original PDC and asymptotic statistics')
+            disp('* Original PDC estimation')
          case {'diag'}
-            disp('* Generalized PDC and asymptotic statistics')
+            disp('* Generalized PDC estimation')
          case {'info'}
-            disp('* Information PDC and asymptotic statistics')
+            disp('* Information PDC estimation')
          otherwise
             error('Unknown metric.')
       end
    end
-elseif flgVerbose
+
+   % ======================================================================
+
    switch lower(metric)
-      case {'euc'}
-         disp('* Original PDC estimation')
-      case {'diag'}
-         disp('* Generalized PDC estimation')
-      case {'info'}
-         disp('* Information PDC estimation')
+      case {'euc'}           % for original PDC
+         dpdc_dev = zeros(1,(nChannels*(nChannels + 1))/2);
+         pfe = eye(nChannels);  % for complex PDC calculation  
+
+      case {'diag'}          % for gPDC
+         evar_d = mdiag(pf);
+         evar_d_big = kron(eye(2*nChannels), evar_d);
+         pinv_evar_d_big = pinv(evar_d_big);
+
+         %'derivative of vec(Ed-1) by vecE'
+         de_deh = Dup(nChannels);
+         debig_de = fdebig_de(nChannels);
+
+         dedinv_dev = diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big));
+         dedinv_deh = dedinv_dev*debig_de*de_deh;
+         pfe = pf;          % for complex gPDC calculation
+
+      case {'info'}         % for iPDC
+         evar_d = mdiag(pf);
+         evar_d_big = kron(eye(2*nChannels), evar_d);
+         pinv_evar_d_big = pinv(evar_d_big);
+
+         evar_big = kron(eye(2*nChannels), pf);
+         pinv_evar_big = sparse(pinv(evar_big));
+
+         %'derivative of vec(Ed-1) by vecE'
+         de_deh = Dup(nChannels);
+         debig_de = fdebig_de(nChannels);
+
+         dedinv_devd = sparse(diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big)));
+         dedinv_dehd = sparse(dedinv_devd*debig_de*de_deh);
+
+         %dedinv_dev = sparse(-kron(inv_e.', inv_e));
+         dedinv_dev = sparse(-kron(pinv_evar_big.', pinv_evar_big));
+         dedinv_deh = sparse(dedinv_dev*debig_de*de_deh);
+         pfe = pf;   % necessary for complex iPDC calculation
+
       otherwise
          error('Unknown metric.')
    end
-end
 
-% ======================================================================
+   gamma = bigautocorr(u, p);
+   omega = kron(inv(gamma), pf);
+   omega_evar = 2*pinv(Dup(nChannels))*kron(pf, pf) * pinv(Dup(nChannels)).';
 
-switch lower(metric)
-   case {'euc'}           % for original PDC
-      dpdc_dev = zeros(1,(nChannels*(nChannels + 1))/2);
-      pfe = eye(nChannels);  % for complex PDC calculation  
-      
-   case {'diag'}          % for gPDC
-      evar_d = mdiag(pf);
-      evar_d_big = kron(eye(2*nChannels), evar_d);
-      pinv_evar_d_big = pinv(evar_d_big);
+   %if (isOctave())
+   icdf_norm_alpha = norminv(1 - alpha/2.0,0,1);
+   %else
+   %   icdf_norm_alpha = icdf('norm',1 - alpha/2.0,0,1);
+   %end
 
-      %'derivative of vec(Ed-1) by vecE'
-      de_deh = Dup(nChannels);
-      debig_de = fdebig_de(nChannels);
-      
-      dedinv_dev = diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big));
-      dedinv_deh = dedinv_dev*debig_de*de_deh;
-      pfe = pf;          % for complex gPDC calculation
-      
-   case {'info'}         % for iPDC
-      evar_d = mdiag(pf);
-      evar_d_big = kron(eye(2*nChannels), evar_d);
-      pinv_evar_d_big = pinv(evar_d_big);
-      
-      evar_big = kron(eye(2*nChannels), pf);
-      pinv_evar_big = sparse(pinv(evar_big));
+   for ff = 1:nFreqs
+      f = (ff - 1)/(2*nFreqs);     %Corrected 7/25/2011, f starting at 0 rad/s.
+      Ca = fCa(f, p, nChannels);
 
-      %'derivative of vec(Ed-1) by vecE'
-      de_deh = Dup(nChannels);
-      debig_de = fdebig_de(nChannels);
-      
-      dedinv_devd = sparse(diagtom(vec(-pinv_evar_d_big*pinv_evar_d_big)));
-      dedinv_dehd = sparse(dedinv_devd*debig_de*de_deh);
-      
-      %dedinv_dev = sparse(-kron(inv_e.', inv_e));
-      dedinv_dev = sparse(-kron(pinv_evar_big.', pinv_evar_big));
-      dedinv_deh = sparse(dedinv_dev*debig_de*de_deh);
-      pfe = pf;   % necessary for complex iPDC calculation
+      a = Af(ff,:,:); a = a(:);
+      a = [real(a); imag(a)];
 
-   otherwise
-      error('Unknown metric.')
-end
+      omega2 = Ca*omega*Ca.';
+      L = fChol(omega2);
 
-gamma = bigautocorr(u, p);
-omega = kron(inv(gamma), pf);
-omega_evar = 2*pinv(Dup(nChannels))*kron(pf, pf) * pinv(Dup(nChannels)).';
-
-%if (isOctave())
-icdf_norm_alpha = norminv(1 - alpha/2.0,0,1);
-%else
-%   icdf_norm_alpha = icdf('norm',1 - alpha/2.0,0,1);
-%end
-
-for ff = 1:nFreqs
-   f = (ff - 1)/(2*nFreqs);     %Corrected 7/25/2011, f starting at 0 rad/s.
-   Ca = fCa(f, p, nChannels);
-   
-   a = Af(ff,:,:); a = a(:);
-   a = [real(a); imag(a)];
-
-   omega2 = Ca*omega*Ca.';
-   L = fChol(omega2);
-
-   for j = 1:nChannels
-      Ij = fIj(j,nChannels);
-      switch lower(metric)
-         case {'euc'}           % for PDC
-            Ije = Ij;
-            
-         case {'diag'}          % for gPDC
-            Ije = Ij*pinv_evar_d_big;
-            
-         case {'info'}          % for iPDC
-            Ije = Ij*pinv_evar_big*Ij;
-            
-         otherwise
-            error('Unknown metric.')
-      end
-      
-      for i = 1:nChannels
-         Iij = fIij(i,j,nChannels);
-         %For metric = diag or info case, include evar in the expression'
+      for j = 1:nChannels
+         Ij = fIj(j,nChannels);
          switch lower(metric)
-            case {'euc'}           % PDC
-               Iije = Iij;
-               
-            case {'diag'}          % gPDC
-               Iije = Iij*pinv_evar_d_big;
-               
-            case {'info'}          % iPDC
-               Iije = Iij*pinv_evar_d_big;
-               
+            case {'euc'}           % for PDC
+               Ije = Ij;
+
+            case {'diag'}          % for gPDC
+               Ije = Ij*pinv_evar_d_big;
+
+            case {'info'}          % for iPDC
+               Ije = Ij*pinv_evar_big*Ij;
+
             otherwise
                error('Unknown metric.')
          end
 
-         num = a.'*Iije*a;
-         den = a.'*Ije*a;
-         pdc2(i,j,ff) = num/den; % $|PDC_{ij}(ff)|^2$
-         
-         numd = Af(ff,i,j)/sqrt(pfe(i,i));
-         pdc(i,j,ff) = numd/sqrt(den); % complex PDC calculation
-         
-         % If alpha == 0, no statistical calculation for faster computation.
-         if alpha ~= 0
-            %'Add evar derivation'
+         for i = 1:nChannels
+            Iij = fIij(i,j,nChannels);
+            %For metric = diag or info case, include evar in the expression'
             switch lower(metric)
-               case {'euc'}
-                  %nop
-                  
-               case {'diag'}
-                  %'derivative of num by vecE'
-                  dnum_dev = kron((Iij*a).', a.')*dedinv_deh;
-                  %'derivative by den by vecE'
-                  dden_dev = kron((Ij*a).', a.')*dedinv_deh;
-                  dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
-                  
-               case {'info'}
-                  %'derivative of num by vecE'
-                  dnum_dev = kron((Iij*a).', a.')*dedinv_dehd;
-                  %'derivative of den by vecE'
-                  dden_dev = kron((Ij*a).', a.'*Ij)*dedinv_deh;
-                  dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
-                  
+               case {'euc'}           % PDC
+                  Iije = Iij;
+
+               case {'diag'}          % gPDC
+                  Iije = Iij*pinv_evar_d_big;
+
+               case {'info'}          % iPDC
+                  Iije = Iij*pinv_evar_d_big;
+
                otherwise
                   error('Unknown metric.')
             end
 
-            G1a = 2 * a.' * Iije/den - 2*num*a.'*Ije/(den^2);
-            G1 = -G1a * Ca;
-            varalpha = G1 * omega * G1.';
-            varevar = dpdc_dev * omega_evar * dpdc_dev.';
-            varass1(i,j,ff) = (varalpha + varevar)/np;
-            
-            ci1(i,j,ff) = pdc2(i,j,ff) ...
-                    - sqrt(varass1(i,j,ff))*icdf_norm_alpha;
-            ci2(i,j,ff) = pdc2(i,j,ff) ...
-                    + sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+            num = a.'*Iije*a;
+            den = a.'*Ije*a;
+            pdc2(i,j,ff) = num/den; % $|PDC_{ij}(ff)|^2$
 
-            G2a = Iije/den;
-                        
-            d = fEig(real(L), real(G2a)); % real() 28May2013            
+            numd = Af(ff,i,j)/sqrt(pfe(i,i));
+            pdc(i,j,ff) = numd/sqrt(den); % complex PDC calculation
 
-            patdf = (sum(d).^2)./sum(d.^2);
-            patden = sum(d)./sum(d.^2);
+            % If alpha == 0, no statistical calculation for faster computation.
+            if alpha ~= 0
+               %'Add evar derivation'
+               switch lower(metric)
+                  case {'euc'}
+                     %nop
 
-            th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np);
-            
-            pvalues(i,j,ff) = 1 - chi2cdf(pdc2(i,j,ff)*patden*np, patdf);
- 
-            varass2(i,j,ff) = patdf/(patden*np).^2;
-            patdfr(i,j,ff) = patdf;
-            patdenr(i,j,ff) = patden;
-         else % alpha is zero, no asymptotics calculation
-            % nop;
+                  case {'diag'}
+                     %'derivative of num by vecE'
+                     dnum_dev = kron((Iij*a).', a.')*dedinv_deh;
+                     %'derivative by den by vecE'
+                     dden_dev = kron((Ij*a).', a.')*dedinv_deh;
+                     dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
+
+                  case {'info'}
+                     %'derivative of num by vecE'
+                     dnum_dev = kron((Iij*a).', a.')*dedinv_dehd;
+                     %'derivative of den by vecE'
+                     dden_dev = kron((Ij*a).', a.'*Ij)*dedinv_deh;
+                     dpdc_dev = (den*dnum_dev - num*dden_dev)/(den^2);
+
+                  otherwise
+                     error('Unknown metric.')
+               end
+
+               G1a = 2 * a.' * Iije/den - 2*num*a.'*Ije/(den^2);
+               G1 = -G1a * Ca;
+               varalpha = G1 * omega * G1.';
+               varevar = dpdc_dev * omega_evar * dpdc_dev.';
+               varass1(i,j,ff) = (varalpha + varevar)/np;
+
+               ci1(i,j,ff) = pdc2(i,j,ff) ...
+                       - sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+               ci2(i,j,ff) = pdc2(i,j,ff) ...
+                       + sqrt(varass1(i,j,ff))*icdf_norm_alpha;
+
+               G2a = Iije/den;
+
+               d = fEig(real(L), real(G2a)); % real() 28May2013            
+
+               patdf = (sum(d).^2)./sum(d.^2);
+               patden = sum(d)./sum(d.^2);
+
+               th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np);
+
+               pvalues(i,j,ff) = 1 - chi2cdf(pdc2(i,j,ff)*patden*np, patdf);
+
+               varass2(i,j,ff) = patdf/(patden*np).^2;
+               patdfr(i,j,ff) = patdf;
+               patdenr(i,j,ff) = patden;
+            else % alpha is zero, no asymptotics calculation
+               % nop;
+            end
+         end  % j = nChannels
+      end  % i = nChannels
+   end  % ff = freqs
+
+   % assigning values to the c struct.
+   if alpha ~= 0
+      c.pdc = pdc;   % Complex PDC2/gPDC2/iPDC2
+      c.pdc2 = pdc2;
+      c.th = th;
+      c.ci1 = ci1;
+      c.ci2 = ci2;
+      c.metric = metric;
+      c.alpha = alpha;
+      c.p = p;
+      c.pvalues = pvalues; % p-values associated to PDC2/gPDC2/iPDC2
+      c.patden = patdenr;
+      c.patdf = patdfr;
+      c.varass1 = varass1;
+      c.varass2 = varass2;   
+   %  Statistically significant PDC2 on frequency scale
+      pdc2_temp = ((abs(pdc2) - abs(th)) > 0).*pdc2 ...
+                                              + ((abs(pdc2) - abs(th)) <= 0)*(-1);
+      pdc2_temp(pdc2_temp < 0) = NaN;
+      c.pdc2_th = pdc2_temp;
+
+   else % No statistics, just the |PDC^2| values/
+      c.pdc = pdc;
+      c.pdc2 = pdc2;
+      c.metric = metric;
+      c.alpha = 0;
+      c.p = p;
+      c.pvalues = [];   
+      c.th = [];
+      c.ci1 = [];
+      c.ci2 = [];
+      c.patdenr = [];
+      c.patdfr = [];
+      c.varass1 = [];
+      c.varass2 = [];
+   end
+
+   % Power spectra and coherence assignments to c struct.
+   c.SS = ss_alg(A, pf, nFreqs);
+   c.coh2 = coh_alg(c.SS);
+   %
+   end
+
+
+   %% Subfunctions
+   %
+
+   %==========================================================================
+   function gamma = bigautocorr(x, p)
+   % Autocorrelation. Data in row-wise orientation. From order 0 to p-1.
+   % Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''
+
+   [n, nd] = size(x);
+
+   gamma = zeros(n*p, n*p);
+   for i = 1:p
+      for j = 1:p
+         gamma(((i - 1)*n + 1):i*n, ((j - 1)*n + 1):j*n) = ...
+                                              xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
+      end
+   end
+   end
+
+   %==========================================================================
+   function c = xlag(x,tlag)
+   if tlag == 0
+      c = x;
+   else
+      c = zeros(size(x));
+      c(:,(tlag + 1):end) = x(:,1:(end - tlag));
+   end
+   end
+
+   %==========================================================================
+   function d = fEig(L, G2)
+   %'''Returns the eigenvalues'''
+
+   %L = mat(cholesky(omega, lower=1))
+   D = L.'*G2*L;
+
+   %disp('fEig: eig or svd?')
+
+   d  = svd(D);
+   d1 = sort(d);
+   %
+   % the two biggest eigenvalues no matter which values (non negative by
+   % construction
+   %
+   d = d1(length(d) - 1:length(d));
+
+   if (size(d) > 2)
+      disp('More than two Chi-squares in the sum:')
+   end
+   end
+
+   %==========================================================================
+   function c = fIij(i,j,n)
+   %'''Returns Iij of the formula'''
+   Iij = zeros(1,n^2);
+   Iij(n*(j - 1) + i) = 1;
+   Iij = diag(Iij);
+   c = kron(eye(2), Iij);
+
+   c = sparse(c);  % SPARSED
+   end
+
+   %==========================================================================
+   function c = fIj(j,n)
+   %'''Returns Ij of the formula'''
+   Ij = zeros(1,n);
+   Ij(j) = 1;
+   Ij = diag(Ij);
+   Ij = kron(Ij,eye(n));
+   c = kron(eye(2), Ij);
+
+   c = sparse(c);  % SPARSED
+   end
+
+   %==========================================================================
+   function d = fCa(f, p, n)
+   %'''Returns C* of the formula'''
+   C1 = cos(-2*pi*f*(1:p));
+   S1 = sin(-2*pi*f*(1:p));
+   C2 = [C1; S1];
+   d = kron(C2, eye(n^2));
+   end
+
+   %==========================================================================
+   function c = fdebig_de(n)
+   %'''Derivative of kron(I(2n), A) by A'''
+   %c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));
+   A = sparse(kron(TT(2*n, n), eye(n*2*n)));
+   B = sparse(kron(vec(eye(2*n)), eye(n)));
+   c = A * kron(eye(n), B);
+   c = sparse(c);
+   end
+
+   %==========================================================================
+   function c = vec(x)
+   %vec = lambda x: mat(x.ravel('F')).T
+   c = x(:);
+   end
+
+   %==========================================================================
+   function t = TT(a,b)
+   %''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''
+   t = zeros(a*b);
+   for i = 1:a
+      for j = 1:b
+         t((i - 1)*b + j,(j - 1)*a + i) = 1;
+      end
+   end
+   t = sparse(t);
+   end
+
+   %==========================================================================
+   function L = fChol(omega)
+   % Try Cholesky factorization
+   try
+      L = chol(omega)';
+      % If there's a small negative eigenvalue, diagonalize
+   catch
+      %   disp('linalgerror, probably IP = 1.')
+      [v,d] = eig(omega);
+      L = zeros(size(v));
+      for i = 1:length(d)
+         if d(i,i) < 0
+            d(i,i) = eps;
          end
-      end  % j = nChannels
-   end  % i = nChannels
-end  % ff = freqs
-
-% assigning values to the c struct.
-if alpha ~= 0
-   c.pdc = pdc;   % Complex PDC2/gPDC2/iPDC2
-   c.pdc2 = pdc2;
-   c.th = th;
-   c.ci1 = ci1;
-   c.ci2 = ci2;
-   c.metric = metric;
-   c.alpha = alpha;
-   c.p = p;
-   c.pvalues = pvalues; % p-values associated to PDC2/gPDC2/iPDC2
-   c.patden = patdenr;
-   c.patdf = patdfr;
-   c.varass1 = varass1;
-   c.varass2 = varass2;   
-%  Statistically significant PDC2 on frequency scale
-   pdc2_temp = ((abs(pdc2) - abs(th)) > 0).*pdc2 ...
-                                           + ((abs(pdc2) - abs(th)) <= 0)*(-1);
-   pdc2_temp(pdc2_temp < 0) = NaN;
-   c.pdc2_th = pdc2_temp;
-   
-else % No statistics, just the |PDC^2| values/
-   c.pdc = pdc;
-   c.pdc2 = pdc2;
-   c.metric = metric;
-   c.alpha = 0;
-   c.p = p;
-   c.pvalues = [];   
-   c.th = [];
-   c.ci1 = [];
-   c.ci2 = [];
-   c.patdenr = [];
-   c.patdfr = [];
-   c.varass1 = [];
-   c.varass2 = [];
-end
-
-% Power spectra and coherence assignments to c struct.
-c.SS = ss_alg(A, pf, nFreqs);
-c.coh2 = coh_alg(c.SS);
-%
-end
-
-
-%% Subfunctions
-%
-
-%==========================================================================
-function gamma = bigautocorr(x, p)
-% Autocorrelation. Data in row-wise orientation. From order 0 to p-1.
-% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''
-
-[n, nd] = size(x);
-
-gamma = zeros(n*p, n*p);
-for i = 1:p
-   for j = 1:p
-      gamma(((i - 1)*n + 1):i*n, ((j - 1)*n + 1):j*n) = ...
-                                           xlag(x, i - 1)*(xlag(x,j - 1).')/nd;
-   end
-end
-end
-
-%==========================================================================
-function c = xlag(x,tlag)
-if tlag == 0
-   c = x;
-else
-   c = zeros(size(x));
-   c(:,(tlag + 1):end) = x(:,1:(end - tlag));
-end
-end
-
-%==========================================================================
-function d = fEig(L, G2)
-%'''Returns the eigenvalues'''
-
-%L = mat(cholesky(omega, lower=1))
-D = L.'*G2*L;
-
-%disp('fEig: eig or svd?')
-
-d  = svd(D);
-d1 = sort(d);
-%
-% the two biggest eigenvalues no matter which values (non negative by
-% construction
-%
-d = d1(length(d) - 1:length(d));
-
-if (size(d) > 2)
-   disp('More than two Chi-squares in the sum:')
-end
-end
-
-%==========================================================================
-function c = fIij(i,j,n)
-%'''Returns Iij of the formula'''
-Iij = zeros(1,n^2);
-Iij(n*(j - 1) + i) = 1;
-Iij = diag(Iij);
-c = kron(eye(2), Iij);
-
-c = sparse(c);  % SPARSED
-end
-
-%==========================================================================
-function c = fIj(j,n)
-%'''Returns Ij of the formula'''
-Ij = zeros(1,n);
-Ij(j) = 1;
-Ij = diag(Ij);
-Ij = kron(Ij,eye(n));
-c = kron(eye(2), Ij);
-
-c = sparse(c);  % SPARSED
-end
-
-%==========================================================================
-function d = fCa(f, p, n)
-%'''Returns C* of the formula'''
-C1 = cos(-2*pi*f*(1:p));
-S1 = sin(-2*pi*f*(1:p));
-C2 = [C1; S1];
-d = kron(C2, eye(n^2));
-end
-
-%==========================================================================
-function c = fdebig_de(n)
-%'''Derivative of kron(I(2n), A) by A'''
-%c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));
-A = sparse(kron(TT(2*n, n), eye(n*2*n)));
-B = sparse(kron(vec(eye(2*n)), eye(n)));
-c = A * kron(eye(n), B);
-c = sparse(c);
-end
-
-%==========================================================================
-function c = vec(x)
-%vec = lambda x: mat(x.ravel('F')).T
-c = x(:);
-end
-
-%==========================================================================
-function t = TT(a,b)
-%''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''
-t = zeros(a*b);
-for i = 1:a
-   for j = 1:b
-      t((i - 1)*b + j,(j - 1)*a + i) = 1;
-   end
-end
-t = sparse(t);
-end
-
-%==========================================================================
-function L = fChol(omega)
-% Try Cholesky factorization
-try
-   L = chol(omega)';
-   % If there's a small negative eigenvalue, diagonalize
-catch
-   %   disp('linalgerror, probably IP = 1.')
-   [v,d] = eig(omega);
-   L = zeros(size(v));
-   for i = 1:length(d)
-      if d(i,i) < 0
-         d(i,i) = eps;
-      end
-      L(:,i) = v(:,i)*sqrt(d(i,i));
-   end
-end
-end
-
-%==========================================================================
-function c = diagtom(a)
-b = sparse(a');
-c = sparse(diag(b(:)));
-end
-
-%==========================================================================
-function c = mdiag(a)
-%  diagonal matrix
-c = diag(diag(a)); % UNSPARSED
-end
-
-%==========================================================================
-function d=Dup(n)
-% '''D*vech(A) = vec(A), with symmetric A'''
-d = zeros(n*n, (n*(n + 1))/2);
-count = 1;
-for j = 1:n
-   for i = 1:n
-      if i >= j
-         d((j - 1)*n + i,count) = 1;
-         count = count + 1;
-      else
-         d((j - 1)*n + i,:) = d((i - 1)*n + j,:);
+         L(:,i) = v(:,i)*sqrt(d(i,i));
       end
    end
-end
-end
+   end
 
-%==========================================================================
+   %==========================================================================
+   function c = diagtom(a)
+   b = sparse(a');
+   c = sparse(diag(b(:)));
+   end
 
-%%
-%
-%        1         2         3         4         5         6         7         8         9
-%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+   %==========================================================================
+   function c = mdiag(a)
+   %  diagonal matrix
+   c = diag(diag(a)); % UNSPARSED
+   end
 
-%% Change Log:
-%
-% [20110725]: The asymp_pdc routine was corrected to match the frequency 
-%             range with plotting routine, f = 0 was included in the "frequency" 
-%              for-loop:
-%                                for ff = 1:nFreqs,
-%                                   f = (ff-1)/(2*nFreqs); %
-%                                        ^?^^
-% [20150107]: Optimization \(^o^)/
+   %==========================================================================
+   function d=Dup(n)
+   % '''D*vech(A) = vec(A), with symmetric A'''
+   d = zeros(n*n, (n*(n + 1))/2);
+   count = 1;
+   for j = 1:n
+      for i = 1:n
+         if i >= j
+            d((j - 1)*n + i,count) = 1;
+            count = count + 1;
+         else
+            d((j - 1)*n + i,:) = d((i - 1)*n + j,:);
+         end
+      end
+   end
+   end
 
-% [EOF]
+   %==========================================================================
+
+   %
+   %
+   %        1         2         3         4         5         6         7         8         9
+   %23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+   % Change Log:
+   %
+   % [20110725]: The asymp_pdc routine was corrected to match the frequency 
+   %             range with plotting routine, f = 0 was included in the "frequency" 
+   %              for-loop:
+   %                                for ff = 1:nFreqs,
+   %                                   f = (ff-1)/(2*nFreqs); %
+   %                                        ^?^^
+   % [20150107]: Optimization \(^o^)/
+
+   % [EOF]
 ##### SOURCE END #####
 --></body></html>

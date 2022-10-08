@@ -1,10 +1,10 @@
-function tilefigs(figs)
-%TILEFIGS Tile all open figure windows around on the screen.
+function tilefigs1(figs)
+%TILEFIGS1 Tile all open figure windows around on the screen.
 %
-%   TILEFIGS places all open figure windows around on the screen with no
+%   TILEFIGS1 places all open figure windows around on the screen with no
 %   overlap.
 %
-%   TILEFIGS(FIGS) can be used to specify which figures that should be
+%   TILEFIGS1(FIGS) can be used to specify which figures that should be
 %   tiled. Figures are not sorted when specified.
 %
 %   See also SORTFIGS, CYCLEFIGS.

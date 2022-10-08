@@ -1,4 +1,4 @@
-%% Example 4 -- Nonminimum Phase Data Model
+%% EXAMPLE 4 -- Nonminimum Phase Data Model
 % This is part of supplemental material accompanying the article of
 % the Special Issue of Frontiers in Network Physiology on Research Topic in
 % **Network Physiology, Insights in Information Theory: 2021**:

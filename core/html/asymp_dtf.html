@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ASYMP_DTF</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-06"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
+      --><title>asymp_dtf</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-07"><meta name="DC.source" content="asymp_dtf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,79 +67,110 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>ASYMP_DTF</h1><!--introduction--><pre>      Compute DTF connectivity measures magnitude, from series j--&gt;i, for
-      any of three of metrics --- Euclidean, diagonal and information ---
-      as well as asymptotic statistics from vector autoregressive (VAR)
-      coefficients in the frequency domain.</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax:</a></li><li><a href="#2">Input Arguments:</a></li><li><a href="#3">Output Arguments:</a></li><li><a href="#4">Description:</a></li><li><a href="#5">Example:</a></li><li><a href="#6">References:</a></li><li><a href="#7">See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</a></li><li><a href="#9">Change Log:</a></li></ul></div><h2 id="1">Syntax:</h2><pre>      c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)</pre><h2 id="2">Input Arguments:</h2><pre>      u      - multiple row vectors time series
-      A      - AR estimate matrix obtained via MVAR routine
-      pf     - covariance matrix provided via MVAR routine
-      nFreqs - number of point in [0,fs/2) frequency scale
-      metric - 'euc':  -- Euclidean   ==&gt; original DTF
-               'diag': -- diagonal    ==&gt; DC (directed coherence)
-               'info': -- information ==&gt; iDTF
-      alpha  - significance level
-               if alpha is zero, statistical analysis won't be performed</pre><h2 id="3">Output Arguments:</h2><pre>      c struct variable with following fields:
-      |-- .dtf       - complex DTF estimates
-      |-- .dtf2      - |DTF|^2 estimates
-      |-- .pvalues   - p-values associated to DTF2 estimates.
-      |-- .th        - |DTF|^2 threshold value with (1-alpha) significance
-      |                level.
-      |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of
-      |                |DTF|^2 estimates
-      |-- .metric    - metric used for DTF calculation
-      |-- .alpha     - significance level
-      |-- .p         - VAR model order
-      |-- .patdenr   -
-      |-- .patdfr    - degree of freedom
-      |-- .SS        - power spectra
-      +-- .coh2      - squared spectral coherence
-  or
-      c.{dtf,dtf2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}</pre><h2 id="4">Description:</h2><pre class="language-matlab">Compute <span class="string">all</span> <span class="string">three</span> <span class="string">types</span> <span class="string">of</span> <span class="string">DTF</span> <span class="string">---</span> <span class="string">Granger</span> <span class="string">influentiability</span> <span class="string">measure</span> <span class="string">and</span>
-their <span class="string">allied</span> <span class="string">statistical</span> <span class="string">measures</span> <span class="string">of</span> <span class="string">asymptotic</span> <span class="string">statistics</span> <span class="string">for</span> <span class="string">metric</span>
-option:
-     * <span class="string">'euc'</span>  - original or <span class="string">Euclidean</span> <span class="string">DTF</span> <span class="string">as</span> <span class="string">proposed</span> <span class="string">in</span> <span class="string">[Kaminski &amp;</span>
-                Blinowska, 2001];
-     * <span class="string">'diag'</span> - Directed Coherence (DC) or <span class="string">gDTF</span> <span class="string">(generalized)</span>;
-     * <span class="string">'info'</span> - information DTF.
-</pre><h2 id="5">Example:</h2><p>Annual sunspot numbers  and the melanoma cases (10^5) in the State of Connecticuts, USA, from 1936 to 1972, given by</p><pre class="language-matlab">u = [ 40 115 100  80  60  40  23  10  10  25  75 145 130 130  80  65  20 <span class="keyword">...</span>
-      10   5  10  60 190 180 175 120  50  35  20  10  15  30  60 105 105 <span class="keyword">...</span>
-      105  80  65; <span class="keyword">...</span>
-     0.9 0.8 0.8 1.3 1.4 1.2 1.7 1.8 1.6 1.5 1.5 2.0 2.5 2.7 2.9 2.5 3.1 <span class="keyword">...</span>
-     2.4 2.2 2.9 2.5 2.6 3.2 3.8 4.2 3.9 3.7 3.3 3.7 3.9 4.1 3.8 4.7 4.4 <span class="keyword">...</span>
-     4.8 4.8 4.8];
-</pre><pre class="language-matlab">[nChannels,nSegLength] =size(u);
-<span class="keyword">if</span> nChannels &gt; nSegLength, u = u.'; [nChannels,nSegLength]=size(u); <span class="keyword">end</span>;
-<span class="keyword">for</span> i=1:nChannels, u(i,:)=detrend(u(i,:)); <span class="keyword">end</span>;
-</pre><pre class="language-matlab">A        = [ 0.8280  -12.1097; 0.0009   -0.1258]; <span class="comment">% VAR model estimate.</span>
-A(:,:,2) = [-0.0724   13.4798; 0.0036   -0.1391];
-A(:,:,3) = [-0.3561  -36.4805; 0.0013   -0.0735];
-</pre><pre class="language-matlab">pf = [568.0873  -1.5815; -1.5815 0.0474];
-</pre><pre class="language-matlab">nFreqs = 128;     <span class="comment">% number of points to calculate DTF in the frequency scale</span>
-metric = <span class="string">'info'</span>;  <span class="comment">% calculating information DTF</span>
-alpha  = 0.01;    <span class="comment">% significance level</span>
-c = asymp_dtf(u,A,pf,nFreqs,metric,alpha); <span class="comment">% Calculate iDTF with statistics</span>
-</pre><pre class="language-matlab">chLabels={<span class="string">'Sunspot'</span>;<span class="string">'Melanoma'</span>}; <span class="comment">% Channel labels</span>
-flgColor    = 0;      fs = 1;    w_max = 0.5;
-flgPrinting =[1 1 1 2 2 0 1]; flgScale = 1;
-flgMax      = <span class="string">'all'</span>;    flgSignifColor = 3;
-figure; xplot(c) <span class="comment">% Visualiza PDC plots. Try this first.</span>
-</pre><pre class="language-matlab">figure;
-xplot(c,flgPrinting,fs,w_max,chLabels,flgColor); <span class="comment">% DTF plot with confidence</span>
-                                                 <span class="comment">% interval</span>
-figure;
-xplot(c,flgPrinting,fs,fs/2,chLabels,flgColor,flgScale,flgMax, <span class="keyword">...</span>
-                                                           flgSignifColor);
-</pre><h2 id="6">References:</h2><pre class="language-matlab">[1] M.J. Kaminski and <span class="string">K.J.</span> <span class="string">Blinowska.</span> <span class="string">A</span> <span class="string">new</span> <span class="string">method</span> <span class="string">of</span> <span class="string">the</span> <span class="string">description</span> <span class="string">of</span> <span class="string">the</span>
-information <span class="string">flow</span> <span class="string">in</span> <span class="string">the</span> <span class="string">brain</span> <span class="string">structures.</span> <span class="string">Biol</span> <span class="string">Cybern</span> <span class="string">65:203--210</span>,1991.
-&lt;https://doi.org/10.1007/bf00198091&gt;
-</pre><pre class="language-matlab">[2] L.A.B. Baccala, D.Y. Takahashi and <span class="string">K.</span> <span class="string">Sameshima.</span> <span class="string">Directed</span> <span class="string">transfer</span>
-<span class="keyword">function</span>: unified asymptotic <span class="string">theory</span> <span class="string">and</span> <span class="string">some</span> <span class="string">of</span> <span class="string">its</span> <span class="string">implications.</span> <span class="string">IEEE</span> <span class="string">T</span>
-Bio-Med Eng <span class="string">63:2450--2460</span>, 2016.
-&lt;https://doi.org/10.1109/TBME.2016.2550199&gt;
-</pre><h2 id="7">See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</h2><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Change Log:</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
+<span class="comment">%ASYMP_DTF   Compute DTF connectivity measures magnitude, from series j--&gt;i, for</span>
+<span class="comment">%            any of three of metrics --- Euclidean, diagonal and information ---</span>
+<span class="comment">%            as well as asymptotic statistics from vector autoregressive (VAR)</span>
+<span class="comment">%            coefficients in the frequency domain.</span>
+<span class="comment">%</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">%        c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)</span>
+<span class="comment">%</span>
+<span class="comment">% Input Arguments:</span>
+<span class="comment">%        u      - multiple row vectors time series</span>
+<span class="comment">%        A      - AR estimate matrix obtained via MVAR routine</span>
+<span class="comment">%        pf     - covariance matrix provided via MVAR routine</span>
+<span class="comment">%        nFreqs - number of point in [0,fs/2) frequency scale</span>
+<span class="comment">%        metric - 'euc':  -- Euclidean   ==&gt; original DTF</span>
+<span class="comment">%                 'diag': -- diagonal    ==&gt; DC (directed coherence)</span>
+<span class="comment">%                 'info': -- information ==&gt; iDTF</span>
+<span class="comment">%        alpha  - significance level</span>
+<span class="comment">%                 if alpha is zero, statistical analysis won't be performed</span>
+<span class="comment">%</span>
+<span class="comment">% Output Arguments:</span>
+<span class="comment">%        c struct variable with following fields:</span>
+<span class="comment">%        |-- .dtf       - complex DTF estimates</span>
+<span class="comment">%        |-- .dtf2      - |DTF|^2 estimates</span>
+<span class="comment">%        |-- .pvalues   - p-values associated to DTF2 estimates.</span>
+<span class="comment">%        |-- .th        - |DTF|^2 threshold value with (1-alpha) significance</span>
+<span class="comment">%        |                level.</span>
+<span class="comment">%        |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of</span>
+<span class="comment">%        |                |DTF|^2 estimates</span>
+<span class="comment">%        |-- .metric    - metric used for DTF calculation</span>
+<span class="comment">%        |-- .alpha     - significance level</span>
+<span class="comment">%        |-- .p         - VAR model order</span>
+<span class="comment">%        |-- .patdenr   -</span>
+<span class="comment">%        |-- .patdfr    - degree of freedom</span>
+<span class="comment">%        |-- .SS        - power spectra</span>
+<span class="comment">%        +-- .coh2      - squared spectral coherence</span>
+<span class="comment">%    or</span>
+<span class="comment">%        c.{dtf,dtf2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}</span>
+<span class="comment">%</span>
+<span class="comment">% Description:</span>
+<span class="comment">%   Compute all three types of DTF --- Granger influentiability measure and</span>
+<span class="comment">%   their allied statistical measures of asymptotic statistics for metric</span>
+<span class="comment">%   option:</span>
+<span class="comment">%        * 'euc'  - original or Euclidean DTF as proposed in [Kaminski &amp;</span>
+<span class="comment">%                   Blinowska, 2001];</span>
+<span class="comment">%        * 'diag' - Directed Coherence (DC) or gDTF (generalized);</span>
+<span class="comment">%        * 'info' - information DTF.</span>
+<span class="comment">%</span>
+<span class="comment">% Example:</span>
+<span class="comment">%</span>
+<span class="comment">%  Annual sunspot numbers  and the melanoma cases (10^5) in the State of</span>
+<span class="comment">%  Connecticuts, USA, from 1936 to 1972, given by</span>
+<span class="comment">%</span>
+<span class="comment">%   u = [ 40 115 100  80  60  40  23  10  10  25  75 145 130 130  80  65  20 ...</span>
+<span class="comment">%         10   5  10  60 190 180 175 120  50  35  20  10  15  30  60 105 105 ...</span>
+<span class="comment">%         105  80  65; ...</span>
+<span class="comment">%        0.9 0.8 0.8 1.3 1.4 1.2 1.7 1.8 1.6 1.5 1.5 2.0 2.5 2.7 2.9 2.5 3.1 ...</span>
+<span class="comment">%        2.4 2.2 2.9 2.5 2.6 3.2 3.8 4.2 3.9 3.7 3.3 3.7 3.9 4.1 3.8 4.7 4.4 ...</span>
+<span class="comment">%        4.8 4.8 4.8];</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%   [nChannels,nSegLength] =size(u);</span>
+<span class="comment">%   if nChannels &gt; nSegLength, u = u.'; [nChannels,nSegLength]=size(u); end;</span>
+<span class="comment">%   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;</span>
+<span class="comment">%</span>
+<span class="comment">%   A        = [ 0.8280  -12.1097; 0.0009   -0.1258]; % VAR model estimate.</span>
+<span class="comment">%   A(:,:,2) = [-0.0724   13.4798; 0.0036   -0.1391];</span>
+<span class="comment">%   A(:,:,3) = [-0.3561  -36.4805; 0.0013   -0.0735];</span>
+<span class="comment">%</span>
+<span class="comment">%   pf = [568.0873  -1.5815; -1.5815 0.0474];</span>
+<span class="comment">%</span>
+<span class="comment">%   nFreqs = 128;     % number of points to calculate DTF in the frequency scale</span>
+<span class="comment">%   metric = 'info';  % calculating information DTF</span>
+<span class="comment">%   alpha  = 0.01;    % significance level</span>
+<span class="comment">%   c = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Calculate iDTF with statistics</span>
+<span class="comment">%</span>
+<span class="comment">%   chLabels={'Sunspot';'Melanoma'}; % Channel labels</span>
+<span class="comment">%   flgColor    = 0;      fs = 1;    w_max = 0.5;</span>
+<span class="comment">%   flgPrinting =[1 1 1 2 2 0 1]; flgScale = 1;</span>
+<span class="comment">%   flgMax      = 'all';    flgSignifColor = 3;</span>
+<span class="comment">%   figure; xplot(c) % Visualiza PDC plots. Try this first.</span>
+<span class="comment">%</span>
+<span class="comment">%   figure;</span>
+<span class="comment">%   xplot(c,flgPrinting,fs,w_max,chLabels,flgColor); % DTF plot with confidence</span>
+<span class="comment">%                                                    % interval</span>
+<span class="comment">%   figure;</span>
+<span class="comment">%   xplot(c,flgPrinting,fs,fs/2,chLabels,flgColor,flgScale,flgMax, ...</span>
+<span class="comment">%                                                              flgSignifColor);</span>
+<span class="comment">%</span>
+<span class="comment">% References:</span>
+<span class="comment">%   [1] M.J. Kaminski and K.J. Blinowska. A new method of the description of the</span>
+<span class="comment">%   information flow in the brain structures. Biol Cybern 65:203--210,1991.</span>
+<span class="comment">%   &lt;https://doi.org/10.1007/bf00198091&gt;</span>
+<span class="comment">%</span>
+<span class="comment">%   [2] L.A.B. Baccala, D.Y. Takahashi and K. Sameshima. Directed transfer</span>
+<span class="comment">%   function: unified asymptotic theory and some of its implications. IEEE T</span>
+<span class="comment">%   Bio-Med Eng 63:2450--2460, 2016.</span>
+<span class="comment">%   &lt;https://doi.org/10.1109/TBME.2016.2550199&gt;</span>
+<span class="comment">%</span>
+<span class="comment">% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT</span>
+
+<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
 
-<span class="keyword">function</span> c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 
 <span class="keyword">if</span> ~(nargin == 6)
    error(<span class="string">'ASYMP_DTF requires six input arguments.'</span>)
@@ -556,19 +587,19 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 <span class="keyword">end</span>
 <span class="comment">%==========================================================================</span>
 </pre><pre>      1         2         3         4         5         6         7         8         9</pre><pre class="codeinput"><span class="comment">%23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
-</pre><h2 id="9">Change Log:</h2><p>[2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on              to match the frequency range with plotting routine, f = 0 was              included in the "frequency" for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [2021/09/02, LAB]: complex dtf calculation added</p><p>[2015/01/07]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
+</pre><h2 id="3">Change Log:</h2><p>[2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on              to match the frequency range with plotting routine, f = 0 was              included in the "frequency" for-loop:                                for ff = 1:nFreqs,                                   f = (ff-1)/(2*nFreqs); %                                        ^?^^ [2021/09/02, LAB]: complex dtf calculation added</p><p>[2015/01/07]: Optimization \(^o^)/</p><pre class="codeinput"><span class="comment">% [EOF]</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% ASYMP_DTF
-%        Compute DTF connectivity measures magnitude, from series jREPLACE_WITH_DASH_DASH>i, for
-%        any of three of metrics REPLACE_WITH_DASH_DASH- Euclidean, diagonal and information REPLACE_WITH_DASH_DASH-
-%        as well as asymptotic statistics from vector autoregressive (VAR)
-%        coefficients in the frequency domain.
+function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
+%ASYMP_DTF   Compute DTF connectivity measures magnitude, from series jREPLACE_WITH_DASH_DASH>i, for
+%            any of three of metrics REPLACE_WITH_DASH_DASH- Euclidean, diagonal and information REPLACE_WITH_DASH_DASH-
+%            as well as asymptotic statistics from vector autoregressive (VAR)
+%            coefficients in the frequency domain.
 %
-%% Syntax:
+% Syntax:
 %        c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)
 %
-%% Input Arguments:
+% Input Arguments:
 %        u      - multiple row vectors time series
 %        A      - AR estimate matrix obtained via MVAR routine
 %        pf     - covariance matrix provided via MVAR routine
@@ -579,7 +610,7 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 %        alpha  - significance level
 %                 if alpha is zero, statistical analysis won't be performed
 %
-%% Output Arguments:
+% Output Arguments:
 %        c struct variable with following fields:
 %        |REPLACE_WITH_DASH_DASH .dtf       - complex DTF estimates
 %        |REPLACE_WITH_DASH_DASH .dtf2      - |DTF|^2 estimates
@@ -598,7 +629,7 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 %    or
 %        c.{dtf,dtf2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}
 %
-%% Description:
+% Description:
 %   Compute all three types of DTF REPLACE_WITH_DASH_DASH- Granger influentiability measure and
 %   their allied statistical measures of asymptotic statistics for metric
 %   option:
@@ -607,10 +638,10 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 %        * 'diag' - Directed Coherence (DC) or gDTF (generalized);
 %        * 'info' - information DTF.
 %
-%% Example:
+% Example:
 % 
-% Annual sunspot numbers  and the melanoma cases (10^5) in the State of
-% Connecticuts, USA, from 1936 to 1972, given by
+%  Annual sunspot numbers  and the melanoma cases (10^5) in the State of
+%  Connecticuts, USA, from 1936 to 1972, given by
 %
 %   u = [ 40 115 100  80  60  40  23  10  10  25  75 145 130 130  80  65  20 ...
 %         10   5  10  60 190 180 175 120  50  35  20  10  15  30  60 105 105 ...
@@ -648,7 +679,7 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 %   xplot(c,flgPrinting,fs,fs/2,chLabels,flgColor,flgScale,flgMax, ...
 %                                                              flgSignifColor);
 %
-%% References:
+% References:
 %   [1] M.J. Kaminski and K.J. Blinowska. A new method of the description of the
 %   information flow in the brain structures. Biol Cybern 65:203REPLACE_WITH_DASH_DASH210,1991.
 %   <https://doi.org/10.1007/bf00198091>
@@ -658,12 +689,11 @@ hh = -[h1; h2];           <span class="comment">%hh = cat(h1, h2, 0)</span>
 %   Bio-Med Eng 63:2450REPLACE_WITH_DASH_DASH2460, 2016. 
 %   <https://doi.org/10.1109/TBME.2016.2550199>
 %
-%% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
+% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
 % See file license.txt in installation directory for licensing terms.
 
-function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 
 if ~(nargin == 6)
    error('ASYMP_DTF requires six input arguments.')

@@ -1,4 +1,4 @@
-%% Example 2 -- Vector Autoregressive Moving Average Model (VARMA)
+%% EXAMPLE 2 -- Vector Autoregressive Moving Average Model (VARMA)
 %
 % This is part of supplemental material accompanying the article of
 % the Special Issue of Frontiers in Network Physiology on Research Topic in
