@@ -39,7 +39,7 @@ The figure bellow shows schematically the evolution path of **directed connectiv
 
 ***
 
-![connectivity_measures_in_asymppdc.png](./connectivity_measures_in_asymppdc.png)
+![connectivity_measures_in_asymppdc.png](./connectivity_measures_in_asymppdc_ge2.png)
 
 ***
 
@@ -73,7 +73,7 @@ own data sets. The basic steps to set up and analyze a data set using **asympPDC
 
 ## Examples
 
-Examples from the literature are provided in `./examples directory` with complete m-files with program structure similar to `analysis_template.m`.
+Examples from the literature are provided in `./examples directory` with complete m-files in program structure similar to `analysis_template.m`.
  We hope that the examples may help readers and users to understand 
 and/or gain further insight into **Granger causality**, **instantaneous 
 Granger causality**, **PDC**, and **DTF concepts** and the **realm of connectivity 
