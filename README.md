@@ -45,7 +45,7 @@ The figure bellow shows schematically the evolution path of **directed connectiv
 
 * **Legend**: **N** - number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function.
 
-* **Authors**(sorted by year): [Akaike 1968](https://doi.org/10.1007/BF02911655); [Granger 1969](https://www.jstor.org/stable/1912791); [Gersch and Goddard 1970](https://doi.org/10.1126/science.169.3946.701); [Sims 1972](https://www.jstor.org/stable/1806097); [Geweke 1979](https://doi.org/10.1016/0304-4076(78)90067-2); Saito and Harashima 1981; [Geweke 1982](https://doi.org/10.2307/2287238); [Geweke 1984](https://doi.org/10.2307/2288723); [Kamiński and Blinowska 1991](https://doi.org/10.1007/bf00198091); [Hosoya 1991](https://doi.org/10.1007/BF01192551); Lütkepohl 1993 --> [2005](https://doi.org/10.1007/978-3-540-27752-1); [Hosoya 1994](https://github.com/asymppdc/asympPDC/blob/main/); [Baccalá et al. 1998](https://github.com/asymppdc/asympPDC/blob/main/); [Baccalá and Sameshima 2001](https://doi.org/10.1007/PL00007990); [Schelter et al. 2005](https://doi.org/10.1016/j.jneumeth.2005.09.001); [Baccalá et al. 2006](https://doi.org/10.1002/9783527609970.ch16); [Takahashi et al. 2007](https://doi.org/10.1080/02664760701593065); [Baccalá et al. 2007](https://doi.org/10.1109/ICDSP.2007.4288544); [de Brito et al. 2010](https://doi.org/10.1109/IEMBS.2010.5626856); [Takahashi et al. 2010](https://doi.org/10.1007/s00422-010-0410-x); [Baccalá et al. 2013](https://doi.org/10.1098/rsta.2012.0158); [Baccalá et al. 2016](https://doi.org/10.1109/TBME.2016.2550199).
+* **Authors**(sorted by year): [Akaike 1968](https://doi.org/10.1007/BF02911655); [Granger 1969](https://www.jstor.org/stable/1912791); [Gersch and Goddard 1970](https://doi.org/10.1126/science.169.3946.701); [Sims 1972](https://www.jstor.org/stable/1806097); [Geweke 1979](https://doi.org/10.1016/0304-4076(78)90067-2); Saito and Harashima 1981; [Geweke 1982](https://doi.org/10.2307/2287238); [Geweke 1984](https://doi.org/10.2307/2288723); [Kamiński and Blinowska 1991](https://doi.org/10.1007/bf00198091); [Hosoya 1991](https://doi.org/10.1007/BF01192551); Lütkepohl 1993 --> [2005](https://doi.org/10.1007/978-3-540-27752-1); [Hosoya 2001](https://doi.org/10.1111/1467-9892.00240); [Baccalá et al. 1998](https://www.researchgate.net/publication/245464851); [Baccalá and Sameshima 2001](https://doi.org/10.1007/PL00007990); [Schelter et al. 2005](https://doi.org/10.1016/j.jneumeth.2005.09.001); [Baccalá et al. 2006](https://doi.org/10.1002/9783527609970.ch16); [Takahashi et al. 2007](https://doi.org/10.1080/02664760701593065); [Baccalá et al. 2007](https://doi.org/10.1109/ICDSP.2007.4288544); [de Brito et al. 2010](https://doi.org/10.1109/IEMBS.2010.5626856); [Takahashi et al. 2010](https://doi.org/10.1007/s00422-010-0410-x); [Baccalá et al. 2013](https://doi.org/10.1098/rsta.2012.0158); [Baccalá et al. 2016](https://doi.org/10.1109/TBME.2016.2550199).
 
 > 1. Lütkepohl, H. (1993) Introduction to Multiple Time Series Analysis. 2nd Edition, Springer, Berlin.
 > 
@@ -57,19 +57,19 @@ To get started, you may modify the `analysis_template.m` script file to adapt it
  contains four examples of data that might be of help to deal with your 
 own data sets. The basic steps to set up and analyze a data set using **asympPDC Package** are:
 
-1. Importing or opening  column- or row-vectors **data file**;
+1. **Importing** or opening  column- or row-vectors data file;
 
-2. Choosing proper label for your data, assigning values to `chLabels` variable, or leave it empty, [ ];
+2. Choosing proper **label** for your data, assigning values to `chLabels` variable, or leave it empty, [ ];
 
-3. Data** pre-processing**: filtering, detrending and standardization (optional);
+3. Data **pre-processing**: filtering, detrending and standardization (optional);
 
-4. Multivariate autoregressive (MAR) model estimation, by 
-   choosing parameters, **estimation algorithm** and **model order selection 
-   criterion**;
+4. Multivariate autoregressive (MAR) **model estimation**, by 
+   choosing parameters, *estimation algorithm* and *model order selection 
+   criterion*;
 
-5. PDC or DTF estimation, choosing analysis parameters such as **significance levels** for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , **metric** for PDC/DTF, and **number of frequency points**, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for  further analysis, or plotted;
+5. **PDC** or **DTF estimation**, choosing analysis parameters such as **significance levels** for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , **metric** for PDC/DTF, and **number of frequency points**, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for  further analysis, or plotted;
 
-6. Visualizing analysis results through the use of `xplot`, `xplot_pvalues` and `xplot_title` functions that will properly format and plot PDC/DTF and corresponding *p*-values results saved in `struct variable` obtained in the previous step in the frequency domain.  Several matrix-layout plotting using `xplot` and `xplot_pvalues` can be achieved by properly choice of plotting parameters, i.e. `flgPrinting`, `w_max`, `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`. See further details in the `xplot` function.
+6. **Visualization** of analysis results through the use of `xplot`, `xplot_pvalues` and `xplot_title` functions that will properly format and plot PDC/DTF and corresponding *p*-values results saved in `struct variable` obtained in the previous step in the frequency domain.  Several matrix-layout plotting using `xplot` and `xplot_pvalues` can be achieved by properly choice of plotting parameters, i.e. `flgPrinting`, `w_max`, `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`. See further details in the `xplot` function.
 
 ## Examples
 
