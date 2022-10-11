@@ -38,11 +38,7 @@ These commands tile the screen with figure windows. The `tilefigs1` and `tilefig
 The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (***N* = 2**) to **multivariate** (***N* ≥ 2**) **time series**, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **asympPDC Package**.
 
 ***
-
-
-
-![connectivity_measures_in_asymppdc.png](/home/koichi/Documents/GitHub/asympPDC2/connectivity_measures_in_asymppdc.png)
-
+![connectivity_measures_in_asymppdc.png](./connectivity_measures_in_asymppdc.png)
 ***
 
 * **Legend**: **N** - number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function.
