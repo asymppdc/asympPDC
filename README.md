@@ -31,7 +31,7 @@ If `run_all_examples.m` completes successfully, congratulation, you should see 4
 >> tilefigs1 or tilefigs2
 ```
 
-These commands tile the screen with figure windows. The `tilefigs1` and `tilefigs2` functions do not seem to work in the Octave environment.
+These commands tile the screen with figure windows. The `tilefigs1` and `tilefigs2` functions do not seem to work in the Octave environment (on Octave v7.2.0 tilefigs2 and tilefigs2 recovered function to tile the figure windows, but these windows stay behind Octave IDE).
 
 ## Schematic view of connectivity measures evolution
 
