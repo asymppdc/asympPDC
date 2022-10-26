@@ -1,0 +1,299 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>mvarresidue</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="mvarresidue.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
+<span class="comment">%MVARRESIDUE  Portmanteau residues test for whiteness</span>
+<span class="comment">%</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">%        [Pass,Portmanteau,st,ths] = MVARRESIDUE(ef,ns,p,aValue,h,flgVerbose)</span>
+<span class="comment">%</span>
+<span class="comment">% Input Arguments:</span>
+<span class="comment">%        ef       - matrix of column vectors - residues</span>
+<span class="comment">%        ns       - number of points estimated</span>
+<span class="comment">%        p        - model order</span>
+<span class="comment">%        aValue   - confidence interval</span>
+<span class="comment">%        h        - lag  - maximum lag</span>
+<span class="comment">%        flgVerbose - If 1: verbose for printing the testing results</span>
+<span class="comment">%                        0: perform tests silently</span>
+<span class="comment">%</span>
+<span class="comment">% Output Arguments:</span>
+<span class="comment">%         Pass    - number of computed correlation coefficients</span>
+<span class="comment">%         Portmanteau -result of Portmanteau test: 0 reject; 1 not rejected</span>
+<span class="comment">%                                                           (white hypothesis)</span>
+<span class="comment">%         st      - Portmanteau statistic</span>
+<span class="comment">%         ths     - threshold value</span>
+<span class="comment">%</span>
+<span class="comment">% Reference:</span>
+<span class="comment">% [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis.</span>
+<span class="comment">%                         Springer-Verlag. Sec. 4.4.3, p. 169--171</span>
+<span class="comment">%</span>
+<span class="comment">% See also: mvar</span>
+<span class="comment">%</span>
+<span class="comment">%         LAB 11/Apr/2000</span>
+<span class="comment">%         KS  28/Apr/2007</span>
+
+<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+
+
+   <span class="keyword">if</span> ~exist(<span class="string">'h'</span>,<span class="string">'var'</span>), h=10; <span class="keyword">end</span>
+   ef=ef';
+   [t,Portmanteau,st,ths,compr]=crosstest(ef,h,ns,aValue,p);
+   Pass=t/compr;
+
+   <span class="keyword">if</span> flgVerbose
+      fprintf([<span class="string">'\n'</span> repmat(<span class="string">'='</span>,1,100) <span class="string">'\n'</span>])
+      disp(<span class="string">'                  MVAR RESIDURES TEST FOR WHITENESS'</span>)
+      disp(repmat(<span class="string">'-'</span>,1,100))
+   <span class="keyword">end</span>
+
+   <span class="keyword">if</span> flgVerbose
+      <span class="keyword">if</span> Portmanteau
+         disp([<span class="string">'Good MAR model fitting! Residues white noise hypothesis '</span> <span class="keyword">...</span>
+            <span class="string">'NOT rejected.'</span>])
+      <span class="keyword">else</span>
+         disp(<span class="string">'(**) Poor MAR model fitting:'</span>)
+         disp(<span class="string">'                   Residues white noise hypothesis was rejected.'</span>)
+      <span class="keyword">end</span>
+      disp([<span class="string">'Pass = '</span>, sprintf(<span class="string">'%g'</span>,Pass)])
+      disp([<span class="string">'  st = '</span>, sprintf(<span class="string">'%g'</span>,st)])
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+<span class="comment">% Subfunction:</span>
+
+<span class="keyword">function</span> [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p)
+<span class="comment">%CROSSTEST  Cross-correlation computation between data signal column vectors</span>
+<span class="comment">%</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">%          [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p);</span>
+<span class="comment">%</span>
+<span class="comment">% Input arguments:</span>
+<span class="comment">%        u = matrix of column vectors - residues</span>
+<span class="comment">%        h - lag - maximu lag</span>
+<span class="comment">%        ns - number of points estimated</span>
+<span class="comment">%        th - confidence</span>
+<span class="comment">%        p - model order</span>
+<span class="comment">%</span>
+<span class="comment">% Output arguments:</span>
+<span class="comment">%         t - correlation test - number of times the 2/sqrt(ns) threshold is exceeded</span>
+<span class="comment">%         Portmanteau - test result - 0 - REJECT , 1 not rejected (white hypothesis)</span>
+<span class="comment">%         s - portamanteau statistic</span>
+<span class="comment">%         ths - threshold value</span>
+<span class="comment">%         compr - # of computed correlation coefficients</span>
+<span class="comment">%         X - cross correlation vector columns: order 11 12 ... 21 22 .. etc</span>
+<span class="comment">%                   (i-1)*nseries+j</span>
+<span class="comment">%         reference:Luktpohl(1993) Chap. 4</span>
+<span class="comment">%</span>
+<span class="comment">%         LAB 11/4/2000</span>
+<span class="comment">%         Stein 27/10/2009 - Changes (h -&gt; h+1 and ns-i -&gt; ns-i+1)</span>
+<span class="comment">%</span>
+
+   <span class="keyword">if</span> nargin==4
+      p=0;
+   <span class="keyword">end</span>
+   [~,n]=size(u);
+   C=zeros(n,n,h);
+   X=xcorr(u,h,<span class="string">'coeff'</span>);
+   <span class="keyword">for</span> i=h+1:2*h+1
+      C(:,:,i-h)=reshape(X(i,:),n,n);
+   <span class="keyword">end</span>
+
+   <span class="comment">%Simple test</span>
+   t=sum(sum(sum(abs(C(:,:,2:h+1))&gt;2/sqrt(ns))));
+
+   <span class="comment">% Portmanteau</span>
+   s=0;
+   SO=pinv(C(:,:,1));
+   <span class="keyword">for</span> i=2:(h+1) <span class="comment">%Stein - changed to h+1</span>
+      s=s+((ns-i+1)^(-1))*trace(C(:,:,i)'*SO*C(:,:,i)*SO); <span class="comment">%Stein - changed to ns-i+1</span>
+   <span class="keyword">end</span>
+   s=ns^2*s;
+   ths=chi2inv(th,(h-p)*n^2);
+   Portmanteau=s&lt;ths;
+   compr=n*n*h;
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [Pass,Portmanteau,st,ths]=mvarresidue(ef,ns,p,aValue,h,flgVerbose)
+%MVARRESIDUE  Portmanteau residues test for whiteness
+%
+% Syntax:
+%        [Pass,Portmanteau,st,ths] = MVARRESIDUE(ef,ns,p,aValue,h,flgVerbose)
+%
+% Input Arguments:
+%        ef       - matrix of column vectors - residues
+%        ns       - number of points estimated
+%        p        - model order
+%        aValue   - confidence interval
+%        h        - lag  - maximum lag
+%        flgVerbose - If 1: verbose for printing the testing results
+%                        0: perform tests silently
+%
+% Output Arguments:
+%         Pass    - number of computed correlation coefficients
+%         Portmanteau -result of Portmanteau test: 0 reject; 1 not rejected
+%                                                           (white hypothesis)
+%         st      - Portmanteau statistic
+%         ths     - threshold value
+%
+% Reference:
+% [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis.
+%                         Springer-Verlag. Sec. 4.4.3, p. 169REPLACE_WITH_DASH_DASH171
+%
+% See also: mvar
+%
+%         LAB 11/Apr/2000
+%         KS  28/Apr/2007
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022.
+% See file license.txt in installation directory for licensing terms.
+
+
+   if ~exist('h','var'), h=10; end
+   ef=ef';
+   [t,Portmanteau,st,ths,compr]=crosstest(ef,h,ns,aValue,p);
+   Pass=t/compr;
+
+   if flgVerbose
+      fprintf(['\n' repmat('=',1,100) '\n'])
+      disp('                  MVAR RESIDURES TEST FOR WHITENESS')
+      disp(repmat('-',1,100))
+   end
+
+   if flgVerbose
+      if Portmanteau
+         disp(['Good MAR model fitting! Residues white noise hypothesis ' ...
+            'NOT rejected.'])
+      else
+         disp('(**) Poor MAR model fitting:')
+         disp('                   Residues white noise hypothesis was rejected.')
+      end
+      disp(['Pass = ', sprintf('%g',Pass)])
+      disp(['  st = ', sprintf('%g',st)])
+   end
+end
+
+
+% Subfunction:
+
+function [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p)
+%CROSSTEST  Cross-correlation computation between data signal column vectors
+%
+% Syntax:
+%          [t,Portmanteau,s,ths,compr,X] = crosstest(u,h,ns,th,p);
+%
+% Input arguments:
+%        u = matrix of column vectors - residues
+%        h - lag - maximu lag
+%        ns - number of points estimated
+%        th - confidence
+%        p - model order
+%
+% Output arguments:
+%         t - correlation test - number of times the 2/sqrt(ns) threshold is exceeded
+%         Portmanteau - test result - 0 - REJECT , 1 not rejected (white hypothesis)
+%         s - portamanteau statistic
+%         ths - threshold value
+%         compr - # of computed correlation coefficients
+%         X - cross correlation vector columns: order 11 12 ... 21 22 .. etc
+%                   (i-1)*nseries+j
+%         reference:Luktpohl(1993) Chap. 4
+%
+%         LAB 11/4/2000
+%         Stein 27/10/2009 - Changes (h -> h+1 and ns-i -> ns-i+1)
+%
+
+   if nargin==4
+      p=0;
+   end
+   [~,n]=size(u);
+   C=zeros(n,n,h);
+   X=xcorr(u,h,'coeff');
+   for i=h+1:2*h+1
+      C(:,:,i-h)=reshape(X(i,:),n,n);
+   end
+
+   %Simple test
+   t=sum(sum(sum(abs(C(:,:,2:h+1))>2/sqrt(ns))));
+
+   % Portmanteau
+   s=0;
+   SO=pinv(C(:,:,1));
+   for i=2:(h+1) %Stein - changed to h+1
+      s=s+((ns-i+1)^(-1))*trace(C(:,:,i)'*SO*C(:,:,i)*SO); %Stein - changed to ns-i+1
+   end
+   s=ns^2*s;
+   ths=chi2inv(th,(h-p)*n^2);
+   Portmanteau=s<ths;
+   compr=n*n*h;
+end
+##### SOURCE END #####
+--></body></html>

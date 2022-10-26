@@ -1,0 +1,440 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>mvar</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-08"><meta name="DC.source" content="mvar.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion,flgVerbose)
+<span class="comment">%MVAR   Estimate AR model coefficients based on chosen estimation</span>
+<span class="comment">%       algorithm, and model order selectio criterion.</span>
+<span class="comment">%</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">%        [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion,flgVerbose)</span>
+<span class="comment">%</span>
+<span class="comment">% Input Arguments:</span>
+<span class="comment">%     u     - data rows</span>
+<span class="comment">%     maxIP - externaly defined maximum IP</span>
+<span class="comment">%     alg   - estimation algorithm 1: Nutall-Strand;</span>
+<span class="comment">%                                  2: mlsm -  minimum least-square method;</span>
+<span class="comment">%                                  3: Vieira-Morf; 4: QR arfit.</span>
+<span class="comment">%     criterion for order choice - 0: MDL (not implemented)</span>
+<span class="comment">%                                  1: AIC; 2: Hanna-Quinn; 3 Schwarz;</span>
+<span class="comment">%                                  4: FPE; 5: fixed order given by maxIP value</span>
+<span class="comment">%     flgVerbose - display model order limit values</span>
+<span class="comment">%</span>
+<span class="comment">% Output Arguments:</span>
+<span class="comment">%     IP     - Autoregressive model order</span>
+<span class="comment">%     pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward</span>
+<span class="comment">%              prediction error</span>
+<span class="comment">%     A      - Complex array of forward linear prediction matrix</span>
+<span class="comment">%              coefficients</span>
+<span class="comment">%     pb     - Complex backward linear prediction error covariance array</span>
+<span class="comment">%     B      - Complex array of backward linear prediction matrix</span>
+<span class="comment">%              coefficients</span>
+<span class="comment">%     ef     - Forward residuals</span>
+<span class="comment">%     eb     - Backward residuals</span>
+<span class="comment">%     vaic   - Decision criterion value</span>
+<span class="comment">%     Vaicv  - All criterion values from p=2 up to p=IP</span>
+<span class="comment">%</span>
+<span class="comment">% Description:</span>
+<span class="comment">%   Perform AR model coefficients estimation based on chosen algorithm, and</span>
+<span class="comment">%   model order selectio criterion.</span>
+<span class="comment">%</span>
+<span class="comment">% References:</span>
+<span class="comment">%   [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis.</span>
+<span class="comment">%                         Springer-Verlag.</span>
+<span class="comment">%</span>
+<span class="comment">%   [2] Marple Jr, SL (1987). Digital Spectral Analysis with Application.</span>
+<span class="comment">%                         Prentice-Hall, Englewood-Cliffs, 1987.</span>
+<span class="comment">%</span>
+<span class="comment">% See also: MCARNS, MCARVM, CMLSM, ARFIT, MVARRESIDUES</span>
+
+<span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccala, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+
+
+   [nSegLength,nChannels] = size(u');
+
+   <span class="keyword">if</span> nargin&lt;3, alg = 1; criterion = 1; <span class="keyword">end</span> <span class="comment">% default parameters</span>
+   <span class="keyword">if</span> nargin&lt;4, criterion = 1; <span class="keyword">end</span>        <span class="comment">% default parameter choice</span>
+   <span class="keyword">if</span> nargin&lt;5, flgVerbose = 1; <span class="keyword">end</span>
+
+   <span class="keyword">if</span> criterion == 5 <span class="comment">% Fixed order in maxIP</span>
+      <span class="keyword">if</span> maxIP == 0
+         pf = u * u';     <span class="comment">% Eq. (15.90) Equation numbering refers to Marple Jr.(1987)</span>
+         pb = pf;         <span class="comment">% Eq. (15.90)</span>
+         ef = u;
+         eb = u;
+         npf = size(pf);
+         A = zeros(npf,npf,0);
+         B = A;
+         vaic = det(pf);
+         Vaicv = det(pf);
+         IP = 0;
+         <span class="keyword">return</span>
+      <span class="keyword">end</span>
+      IP = maxIP;
+      <span class="keyword">switch</span> alg      <span class="comment">%  Formula from Marple Jr.</span>
+         <span class="keyword">case</span> 1
+            [pf,A,pb,B,ef,eb] = mcarns(u,IP);
+            pf = pf(:,:)/nSegLength; <span class="comment">% Nuttall-Strand needs scaling.</span>
+         <span class="keyword">case</span> 2
+            [pf,A,ef] = cmlsm(u,IP);
+            B  = [ ]; eb = [ ]; pb = [ ];
+            pf = pf(:,:)/nSegLength;
+         <span class="keyword">case</span> 3
+            [pf,A,pb,B,ef,eb] = mcarvm(u,IP);
+            pf = pf(:,:)/nSegLength; <span class="comment">% Vieira-Morf needs scaling.</span>
+         <span class="keyword">case</span> 4
+            [pf,A,ef] = arfitcaps(u,IP);
+            B  = [ ]; eb = [ ]; pb = [ ];
+            <span class="comment">% Arfit does not require scaling. pf=pf;</span>
+      <span class="keyword">end</span>
+
+      vaic = length(u)*log(det(pf))+2*(nChannels*nChannels)*IP;
+      Vaicv = vaic;
+      <span class="keyword">return</span>
+   <span class="keyword">end</span>
+
+   vaicv = 0;
+   <span class="keyword">if</span> nargin &lt; 2
+      maxOrder = 30;
+      <span class="keyword">if</span> flgVerbose,
+         disp([<span class="string">'maxOrder limited to '</span> sprintf(<span class="string">'%1.0f'</span>,(maxOrder))])
+      <span class="keyword">end</span>
+      UpperboundOrder = round(3*sqrt(nSegLength)/nChannels); <span class="comment">% Marple Jr (1987). p. 409</span>
+      <span class="comment">% Suggested by Nuttall, 1976.</span>
+      UpperboundOrder = min([maxOrder UpperboundOrder]);
+   <span class="keyword">else</span>
+      maxOrder = maxIP;
+      UpperboundOrder = maxIP;
+      <span class="keyword">if</span> flgVerbose
+         disp([<span class="string">'maxOrder limited to '</span> sprintf(<span class="string">'%1.0f'</span>,maxOrder)])
+      <span class="keyword">end</span>
+   <span class="keyword">end</span>
+
+   IP = 1;
+   Vaicv = zeros(maxOrder+1,1);
+
+   T = length(u);
+   K = nChannels;
+
+
+   <span class="keyword">while</span> IP &lt;= UpperboundOrder
+      m = IP;
+      <span class="keyword">switch</span> alg
+         <span class="keyword">case</span> 1
+            [npf,na,npb,nb,nef,neb] = mcarns(u,IP);
+         <span class="keyword">case</span> 2
+            [npf,na,nef] = cmlsm(u,IP);
+         <span class="keyword">case</span> 3
+            [npf,na,npb,nb,nef,neb] = mcarvm(u,IP);
+         <span class="keyword">case</span> 4
+            [npf,na,nef] = arfitcaps(u,IP);
+      <span class="keyword">end</span>
+
+      <span class="keyword">switch</span> criterion
+         <span class="keyword">case</span> 1  <span class="comment">% Akaike's Informaion Criterin (AIC)</span>
+            vaic = length(u)*log(det(npf)) <span class="keyword">...</span>
+                   + 2*(nChannels*nChannels)*IP;             <span class="comment">%(4.3.2)(Lutkepohl'05)</span>
+         <span class="keyword">case</span> 2  <span class="comment">% Hannan-Quinn (HQ)</span>
+            vaic = length(u)*log(det(npf)) <span class="keyword">...</span><span class="comment">               %(4.3.8)(Lutkepohl'05)</span>
+                   + 2*log(log(length(u)))*(nChannels*nChannels)*IP;
+         <span class="keyword">case</span> 3  <span class="comment">% Schwarz (SC) (Schwarz, 1978)</span>
+            vaic = length(u)*log(det(npf)) <span class="keyword">...</span>
+                   + log(length(u))*(nChannels*nChannels)*IP;<span class="comment">%(4.3.9)(Lutkepohl'05)</span>
+         <span class="keyword">case</span> 4  <span class="comment">% FPE - Final prediction error (Akaike, 1970)</span>
+             vaic = log(det(npf)*((length(u)+nChannels*IP+1) <span class="keyword">...</span>
+                    /(length(u)-nChannels*IP-1))^nChannels); <span class="comment">%(4.3.1)(Lutkepohl'05)</span>
+         <span class="keyword">otherwise</span>
+            <span class="comment">%nop</span>
+      <span class="keyword">end</span>
+
+      Vaicv(IP+1) = vaic;
+      <span class="keyword">if</span> flgVerbose, fprintf(<span class="string">'IP=%0.f  vaic=%f\n'</span>,IP,vaic); <span class="keyword">end</span>
+      <span class="keyword">if</span> (vaic &gt; vaicv) &amp;&amp; (IP ~=1 )
+         vaic = vaicv;
+         <span class="keyword">break</span>;
+      <span class="keyword">end</span> <span class="comment">% Akaike condition</span>
+      vaicv = vaic;
+      pf = npf;
+      A  = na;
+      ef = nef;
+      <span class="keyword">if</span> alg == 1 || alg == 3
+         B  = nb;
+         eb = neb;
+         pb = npb;
+      <span class="keyword">else</span> <span class="comment">% review status for backward prediction in clmsm</span>
+         B  = [];
+         eb = [];
+         pb = [];
+      <span class="keyword">end</span>
+      IP = IP + 1;
+   <span class="keyword">end</span>
+
+   <span class="keyword">if</span> flgVerbose, disp(<span class="string">' '</span>); <span class="keyword">end</span>
+   IP = IP - 1;
+   vaic = vaicv;
+   Vaicv = Vaicv(2:IP+1);
+
+   <span class="keyword">switch</span> alg
+      <span class="keyword">case</span> {1,3} <span class="comment">%Nuttall-Strand and Vieira-Morf need scaling.</span>
+         pf = pf(:,:)/nSegLength;
+      <span class="keyword">case</span> 4
+         <span class="comment">% nop</span>
+         <span class="comment">% pf = pf; % arfit does not need scaling.</span>
+      <span class="keyword">otherwise</span>  <span class="comment">%</span>
+         pf = pf(:,:)/nSegLength;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion,flgVerbose)
+%MVAR   Estimate AR model coefficients based on chosen estimation
+%       algorithm, and model order selectio criterion.
+% 
+% Syntax:
+%        [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = MVAR(u,maxIP,alg,criterion,flgVerbose)
+%
+% Input Arguments:
+%     u     - data rows
+%     maxIP - externaly defined maximum IP
+%     alg   - estimation algorithm 1: Nutall-Strand; 
+%                                  2: mlsm -  minimum least-square method;
+%                                  3: Vieira-Morf; 4: QR arfit.
+%     criterion for order choice - 0: MDL (not implemented)
+%                                  1: AIC; 2: Hanna-Quinn; 3 Schwarz;
+%                                  4: FPE; 5: fixed order given by maxIP value
+%     flgVerbose - display model order limit values
+%
+% Output Arguments: 
+%     IP     - Autoregressive model order
+%     pf     - Covariance matrix of NUMCHS x NUMCHS of linear forward
+%              prediction error
+%     A      - Complex array of forward linear prediction matrix
+%              coefficients
+%     pb     - Complex backward linear prediction error covariance array
+%     B      - Complex array of backward linear prediction matrix
+%              coefficients
+%     ef     - Forward residuals
+%     eb     - Backward residuals
+%     vaic   - Decision criterion value
+%     Vaicv  - All criterion values from p=2 up to p=IP
+%
+% Description:
+%   Perform AR model coefficients estimation based on chosen algorithm, and
+%   model order selectio criterion.
+%
+% References:
+%   [1] Lutkepohl, H (2005). New Introduction to Multiple Time Series Analysis. 
+%                         Springer-Verlag. 
+%
+%   [2] Marple Jr, SL (1987). Digital Spectral Analysis with Application.
+%                         Prentice-Hall, Englewood-Cliffs, 1987. 
+%
+% See also: MCARNS, MCARVM, CMLSM, ARFIT, MVARRESIDUES
+
+% (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
+
+   [nSegLength,nChannels] = size(u');
+
+   if nargin<3, alg = 1; criterion = 1; end % default parameters
+   if nargin<4, criterion = 1; end        % default parameter choice
+   if nargin<5, flgVerbose = 1; end
+
+   if criterion == 5 % Fixed order in maxIP
+      if maxIP == 0
+         pf = u * u';     % Eq. (15.90) Equation numbering refers to Marple Jr.(1987)
+         pb = pf;         % Eq. (15.90)
+         ef = u;
+         eb = u;
+         npf = size(pf);
+         A = zeros(npf,npf,0);
+         B = A;
+         vaic = det(pf);
+         Vaicv = det(pf);
+         IP = 0;
+         return
+      end
+      IP = maxIP;
+      switch alg      %  Formula from Marple Jr.
+         case 1
+            [pf,A,pb,B,ef,eb] = mcarns(u,IP);
+            pf = pf(:,:)/nSegLength; % Nuttall-Strand needs scaling.
+         case 2
+            [pf,A,ef] = cmlsm(u,IP);
+            B  = [ ]; eb = [ ]; pb = [ ];
+            pf = pf(:,:)/nSegLength;
+         case 3
+            [pf,A,pb,B,ef,eb] = mcarvm(u,IP);
+            pf = pf(:,:)/nSegLength; % Vieira-Morf needs scaling.
+         case 4
+            [pf,A,ef] = arfitcaps(u,IP);
+            B  = [ ]; eb = [ ]; pb = [ ];
+            % Arfit does not require scaling. pf=pf;
+      end
+
+      vaic = length(u)*log(det(pf))+2*(nChannels*nChannels)*IP;
+      Vaicv = vaic;
+      return
+   end
+   
+   vaicv = 0;
+   if nargin < 2
+      maxOrder = 30;
+      if flgVerbose, 
+         disp(['maxOrder limited to ' sprintf('%1.0f',(maxOrder))])
+      end
+      UpperboundOrder = round(3*sqrt(nSegLength)/nChannels); % Marple Jr (1987). p. 409
+      % Suggested by Nuttall, 1976.
+      UpperboundOrder = min([maxOrder UpperboundOrder]);
+   else
+      maxOrder = maxIP;
+      UpperboundOrder = maxIP;
+      if flgVerbose
+         disp(['maxOrder limited to ' sprintf('%1.0f',maxOrder)])
+      end
+   end
+
+   IP = 1;
+   Vaicv = zeros(maxOrder+1,1);
+
+   T = length(u);
+   K = nChannels;
+
+
+   while IP <= UpperboundOrder
+      m = IP;
+      switch alg
+         case 1
+            [npf,na,npb,nb,nef,neb] = mcarns(u,IP);
+         case 2
+            [npf,na,nef] = cmlsm(u,IP);
+         case 3
+            [npf,na,npb,nb,nef,neb] = mcarvm(u,IP);
+         case 4
+            [npf,na,nef] = arfitcaps(u,IP);
+      end
+
+      switch criterion
+         case 1  % Akaike's Informaion Criterin (AIC)
+            vaic = length(u)*log(det(npf)) ...
+                   + 2*(nChannels*nChannels)*IP;             %(4.3.2)(Lutkepohl'05)
+         case 2  % Hannan-Quinn (HQ)
+            vaic = length(u)*log(det(npf)) ...               %(4.3.8)(Lutkepohl'05)
+                   + 2*log(log(length(u)))*(nChannels*nChannels)*IP;  
+         case 3  % Schwarz (SC) (Schwarz, 1978)
+            vaic = length(u)*log(det(npf)) ...
+                   + log(length(u))*(nChannels*nChannels)*IP;%(4.3.9)(Lutkepohl'05)
+         case 4  % FPE - Final prediction error (Akaike, 1970)
+             vaic = log(det(npf)*((length(u)+nChannels*IP+1) ...
+                    /(length(u)-nChannels*IP-1))^nChannels); %(4.3.1)(Lutkepohl'05)
+         otherwise
+            %nop
+      end
+
+      Vaicv(IP+1) = vaic;
+      if flgVerbose, fprintf('IP=%0.f  vaic=%f\n',IP,vaic); end
+      if (vaic > vaicv) && (IP ~=1 )
+         vaic = vaicv;
+         break;
+      end % Akaike condition
+      vaicv = vaic;
+      pf = npf;
+      A  = na;
+      ef = nef;
+      if alg == 1 || alg == 3
+         B  = nb;
+         eb = neb;
+         pb = npb;
+      else % review status for backward prediction in clmsm
+         B  = [];
+         eb = [];
+         pb = [];
+      end
+      IP = IP + 1;
+   end
+
+   if flgVerbose, disp(' '); end
+   IP = IP - 1;
+   vaic = vaicv;
+   Vaicv = Vaicv(2:IP+1);
+
+   switch alg
+      case {1,3} %Nuttall-Strand and Vieira-Morf need scaling.
+         pf = pf(:,:)/nSegLength;
+      case 4
+         % nop 
+         % pf = pf; % arfit does not need scaling.
+      otherwise  %
+         pf = pf(:,:)/nSegLength;
+   end
+end
+
+##### SOURCE END #####
+--></body></html>
