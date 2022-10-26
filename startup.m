@@ -1,10 +1,8 @@
-%% STARTUP script for asympPDC Package
+%% asympPDC Package startup script
 %
-%% Usage:
-%     Run this file to initialize the set up of asympPDC Package.
+% Run this file to initialize the set up of asympPDC Package.
 %
-%% Note:
-%     You may have to customize this script for your computing environment.
+% You may have to customize this script for your computing environment.
 %
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
@@ -110,15 +108,17 @@ if isOctave()
 fprintf(1,'\n')
 end
 
-%% Check for dependencies on other Matlab(R) toolboxes and fileexchange routines
+%% Check for dependencies on other MATLAB(R) toolboxes and fileexchange routines
 %% needed in asympPDC
 
 % Check if Statistics Toolbox is available - see if ch2cdf is present
 if ~isOctave()
+   kPkgs = 0;
    if ~isempty(which('chi2cdf')) && ~isempty(which('chi2inv')) ...
          && ~isempty(which('norminv'))
       fprintf('[asympPDC startup] Statistics Toolbox(TM) or Statistics and Machine Learning Toolbox(TM) \n');
       fprintf('                   seems to be present.\n');
+      kPkgs = kPkgs +1;
    else
       fprintf(2,'[asympPDC startup] WARNING: Statistics Toolbox(TM) or Statistics and Machine \n');
       fprintf(2,'[asympPDC startup]          Learning Toolbox(TM) does not seem to be present.\n');
@@ -131,6 +131,7 @@ if ~isOctave()
 
    if ~isempty(which('xcorr')) && ~isempty(which('norminv'))
       fprintf('[asympPDC startup] Signal Processing Toolbox(TM) seems to be present.\n');
+      kPkgs = kPkgs +1;
    else
       fprintf(2,'[asympPDC startup] WARNING: Signal Processing Toolbox(TM) does not seem to be present.\n');
       fprintf(2,'[asympPDC startup]          Will not be able to perform mvarresidue routines \n');
@@ -141,6 +142,7 @@ end
 
 if ~isempty(which('dlyap')) && ~isOctave()
    fprintf('[asympPDC startup] Control System Toolbox(TM) seems to be present.\n');
+   kPkgs = kPkgs +1;
 else
    fprintf(2,'[asympPDC startup] WARNING: Control System Toolbox(TM) does not seem to be present.\n\n');
    fprintf(  '[asympPDC startup] The lyap.m legacy code from 1986 Control System Toolbox(TM) will be used.\n');
@@ -221,7 +223,7 @@ if isOctave()
 else
    rng('default')
    rng('shuffle')
-   fprintf('[asympPDC startup] Random number generator initialized using Matlab recommended procedure.\n');
+   fprintf('[asympPDC startup] Random number generator initialized using MATLAB recommended procedure.\n');
 end
 fprintf(1,'\n')
 
@@ -233,16 +235,24 @@ else
    warning on all
 end
 
-fprintf('[asympPDC startup] All warnings enabled\n');
-fprintf(1,'\n')
-fprintf('[asympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n\n\n');
-
+if kPkgs < 3
+   if isOctave()
+      fprintf(1,'\n')
+      fprintf(2,'[asympPDC startup] WARNING: One or more required Octave package(s) are missing.\n');
+      fprintf(2,'[asympPDC startup]          Install the packages before proceeding. \n');
+      fprintf(2,'[asympPDC startup]          (You may re-run ''startup.m'').\n\n\n')
+   else
+      fprintf(1,'\n')
+      fprintf(2,'[asympPDC startup] WARNING: One or more required MATLAB toolboxes are missing.\n');
+      fprintf(2,'[asympPDC startup]          Statistics, Control Systen and Signal Processing Toolboxes \n');
+      fprintf(2,'[asympPDC startup]          are necessary for running asympPDC Package. \n');
+      fprintf(2,'[asympPDC startup]          (You may re-run ''startup.m'').\n\n\n')
+      
+   end
+else
+   fprintf('[asympPDC startup] All warnings enabled\n');
+   fprintf(1,'\n')
+   fprintf('[asympPDC startup] Initialization completed (you may re-run ''startup.m'' if necessary).\n\n\n');
+end
 % <startup.html back to top>
 
-
-%%
-% get(0,'ScreenSize')
-
-% monitorPositions = get(0,'MonitorPositions');
-% matlabMonitorLocation = monitorPositions(:,1:2);
-% matlabMonitorSize = monitorPositions(:,3:4) - monitorPositions(:,1:2) + 1;

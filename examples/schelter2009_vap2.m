@@ -1,4 +1,4 @@
-%% EICHLER ET AL.(2006) - VAP II 5-dimension VAR[3] process
+%% EICHLER ET AL.(2006)b - VAP II 5-dimension VAR[3] process
 %
 % An example borrowed from Schelter et al. (2009) 
 %
@@ -27,10 +27,10 @@ clear; clc
 %% Data generation
 %
 
-nDiscard = 10000;    % number of points discarded at beginning of simulation
+nBurnIn = 10000;    % number of points discarded at beginning of simulation
 nPoints  = 3000;   % number of analyzed samples points
 
-u = fschelter2009_vap2(nPoints, nDiscard);
+u = fschelter2009_vap2(nPoints, nBurnIn);
 %chLabels = []; % or 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs =1;

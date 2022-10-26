@@ -1,4 +1,4 @@
-%% ANDREWS & HERZBERG (1985) - Sunspot-Melanoma 1936-1972 Series PDC Demo
+%% ANDREWS & HERZBERG (1985)a - Sunspot-Melanoma 1936-1972 Series PDC Demo
 %
 %% Data File: skin.dat
 % This data is from:
@@ -34,7 +34,7 @@
 % * ANNUAL TOTAL MELANOMA INCIDENCE(AGE-ADJUSTED PER 10**5) CONNECTICUT
 % * ANNUAL SUNSPOT RELATIVE NUMBER
 %
-%% Causality Analysis using PDC 
+%% Causality Analysis using Partial Directed Coherence (PDC) 
 % In this example, ANNUAL SUNSPOT RELATIVE NUMBER and TOTAL MELANOMA
 % INCIDENCE(AGE-ADJUSTED PER 10**5) in the state of CONNECTICUT will be
 % considered
@@ -130,8 +130,9 @@ end
 % significant, from *Melanoma to Sunspot*, as seen in the following analysis.
 
 
-%% Data pre-processing: detrending and standardization options
-%
+%% 
+% Data pre-processing: detrending and standardization options
+
 
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
@@ -249,7 +250,7 @@ shg; pause(3)
 % using either generalized PDC or information PDC.
 %
 
-%% Showing more detail changing the scale and adding color information
+%% Showing more detail by changing the scale and adding color information
 % The following figure shows in more detail the rescaled y-axis of PDC from
 % *Sunspot* to *Melanoma*, which one would expect some causal influence of solar
 % radiation intensity increase on skin cancer incidence.
@@ -317,6 +318,8 @@ e.Tragct = Tr_gct;
 e.pvaluesgct = pValue_gct;
 
 %% iPDC with alpha = 1% analysis Matrix Layout Plotting 
+%
+
 flgColor = 0;
 flgPrinting=[1 1 1 3 3 1 1];
 flgScale = 2;
@@ -332,7 +335,7 @@ pause(3)
 % Looking closely, the iPDC and gPDC's magnitude patterns, although similar, are
 % not equal.
 
-%% Plotting the p-values in the frequency domain plotting 
+%% Plotting the PDC p-values in the frequency domain 
 flgPrinting=[1 1 1 2 3 1 1];
 flgScale = 1;
 strBarTitle = 'Sunspot-Melanoma Series (1936-1972)'; % Trimmed to reveal p-values
@@ -343,15 +346,10 @@ xplot_title(alpha_c,metric,'p-value iPDC',strTitle);
 
 %%
 % In this case $\alpha = 1$% was used, and note the threshold dashed-lines
-% located at -2 ($=log_{10}\,0.01$). Only the iPDC from *Sunspot* to *Melanoma*
-% is significant in the lower frequency range, which overlaps with peaks of
-% power spectra.
+% located at -2 ($=log_{10}\,0.01$). Only the iPDC from *Sunspot* to
+% *Melanoma* is significant in the lower frequency range, which overlaps in
+% the frequency scale with peaks of power spectra.
 
 %%
 % End of Sunspot-Melanoma series analysis example.
 
-% Notes for Publishing m-files  
-%
-% Correcting figures size
-% Find:    width:21px;height:13px;
-% Replace: width:720px;height:480px;

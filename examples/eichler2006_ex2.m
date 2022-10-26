@@ -1,4 +1,4 @@
-%% EICHLER ET AL.(2006) - Two-dimension VAR[2]
+%% EICHLER ET AL.(2006) Example 2 - Two-dimension VAR[2]
 %
 % DESCRIPTION:
 %
@@ -36,12 +36,12 @@ clc; format compact
 %% Data sample generation
 %
 
-nDiscard = 5000;      % number of points discarded at beginning of simulation
+nBurnIn = 5000;      % number of points discarded at beginning of simulation
 nPoints  = 2000;      % number of analyzed samples points
 
 flgManual  = 0;
 
-u = feichler2006_ex2(nPoints, nDiscard, flgManual);
+u = feichler2006_ex2(nPoints, nBurnIn, flgManual);
 chLabels = {'x_1';'x_2'}; %or %chLabels = [];
 
 
@@ -51,18 +51,18 @@ chLabels = {'x_1';'x_2'}; %or %chLabels = [];
 flgDetrend = 1;     % Detrending the data set
 flgStandardize = 0; % No standardization
 [nChannels,nSegLength] =size(u);
-if nChannels > nSegLength,
+if nChannels > nSegLength
    u = u.';
    [nChannels,nSegLength]=size(u);
-end;
-if flgDetrend,
-   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end;
+end
+if flgDetrend
+   for i=1:nChannels, u(i,:)=detrend(u(i,:)); end
    disp('Time series were detrended.');
-end;
-if flgStandardize,
-   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end;
+end
+if flgStandardize
+   for i=1:nChannels, u(i,:)=u(i,:)/std(u(i,:)); end
    disp('Time series were scale-standardized.');
-end;
+end
 
 %% MVAR model estimation
 

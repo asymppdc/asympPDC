@@ -39,9 +39,9 @@ clear; clc; format compact; format short
 
 %% Data sample generation
 %
-nDiscard = 5000;   % number of points discarded at beginning of simulation
+nBurnIn = 5000;   % number of points discarded at beginning of simulation
 nPoints  = 1000;   % number of analyzed samples points
-u = fbaccala2001a_ex3(nPoints, nDiscard); % Model function
+u = fbaccala2001a_ex3(nPoints, nBurnIn); % Model function
 chLabels = []; %{'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1; % Normalized frequency.
 
@@ -203,4 +203,4 @@ xplot_title(alpha,metric,'dtf',strTitle);
 %   while here we preferred to plot squared-PDC.
 
 %%
-% This completes the Example 3 (Baccala & Sameshima, 2001)'
+% This completes the Example 3 (Baccala & Sameshima, 2001)

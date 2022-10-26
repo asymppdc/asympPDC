@@ -1,4 +1,4 @@
-%% EICHLER ET AL.(2006) - Three-dimension VAR[2]
+%% EICHLER ET AL.(2006) Example 1 - Three-dimension VAR[2]
 %
 % DESCRIPTION:
 %
@@ -36,11 +36,11 @@ clc; format compact
 %% Data generation
 %
 
-nDiscard = 5000;    % number of points discarded at beginning of simulation
+nBurnIn = 5000;    % number of points discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
 
 flgManual = 0;
-u = feichler2006_ex1(nPoints, nDiscard, flgManual);
+u = feichler2006_ex1(nPoints, nBurnIn, flgManual);
 
 chLabels = {'X_1';'X_2';'X_3'}; %or %chLabels = [];
 fs = 1; % Normalized frequency

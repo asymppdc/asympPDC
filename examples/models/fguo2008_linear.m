@@ -1,4 +1,4 @@
-function [ u ] = fguo2008_linear( nPoints, nDiscard, flgManual )
+function [ u ] = fguo2008_linear( nPoints, nBurnIn, flgManual )
 
 % Guo, Wu, Ding & Feng. Uncovering interactions in frequency domains.
 %         PLoS Computational Biology, 4(5):1-10, February 8, 2008.
@@ -19,28 +19,28 @@ disp(repmat('=',1,100))
 
 %flgManual = 0;
 
-if (nargin == 0),
+if (nargin == 0)
    nPoints = 1000;
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points, and'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points, and'])
    disp(['generating ' int2str(nPoints) ' simulation data point.'])
    
-elseif   (nargin < 2),
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+elseif   (nargin < 2)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
 elseif (nargin < 3)
    flgManual = 0;
-end;
+end
 
-if (nDiscard < 1),
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
-end;
+if (nBurnIn < 1)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
+end
 
-if nPoints < 10,
+if nPoints < 10
    nPoints = 100;
    disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
-end;
+end
 %
 randn('state', sum(100*clock))
 
@@ -50,14 +50,14 @@ randn('state', sum(100*clock))
 
 %% Variables initialization
 
-N = nDiscard+nPoints; % number of simulated points
+N = nBurnIn+nPoints; % number of simulated points
 
 if ~exist('flgManual','var')
-   flgManual = 0
-end;
+   flgManual = 0;
+end
 
 if flgManual
-   if exist('randn_manual_state.mat','file'),
+   if exist('randn_manual_state.mat','file')
       load randn_manual_state
       randn('state', s);
       disp(['Using state saved in "randn_manual_state.mat" to reproduce figure in the manual.']);
@@ -65,11 +65,11 @@ if flgManual
       disp(['Did not find "randn_manual_state.mat" file.' ...
          'Assigned "sum(100*clock)" initial state.']);
       randn('state', sum(100*clock))
-   end;
+   end
 else
    randn('state', sum(100*clock))
    disp('Assigned "sum(100*clock)" initial state.2')
-end;
+end
 
 % Variables initialization
 ei = randn(7,N);
@@ -93,20 +93,20 @@ c1 = 5; c2 = 5; c3 = 5; c4 = 5; c5 = 5;
 %
 
 disp('Model parameters:')
-disp(sprintf('a1=%f; a2=%f; a3=%f; a4=%f; a5=%f;',a1,a2,a3,a4,a5))
+fprintf('a1=%f; a2=%f; a3=%f; a4=%f; a5=%f;',a1,a2,a3,a4,a5)
 disp('b1 = b2 = b3 = b4 = b5 = 2;')
 disp('c1 = c2 = c3 = c4 = c5 = 5;')
 disp(' ')
 disp(repmat('=',1,100))
 
-for t = 1:4,
+for t = 1:4
    x1(t) = randn(1); x2(t) = randn(1); x3(t) = randn(1); x4(t) = randn(1);
    x5(t) = randn(1); 
-end;
+end
 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'}; %or %chLabels = []; 
 
-for t = 5:N,
+for t = 5:N
    x1(t) = 0.95*sqrt(2)*x1(t-1) - 0.9025*x1(t-2) + ei(1,t) + ...
                                  a1*ei(6,t) + b1*ei(7,t-1) + c1*ei(7,t-2);
    x2(t) = 0.5*x1(t-2) + ei(2,t) + ...
@@ -117,11 +117,11 @@ for t = 5:N,
                      + ei(4,t) + a4*ei(6,t) + b4*ei(7,t-1) + c4*ei(7,t-2);
    x5(t) =-0.25*sqrt(2)*x4(t-1) + 0.25*sqrt(2)*x5(t-1) ...
                      + ei(5,t) + a5*ei(6,t) + b5*ei(7,t-1) + c5*ei(7,t-2);
-end;
+end
 
 y = [x1' x2' x3' x4' x5']; % data must be organized row-wise
-u = y(nDiscard+1:N,:);
+u = y(nBurnIn+1:N,:);
 
-[nSegLength,nChannels] = size(u);
+%[nSegLength,nChannels] = size(u); % this line is unnecessary. {^v^}
 
 end

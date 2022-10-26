@@ -44,10 +44,10 @@ clear; clc
 
 %% Data sample generation
 % 
-nDiscard = 1000;    % number of points discarded at beginning of simulation
+nBurnIn = 1000;    % number of points discarded at beginning of simulation
 nPoints  = 800;     % number of analyzed samples points
 
-u = fgourevitch2006_model2( nPoints, nDiscard );
+u = fgourevitch2006_model2( nPoints, nBurnIn );
 
 chLabels = []; % or  = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1000; % 1 kHz as used by Gourevitch et al. (2006)

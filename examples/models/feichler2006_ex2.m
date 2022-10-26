@@ -1,4 +1,4 @@
-function [ u ] = feichler2006_ex2( nPoints, nDiscard, flgManual)
+function [ u ] = feichler2006_ex2( nPoints, nBurnIn, flgManual)
 
 
 % Eichler. On the evaluation of information flow in multivariate systems
@@ -18,36 +18,36 @@ disp('                           Eichler (2006).')
 disp('                               x1-->x2');
 disp('======================================================================');
 
-if (nargin == 0),
+if (nargin == 0)
    nPoints = 1000;
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points, and'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points, and'])
    disp(['generating ' int2str(nPoints) ' simulation data point.'])
    
-elseif   (nargin < 2),
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
-end;
+elseif   (nargin < 2)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
+end
 
-if (nDiscard < 1),
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
-end;
+if (nBurnIn < 1)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
+end
 
-if nPoints < 10,
+if nPoints < 10
    nPoints = 100;
    disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
-end;
+end
 
-N = nDiscard+nPoints; % number of simulated points.
+N = nBurnIn+nPoints; % number of simulated points.
 
 
 if ~exist('flgManual','var')
-   flgManual = 0
-end;
+   flgManual = 0;
+end
 
 if flgManual
-   if exist('randn_manual_state.mat','file'),
+   if exist('randn_manual_state.mat','file')
       load randn_manual_state
       randn('state', s);
       disp(['Using state saved in "randn_manual_state.mat" to reproduce figure in the manual.']);
@@ -55,13 +55,13 @@ if flgManual
       disp(['Did not find "randn_manual_state.mat" file.' ...
          'Assigned "sum(100*clock)" initial state.']);
       randn('state', sum(100*clock))
-   end;
+   end
 else
    randn('state', sum(100*clock))
    %  randn('state', 100*acos(-1))
    
    disp('Assigned "sum(100*clock)" initial state.2')
-end;
+end
 % Variables initialization
 e=randn(2,N);
 x1=zeros(1,N);
@@ -69,19 +69,17 @@ x2=zeros(1,N);
 
 disp('======================================================================');
 
-for t=1:4,
+for t=1:4
    x1(t)=randn(1); x2(t)=randn(1);
-end;
+end
 
 chLabels = {'X_1';'X_2'}; %or %chLabels = [];
 
-for t=5:N,
+for t=5:N
    x1(t) = 7/8*x1(t-1) - 4/5*x1(t-2) +4/5*x1(t-3) - 1/2*x1(t-4) + e(1,t);
    x2(t) = 1/20*x1(t-1) + 1/20*x1(t-2) + e(2,t);
    
-end;
+end
 
 y=[x1' x2']; % data must be organized column-wise
-u=y(nDiscard+1:N,:);
-
-%end;
+u=y(nBurnIn+1:N,:);

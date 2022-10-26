@@ -1,4 +1,4 @@
-function [ u] = fschelter2009_vap1( nPoints, nDiscard, flgVerbose)
+function [ u] = fschelter2009_vap1( nPoints, nBurnIn, flgVerbose)
 % FSCHELTER2009_VAP1 - Linear 5-dimension VAR[2]-process
 %        x1==>x4  x1-->x3 x2-->x1 x2==>x3 x4-->x1 x5-->x4
 %
@@ -15,20 +15,20 @@ function [ u] = fschelter2009_vap1( nPoints, nDiscard, flgVerbose)
 
 if (nargin == 0)
    nPoints = 1000;
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points, and'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points, and'])
    disp(['generating ' int2str(nPoints) ' simulation data point.'])
    flgVerbose = 1;
 elseif (nargin < 2)
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
    flgVerbose = 1;
 end
 
-if (nDiscard < 1)
-   nDiscard = 5000;
+if (nBurnIn < 1)
+   nBurnIn = 5000;
    if flgVerbose
-      disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+      disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
    end
 end
 
@@ -39,7 +39,7 @@ if nPoints < 10
    end
 end
 
-N = nDiscard + nPoints; % number of simulated points
+N = nBurnIn + nPoints; % number of simulated points
 
 % Variables initialization
 
@@ -65,6 +65,6 @@ end
 
 
 y=[x1' x2' x3' x4' x5']; % data must be organized column-wise
-u=y(nDiscard+1:N,:);
+u=y(nBurnIn+1:N,:);
 end
 

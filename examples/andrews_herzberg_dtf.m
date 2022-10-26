@@ -1,11 +1,11 @@
-%% ANDREWS & HERZBERG (1985) - Sunspot-Melanoma 1936-1972 Series DTF Demo
+%% ANDREWS & HERZBERG (1985)b - Sunspot-Melanoma 1936-1972 Series DTF Demo
 %
 %% Data File: skin.dat
 % This data is from Andrews and Herzberg.
 % D. F. Andrews, A. M. Herzberg. (1985) Data: A Collection of Problems from 
 % Many Fields for the Student and Research Worker. Springer, New York.
 %
-% The aetiology of melanoma is complex and may include the influences
+% "The aetiology of melanoma is complex and may include the influences
 % of trauma, heredity and hormonal activity. In particular, exposure
 % to solar radiation may be involved in the pathogenesis of melanoma.
 % Melanoma is more common in fair-skinned individuals and most frequent
@@ -26,7 +26,7 @@
 % is related to sun exposure and provides evidence that solar radiation
 % may trigger the development of clinically apparent melanoma. The columns
 % are the year, male incidence, total incidence, and sunspot relative
-% index. The incidence are rates per 100,000.
+% index. The incidence are rates per 100,000." (Andrews and Herzberg, 1985)
 %
 % Below is the contents of the file skin.dat:
 %%
@@ -39,17 +39,32 @@
 % In this example, ANNUAL SUNSPOT RELATIVE NUMBER and TOTAL MELANOMA
 % INCIDENCE(AGE-ADJUSTED PER 10**5) in the state of CONNECTICUT will be
 % considered
+%
+%% Additional References
+%
+% [0] Andrews, D.F., Herzberg, A.M. (1985). Incidence of Malignant Melanoma
+%     After Peaks of Sunspot Activity. In: Data. Springer Series in Statistics.
+%     Springer, New York, NY. <https://doi.org/10.1007/978-1-4612-5098-2_33>
+% 
+% [1] M.V. Viola, A. Houghton, E.W. Munster. Solar cycles and malignant melanoma.
+%     Medical Hypotheses 5:153--160, 1979.
+%       <https://doi.org/10.1016/0306-9877(79)90067-7>
+%
+% [2] A. Houghton, E.W. Munster and M.V. Viola. Increased incidence of
+%     malignant melanoma after peaks of sunspot activity. The Lancet,
+%     311:759--760, 1978.
+%       <https://doi.org/10.1016/S0140-6736(78)90869-3>
 
-% clear; clc; format compact
-% close all
+% (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
+% installation directory for licensing terms.
 
 format short
 warning('off'); more off
 
-disp('======================================================================');
+disp(repmat('=',1,100))
 disp('     Andrews and Herzberg''s Sunspot and Melanoma 1936-1972 Data');
 disp('                 Sunspot --> Melanoma or other way?');
-disp('======================================================================');
+disp(repmat('=',1,100))
 
 flgDataPlot = 1;
 
@@ -125,8 +140,8 @@ end
 
 alpha = 0.01;
 fs= 1;
-%%
-% MVAR model estimation
+%% MVAR model estimation
+%
 
 maxIP = 4;         % maximum model order to consider.
 alg = 1;            % 1: Nutall-Strand MVAR estimation algorithm;
@@ -156,8 +171,8 @@ flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueMVAR,h,...
                                            flgPrintResults);
 
-%%
-% Granger causality test (GCT) and instantaneous GCT
+%% Granger causality test (GCT) and instantaneous GCT
+%
 
 gct_signif  = 0.01;  % Granger causality test significance level
 igct_signif = 0.01;  % Instantaneous GCT significance level
@@ -165,7 +180,7 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 [Tr_gct, pValue_gct]   = gct_alg(u,A,pf,  gct_signif,flgPrintResults);
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,igct_signif,flgPrintResults);
 
-%% Original DTF estimation
+%% Original definition of DTF estimation
 %
 % DTF analysis results are saved in *c* structure.
 % See asymp_dtf.m or issue
@@ -173,7 +188,7 @@ flgPrintResults = 1; % Flag to control printing gct_alg.m results on command win
 %   >> help asymp_dtf 
 %
 % command for more detail.
-nFreqs = 256;
+nFreqs = 128;
 metric = 'euc';  % euc  = original DTF;
                  % diag = generalized DTF or DC;
                  % info = information DTF or iDTF.
@@ -184,9 +199,9 @@ c.pvaluesgct = pValue_gct; % Necessary for printing GCT with xplot
 c.Tragct = Tr_gct;
 
 
-%%
-% DTFn Matrix Layout Plotting
-                
+%% DTF Matrix Layout Plotting
+%
+
 % ---------------Plotting options flag setting-----------------------------
 %           [1 2 3 4 5 6 7]
 flgPrinting=[1 1 1 2 2 0 1];
@@ -251,8 +266,8 @@ d = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate DTF and asymptotic statist
 
 flgColor = 0;
 
-%% 
-% DC Matrix Layout Plotting
+%% Generalized DTF or DC Matrix Layout Plotting
+%
 
 [h3,hxlabel,hylabel] = xplot(strBarTitle,d,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,'dtf',strTitle);
@@ -272,8 +287,9 @@ metric = 'info';
 alpha = 0.01;
 e = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Estimate iDTF and asymptotic statistics
 
-%%
-% iDTF Matrix Layout Plotting
+%% iDTF Matrix Layout Plotting
+%
+
 flgColor = 0;
 flgPrinting=[1 1 1 3 0 0 1];
 flgScale = 2;
@@ -286,6 +302,9 @@ xplot_title(alpha,metric,'dtf',strTitle);
 
 %%
 % Note that iDTF and DC's magnitude patterns are similar, but not equal. 
+
+%% Plotting the DTF p-values in the frequency domain 
+
    flgPrinting=[1 1 1 3 1 1 1];
 
 [h5,hxlabel,hylabel] = xplot_pvalues(strBarTitle,c,flgPrinting,fs,w_max, ...

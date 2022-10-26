@@ -34,10 +34,10 @@ clear; clc; format compact; format short
 
 %% Data sample generation
 
-nDiscard = 1000;   % number of points to be discarded at beginning of simulation
+nBurnIn = 1000;   % number of points to be discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
 
-u = fbaccala2001a_ex4( nPoints, nDiscard );
+u = fbaccala2001a_ex4( nPoints, nBurnIn );
 chLabels = []; %{'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1;
 
@@ -155,5 +155,12 @@ xplot_title(alpha,metric,'dtf',vBarTitle);
 % <<fig_baccala2001a_ex4ab.png>>
 % 
 
+%% Remark:
+% 
+% # Comparing Fig. 2b, page 468, Baccala & Sameshima (2001) with results in
+%   this example, you might have noticed that in the original article the
+%   module of amplitude PDC has been plotted, while here we preferred to
+%   plot squared-PDC.
+
 %%
-%
+% This completes the Example 4 (Baccala & Sameshima, 2001)

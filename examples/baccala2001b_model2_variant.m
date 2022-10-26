@@ -32,11 +32,11 @@ clear; clc; format compact; format short
 
 %% Data sample generation
 
-nDiscard = 5000;    % number of points discarded at beginning of simulation
+nBurnIn = 5000;    % number of points discarded at beginning of simulation
 nPoints  = 1000;    % number of analyzed samples points
-N=nDiscard+nPoints; % number of simulated points
+N = nBurnIn + nPoints; % number of simulated points
 
-u = fbaccala2001b_model2_variant( nPoints, nDiscard );
+u = fbaccala2001b_model2_variant( nPoints, nBurnIn );
 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5';'x_6'};
 

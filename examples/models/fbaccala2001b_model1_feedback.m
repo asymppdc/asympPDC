@@ -1,4 +1,4 @@
-function [ u ] = fbaccala2001b_model1_feedback( nPoints, nDiscard )
+function [ u ] = fbaccala2001b_model1_feedback( nPoints, nBurnIn )
 % FBACCALA2001B_MODEL1_FEEDBACK
 % Model from:
 %     Baccala & Sameshima. Overcoming the limitations of correlation analysis 
@@ -20,18 +20,18 @@ disp(repmat('=',1,100))
 
 if (nargin == 0)
    nPoints = 1000;
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points, and'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points, and'])
    disp(['generating ' int2str(nPoints) ' simulation data point.'])
    
 elseif   (nargin < 2)
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
 end
 
-if (nDiscard < 1)
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
+if (nBurnIn < 1)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
 end
 
 if nPoints < 10
@@ -39,7 +39,7 @@ if nPoints < 10
    disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
 end
 
-N = nDiscard+nPoints; % number of simulated points.
+N = nBurnIn+nPoints; % number of simulated points.
 
 % seeding
 randn('state', sum(100*clock))
@@ -65,7 +65,7 @@ for t=5:N
 end
 
 y=[x1' x2' x3' x4' x5' x6' x7']; % data must be organized column-wise
-u=y(nDiscard+1:N,:);
+u=y(nBurnIn+1:N,:);
 
 end
 

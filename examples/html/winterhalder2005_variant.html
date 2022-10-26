@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>WINTERHALDER ET AL.(2005) - 7-dimension unbalanced random independent variables UNBALANCED RANDOM INDEPENDENT VARIABLES</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="winterhalder2005_variant.m"><style type="text/css">
+      --><title>WINTERHALDER ET AL.(2005) - 7-dimension unbalanced random independent variables UNBALANCED RANDOM INDEPENDENT VARIABLES</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="winterhalder2005_variant.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -73,11 +73,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 flgPrintScreen = <span class="string">'Screen'</span>; <span class="comment">%'Screen' or  'Print'</span>
 
-nDiscard = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+nBurnIn = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 5000;    <span class="comment">% number of analyzed samples points</span>
 
 alpha  = 0.05;  <span class="comment">% Significance level for PDC/DTF null hypothesis test</span>
-</pre><h2 id="4">Data generation function:</h2><pre class="codeinput">u = fwinterhalder2005_variant(nPoints, nDiscard);
+</pre><h2 id="4">Data generation function:</h2><pre class="codeinput">u = fwinterhalder2005_variant(nPoints, nBurnIn);
 
 chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>;<span class="string">'x_6'</span>;<span class="string">'x_7'</span>};<span class="comment">%chLabels = [];</span>
 fs = 1; <span class="comment">% Normalized sampling frequency</span>
@@ -121,8 +121,8 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation and GCT analysis routines.
 maxOrder limited to 30
-IP=1  vaic=422636.837524
-IP=2  vaic=422697.311803
+IP=1  vaic=422447.654639
+IP=2  vaic=422507.924155
  
 Number of channels = 7 with 5000 data points; MAR model order = 1.
 </pre><h2 id="8">Testing the adequacy of MAR model fitting through Portmanteau test</h2><pre class="codeinput">h = 20; <span class="comment">% testing lag value</span>
@@ -139,8 +139,8 @@ flgPrintResults = 1; <span class="comment">% flag = 1, print analysis results</s
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.0336735
-  st = 865.757
+Pass = 0.0326531
+  st = 853.301
 </pre><h2 id="9">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = alpha;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = alpha;  <span class="comment">% Instantaneous GCT significance level</span>
 
@@ -155,46 +155,46 @@ flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m 
                          GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
 Connectivity matrix:
-   NaN     0     0     0     0     0     0
+   NaN     0     1     0     0     0     0
      0   NaN     0     0     0     0     0
-     0     0   NaN     0     0     1     0
-     0     0     0   NaN     0     0     0
+     0     0   NaN     0     0     0     0
+     0     0     0   NaN     0     1     0
      0     0     0     0   NaN     0     0
      0     0     0     0     0   NaN     0
-     0     0     0     0     0     0   NaN
+     1     0     0     0     0     0   NaN
 
 Granger causality test p-values:
-       NaN    0.9666    0.7385    0.0526    0.6887    0.5358    0.1212
-    0.5007       NaN    0.8887    0.4178    0.9713    0.5809    0.9761
-    0.7970    0.1481       NaN    0.1088    0.8544    0.0103    0.7350
-    0.0858    0.9438    0.3500       NaN    0.7077    0.6931    0.4241
-    0.3728    0.2937    0.6458    0.1156       NaN    0.5809    0.2501
-    0.9134    0.4391    0.2492    0.0662    0.8936       NaN    0.6873
-    0.7997    0.7406    0.5618    0.9641    0.8687    0.7099       NaN
+       NaN    0.5481    0.0127    0.2955    0.5065    0.1448    0.3839
+    0.5608       NaN    0.6056    0.5599    0.6256    0.7765    0.2689
+    0.9094    0.5412       NaN    0.8774    0.8139    0.7239    0.3608
+    0.1355    0.4279    0.1377       NaN    0.1889    0.0250    0.4278
+    0.5655    0.8168    0.8848    0.3008       NaN    0.7311    0.3390
+    0.1071    0.8169    0.0867    0.0829    0.1633       NaN    0.5090
+    0.0323    0.8751    0.2192    0.2328    0.3602    0.8562       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
 ----------------------------------------------------------------------------------------------------
 Instantaneous connectivity matrix:
-   NaN     0     0     0     0     0     0
-     0   NaN     0     1     0     0     0
+   NaN     1     0     0     0     0     0
+     1   NaN     0     0     0     0     0
      0     0   NaN     0     0     0     0
-     0     1     0   NaN     1     0     0
-     0     0     0     1   NaN     0     0
+     0     0     0   NaN     0     0     0
+     0     0     0     0   NaN     0     0
      0     0     0     0     0   NaN     0
      0     0     0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.7507    0.3875    0.8599    0.7994    0.3746    0.5910
-    0.7507       NaN    0.0835    0.0493    0.5896    0.5217    0.4417
-    0.3875    0.0835       NaN    0.8386    0.5326    0.5596    0.7045
-    0.8599    0.0493    0.8386       NaN    0.0459    0.8389    0.5970
-    0.7994    0.5896    0.5326    0.0459       NaN    0.8247    0.7804
-    0.3746    0.5217    0.5596    0.8389    0.8247       NaN    0.8705
-    0.5910    0.4417    0.7045    0.5970    0.7804    0.8705       NaN
+       NaN    0.0142    0.6654    0.5749    0.8886    0.7466    0.1714
+    0.0142       NaN    0.9960    0.9906    0.1014    0.2776    0.7924
+    0.6654    0.9960       NaN    0.3717    0.9967    0.8153    0.7484
+    0.5749    0.9906    0.3717       NaN    0.8090    0.7841    0.4685
+    0.8886    0.1014    0.9967    0.8090       NaN    0.2990    0.1889
+    0.7466    0.2776    0.8153    0.7841    0.2990       NaN    0.7743
+    0.1714    0.7924    0.7484    0.4685    0.1889    0.7743       NaN
 
-&gt;&gt;&gt;&gt; There are 2 pairs of channels with
-      significant Instantaneous Granger Causality.
+&gt;&gt;&gt;&gt; There is a pair of channels with significant Instantaneous 
+     Granger Causality.
 
 ====================================================================================================
 </pre><h2 id="10">PDC, threshold and confidence interval calculations.</h2><pre class="codeinput">metric = <span class="string">'euc'</span>;  <span class="comment">% euc  = original PDC or DTF;</span>
@@ -287,13 +287,13 @@ clear; clc; format compact; format short
 
 flgPrintScreen = 'Screen'; %'Screen' or  'Print'
 
-nDiscard = 1000;    % number of points discarded at beginning of simulation
+nBurnIn = 1000;    % number of points discarded at beginning of simulation
 nPoints  = 5000;    % number of analyzed samples points
 
 alpha  = 0.05;  % Significance level for PDC/DTF null hypothesis test
 
 %% Data generation function:
-u = fwinterhalder2005_variant(nPoints, nDiscard);
+u = fwinterhalder2005_variant(nPoints, nBurnIn);
 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5';'x_6';'x_7'};%chLabels = [];
 fs = 1; % Normalized sampling frequency 

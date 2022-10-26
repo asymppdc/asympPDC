@@ -1,4 +1,4 @@
-function [ u aState] = fschelter2006( nPoints, nDiscard, flgRepeat)
+function [ u aState] = fschelter2006( nPoints, nBurnIn, flgRepeat)
 
 
 % (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
@@ -12,15 +12,15 @@ disp('                Linear penta-variate VAR[4]-process')
 disp('       x1-->x2  x1-->x4 x2-->x4 x4==>x5 x5-->x1  x5-->x2 x5-->x3 ');
 disp('======================================================================');
 
-if flgRepeat,
-   if exist('schelter2006_state.mat', 'file') == 2,
+if flgRepeat
+   if exist('schelter2006_state.mat', 'file') == 2
       load schelter2006_state.mat % Retrieving saved state number.
-      if ~exist('aState','var'),
+      if ~exist('aState','var')
          disp('State number does not exist. State number initialized.')
          aState = sum(100*clock);
       else
          disp('Using saved state number to repeat simulation with same dataset.');
-      end;
+      end
    else
       disp('File schelter2006_state.mat not found. Using newly state number.')
       aState = sum(100*clock);
@@ -29,32 +29,32 @@ if flgRepeat,
 else
    aState = sum(100*clock); % Starting a new state number.
    
-end;
+end
 
 
-if (nargin == 0),
+if (nargin == 0)
    nPoints = 1000;
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points, and'])
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points, and'])
    disp(['generating ' int2str(nPoints) ' simulation data point.'])
    
-elseif   (nargin < 2),
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
-end;
+elseif   (nargin < 2)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
+end
 
-if (nDiscard < 1),
-   nDiscard = 5000;
-   disp(['Adopting default ' int2str(nDiscard) ' discarding points.'])
-end;
+if (nBurnIn < 1)
+   nBurnIn = 5000;
+   disp(['Adopting default ' int2str(nBurnIn) ' discarding points.'])
+end
 
-if nPoints < 10,
+if nPoints < 10
    nPoints = 100;
    disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
-end;
+end
 
 
-N = nDiscard + nPoints; % number of simulated points
+N = nBurnIn + nPoints; % number of simulated points
 
 randn('state',aState)
 
@@ -66,21 +66,21 @@ x4=zeros(1,N);
 x5=zeros(1,N);
 
 % Variables initialization
-for t=1:6,
+for t=1:6
    x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
    x5(t)=randn(1);
-end;
+end
 
-for t=7:N,
+for t=7:N
    x1(t) = 0.4*x1(t-1) - 0.5*x1(t-2) + 0.4*x5(t-1) + ei(1,t);
    x2(t) = 0.4*x2(t-1) - 0.3*x1(t-4) + 0.4*x5(t-2) + ei(2,t);
    x3(t) = 0.5*x3(t-1) - 0.7*x3(t-2) - 0.3*x5(t-3) + ei(3,t);
    x4(t) = 0.8*x4(t-3) + 0.4*x1(t-2) + 0.3*x2(t-2) + ei(4,t);
    x5(t) = 0.7*x5(t-1) - 0.5*x5(t-2) - 0.4*x4(t-1) + ei(5,t);
-end;
+end
 
 y = [x1' x2' x3' x4' x5']; % data must be organized row-wise
-u = y(nDiscard+1:N,:);
+u = y(nBurnIn+1:N,:);
 
 end
 

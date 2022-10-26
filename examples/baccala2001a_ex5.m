@@ -36,9 +36,9 @@ clear; clc; format compact; format short
 
 %% Data sample generation
 % 
-nDiscard = 10000;   % number of points discarded at beginning of simulation
+nBurnIn = 10000;   % number of points discarded at beginning of simulation
 nPoints  = 5000;    % number of analyzed samples points
-u = fbaccala2001a_ex5( nPoints, nDiscard );
+u = fbaccala2001a_ex5( nPoints, nBurnIn );
 chLabels = []; %{'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1; 
 
@@ -176,4 +176,4 @@ pause(5)
 %% Concluding remarks 
 % * Check & compare with Fig.4b, page 469 in Baccala & Sameshima (2001).
 % * In the original article the amplitude PDC has been plotted.
-%   Here we preferred to graph squared-PDC and DTF.
+%   Here we preferred to plot squared-PDC and squared-DTF.

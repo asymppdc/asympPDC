@@ -1,32 +1,32 @@
 %% PDC or DTF analysis getting started template file
 %
-% Follow and edit this template to set up analysis or  your data. You might
-% want to choose analysis parameters followed by comment containing
-% "<***>". Check bellow.
+% Follow and edit this template to set up analysis of your data. You might
+% want to choose analysis parameters in the lines of comment containing  
+% "<***>". Check bellow.  
 %
-% Some important input and output parameters and variables:
-% input:
-%        u     - time series data  in row-wise orientation
-%        fs    - Sampling frequency (=1 for normalized frequency)
-%        maxIP - externally defined maximum IP
-%        alg   - for algorithm (1: Nutall-Strand),(2: mlsm) ,
-%                              (3: Vieira Morf),  (4: ARfit)
-%        criterion - for AR order selection =>
-%                                   1: AIC; 2: Hanna-Quinn; 3: Schwarz;
-%                                   4: FPE, 5: fixed order in MaxIP
-%        alpha  -  PDC test significance level
+%% Important input and output parameters and variables.  
+% input:  
+%        u     - time series data  in row-wise orientation  
+%        fs    - Sampling frequency (=1 for normalized frequency)  
+%        maxIP - externally defined maximum IP  
+%        alg   - for algorithm (1: Nutall-Strand),(2: mlsm),  
+%                              (3: Vieira Morf),  (4: ARfit)  
+%        criterion - for AR order selection =>  
+%                                   1: AIC; 2: Hanna-Quinn; 3: Schwarz;  
+%                                   4: FPE, 5: fixed order in MaxIP  
+%        alpha  -  PDC test significance level  
+%  
+% output results:  
+%         c struct variable from asymp_pdc() or asymp_dtf() function   
+%         required fields:  
+%         c.{pdc2, dtf2} - squared original/generalized/information PDC2 | DTF2 
+%         c.th -  threshold level by Patnaik approximation   
+%         c.{pdc_th,dtf_th} - above threshold pdc2 or dtf2 values otherwise
+%         c.ci1,c.ci2 - superior and inferior confidence intervals  
+%         c.p - VAR model order  
+%         c.SS - Power spectrum  
+%         c.coh2 - coherence function  
 %
-% output: c struct variable from asymp_pdc() or asymp_dtf() function
-%         required fields:
-%         c.{pdc2, dtf2} - squared original/generalized/information PDC
-%         c.th -  threshold level by Patnaik approximation
-%         c.{pdc_th,dtf_th} - above threshold pdc2 or dtf2 values otherwise equal NaN
-%         c.ci1,c.ci2 - superior and inferior confidence interval
-%         c.p - VAR model order
-%         c.SS - Power spectrum
-%         c.coh2 - coherece function
-%
-%% asympPDC analysis functions 
 %  See also  mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, igct_alg, 
 %            xplot, xplot_pvalues, xplot_title
 
@@ -36,40 +36,42 @@
 %%
 
 
-%===========================#
-% Times series for analysis /
-%===========================#
+%===============================================================================
+%                        Times series for analysis
+%===============================================================================
 % u     - time series data in rows.
 %         The variable u must contain the time series
 %         In this template, if flgExample = 1 the template file will analyze a
-%         5-variable Gaussian independent noise processes.
+%         5-variable Gaussian independent noise process.
 
 format compact
 clear all; clc
 
 %% Examples 
 
-% Choose Example 1 == Five independent Gaussian random variables model
-%                2 == Sunspot-melanoma time series
-%                3 == Baccala & Sameshima (2001) 5-variable linear model
-%                4 == Takahashi(2008) Thesis' example model                
+% Choose Example: 1 - Five independent Gaussian random process;
+%                 2 - Sunspot-melanoma time series;
+%                 3 - Baccala & Sameshima (2001) 5-variable linear model;
+%                 4 - Takahashi(2008) Thesis' example model.     
+% or load your data here 
 flgExample = 3;
 
-disp('======================================================================');
-disp('============= PDC analysis getting started template ==================')
-disp('======================================================================');
+disp(repmat('=',1,100))
+disp([repmat('=',1,27),' PDC analysis getting started template ', ...
+      repmat('=',1,34)])
+disp(repmat('=',1,100))
 
 switch flgExample
    case 1
       u=randn(2000,5);    %<***> Example (1)
       disp('            Random Independent Process with 5 variables')
-      disp('======================================================================');
+      disp(repmat('=',1,100))
 
    case 2
       u=sunmeladat([4 3]); %<***> Example (2)
       disp('     Andrews and Herzberg''s Sunspot and Melanoma Example');
       disp('                 Sunspot --> Melanoma or other way?');
-      disp('======================================================================');
+      disp(repmat('=',1,100))
    case 3
       u=baccala2001a_ex5data(2000);
    case 4
@@ -86,12 +88,12 @@ fs = 1; %<***> Sampling frequency
 if nChannels > nSegLength
    disp('The data might be transposed.');  
    u = u.';
-   [nChannels,nSegLength]=size(u);
+   [nChannels,nSegLength] = size(u);
 end
 
-%===========================#
-%  Channel identification   /
-%===========================#
+%===============================================================================
+%                      Channel identification   
+%===============================================================================
 
 switch flgExample
   case 1
@@ -125,11 +127,11 @@ flgStandardize = 0; %<***> For gPDC/DC and iPDC/iDTF estimates normalization has
 if flgStandardize
   disp('Be aware that the data standardization does not affect the generalized')
   disp('   and information PDC/DTF estimates nor its statistical results, ')
-  disp('   so that data standardization is not necessary in these measures.')
+  disp('   hence data standardization is not necessary in these measures.')
 end
 
 
-%% Set up Multivariate AutoRegressive (MAR) estimation algorithm parameters
+%% Set Multivariate AutoRegressive (MAR) estimation algorithm parameters
 %
 
 %%
@@ -138,7 +140,7 @@ end
 %                     (3: Vieira Morf),  (4: QR artfit)
 
 alg = 1; %<***> Nuttall-Strand (alg=1) algorithm, our experience indicates that
-         %      N-S seems to be a good and robust estimation algorithm.
+         %      N-S is a good and robust MAR model estimation algorithm.
 
 %% 
 % MAR model order selection criteria
@@ -191,7 +193,7 @@ gct_signif = alpha;  % Granger causality test significance. Choose other
 igct_signif = alpha; % Instantaneous Granger causality test significance level.
 
 
-%% Pretty-plot option parameters for xplot and xplot_pvalues function
+%% Pretty-plot option parameters for xplot and xplot_pvalues functions
 %
 
 flgScale = 2; % 1: [0 1] / {if max(PDC2/DTF2) > 1}:[0 max(PDC2/DTF2)]
@@ -223,7 +225,7 @@ flgColor = [0 1]; % Plotting option for automatic scaling for small PDC
                   % elseif flgColor = 1, the pdc_xplot routine rescales 
                   % the y-axis automatically according to the following 
                   % rules:
-                  %   if .01<=PDC(f) < .1 background-color = light-blue,
+                  %   if .01 <= PDC(f) < .1 background-color = light-blue,
                   %                          so that y-axis scale = [0 .1]
                   %   elseif PDC(f) < .01 background-color = light-purple
                   %                          and y-axis = [0 .01];
@@ -253,15 +255,15 @@ w = fs*(0:(nFreqs-1))/2/nFreqs; % frequency scale
 w_max = fs/2; %<***> Usually half of sampling frequency, the Nyquist frequency
 
 
-%==========================================================================
-%==========================================================================
+%===============================================================================
+%===============================================================================
 %        WARNING: BELOW THIS LINE PROBABLY YOU MIGHT NOT WANT TO EDIT,
 %            UNLESS YOU NEED TO CUSTOMIZE YOUR ANALYSIS ROUTINE.
-%==========================================================================
+%===============================================================================
 
-%==========================================================================
+%===============================================================================
 %                    Detrend and standardization options
-%==========================================================================
+%===============================================================================
 
 
 % Determine time series length and check if data is row-wise organized.
@@ -282,12 +284,11 @@ end
 
 
 
-%==========================================================================
+%===============================================================================
 % Additional info for title (optional)
-
 strTitle1 = [];
 
-%==================
+%===============================================================================
 switch alg
   case 1
     disp('VAR estimation using Nutall-Strand algorithm.')
@@ -299,9 +300,9 @@ switch alg
     disp('VAR estimation using QR-Arfit algorithm.')
 end
 
-%================================#
-%   MAR order selection criteria /
-%================================#
+%===============================================================================
+%                 MAR order selection criteria
+%===============================================================================
 switch criterion
    case 1
       disp('Model order selection criteria: AIC.')
@@ -317,45 +318,45 @@ switch criterion
       error('Model order selection criteria: NOT IMPLEMENTED YET.')
 end
 
-%==========================================================================
-%    VAR model estimation
-%==========================================================================
+%===============================================================================
+%                     VAR model estimation
+%===============================================================================
 [IP,pf,A,pb,B,ef,eb,vaic,Vaicv] = mvar(u,maxIP,alg,criterion);
 
 disp(['Number of channels = ' int2str(nChannels) ' with ' ...
        int2str(nSegLength) ' data points; MAR model order = ' int2str(IP) '.']);
 
-%==========================================================================
+%===============================================================================
 %    Testing for adequacy of MAR model fitting through Portmanteau test
-%==========================================================================
+%===============================================================================
 h = 20; % testing lag
 aValueVAR = 1 - VARadequacy_signif;
 flgPrintResults = 1;
 [Pass,Portmanteau,st,ths] = mvarresidue(ef,nSegLength,IP,aValueVAR,h,...
                                                           flgPrintResults);
 
-%==========================================================================
-%         Granger causality test (GCT)
-%==========================================================================
+%===============================================================================
+%                   Granger causality test (GCT)
+%===============================================================================
 flgPrintResults = 1;
 [Tr_gct, pValue_gct] = gct_alg(u,A,pf,gct_signif,flgPrintResults);
 
-%==========================================================================
-%         Instantaneous Granger causality test (iGCT)
-%==========================================================================
+%===============================================================================
+%             Instantaneous Granger causality test (iGCT)
+%===============================================================================
 flgPrintResults = 1;
 [Tr_igct, pValue_igct] = igct_alg(u,A,pf,gct_signif,flgPrintResults);
 
-%==========================================================================
+%===============================================================================
 %            PDC, threshold and confidence interval calculation.
-%==========================================================================
+%===============================================================================
 
 % if alpha == 0, no asymptotic statistics is performed. ASYMP_PDC returns
 % only the PDC. This option is much faster!!
 
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 
-% If you want to print the Granger Causality Test p-values you need to
+% If you want to print the Granger Causality Test p-values you have to
 % assign these values to c struct variable
 c.Tragct = Tr_gct;
 c.pvaluesgct = pValue_gct;
@@ -363,7 +364,7 @@ c.pvaluesgct = pValue_gct;
 %                    or 
 % c=asymp_dtf(u,A,pf,nFreqs,metric,alpha); % for DTF analysis
 
-%% Adding further analysis details to the figure title.
+%% Adding further analysis details to the figure title if you please.
 %
 
 % strTitle3 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) '; ' ...
@@ -372,9 +373,9 @@ strTitle3 = ['[N=' int2str(nSegLength) 'pts; IP=' int2str(c.p) ']'];
 
 % or leave it empty: strTitle3=[];
 
-%==========================================================================
+%===============================================================================
 %              Matrix Layout Plotting of the Analysis Results
-%==========================================================================
+%===============================================================================
 
 w_max = fs/2;
 strTitle = [strTitle1 strTitle2 strTitle3];
@@ -429,9 +430,9 @@ for kflgColor = flgColor
    
 end
 
-%==========================================================================
+%===============================================================================
 %              Matrix Layout Plotting of PDC p-values 
-%==========================================================================
+%===============================================================================
 % See xplot_p-values() function for more details
 %
 %   flgPrinting: [1 1 1 2 3 0 0];
@@ -457,7 +458,7 @@ strWindow = ['xplot_p-values FUNCTION to plot PDC p-values in frequency domain']
 xplot_title(alpha,metric,strTitle)
 
 
-%======================= xplot ========================================
+%========================== xplot ==============================================
 %Plot legend:  Blue lines on the main diagonal = Power spectra;
 %              Black dashed lines are Patnaik threshold for dtfn;
 %              Green lines = non significant dtfn;
@@ -475,7 +476,8 @@ xplot_title(alpha,metric,strTitle)
 %              dtfn from Sunspot to Melanoma, which could eventually be
 %              interpreted that "Sunspot", or the Sun's activity
 %              modulates the incidence of melanoma.
-%======================= dtf_xplot ========================================
-disp('======================================================================');
-disp('============ ANALYSIS_TEMPLATE SUCCESSFULLY FINISHED =================')
-disp('======================================================================');
+%========================= dtf_xplot ===========================================
+disp(repmat('=',1,100))
+disp([repmat('=',1,27),' ANALYSIS_TEMPLATE SUCCESSFULLY FINISHED ', ...
+      repmat('=',1,32)])
+disp(repmat('=',1,100))

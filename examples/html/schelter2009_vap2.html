@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>EICHLER ET AL.(2006) - VAP II 5-dimension VAR[3] process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="schelter2009_vap2.m"><style type="text/css">
+      --><title>EICHLER ET AL.(2006)b - VAP II 5-dimension VAR[3] process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="schelter2009_vap2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,14 +67,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>EICHLER ET AL.(2006) - VAP II 5-dimension VAR[3] process</h1><!--introduction--><p>An example borrowed from Schelter et al. (2009)</p><p>Schelter, Timmer, Eichler. Assessing the strength of directed influences among neural signals using renormalized PDC. J Neurosci Methods, 179:121-130, 2009.   [http://dx.doi.org/10.1016/j.jneumeth.2009.01.006]</p><p>3.2 Vector autoregressive process II (Eqs. 16-20, page 124)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#2">Equation Model II with feedback</a></li><li><a href="#3">Data generation</a></li><li><a href="#5">MVAR model estimation</a></li><li><a href="#6">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#7">Information PDC estimation</a></li><li><a href="#8">iPDC2 Matrix-Layout Plot</a></li><li><a href="#9">Result from Schelter et al.(2009)</a></li><li><a href="#11">Remarks:</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+  </style></head><body><div class="content"><h1>EICHLER ET AL.(2006)b - VAP II 5-dimension VAR[3] process</h1><!--introduction--><p>An example borrowed from Schelter et al. (2009)</p><p>Schelter, Timmer, Eichler. Assessing the strength of directed influences among neural signals using renormalized PDC. J Neurosci Methods, 179:121-130, 2009.   [http://dx.doi.org/10.1016/j.jneumeth.2009.01.006]</p><p>3.2 Vector autoregressive process II (Eqs. 16-20, page 124)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#2">Equation Model II with feedback</a></li><li><a href="#3">Data generation</a></li><li><a href="#5">MVAR model estimation</a></li><li><a href="#6">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#7">Information PDC estimation</a></li><li><a href="#8">iPDC2 Matrix-Layout Plot</a></li><li><a href="#9">Result from Schelter et al.(2009)</a></li><li><a href="#11">Remarks:</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
 
 clear; clc
-</pre><h2 id="2">Equation Model II with feedback</h2><p>3.2 Vector autoregressive process II (Eqs. 16-20, page 124)</p><p><img vspace="5" hspace="5" src="fig_schelter2009_vap2_equations.png" alt=""> </p><h2 id="3">Data generation</h2><pre class="codeinput">nDiscard = 10000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+</pre><h2 id="2">Equation Model II with feedback</h2><p>3.2 Vector autoregressive process II (Eqs. 16-20, page 124)</p><p><img vspace="5" hspace="5" src="fig_schelter2009_vap2_equations.png" alt=""> </p><h2 id="3">Data generation</h2><pre class="codeinput">nBurnIn = 10000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 3000;   <span class="comment">% number of analyzed samples points</span>
 
-u = fschelter2009_vap2(nPoints, nDiscard);
+u = fschelter2009_vap2(nPoints, nBurnIn);
 <span class="comment">%chLabels = []; % or</span>
 chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>};
 fs =1;
@@ -133,9 +133,9 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=135145.073265
-IP=2  vaic=120002.459688
-IP=3  vaic=120017.823269
+IP=1  vaic=135471.966933
+IP=2  vaic=120280.387695
+IP=3  vaic=120303.188141
  
 Number of channels = 5 with 3000 data points; MAR model order = 2.
 
@@ -143,8 +143,8 @@ Number of channels = 5 with 3000 data points; MAR model order = 2.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.032
-  st = 443.223
+Pass = 0.024
+  st = 429.363
 </pre><h2 id="6">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.05;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.05;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -162,11 +162,11 @@ Connectivity matrix:
      1     0     0     0   NaN
 
 Granger causality test p-values:
-       NaN    0.4076    0.0620    0.2536    0.3427
-         0       NaN    0.2848    0.1486    0.8379
-    0.8488    0.7635       NaN         0         0
-    0.5343    0.8782    0.6602       NaN    0.5737
-         0    0.6173    0.2352    0.9725       NaN
+       NaN    0.7739    0.8980    0.2663    0.7996
+         0       NaN    0.9882    0.9567    0.9778
+    0.3972    0.7983       NaN         0         0
+    0.9608    0.4347    0.9734       NaN    0.9205
+         0    0.4025    0.7774    0.1899       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -179,11 +179,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.3604    0.6507    0.2450    0.8505
-    0.3604       NaN    0.7325    0.8454    0.7230
-    0.6507    0.7325       NaN    0.6751    0.1244
-    0.2450    0.8454    0.6751       NaN    0.2667
-    0.8505    0.7230    0.1244    0.2667       NaN
+       NaN    0.0721    0.5246    0.1187    0.1809
+    0.0721       NaN    0.5389    0.9125    0.1653
+    0.5246    0.5389       NaN    0.9633    0.5893
+    0.1187    0.9125    0.9633       NaN    0.4080
+    0.1809    0.1653    0.5893    0.4080       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -210,7 +210,7 @@ strTitle = [<span class="string">'Schelter et al. (2009) linear model II: '</spa
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="schelter2009_vap2_01.png" alt=""> <h2 id="9">Result from Schelter et al.(2009)</h2><p>Figure 2, page 125.</p><p><img vspace="5" hspace="5" src="fig_schelter2009_vap2_result.png" alt=""> </p><p>Figure caption: "Fig 2. Renormalized partial directed coherence (off-diagonal) for the example of the VAR[2] process. The results are sorted as a matrix, where in the ith row and the jth column the influence from process j onto process i is displayed. The black line represents the renormalized partial directed coherence values while the gray areas mark the corresponding 95% confidence intervals of one single realization. From 1000 realizations empirical confidence intervals have been derived. These are indicated by the dashed black lines. Only the valid interactions are revealed by this analysis." (Reproduced from  Schelter et al. J Neurosci Methods, 179:121-130, 2009)</p><h2 id="11">Remarks:</h2><div><ul><li>Our <img src="schelter2009_vap2_eq16638434991807348760.png" alt="$|_iPDC(\lambda)|^2$"> results are from a single simulation data while normalized PDC are from 1000 simulations. Note that the y-axis scales for normalized PDC by Schelter et al. (2009) are different from iPDC2 plots.</li></ul></div><div><ul><li>Note again that for linear model the mean amplitude of PDC estimates is roughly proportional to  relative coefficient values of ') the autoregressive model.</li></ul></div><div><ul><li>One may see occasional false-positive inferences in iPDC estimates for <img src="schelter2009_vap2_eq04337108854082040212.png" alt="$\alpha = 5\%$">  null-hypothesis testing, however as one might notice the magnitude should most likely (from our experience) be smaller than 0.01 and Granger causality test p-values printed just above each subplot should be close to chosen <img src="schelter2009_vap2_eq14221827199139923399.png" alt="$\alpha$"> values.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% EICHLER ET AL.(2006) - VAP II 5-dimension VAR[3] process
+%% EICHLER ET AL.(2006)b - VAP II 5-dimension VAR[3] process
 %
 % An example borrowed from Schelter et al. (2009) 
 %
@@ -239,10 +239,10 @@ clear; clc
 %% Data generation
 %
 
-nDiscard = 10000;    % number of points discarded at beginning of simulation
+nBurnIn = 10000;    % number of points discarded at beginning of simulation
 nPoints  = 3000;   % number of analyzed samples points
 
-u = fschelter2009_vap2(nPoints, nDiscard);
+u = fschelter2009_vap2(nPoints, nBurnIn);
 %chLabels = []; % or 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs =1;

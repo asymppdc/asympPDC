@@ -1,8 +1,8 @@
 %% BACCALA & SAMESHIMA (2001b) - Model 1: 7-dim VAR[2] model with loop and feedback
 %
-% **Description**:
+% *Description*:
 % This is a toy model example that "mimicks local field potential
-% measurements along hippocampal structures, is represented by the
+% measurements along hippocampal structures, which is represented by the
 % following set of linear difference equations with N = 7 structures",
 % that is the  Example Model I - 7-dimensional VAR[2] model with loop and
 % feedback from
@@ -10,17 +10,14 @@
 % Baccala & Sameshima (2001b). Overcoming the limitations of correlation analysis 
 % for many simultaneously processed neural structures, Progress in Brain 
 % Research, 130:33--47.
+%             <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
 %
-% <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
 %
-%
-% See also:
-%
+% Further reference:  
 % # Koichi Sameshima, Daniel Y. Takahashi, Luiz A. Baccala. On the
 % statistical performance of Granger-causal connectivity estimators. Brain
 % Informatics (2015) 2:119--133.
-%
-% <http://dx.doi.org/10.1007/s40708-015-0015-1>
+%               <http://dx.doi.org/10.1007/s40708-015-0015-1>
 %
 %% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
 %              igct_alg, xplot, xplot_pvalues             
@@ -61,11 +58,11 @@ clear; clc; format compact; format short
 %% Data sample generation
 %
 
-nDiscard = 5000;    % number of points discarded at beginning of simulation
+nBurnIn = 5000;    % number of points discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
-N=nDiscard+nPoints; % number of simulated points
+N=nBurnIn+nPoints; % number of simulated points
 
-u = fbaccala2001b_model1_feedback( nPoints, nDiscard );
+u = fbaccala2001b_model1_feedback( nPoints, nBurnIn );
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5';'x_6';'x_7'};
 fs = 1;
 

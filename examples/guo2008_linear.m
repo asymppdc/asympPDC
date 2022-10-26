@@ -31,10 +31,10 @@ clear; clc; format compact; format short
 %% Data sample generation
 %
 
-nDiscard = 50000;    % number of points discarded at beginning of simulation
+nBurnIn = 50000;    % number of points discarded at beginning of simulation
 nPoints  = 10000;   % number of analyzed samples points
 
-u = fguo2008_linear(nPoints, nDiscard);
+u = fguo2008_linear(nPoints, nBurnIn);
 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
 fs = 1;
@@ -216,9 +216,10 @@ xplot_title(alpha,metric,['p-value_{iPDC}'],strID);
 %
 % * *In conclusion*: the statement by Guo and collaborators (2008) that PDC
 % can not uncover the connectivity pattern in large common noise does not
-% hold i.e. *Guo et al.(2008) are wrong concerning PDC statement*. For nonlinear systems, in some cases PDC and
-% other linear methods can uncover correct connectivity pattern, but in
-% other models PDC and GCT will simply fail.
+% hold i.e. *Guo et al.(2008) are wrong concerning PDC statement*. For
+% nonlinear systems, in some cases PDC and other linear methods can uncover
+% correct connectivity pattern, but in other models PDC and GCT will simply
+% fail.
 %
 %
 % This completes Guo et al. (2008) example. ;

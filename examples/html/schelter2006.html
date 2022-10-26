@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SCHELTER ET AL.(2006) - 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
+      --><title>SCHELTER ET AL.(2006) - 5-dimension VAR[4]</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="schelter2006.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -75,7 +75,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
 </pre><h2 id="2">Generate data sample using fschelter2006 function</h2><pre class="codeinput">clc; clear; format <span class="string">compact</span>; format <span class="string">short</span>
 
-nDiscard = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
+nBurnIn = 5000;   <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 5000;   <span class="comment">% number of analyzed samples points</span>
 
 flgRepeat = 0; <span class="comment">% You may want to repeat simulation using the same data set</span>
@@ -87,7 +87,7 @@ flgRepeat = 0; <span class="comment">% You may want to repeat simulation using t
                <span class="comment">% schelter2006_state.mat file, so that randn can be</span>
                <span class="comment">% initialized with the same state number in subsequent</span>
                <span class="comment">% simulations.</span>
-[u,aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
+[u,aState] = fschelter2006(nPoints, nBurnIn, flgRepeat);
 
 <span class="comment">% if ~flgRepeat, save schelter2006_state.mat aState; end;</span>
 
@@ -150,11 +150,11 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=227385.116683
-IP=2  vaic=218969.943605
-IP=3  vaic=213567.886637
-IP=4  vaic=213073.110343
-IP=5  vaic=213099.866038
+IP=1  vaic=227370.717144
+IP=2  vaic=218916.385039
+IP=3  vaic=213586.910255
+IP=4  vaic=213194.746716
+IP=5  vaic=213216.646487
  
 Number of channels = 5 with 5000 data points; MAR model order = 4.
 
@@ -162,8 +162,8 @@ Number of channels = 5 with 5000 data points; MAR model order = 4.
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.028
-  st = 427.159
+Pass = 0.026
+  st = 376.498
 </pre><p>Granger causality test (GCT) and instantaneous GCT</p><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -182,11 +182,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN    0.6544    0.3568    0.3726         0
-         0       NaN    0.1541    0.5474         0
-    0.8476    0.9315       NaN    0.3816         0
-         0         0    0.8104       NaN    0.7254
-    0.8712    0.4567    0.6132         0       NaN
+       NaN    0.1654    0.2925    0.4100         0
+         0       NaN    0.5179    0.1913         0
+    0.5705    0.5953       NaN    0.2306         0
+         0         0    0.3535       NaN    0.4502
+    0.3906    0.2021    0.1774         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -199,11 +199,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.9653    0.4635    0.8279    0.8528
-    0.9653       NaN    0.4258    0.7450    0.4950
-    0.4635    0.4258       NaN    0.1315    0.2034
-    0.8279    0.7450    0.1315       NaN    0.7967
-    0.8528    0.4950    0.2034    0.7967       NaN
+       NaN    0.6824    0.5338    0.3705    0.6719
+    0.6824       NaN    0.6527    0.2480    0.4242
+    0.5338    0.6527       NaN    0.3320    0.4476
+    0.3705    0.2480    0.3320       NaN    0.3897
+    0.6719    0.4242    0.4476    0.3897       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -261,7 +261,7 @@ xplot_title(alpha,metric,[<span class="string">'p-value PDC'</span>],strTitle);
 
 clc; clear; format compact; format short
 
-nDiscard = 5000;   % number of points discarded at beginning of simulation
+nBurnIn = 5000;   % number of points discarded at beginning of simulation
 nPoints  = 5000;   % number of analyzed samples points
 
 flgRepeat = 0; % You may want to repeat simulation using the same data set 
@@ -273,7 +273,7 @@ flgRepeat = 0; % You may want to repeat simulation using the same data set
                % schelter2006_state.mat file, so that randn can be
                % initialized with the same state number in subsequent
                % simulations.
-[u,aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
+[u,aState] = fschelter2006(nPoints, nBurnIn, flgRepeat);
 
 % if ~flgRepeat, save schelter2006_state.mat aState; end;
 

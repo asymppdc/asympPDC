@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SCHELTER ET AL.(2009) - VAP I 5-dimension VAR[3] process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-05"><meta name="DC.source" content="schelter2009_vap1.m"><style type="text/css">
+      --><title>SCHELTER ET AL.(2009)a - VAP I 5-dimension VAR[3] process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-26"><meta name="DC.source" content="schelter2009_vap1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>SCHELTER ET AL.(2009) - VAP I 5-dimension VAR[3] process</h1><!--introduction--><p>An example borrowed from Schelter et al. (2009)</p><p>Schelter, Timmer &amp; Eichler. Assessing the strength of directed influences among neural signals using renormalized PDC. J Neurosci Methods, 179:121-130, 2009.   [https://dx.doi.org/10.1016/j.jneumeth.2009.01.006]</p><p>3.1 Vector autoregressive process I (Eqs. 11-15, page 124)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#3">Equation Model I with feedback</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#5">Renormalized PDC expected results</a></li><li><a href="#6">Data pre-processing: detrending and normalization options</a></li><li><a href="#7">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Information PDC estimation</a></li><li><a href="#10">iPDC2 Matrix-Layout Plotting</a></li><li><a href="#11">Result from Schelter et al.(2009)</a></li><li><a href="#12">Remark:</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+  </style></head><body><div class="content"><h1>SCHELTER ET AL.(2009)a - VAP I 5-dimension VAR[3] process</h1><!--introduction--><p>An example borrowed from Schelter et al. (2009)</p><p>Schelter, Timmer &amp; Eichler. Assessing the strength of directed influences among neural signals using renormalized PDC. J Neurosci Methods, 179:121-130, 2009.   [https://dx.doi.org/10.1016/j.jneumeth.2009.01.006]</p><p>3.1 Vector autoregressive process I (Eqs. 11-15, page 124)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#3">Equation Model I with feedback</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#5">Renormalized PDC expected results</a></li><li><a href="#6">Data pre-processing: detrending and normalization options</a></li><li><a href="#7">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">Information PDC estimation</a></li><li><a href="#10">iPDC2 Matrix-Layout Plotting</a></li><li><a href="#11">Result from Schelter et al.(2009)</a></li><li><a href="#12">Remark:</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
 <span class="comment">% See file license.txt in installation directory for licensing terms.</span>
 </pre><pre class="codeinput">clear; clc
 
@@ -81,10 +81,10 @@ disp(repmat(<span class="string">'='</span>,1,100));
                Linear 5-dimension VAR[2]-process
        x1==&gt;x4  x1--&gt;x3 x2--&gt;x1 x2==&gt;x3 x4--&gt;x1 x5--&gt;x4
 ====================================================================================================
-</pre><h2 id="3">Equation Model I with feedback</h2><p>3.1 Vector autoregressive process I (Eqs. 11-15, page 124)</p><p><img vspace="5" hspace="5" src="fig_schelter2009_vap1_equations.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nDiscard = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+</pre><h2 id="3">Equation Model I with feedback</h2><p>3.1 Vector autoregressive process I (Eqs. 11-15, page 124)</p><p><img vspace="5" hspace="5" src="fig_schelter2009_vap1_equations.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">nBurnIn = 1000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 1000;   <span class="comment">% number of analyzed samples points</span>
 chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>};
-u = fschelter2009_vap1(nPoints, nDiscard);
+u = fschelter2009_vap1(nPoints, nBurnIn);
 fs = 1;
 </pre><h2 id="5">Renormalized PDC expected results</h2><p><img vspace="5" hspace="5" src="fig_schelter2009_vap1_graph.png" alt=""> </p><p>Figure 1 from Schelter et al. J Neurosci Methods, <b>179</b>:121--130, 2009.</p><h2 id="6">Data pre-processing: detrending and normalization options</h2><pre class="codeinput">flgDetrend = 1;     <span class="comment">% Detrending the data set</span>
 flgStandardize = 0; <span class="comment">% No standardization</span>
@@ -136,10 +136,10 @@ flgPrintResults = 1;
                                            flgPrintResults);
 </pre><pre class="codeoutput">Running MVAR estimation routine...
 maxOrder limited to 30
-IP=1  vaic=37598.800694
-IP=2  vaic=35569.782795
-IP=3  vaic=34595.614478
-IP=4  vaic=34613.674569
+IP=1  vaic=37391.495514
+IP=2  vaic=35455.603440
+IP=3  vaic=34454.355245
+IP=4  vaic=34477.427049
  
 Number of channels = 5 with 1000 data points; MAR model order = 3.
 
@@ -148,7 +148,7 @@ Number of channels = 5 with 1000 data points; MAR model order = 3.
 ----------------------------------------------------------------------------------------------------
 Good MAR model fitting! Residues white noise hypothesis NOT rejected.
 Pass = 0.024
-  st = 405.006
+  st = 385.662
 </pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -166,11 +166,11 @@ Connectivity matrix:
      0     0     0     1   NaN
 
 Granger causality test p-values:
-       NaN         0    0.3974    0.4994    0.3822
-    0.8151       NaN    0.9858    0.1573    0.0377
-         0         0       NaN    0.1296    0.9464
-         0    0.7762    0.1707       NaN         0
-    0.0650    0.3043    0.4711         0       NaN
+       NaN         0    0.5990    0.8008    0.7517
+    0.1195       NaN    0.4636    0.0334    0.5678
+         0         0       NaN    0.9559    0.7558
+         0    0.7349    0.0266       NaN         0
+    0.0705    0.0168    0.2350         0       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -183,11 +183,11 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.7902    0.1278    0.5655    0.2049
-    0.7902       NaN    0.9963    0.5002    0.4465
-    0.1278    0.9963       NaN    0.6954    0.3374
-    0.5655    0.5002    0.6954       NaN    0.1529
-    0.2049    0.4465    0.3374    0.1529       NaN
+       NaN    0.2048    0.3921    0.6106    0.2058
+    0.2048       NaN    0.9356    0.1759    0.5954
+    0.3921    0.9356       NaN    0.0917    0.5116
+    0.6106    0.1759    0.0917       NaN    0.6917
+    0.2058    0.5954    0.5116    0.6917       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
@@ -214,7 +214,7 @@ xplot(strID,c,flgPrinting,fs,w_max,chLabels,flgColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strTitle);
 </pre><img vspace="5" hspace="5" src="schelter2009_vap1_01.png" alt=""> <h2 id="11">Result from Schelter et al.(2009)</h2><p>Figure 1, page 124, depicted here again for comparison:</p><p><img vspace="5" hspace="5" src="fig_schelter2009_vap1_graph.png" alt=""> </p><h2 id="12">Remark:</h2><div><ul><li>Note that for linear processes the mean amplitude of PDC estimates are   roughly proportional to  relative coefficients values of the autoregressive   model.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% SCHELTER ET AL.(2009) - VAP I 5-dimension VAR[3] process
+%% SCHELTER ET AL.(2009)a - VAP I 5-dimension VAR[3] process
 %
 % An example borrowed from Schelter et al. (2009) 
 %
@@ -249,10 +249,10 @@ disp(repmat('=',1,100));
 
 %% Data sample generation
 
-nDiscard = 1000;    % number of points discarded at beginning of simulation
+nBurnIn = 1000;    % number of points discarded at beginning of simulation
 nPoints  = 1000;   % number of analyzed samples points
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-u = fschelter2009_vap1(nPoints, nDiscard);
+u = fschelter2009_vap1(nPoints, nBurnIn);
 fs = 1;
 
 

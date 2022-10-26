@@ -24,7 +24,7 @@
 
 clc; clear; format compact; format short
 
-nDiscard = 5000;   % number of points discarded at beginning of simulation
+nBurnIn = 5000;   % number of points discarded at beginning of simulation
 nPoints  = 5000;   % number of analyzed samples points
 
 flgRepeat = 0; % You may want to repeat simulation using the same data set 
@@ -36,7 +36,7 @@ flgRepeat = 0; % You may want to repeat simulation using the same data set
                % schelter2006_state.mat file, so that randn can be
                % initialized with the same state number in subsequent
                % simulations.
-[u,aState] = fschelter2006(nPoints, nDiscard, flgRepeat);
+[u,aState] = fschelter2006(nPoints, nBurnIn, flgRepeat);
 
 % if ~flgRepeat, save schelter2006_state.mat aState; end;
 

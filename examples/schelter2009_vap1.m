@@ -1,4 +1,4 @@
-%% SCHELTER ET AL.(2009) - VAP I 5-dimension VAR[3] process
+%% SCHELTER ET AL.(2009)a - VAP I 5-dimension VAR[3] process
 %
 % An example borrowed from Schelter et al. (2009) 
 %
@@ -33,10 +33,10 @@ disp(repmat('=',1,100));
 
 %% Data sample generation
 
-nDiscard = 1000;    % number of points discarded at beginning of simulation
+nBurnIn = 1000;    % number of points discarded at beginning of simulation
 nPoints  = 1000;   % number of analyzed samples points
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-u = fschelter2009_vap1(nPoints, nDiscard);
+u = fschelter2009_vap1(nPoints, nBurnIn);
 fs = 1;
 
 

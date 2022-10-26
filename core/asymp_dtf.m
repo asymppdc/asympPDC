@@ -1,13 +1,13 @@
-function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
-%ASYMP_DTF   Compute DTF connectivity measures magnitude, from series j-->i, for
-%            any of three of metrics --- Euclidean, diagonal and information ---
-%            as well as asymptotic statistics from vector autoregressive (VAR)
-%            coefficients in the frequency domain.
+%% ASYMP_DTF
+%        Compute DTF connectivity measures magnitude, from series j--> i, for
+%        any of three of metrics -- Euclidean, diagonal and information --
+%        as well as asymptotic statistics from vector autoregressive (VAR)
+%        coefficients in the frequency domain.
 %
-% Syntax:
+%% Syntax:
 %        c = ASYMP_DTF(u,A,pf,nFreqs,metric,alpha)
 %
-% Input Arguments:
+%% Input Arguments:
 %        u      - multiple row vectors time series
 %        A      - AR estimate matrix obtained via MVAR routine
 %        pf     - covariance matrix provided via MVAR routine
@@ -18,26 +18,26 @@ function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 %        alpha  - significance level
 %                 if alpha is zero, statistical analysis won't be performed
 %
-% Output Arguments:
+%% Output Arguments:
 %        c struct variable with following fields:
 %        |-- .dtf       - complex DTF estimates
 %        |-- .dtf2      - |DTF|^2 estimates
-%        |-- .pvalues   - p-values associated to DTF2 estimates. 
-%        |-- .th        - |DTF|^2 threshold value with (1-alpha) significance 
+%        |-- .pvalues   - p-values associated to DTF2 estimates.
+%        |-- .th        - |DTF|^2 threshold value with (1-alpha) significance
 %        |                level.
-%        |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of 
+%        |-- .{ci1,ci2} - lower and upper (1 - alpha) confidence interval of
 %        |                |DTF|^2 estimates
-%        |-- .metric    - metric used for DTF calculation 
+%        |-- .metric    - metric used for DTF calculation
 %        |-- .alpha     - significance level
 %        |-- .p         - VAR model order
-%        |-- .patdenr   - 
-%        |-- .patdfr    - degree of freedom 
+%        |-- .patdenr   -
+%        |-- .patdfr    - degree of freedom
 %        |-- .SS        - power spectra
 %        +-- .coh2      - squared spectral coherence
 %    or
 %        c.{dtf,dtf2,pvalues,th,ci1,ci2,metric,alpha,p,patdenr,patdfr,SS,coh2}
 %
-% Description:
+%% Description:
 %   Compute all three types of DTF --- Granger influentiability measure and
 %   their allied statistical measures of asymptotic statistics for metric
 %   option:
@@ -46,10 +46,10 @@ function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 %        * 'diag' - Directed Coherence (DC) or gDTF (generalized);
 %        * 'info' - information DTF.
 %
-% Example:
-% 
-%  Annual sunspot numbers  and the melanoma cases (10^5) in the State of
-%  Connecticuts, USA, from 1936 to 1972, given by
+%% Example:
+%
+% Annual sunspot numbers  and the melanoma cases (10^5) in the State of
+% Connecticuts, USA, from 1936 to 1972, given by
 %
 %   u = [ 40 115 100  80  60  40  23  10  10  25  75 145 130 130  80  65  20 ...
 %         10   5  10  60 190 180 175 120  50  35  20  10  15  30  60 105 105 ...
@@ -75,33 +75,34 @@ function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 %   c = asymp_dtf(u,A,pf,nFreqs,metric,alpha); % Calculate iDTF with statistics
 %
 %   chLabels={'Sunspot';'Melanoma'}; % Channel labels
-%   flgColor    = 0;      fs = 1;    w_max = 0.5; 
-%   flgPrinting =[1 1 1 2 2 0 1]; flgScale = 1; 
+%   flgColor    = 0;      fs = 1;    w_max = 0.5;
+%   flgPrinting =[1 1 1 2 2 0 1]; flgScale = 1;
 %   flgMax      = 'all';    flgSignifColor = 3;
 %   figure; xplot(c) % Visualiza PDC plots. Try this first.
 %
-%   figure; 
+%   figure;
 %   xplot(c,flgPrinting,fs,w_max,chLabels,flgColor); % DTF plot with confidence
 %                                                    % interval
-%   figure; 
+%   figure;
 %   xplot(c,flgPrinting,fs,fs/2,chLabels,flgColor,flgScale,flgMax, ...
 %                                                              flgSignifColor);
 %
-% References:
+%% References:
 %   [1] M.J. Kaminski and K.J. Blinowska. A new method of the description of the
 %   information flow in the brain structures. Biol Cybern 65:203--210,1991.
 %   <https://doi.org/10.1007/bf00198091>
 %
 %   [2] L.A.B. Baccala, D.Y. Takahashi and K. Sameshima. Directed transfer
 %   function: unified asymptotic theory and some of its implications. IEEE T
-%   Bio-Med Eng 63:2450--2460, 2016. 
+%   Bio-Med Eng 63:2450--2460, 2016.
 %   <https://doi.org/10.1109/TBME.2016.2550199>
 %
-% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
+%% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
 
-% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022.
 % See file license.txt in installation directory for licensing terms.
 
+function c = asymp_dtf(u,A,pf,nFreqs,metric,alpha)
 
 if ~(nargin == 6)
    error('ASYMP_DTF requires six input arguments.')
@@ -129,7 +130,7 @@ if alpha ~= 0
    patdfr = zeros(nChannels,nChannels,nFreqs);
    patdenr = zeros(nChannels,nChannels,nFreqs);
    pvalues = zeros(nChannels,nChannels,nFreqs);
-   
+
    if flgVerbose
       switch lower(metric)
          case {'euc'}
@@ -158,8 +159,8 @@ end
 switch lower(metric)
    case {'euc'}               % for DTF
       ddtf_dev = zeros(1,nChannels^2);
-      pfe  = eye(nChannels);  % for complex DTF calculation  
-      
+      pfe  = eye(nChannels);  % for complex DTF calculation
+
    case {'diag'}              % for DC
       evar_d = mdiag(pf);
       evar_d_big = kron(eye(2),kron(evar_d,eye(nChannels)));
@@ -210,7 +211,7 @@ for ff = 1:nFreqs
          case {'diag'}          % for DC
             Iie  = Ii*evar_d_big*Ii;
          case {'info'}          % for iDTF
-            Iie  = Ii*evar_big;            
+            Iie  = Ii*evar_big;
          otherwise
             error('Unknown metric.')
       end
@@ -234,10 +235,10 @@ for ff = 1:nFreqs
 
          num = h.'*Iije*h;
          den = h.'*Iie*h;
-         
+
          dtf2(i,j,ff) = num/den; % |DTF_{ij}(ff)|^2 squared-|DTF|
          dtf(i,j,ff)  = Hf(i,j)*sqrt(pfe(j,j))/sqrt(den); % complex-DTF
-         
+
          % If alpha == 0, do not calculate statistics for faster DTF computation.
          if alpha ~= 0
             %'Add evar differentiation'
@@ -250,14 +251,14 @@ for ff = 1:nFreqs
                   %'derivative of den by vecE'
                   dden_dev = kron((Ii*h).', h.'*Ii)*dedinv_deh;
                   ddtf_dev = (den*dnum_dev - num*dden_dev)/(den^2);
-                  
+
                case {'info'}              % for iDTF
                   %'derivative of num by vecE'
                   dnum_dev = kron((Iij*h).', h.'*Iij) * dedinv_deh;
                   %'derivative of den by vecE'
                   dden_dev = kron((Ii*h).', h.'*Ii) * debig_de;
                   ddtf_dev = (den*dnum_dev - num*dden_dev)/(den^2);
-                  
+
                otherwise
                   error('Unknown metric.')
             end
@@ -279,14 +280,14 @@ for ff = 1:nFreqs
             patdf = (sum(d).^2)./sum(d.^2);
             patden = sum(d)./sum(d.^2);
 
-             th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np); % original KS 
+             th(i,j,ff) = chi2inv((1 - alpha), patdf)/(patden*np); % original KS
 %            th(i,j,ff) = chi2inv((1 - alpha), patdf)./(np);
             pvalues(i,j,ff) = 1 - chi2cdf(dtf2(i,j,ff)*patden*np, patdf);
 
             varass2(i,j,ff) = patdf/(patden*np).^2;
             patdfr(i,j,ff) = patdf;
             patdenr(i,j,ff) = patden;
-            
+
          else % as alpha == 0, do not compute asymptotics
             %nop
          end
@@ -308,13 +309,13 @@ if alpha ~= 0
    c.patdf = patdfr;
    c.varass1 = varass1;
    c.varass2 = varass2;
-   
+
    % Statistically significant DTF2 on frequency scale
    dtf2_temp = ((abs(dtf2) - abs(th)) > 0).*dtf2 ...
                                            + ((abs(dtf2) - abs(th)) <= 0)*(-1);
    dtf2_temp(dtf2_temp < 0) = NaN; % Octave
    c.dtf2_th = dtf2_temp;
-   
+
 else
     c.dtf = dtf;
     c.dtf2 = dtf2;
@@ -436,8 +437,10 @@ function c = fdebig_de_dtf(n)
 %c=sparse(kron(A, eye(n)));
 A=sparse(kron(TT(n^2,2),eye(n^2)));
 A1=sparse(kron(eye(2),A));
-A=sparse(kron(TT(n^2,1),eye(n)));
-%A=sparse(kron(TT(1,n^2),eye(n)));
+
+% A=sparse(kron(TT(n^2,1),eye(n)));  % Farnaz removed this from bac
+A=sparse(kron(TT(n,n),eye(n)));      % Farnaz add this
+
 A2=sparse(kron(eye(n),A));
 A3=sparse(kron(eye(n^2),vec(eye(n))));
 A4=sparse(A2*A3);
@@ -518,10 +521,10 @@ hh = -[h1; h2];           %hh = cat(h1, h2, 0)
 end
 %==========================================================================
 
-%
+%%
 %        1         2         3         4         5         6         7         8         9
 %23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-% Change Log:
+%% Change Log:
 % [2011/07/25]: The asymp_pdc routine, which asymp_dtf is derived from, was corrected on
 %              to match the frequency range with plotting routine, f = 0 was
 %              included in the "frequency" for-loop:
