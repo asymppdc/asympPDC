@@ -17,7 +17,7 @@ The asympPDC Package contains MATLAB/Octave m-files and subdirectories that you 
 ```
 
 Besides adding paths, `startup.m` will also check for the presence of required MATLAB toolboxes (Control System
- Toolbox(TM), Signal Processing Toolbox(TM), and Statistics Toolbox(TM) or Statistics or Machine Learning Toolbox(TM)) or Octave packages (control, signal, and statistics). This is a standalone package that will most likely work in the recent versions of Octave — 6.3.0, 6.4.0 and 7.1.0. (Please report problems or suggest corrections to any issues related to compatibility with Octave).
+ Toolbox(TM), Signal Processing Toolbox(TM), and Statistics Toolbox(TM) or Statistics or Machine Learning Toolbox(TM)) or Octave packages (control, signal, and statistics). This is a standalone package that will most likely work in the recent versions of Octave — 6.3.0, 6.4.0, 7.1.0 and 7.2.0 (this latter version tested on MX Linux 32-bit). (Please report problems or suggest corrections to any issues related to compatibility with Octave).
 
 To run all examples provided in `./examples` subdirectory and verify if your installation is working properly, execute:
 
@@ -31,18 +31,14 @@ If `run_all_examples.m` completes successfully, congratulation, you should see 4
 >> tilefigs1 or tilefigs2
 ```
 
-These commands tile the screen with figure windows. The `tilefigs1` and `tilefigs2` functions do not seem to work in the Octave environment.
+These commands tile the screen with figure windows. The `tilefigs1` and `tilefigs2` functions do not seem to work in the Octave environment (on Octave v7.2.0 tilefigs2 and tilefigs2 recovered function to tile the figure windows, but these windows stay behind Octave IDE).
 
 ## Schematic view of connectivity measures evolution
 
-The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (***N* = 2**) to **multivariate** (***N* ≥ 2**) **time series**, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **asympPDC Package**.
+The figure bellow shows schematically the evolution path of **directed connectivity**, **Granger causality** and allied concepts developed along the last half-century from **bivariate** (***N* = 2**) to **multivariate** (***N* > 2**) **time series**, and from **time domain** to **frequency domain** analysis. The measures inside the yellow area are those implemented in **asympPDC Package**.
 
 ***
-
-
-
-![connectivity_measures_in_asymppdc.png](/home/koichi/Documents/GitHub/asympPDC2/connectivity_measures_in_asymppdc.png)
-
+![connectivity_measures_in_asymppdc.png](./connectivity_measures_in_asymppdc.png)
 ***
 
 * **Legend**: **N** - number of channels in time series; **RPC** - relative power contribution; **DC** - directed coherence or generalized directed transfer function; **GCT** - Granger causality test; **iGCT** - instantaneous Granger causality test; **DTF** - directed transfer function; **PC** - partial spectral coherence; **PDC** - partial directed coherence; **gPDC** - generalized partial directed coherence; **iPDC** - information partial directed coherence; **iDTF** - information directed transfer function.
