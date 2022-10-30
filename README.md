@@ -67,7 +67,7 @@ own data sets. The basic steps to set up and analyze a data set using **asympPDC
 
 5. **PDC** or **DTF estimation**, choosing analysis parameters such as **significance levels** for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , **metric** for PDC/DTF, and **number of frequency points**, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for  further analysis, or plotted;
 
-6. **Visualization** of analysis results through the use of `xplot`, `xplot_pvalues` and `xplot_title` functions that will properly format and plot PDC/DTF and corresponding *p*-values results saved in `struct variable` obtained in the previous step in the frequency domain.  Several matrix-layout plotting using `xplot` and `xplot_pvalues` can be achieved by properly choice of plotting parameters, i.e. `flgPrinting`, `w_max`, `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`. See further details in the `xplot` function.
+6. **Visualization** of analysis results through the use of `xplot`, `xplot_pvalues` and `xplot_title` functions that will properly format and plot PDC/DTF and corresponding *p*-values results saved in `struct variable` obtained in the previous step in the frequency domain.  Several matrix-layout plotting using `xplot` and `xplot_pvalues` can be achieved choosing plotting parameters, i.e. `flgPrinting`, `w_max`, `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`. See further details in the `xplot` function.
 
 ## Examples
 
