@@ -27,18 +27,8 @@ clc; clear; format compact; format short
 nBurnIn = 5000;   % number of points discarded at beginning of simulation
 nPoints  = 5000;   % number of analyzed samples points
 
-flgRepeat = 0; % You may want to repeat simulation using the same data set 
-               % with different analysis parameters. If this is the case, 
-               % run schelter2006.m with flgRepeat = 0, then set it to 1,
-               % and you will be able to play with the same dataset using
-               % different analysis and plotting parameters. 
-               % When flgRepeat == 0, the state number is saved in
-               % schelter2006_state.mat file, so that randn can be
-               % initialized with the same state number in subsequent
-               % simulations.
-[u,aState] = fschelter2006(nPoints, nBurnIn, flgRepeat);
-
-% if ~flgRepeat, save schelter2006_state.mat aState; end;
+flgRepeat = 0; % [DEPRECATED] 
+u = fschelter2006(nPoints, nBurnIn, flgRepeat);
 
 %chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'}; %or 
 chLabels = [];

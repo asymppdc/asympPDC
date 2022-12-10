@@ -20,6 +20,10 @@ clear; clc; format compact; format short
 
 %% Data sample generation
 
+% Seeding random number generator
+rng('default')
+%rng('shuffle')
+
 nBurnIn = 5000;    % number of points discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
 N=nBurnIn+nPoints; % number of simulated points

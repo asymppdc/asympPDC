@@ -42,7 +42,7 @@ if nPoints < 10
    disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
 end
 %
-randn('state', sum(100*clock))
+rng('shuffle')
 
 %randn('state', 100*pi); % This command line was used to repeat 
 %                        % the analysis with the same data set to check 

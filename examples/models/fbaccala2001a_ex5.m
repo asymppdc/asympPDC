@@ -39,10 +39,12 @@ end
 
 N = nBurnIn+nPoints; % number of simulated points.
 
-%
-randn('state', sum(100*clock))
+% Variables initialization.
 
-%randn('state', 100*pi); % This command line was used to repeat 
+rng('shuffle')
+% rng('shuffle')
+
+%randn('state', 100*pi); % This command line was used to repeat
 %                        % the analysis with the same data set to check 
 %                        % alg and criterion selection.
 

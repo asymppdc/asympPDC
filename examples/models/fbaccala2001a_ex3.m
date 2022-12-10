@@ -40,7 +40,10 @@ end
 N=nBurnIn+nPoints; % Number of data points to be generated.
 
 % Variables initialization.
-randn('state', sum(100*clock))
+
+rng('default')
+rng('shuffle')
+
 ei=randn(5,N);
 x1=zeros(1,N);
 x2=zeros(1,N);

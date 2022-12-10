@@ -97,7 +97,12 @@
 %   Bio-Med Eng 63:2450--2460, 2016.
 %   <https://doi.org/10.1109/TBME.2016.2550199>
 %
-%% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT
+%   [3] F. Rezaei, O. Alamoudi, S. Davani and S. Hou  (2022). Fast
+%   Asymptotic Algorithm for Real-Time Causal Connectivity Analysis of
+%   Multivariate Systems and Signals. Signal Processing.
+%   <https://doi.org/10.1016/j.sigpro.2022.108822>
+%
+%% See also: DTF_ALG, ASYMP_PDC, MVAR, MCARNS, MCARVM, CMLSM, ARFIT, FASTASYMPALG, FASTASYMPALG0, FASTASYMPALG1 
 
 % (C) Koichi Sameshima & Luiz A. Baccalá, 2022.
 % See file license.txt in installation directory for licensing terms.
@@ -239,7 +244,6 @@ for ff = 1:nFreqs
          dtf2(i,j,ff) = num/den; % |DTF_{ij}(ff)|^2 squared-|DTF|
          dtf(i,j,ff)  = Hf(i,j)*sqrt(pfe(j,j))/sqrt(den); % complex-DTF
 
-         % If alpha == 0, do not calculate statistics for faster DTF computation.
          if alpha ~= 0
             %'Add evar differentiation'
             switch lower(metric)
@@ -332,15 +336,15 @@ else
     c.varass2 = [];
 end
 
-% Power spectra and coherence calculation
+% Power spectra and spectral coherence calculation
 c.SS = ss_alg(A, pf, nFreqs);
 c.coh2 = coh_alg(c.SS);
 end
 
 %==========================================================================
 function gamma = bigautocorr(x, p)
-%Autocorrelation. Data in rows. From order 0 to p-1.
-%Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''
+% Autocorrelation. Data in rows. From order 0 to p-1.
+% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''
 [n, nd] = size(x);
 
 gamma = zeros(n*p, n*p);
@@ -364,7 +368,7 @@ end
 
 %==========================================================================
 function d = fEig(L, G2)
-%'''Returns the eigenvalues'''
+% Returns the eigenvalues 
 
 %L = mat(cholesky(omega, lower=1))
 D = L.'*G2*L;
@@ -385,7 +389,7 @@ end
 
 %==========================================================================
 function c = fIij(i,j,n)
-%'''Returns Iij of the formula'''
+% Returns Iij of the formula
 Iij = zeros(1,n^2);
 Iij(n*(j - 1) + i) = 1;
 Iij = diag(Iij);
@@ -393,18 +397,8 @@ c = kron(eye(2), Iij);
 end
 
 %==========================================================================
-% function c = fIj(j,n)
-% %'''Returns Ij of the formula'''
-% Ij = zeros(1,n);
-% Ij(j) = 1;
-% Ij = diag(Ij);
-% Ij = kron(Ij,eye(n));
-% c = kron(eye(2), Ij);
-% end
-
-%==========================================================================
 function c = fIi(i,n)
-%    '''Returns Ii of the formula'''
+% Returns Ii of the formula 
 Ii = zeros(1,n);
 Ii(i) = 1;
 Ii = diag(Ii);
@@ -414,50 +408,16 @@ end
 
 %==========================================================================
 function d = fCa(f, p, n)
-%'''Returns C* of the formula'''
+% Returns C* of the formula 
 C1 = cos(-2*pi*f*(1:p));
 S1 = sin(-2*pi*f*(1:p));
 C2 = [C1; S1];
 d = kron(C2, eye(n^2));
 end
-%==========================================================================
-% function c = fdebig_de(n)
-% %'''Derivative of kron(I(2n), A) by A'''
-% %c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));
-% A=sparse(kron(TT(2*n, n), eye(n*2*n)));
-% B=sparse(kron(vec(eye(2*n)), eye(n)));
-% c = A * kron(eye(n), B);
-% c=sparse(c);
-% end
-%==========================================================================
-function c = fdebig_de_dtf(n)
-%''' New \Theta_K for DTF asymptotics'''
-%c = kron(kron(eye(2*n),TT(n, 2*n)), eye(n)));
-%A=sparse(kron(eye(2*n), TT(n, 2*n)));
-%c=sparse(kron(A, eye(n)));
-A=sparse(kron(TT(n^2,2),eye(n^2)));
-A1=sparse(kron(eye(2),A));
 
-% A=sparse(kron(TT(n^2,1),eye(n)));  % Farnaz removed this from bac
-A=sparse(kron(TT(n,n),eye(n)));      % Farnaz add this
-
-A2=sparse(kron(eye(n),A));
-A3=sparse(kron(eye(n^2),vec(eye(n))));
-A4=sparse(A2*A3);
-A5=sparse(kron(vec(eye(2)),A4));
-c=sparse(A1*A5);
-% To generate sparse matrix
-%c=sparse(c*diag(vec(eye(n))));
-end
-
-%==========================================================================
-function c = vec(x)
-%vec = lambda x: mat(x.ravel('F')).T
-c=x(:);
-end
 %==========================================================================
 function t = TT(a,b)
-%''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''
+%  TT(a,b)*vec(B) = vec(B.T), where B is (a x b). 
 t = zeros(a*b);
 for i = 1:a
    for j =1:b
@@ -465,6 +425,31 @@ for i = 1:a
    end
 end
 t = sparse(t);
+end
+
+%==========================================================================
+function c = fdebig_de_dtf(n)
+%  New \Theta_K for DTF asymptotics 
+%c = kron(kron(eye(2*n),TT(n, 2*n)), eye(n)));
+%A = sparse(kron(eye(2*n), TT(n, 2*n)));
+%c = sparse(kron(A, eye(n)));
+A  = sparse(kron(TT(n^2,2),eye(n^2)));
+A1 = sparse(kron(eye(2),A));
+
+% A=sparse(kron(TT(n^2,1),eye(n)));  % The code line corrected by
+A  = sparse(kron(TT(n,n),eye(n)));   % Rezaei et. al. (2022).
+
+A2 = sparse(kron(eye(n),A));
+A3 = sparse(kron(eye(n^2),vec(eye(n))));
+A4 = sparse(A2*A3);
+A5 = sparse(kron(vec(eye(2)),A4));
+c  = sparse(A1*A5);
+end
+
+%==========================================================================
+function c = vec(x)
+% vec = lambda x: mat(x.ravel('F')).T
+c = x(:);
 end
 
 %==========================================================================
@@ -494,7 +479,7 @@ end
 
 %==========================================================================
 function d = Dup(n)
-%     '''D*vech(A) = vec(A), with symmetric A'''
+% D*vech(A) = vec(A), with symmetric A 
 d = zeros(n*n, (n*(n + 1))/2);
 count = 1;
 for j= 1:n
@@ -511,9 +496,9 @@ end
 
 %==========================================================================
 function hh=fdh_da(Af)
-%    '''Derivative of vec(H) by vec(A), with $H = A^{-1}$ and complex A.'''
+% Derivative of vec(H) by vec(A), with $H = A^{-1}$ and complex A. 
 ha = pinv(Af);
-h = -kron(ha.', ha);
+h  = -kron(ha.', ha);
 
 h1 = [real(h) -imag(h)];
 h2 = [imag(h) real(h)];   %h2 = cat(h.imag, h.real, 1)
@@ -534,5 +519,11 @@ end
 % [2021/09/02, LAB]: complex dtf calculation added
 %
 % [2015/01/07]: Optimization \(^o^)/
+%
+% [2022/11/05]: Line 339: Correction in the function c = fdebig_de_dtf(n)
+%               pointed out by Rezaei et al. (2022). Fast Asymptotic
+%               Algorithm for Real-Time Causal Connectivity Analysis of
+%               Multivariate Systems and Signals. Signal Processing.
+%               https://doi.org/10.1016/j.sigpro.2022.108822
 
 % [EOF]

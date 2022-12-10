@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Schelter et al. (2005)  Five-dimension VAR[4]-process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-08-02"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
+      --><title>SCHELTER ET AL.(2005) - Five-dimension VAR[4]-process</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-12-08"><meta name="DC.source" content="schelter2005.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,11 +67,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Schelter et al. (2005)  Five-dimension VAR[4]-process</h1><!--introduction--><p>Description:</p><p>Example from: Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking, Dahlhaus &amp; Timmer. Testing for directed influences among neural signals using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.</p><p><a href="https://dx.doi.org/10.1016/j.jneumeth.2005.09.001">https://dx.doi.org/10.1016/j.jneumeth.2005.09.001</a></p><p>Example Eq. (5) Five-dimension VAR[4]-process</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Interaction diagram</a></li><li><a href="#3">Equation system</a></li><li><a href="#4">Data sample generation</a></li><li><a href="#6">MVAR model estimation</a></li><li><a href="#8">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#9">PDC, threshold and confidence interval calculations.</a></li><li><a href="#10">Plotting options set up, mostly cosmetics, used in xplot.m routine:</a></li><li><a href="#12">Result from Figure 1 Schelter et al.(2005)</a></li><li><a href="#13">Remarks:</a></li></ul></div><pre class="codeinput">clear; clc
-</pre><h2 id="2">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_schelter2005_graph.png" alt=""> </p><h2 id="3">Equation system</h2><p><img vspace="5" hspace="5" src="fig_schelter2005_eq.png" alt=""> </p><h2 id="4">Data sample generation</h2><pre class="codeinput">flgPrintScreen = <span class="string">'screen'</span>;
-nDiscard = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
+  </style></head><body><div class="content"><h1>SCHELTER ET AL.(2005) - Five-dimension VAR[4]-process</h1><!--introduction--><p>Description:</p><p>Example borrowed from Schelter et al. (2005):</p><pre>    Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer,
+    L&uuml;cking, Dahlhaus &amp; Timmer. Testing for directed influences among
+    neural signals using partial directed coherence.
+    J. Neurosci Methods152:210-9, 2005.</pre><pre>    &lt;https://dx.doi.org/10.1016/j.jneumeth.2005.09.001&gt;</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</a></li><li><a href="#4">Interaction diagram</a></li><li><a href="#5">Equation system</a></li><li><a href="#6">Data sample generation</a></li><li><a href="#8">MVAR model estimation</a></li><li><a href="#10">Granger causality test (GCT) and instantaneous GCT</a></li><li><a href="#11">PDC, threshold and confidence interval calculations.</a></li><li><a href="#12">Plotting options set up, mostly cosmetics, used in xplot.m routine:</a></li><li><a href="#14">Result from Figure 1 Schelter et al.(2005)</a></li><li><a href="#15">Remarks:</a></li></ul></div><h2 id="1">See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg,</h2><pre>            igct_alg, xplot, xplot_pvalues</pre><pre class="codeinput"><span class="comment">% (C) Koichi Sameshima &amp; Luiz A. Baccal&aacute;, 2022.</span>
+<span class="comment">% See file license.txt in installation directory for licensing terms.</span>
+</pre><pre class="codeinput">clear; clc
+</pre><h2 id="4">Interaction diagram</h2><p><img vspace="5" hspace="5" src="fig_schelter2005_graph.png" alt=""> </p><h2 id="5">Equation system</h2><p><img vspace="5" hspace="5" src="fig_schelter2005_eq.png" alt=""> </p><h2 id="6">Data sample generation</h2><pre class="codeinput">flgPrintScreen = <span class="string">'screen'</span>;
+nBurnIn = 5000;    <span class="comment">% number of points discarded at beginning of simulation</span>
 nPoints  = 2000;   <span class="comment">% number of analyzed samples points</span>
-N = nDiscard + nPoints; <span class="comment">% number of simulated points</span>
+N = nBurnIn + nPoints; <span class="comment">% number of simulated points</span>
 
 repmat(<span class="string">'='</span>,1,100)
 disp(<span class="string">'       Schelter et al. J Neurosci Methods. 152:210-9, 2005.'</span>)
@@ -79,32 +84,10 @@ disp(<span class="string">'               Linear 5-dimension VAR[4]-process'</sp
 disp(<span class="string">'       x2==&gt;x1  x3--&gt;x2  x3==&gt;x4  x3&lt;--&gt;x5  x4==x2 x5==x4'</span>);
 repmat(<span class="string">'='</span>,1,100)
 
-randn(<span class="string">'state'</span>, sum(100*clock))
-<span class="comment">% Variables initialization</span>
-ei=randn(5,N);
-x1=zeros(1,N);
-x2=zeros(1,N);
-x3=zeros(1,N);
-x4=zeros(1,N);
-x5=zeros(1,N);
-<span class="keyword">for</span> t=1:4
-   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
-   x5(t)=randn(1);
-<span class="keyword">end</span>
+u = fschelter2005( nPoints, nBurnIn);
 
 <span class="comment">%chLabels = []; % or</span>
 chLabels = {<span class="string">'x_1'</span>;<span class="string">'x_2'</span>;<span class="string">'x_3'</span>;<span class="string">'x_4'</span>;<span class="string">'x_5'</span>};
-
-<span class="keyword">for</span> t=5:N
-   x1(t) = 0.6*x1(t-1) + 0.65*x2(t-2) + ei(1,t);
-   x2(t) = 0.5*x2(t-1) - 0.3*x2(t-2) - 0.3*x3(t-4) + 0.6*x4(t-1) + ei(2,t);
-   x3(t) = 0.8*x3(t-1) - 0.7*x3(t-2) - 0.1*x5(t-3) + ei(3,t);
-   x4(t) = 0.5*x4(t-1) + 0.9*x3(t-2) + 0.4*x5(t-2) + ei(4,t);
-   x5(t) = 0.7*x5(t-1) - 0.5*x5(t-2) - 0.2*x3(t-1) + ei(5,t);
-<span class="keyword">end</span>
-
-y=[x1' x2' x3' x4' x5']; <span class="comment">% data must be organized column-wise</span>
-u=y(nDiscard+1:N,:);
 fs = 1;
 </pre><pre class="codeoutput">ans =
     '===================================================================================================='
@@ -113,6 +96,11 @@ fs = 1;
        x2==&gt;x1  x3--&gt;x2  x3==&gt;x4  x3&lt;--&gt;x5  x4==x2 x5==x4
 ans =
     '===================================================================================================='
+======================================================================
+       Schelter et al. J Neurosci Methods. 152:210-9, 2005.
+               Linear 5-dimensional VAR[4]-process
+       x2==&gt;x1  x3--&gt;x2 x3==&gt;x4 x3--&gt;x5 x4==x2 x5--&gt;x3  x5==x4
+======================================================================
 </pre><p>Data pre-processing: detrending and standardization options</p><pre class="codeinput">flgDetrend = 1;     <span class="comment">% 1: Detrending the data set</span>
 flgStandardize = 0; <span class="comment">% 0: No standardization</span>
 <span class="comment">% Checking data dimension</span>
@@ -132,7 +120,7 @@ flgStandardize = 0; <span class="comment">% 0: No standardization</span>
    disp(<span class="string">'Time series were scale-standardized.'</span>);
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">Time series were detrended.
-</pre><h2 id="6">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
+</pre><h2 id="8">MVAR model estimation</h2><pre class="codeinput">maxIP = 30;         <span class="comment">% maximum model order to consider.</span>
 alg = 1;            <span class="comment">% 1 = Nutall-Strand MVAR estimation algorithm</span>
 criterion = 1;      <span class="comment">% 1 = AIC, Akaike Information Criteria</span>
 
@@ -144,11 +132,11 @@ disp([<span class="string">'Number of channels = '</span> int2str(nChannels) <sp
     int2str(nSegLength) <span class="string">' data points; MAR model order = '</span> int2str(IP) <span class="string">'.'</span>]);
 </pre><pre class="codeoutput">Running MVAR estimation and GCT analysis routines.
 maxOrder limited to 30
-IP=1  vaic=80297.987625
-IP=2  vaic=76171.814892
-IP=3  vaic=76149.926895
-IP=4  vaic=76099.137126
-IP=5  vaic=76126.478030
+IP=1  vaic=80251.846060
+IP=2  vaic=76079.522428
+IP=3  vaic=76029.730363
+IP=4  vaic=75982.826367
+IP=5  vaic=75999.978679
  
 Number of channels = 5 with 2000 data points; MAR model order = 4.
 </pre><pre class="codeinput"><span class="comment">%Testing the adequacy of MAR model fitting through Portmanteau test</span>
@@ -164,10 +152,11 @@ flgPrintResults = 1;
 ====================================================================================================
                   MVAR RESIDURES TEST FOR WHITENESS
 ----------------------------------------------------------------------------------------------------
-Good MAR model fitting! Residues white noise hypothesis NOT rejected.
-Pass = 0.028
-  st = 419.701
-</pre><h2 id="8">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
+(**) Poor MAR model fitting:
+                   Residues white noise hypothesis was rejected.
+Pass = 0.056
+  st = 451.832
+</pre><h2 id="10">Granger causality test (GCT) and instantaneous GCT</h2><pre class="codeinput">gct_signif  = 0.01;  <span class="comment">% Granger causality test significance level</span>
 igct_signif = 0.01;  <span class="comment">% Instantaneous GCT significance level</span>
 
 flgPrintResults = 1; <span class="comment">% Flag to control printing gct_alg.m results on command window.</span>
@@ -186,11 +175,11 @@ Connectivity matrix:
      0     0     1     0   NaN
 
 Granger causality test p-values:
-       NaN         0    0.8506    0.4538    0.7410
-    0.8838       NaN         0         0    0.9786
-    0.8873    0.9417       NaN    0.0772    0.0000
-    0.2449    0.3601         0       NaN         0
-    0.7682    0.6294         0    0.3327       NaN
+       NaN         0    0.3179    0.6803    0.1962
+    0.4103       NaN         0         0    0.7029
+    0.1768    0.6827       NaN    0.2906    0.0000
+    0.4262    0.3404         0       NaN         0
+    0.1877    0.2168         0    0.7114       NaN
 
 ====================================================================================================
                   INSTANTANEOUS GRANGER CAUSALITY TEST
@@ -203,23 +192,23 @@ Instantaneous connectivity matrix:
      0     0     0     0   NaN
 
 Instantaneous Granger Causality test p-values:
-       NaN    0.3736    0.9226    0.8703    0.6389
-    0.3736       NaN    0.2923    0.0343    0.2332
-    0.9226    0.2923       NaN    0.7184    0.3775
-    0.8703    0.0343    0.7184       NaN    0.0988
-    0.6389    0.2332    0.3775    0.0988       NaN
+       NaN    0.5020    0.3976    0.5885    0.0568
+    0.5020       NaN    0.9654    0.6805    0.7057
+    0.3976    0.9654       NaN    0.8427    0.4210
+    0.5885    0.6805    0.8427       NaN    0.9863
+    0.0568    0.7057    0.4210    0.9863       NaN
 
 &gt;&gt;&gt;&gt; Instantaneous Granger Causality NOT detected.
 
 ====================================================================================================
-</pre><h2 id="9">PDC, threshold and confidence interval calculations.</h2><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_pdc.m,</p><pre class="codeinput">metric = <span class="string">'diag'</span>; <span class="comment">% Generalized PDC estimation</span>
+</pre><h2 id="11">PDC, threshold and confidence interval calculations.</h2><p>PDC analysis results are saved in <b>c</b> data structure. See asymp_pdc.m,</p><pre class="codeinput">metric = <span class="string">'diag'</span>; <span class="comment">% Generalized PDC estimation</span>
 nFreqs = 128;   <span class="comment">% Number of frequency points to consider</span>
 alpha  = 0.0001;  <span class="comment">% Significance level for PDC/DTF null hypothesis test</span>
 
 c = asymp_pdc(u,A,pf,nFreqs,metric,alpha);
 c.Tragct = Tr_gct;         <span class="comment">% Assigning GCT results to c struct variable.</span>
 c.pvaluesgct = pValue_gct;
-</pre><h2 id="10">Plotting options set up, mostly cosmetics, used in xplot.m routine:</h2><pre class="codeinput"><span class="keyword">switch</span> lower(flgPrintScreen)
+</pre><h2 id="12">Plotting options set up, mostly cosmetics, used in xplot.m routine:</h2><pre class="codeinput"><span class="keyword">switch</span> lower(flgPrintScreen)
    <span class="keyword">case</span> <span class="string">'print'</span>
       flgMax = <span class="string">'TCI'</span>;
       flgSignifColor = 1; <span class="comment">% black + gray</span>
@@ -262,21 +251,30 @@ strID = <span class="string">'Schelter et al. J. Neurosci Methods (2005)'</span>
 [h,hxlabel,hylabel] = xplot(strID,c,flgPrinting,fs,w_max,chLabels, <span class="keyword">...</span>
                                 flgColor,flgScale,flgMax,flgSignifColor);
 xplot_title(alpha,metric,<span class="string">'pdc'</span>,strID);
-</pre><img vspace="5" hspace="5" src="schelter2005_01.png" alt=""> <h2 id="12">Result from Figure 1 Schelter et al.(2005)</h2><p>Figure 1, page 212.</p><p><img vspace="5" hspace="5" src="fig_schelter2005_fig_1_pdc.png" alt=""> </p><h2 id="13">Remarks:</h2><div><ul><li>Compare the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter   et al., 2005). As you may notice, the power spectrum of <img src="schelter2005_eq06218598531655674008.png" alt="$x_4$">, as well   as <img src="schelter2005_eq02327891265049891971.png" alt="$|PDC|^2_{24}$">, differ significantly.   Our guess is that Schelter and collaborators may have used slightly different   parameters from what they stated in Eq. 5.</li></ul></div><div><ul><li>Note that, for linear model with balanced innovation, the maximum   of PDC estimates is roughly proportional to the autoregressive   model coefficients. As we are plotting <img src="schelter2005_eq06563705797252587072.png" alt="$|PDC|^2$">, amplitude is   roughly proportional to the square of VAR coefficients.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="schelter2005_01.png" alt=""> <h2 id="14">Result from Figure 1 Schelter et al.(2005)</h2><p>Figure 1, page 212.</p><p><img vspace="5" hspace="5" src="fig_schelter2005_fig_1_pdc.png" alt=""> </p><h2 id="15">Remarks:</h2><div><ul><li>Compare the plot with Figs. 1 and 3 (see pages 212 and 215 Schelter   et al., 2005). As you may notice, the power spectrum of <img src="schelter2005_eq06218598531655674008.png" alt="$x_4$">, as well   as <img src="schelter2005_eq02327891265049891971.png" alt="$|PDC|^2_{24}$">, differ significantly.   Our guess is that Schelter and collaborators may have used slightly different   parameters from what they stated in Eq. 5.</li></ul></div><div><ul><li>Note that, for linear model with balanced innovation, the maximum   of PDC estimates is roughly proportional to the autoregressive   model coefficients. As we are plotting <img src="schelter2005_eq06563705797252587072.png" alt="$|PDC|^2$">, amplitude is   roughly proportional to the square of VAR coefficients.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Schelter et al. (2005)  Five-dimension VAR[4]-process 
+%% SCHELTER ET AL.(2005) - Five-dimension VAR[4]-process 
 %
 % Description:
 % 
-% Example from:
-% Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking,
-% Dahlhaus & Timmer. Testing for directed influences among neural signals 
-% using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.
+% Example borrowed from Schelter et al. (2005):
+%  
+%      Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer,  
+%      Lücking, Dahlhaus & Timmer. Testing for directed influences among  
+%      neural signals using partial directed coherence.  
+%      J. Neurosci Methods152:210-9, 2005.  
 %
-% <https://dx.doi.org/10.1016/j.jneumeth.2005.09.001>
-% 
-% Example Eq. (5) Five-dimension VAR[4]-process 
+%      <https://dx.doi.org/10.1016/j.jneumeth.2005.09.001> 
 %
+%
+%% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
+%              igct_alg, xplot, xplot_pvalues             
+%
+%%
+
+% (C) Koichi Sameshima & Luiz A. Baccalá, 2022. 
+% See file license.txt in installation directory for licensing terms.
+
 %%
 
 clear; clc
@@ -296,9 +294,9 @@ clear; clc
 %% Data sample generation
 
 flgPrintScreen = 'screen';
-nDiscard = 5000;    % number of points discarded at beginning of simulation
+nBurnIn = 5000;    % number of points discarded at beginning of simulation
 nPoints  = 2000;   % number of analyzed samples points
-N = nDiscard + nPoints; % number of simulated points
+N = nBurnIn + nPoints; % number of simulated points
 
 repmat('=',1,100)
 disp('       Schelter et al. J Neurosci Methods. 152:210-9, 2005.')
@@ -306,32 +304,10 @@ disp('               Linear 5-dimension VAR[4]-process')
 disp('       x2==>x1  x3REPLACE_WITH_DASH_DASH>x2  x3==>x4  x3<REPLACE_WITH_DASH_DASH>x5  x4==x2 x5==x4');
 repmat('=',1,100)
 
-randn('state', sum(100*clock))
-% Variables initialization
-ei=randn(5,N);
-x1=zeros(1,N);
-x2=zeros(1,N);
-x3=zeros(1,N);
-x4=zeros(1,N);
-x5=zeros(1,N);
-for t=1:4
-   x1(t)=randn(1); x2(t)=randn(1); x3(t)=randn(1); x4(t)=randn(1);
-   x5(t)=randn(1);
-end
+u = fschelter2005( nPoints, nBurnIn);
 
 %chLabels = []; % or 
 chLabels = {'x_1';'x_2';'x_3';'x_4';'x_5'};
-
-for t=5:N
-   x1(t) = 0.6*x1(t-1) + 0.65*x2(t-2) + ei(1,t);
-   x2(t) = 0.5*x2(t-1) - 0.3*x2(t-2) - 0.3*x3(t-4) + 0.6*x4(t-1) + ei(2,t);
-   x3(t) = 0.8*x3(t-1) - 0.7*x3(t-2) - 0.1*x5(t-3) + ei(3,t);
-   x4(t) = 0.5*x4(t-1) + 0.9*x3(t-2) + 0.4*x5(t-2) + ei(4,t);
-   x5(t) = 0.7*x5(t-1) - 0.5*x5(t-2) - 0.2*x3(t-1) + ei(5,t);
-end
-
-y=[x1' x2' x3' x4' x5']; % data must be organized column-wise
-u=y(nDiscard+1:N,:);
 fs = 1;
 
 %%

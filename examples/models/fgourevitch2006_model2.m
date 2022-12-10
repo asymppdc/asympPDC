@@ -34,7 +34,8 @@ disp('    at different frequencies in each direction, with Common Source')
 disp('         x1-->x2    x2-->x1   x1--x2 (With instantaneous causality)');
 disp(repmat('=',1,100))
 
-randn('state', sum(100*clock))
+rng('shuffle')
+
 wi=randn(3,N); % ws(t) = wi(3,t)
 x1=zeros(1,N);
 x2=zeros(1,N);

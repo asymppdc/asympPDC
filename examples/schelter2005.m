@@ -2,14 +2,15 @@
 %
 % Description:
 % 
-% Example from:
-% Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer, L?cking,
-% Dahlhaus & Timmer. Testing for directed influences among neural signals 
-% using partial directed coherence. J. Neurosci Methods 152:210-9, 2005.
+% Example borrowed from Schelter et al. (2005):
+%  
+%      Schelter, Winterhalder, Eichler, Peifer,Hellwig, Guschlbauer,  
+%      Lücking, Dahlhaus & Timmer. Testing for directed influences among  
+%      neural signals using partial directed coherence.  
+%      J. Neurosci Methods152:210-9, 2005.  
 %
-% <https://dx.doi.org/10.1016/j.jneumeth.2005.09.001>
-% 
-% Example Eq. (5) Five-dimension VAR[4]-process 
+%      <https://dx.doi.org/10.1016/j.jneumeth.2005.09.001> 
+%
 %
 %% See also: mvar, mvarresidue, asymp_pdc, asymp_dtf, gct_alg, 
 %              igct_alg, xplot, xplot_pvalues             

@@ -380,7 +380,7 @@ end
 %==========================================================================
 function gamma = bigautocorr(x, p)
 % Autocorrelation. Data in row-wise orientation. From order 0 to p-1.
-% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix)'''
+% Output: n x n blocks of autocorr of lags i. (Nuttall Strand matrix) 
 
 [n, nd] = size(x);
 
@@ -405,7 +405,7 @@ end
 
 %==========================================================================
 function d = fEig(L, G2)
-%'''Returns the eigenvalues'''
+% Returns the eigenvalues 
 
 %L = mat(cholesky(omega, lower=1))
 D = L.'*G2*L;
@@ -427,7 +427,7 @@ end
 
 %==========================================================================
 function c = fIij(i,j,n)
-%'''Returns Iij of the formula'''
+% Returns Iij of the formula 
 Iij = zeros(1,n^2);
 Iij(n*(j - 1) + i) = 1;
 Iij = diag(Iij);
@@ -438,7 +438,7 @@ end
 
 %==========================================================================
 function c = fIj(j,n)
-%'''Returns Ij of the formula'''
+% Returns Ij of the formula 
 Ij = zeros(1,n);
 Ij(j) = 1;
 Ij = diag(Ij);
@@ -450,21 +450,11 @@ end
 
 %==========================================================================
 function d = fCa(f, p, n)
-%'''Returns C* of the formula'''
+% Returns C* of the formula 
 C1 = cos(-2*pi*f*(1:p));
 S1 = sin(-2*pi*f*(1:p));
 C2 = [C1; S1];
 d = kron(C2, eye(n^2));
-end
-
-%==========================================================================
-function c = fdebig_de(n)
-%'''Derivative of kron(I(2n), A) by A'''
-%c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));
-A = sparse(kron(TT(2*n, n), eye(n*2*n)));
-B = sparse(kron(vec(eye(2*n)), eye(n)));
-c = A * kron(eye(n), B);
-c = sparse(c);
 end
 
 %==========================================================================
@@ -475,7 +465,7 @@ end
 
 %==========================================================================
 function t = TT(a,b)
-%''' TT(a,b)*vec(B) = vec(B.T), where B is (a x b).'''
+%  TT(a,b)*vec(B) = vec(B.T), where B is (a x b). 
 t = zeros(a*b);
 for i = 1:a
    for j = 1:b
@@ -483,6 +473,16 @@ for i = 1:a
    end
 end
 t = sparse(t);
+end
+
+%==========================================================================
+function c = fdebig_de(n)
+% Derivative of kron(I(2n), A) by A 
+%c = kron(TT(2*n, n), eye(n*2*n)) * kron(eye(n), kron(vec(eye(2*n)), eye(n)));
+A = sparse(kron(TT(2*n, n), eye(n*2*n)));
+B = sparse(kron(vec(eye(2*n)), eye(n)));
+c = A * kron(eye(n), B);
+c = sparse(c);
 end
 
 %==========================================================================
@@ -518,7 +518,7 @@ end
 
 %==========================================================================
 function d=Dup(n)
-% '''D*vech(A) = vec(A), with symmetric A'''
+%  D*vech(A) = vec(A), with symmetric A 
 d = zeros(n*n, (n*(n + 1))/2);
 count = 1;
 for j = 1:n

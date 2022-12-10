@@ -1,4 +1,4 @@
-function [ u aState] = fschelter2006( nPoints, nBurnIn, flgRepeat)
+function u = fschelter2006( nPoints, nBurnIn, flgRepeat)
 
 
 % (C) Koichi Sameshima & Luiz A. Baccala, 2022. 
@@ -12,23 +12,11 @@ disp('                Linear penta-variate VAR[4]-process')
 disp('       x1-->x2  x1-->x4 x2-->x4 x4==>x5 x5-->x1  x5-->x2 x5-->x3 ');
 disp('======================================================================');
 
-if flgRepeat
-   if exist('schelter2006_state.mat', 'file') == 2
-      load schelter2006_state.mat % Retrieving saved state number.
-      if ~exist('aState','var')
-         disp('State number does not exist. State number initialized.')
-         aState = sum(100*clock);
-      else
-         disp('Using saved state number to repeat simulation with same dataset.');
-      end
-   else
-      disp('File schelter2006_state.mat not found. Using newly state number.')
-      aState = sum(100*clock);
-      save schelter2006_state.mat aState
-   end
+if flgRepeat  % Option deprecated.
+   rng('default')
 else
-   aState = sum(100*clock); % Starting a new state number.
-   
+   rng('default')
+   rng('shuffle')
 end
 
 
@@ -53,10 +41,7 @@ if nPoints < 10
    disp(['Adopting default ' int2str(nPoints) ' simulation data points.'])
 end
 
-
 N = nBurnIn + nPoints; % number of simulated points
-
-randn('state',aState)
 
 ei=randn(5,N);
 x1=zeros(1,N);

@@ -39,7 +39,10 @@ end
 % nPoints  = 2000;   % number of analyzed samples points
 N=nBurnIn+nPoints; %
 
-randn('state', sum(100*clock))
+% Seeding random number generator
+% rng('default')
+rng('shuffle')
+
 ei=randn(5,N);
 x1=zeros(1,N);
 x2=zeros(1,N);

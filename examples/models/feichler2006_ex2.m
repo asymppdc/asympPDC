@@ -57,10 +57,8 @@ if flgManual
       randn('state', sum(100*clock))
    end
 else
-   randn('state', sum(100*clock))
-   %  randn('state', 100*acos(-1))
-   
-   disp('Assigned "sum(100*clock)" initial state.2')
+   rng('shuffle')
+   disp('Seeds the random number generator using rng(''shuffle'').')
 end
 % Variables initialization
 e=randn(2,N);

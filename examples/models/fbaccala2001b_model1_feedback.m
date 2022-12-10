@@ -41,8 +41,8 @@ end
 
 N = nBurnIn+nPoints; % number of simulated points.
 
-% seeding
-randn('state', sum(100*clock))
+% seeding random number generator
+rng('shuffle'); %randn('state', sum(100*clock)) % old syntax
 
 ei=randn(7,N);
 x1=zeros(1,N); x2=zeros(1,N); x3=zeros(1,N); x4=zeros(1,N);

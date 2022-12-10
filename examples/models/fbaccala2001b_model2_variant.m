@@ -41,8 +41,7 @@ end
 
 N = nBurnIn+nPoints; % number of simulated points.
 
-
-randn('state', sum(100*clock))
+rng('shuffle')
 ei=randn(6,N);
 x1=zeros(1,N);
 x2=zeros(1,N);

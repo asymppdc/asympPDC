@@ -127,7 +127,7 @@ if ~isOctave()
    end
    fprintf(1,'\n')
 
-   % Check if we have Signal Processing toolbox - see if pwelch is present
+   % Check if you have Signal Processing Toolbox - check whether pwelch is present
 
    if ~isempty(which('xcorr')) && ~isempty(which('norminv'))
       fprintf('[asympPDC startup] Signal Processing Toolbox(TM) seems to be present.\n');
@@ -176,7 +176,7 @@ else
 end
 fprintf(1,'\n')
 
-% Check if we have ARFit package is present
+% Check if the ARFit package is present
 
 if ~isempty(which('arfit')) && ~isempty(which('arfitcaps'))
    fprintf('[asympPDC startup] ARFit Toolbox(TM) seems to be present.\n');
@@ -216,15 +216,10 @@ fprintf(1,'\n')
 
 %% Initialize default random number stream
 % Initialize rng to avoid predictability of sessions
-if isOctave()
-   randn('seed',sum(100*clock)); % set randn initial 'seed' randomization.
-   fprintf('[asympPDC startup] Random number generator uses ad hoc initialization for Octave.\n');
 
-else
-   rng('default')
-   rng('shuffle')
-   fprintf('[asympPDC startup] Random number generator initialized using MATLAB recommended procedure.\n');
-end
+rng('default')
+rng('shuffle')
+fprintf('[asympPDC startup] Random number generator initialized using MATLAB recommended procedure.\n');
 fprintf(1,'\n')
 
 %% Enable all warnings
