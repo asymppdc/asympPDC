@@ -1,6 +1,6 @@
 %% COMPARE AND TEST FAA X ORIGINAL ASYMPTOTIC ROUTINES
 %       This script test and compare the accuracy and speed of FastAsympAlg
-%       and the original implementation of asympPDC Package's asymp_pdc and
+%       and the original implementation of asympPDC Package --- asymp_pdc and
 %       asymp_dtf routines.
 %
 %% Test model used to generate data sample
@@ -14,7 +14,7 @@
 
 %% Data sample generation
 
-clear; clc; close all;
+clear; clc;
 format compact; format short
 
 % Seeds the random number generator
@@ -330,7 +330,16 @@ fprintf(['\n' repmat('=',1,100) '\n'])
 
 diary off
 if ~isOctave() && sum(flgPlot)
-   if kPlot < 5
+   % Borrowed from tilefigs2 by Brendan Tracey
+   if ~exist('handles','var') || isempty(handles)
+      % No figure handles specified, select all figures
+      handles = get (0,'Children'); % locate all open figure handles
+      handles = handles(end:-1:1); % Re-order so that first created is in upper left
+   end
+   nFigures = length(handles);
+   % End Brendan Tracey
+   
+   if kPlot < 5 && nFigures < 5
       tilefigs2([],[],2,2)
    else
       tilefigs2;

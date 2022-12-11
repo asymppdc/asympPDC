@@ -70,7 +70,7 @@ own data sets. The basic steps to set up and analyze a data set using **the asym
    choosing parameters, estimation algorithm and model order selection 
    criterion;
 
-5. PDC or DTF estimation, choosing analysis parameters such as significance levels for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , metric for PDC/DTF, and number of frequency points, then call `asymp_pdc` or `asymp_dtf` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for your further analysis, or to plot them;
+5. PDC or DTF estimation, choosing analysis parameters such as significance levels for connectivity inference (`alpha`, `gct_signif` and `igct_signif`) , metric for PDC/DTF, and number of frequency points, then call `asymp_pdc` or `asymp_dtf` or `FastAsympAlg` function, and the analysis results will be saved in MATLAB `struct` variable that could be used for your further analysis, or to plot them;
 
 6. To visualize analysis results, use `xplot`, `xplot_pvalues` and `xplot_title` functions to properly format and plot PDC/DTF and corresponding p-values results in `struct variable` obtained in the previous step in the frequency domain by choosing `xplot` and `xplot_pvalues` plotting parameters, i.e. `flgPrinting`, `w_max`, `flgColor`, `flgScale`, `flgMax`, and `flgSignifColor`. See further details in the `xplot` function.
 
@@ -135,7 +135,7 @@ Granger causality. *Entropy* **23**(8):10.3390/e23081037  https://doi.org/10.339
 
 [12] L.A. Baccalá and K. Sameshima (2022). Partial directed coherence and the vector autoregressive modelling myth and a  caveat. *Front Netw Physiol* **2**:845327. https://doi.org/10.3389/fnetp.2022.845327 (**Note**: MATLAB/Octave scripts and functions used to generate all four figures of this article are provided in `./demo/PDCVARMYTH2022` subdirectory. Follow the instructions in Readme file.)
 
-[13] F. Rezaei, O. Alamoudi, S. Davani and S. Hou (2022) Fast  asymptotic algorithm for real-time causal connectivity analysis of  multivariate systems and signals. *Signal Process* **204**:108822. https://doi.org/10.1016/j.sigpro.2022.108822 These authors optimized the `asymp_pdc.m` and `asymp_dtf` routines called `FastAsympAlg.m` that basically got rid of sparse matrices operation and improved the speed by two order of magnitude.  
+[13] F. Rezaei, O. Alamoudi, S. Davani and S. Hou (2022) Fast  asymptotic algorithm for real-time causal connectivity analysis of  multivariate systems and signals. *Signal Process* **204**:108822. https://doi.org/10.1016/j.sigpro.2022.108822 (**Note:** These authors optimized the `asymp_pdc.m` and `asymp_dtf` routines called `FastAsympAlg.m` basically by optimizing matrix operations and getting rid of sparse matrices that improved the speed by two order of magnitude. Look at `compare_original_x_FastAsympAlg.m` script in `./examples folder`. ) 
 
 ## License
 

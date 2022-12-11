@@ -57,9 +57,7 @@
 % (C) Koichi Sameshima & Luiz A. Baccala, 2021. See file license.txt in
 % installation directory for licensing terms.
 
-clear; clc; format compact
-
-format short
+clc; format compact; format short
 warning('off'); more off
 
 disp(repmat('=',1,100))

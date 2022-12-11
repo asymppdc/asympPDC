@@ -1,0 +1,206 @@
+====================================================================================================
+                       Linear VAR[2] Model I
+        Baccala & Sameshima. Prog Brain Research, 130:33--47, 2001.
+  x1-->x2  x1-->x3  x2-->x3 x3-->x4 x4==>x5 x5-->x1  x5-->x4 x6==>x7
+====================================================================================================
+Time series were detrended.
+Running MVAR estimation routine.
+maxOrder limited to 30
+IP=1  vaic=112765.534208
+IP=2  vaic=106564.583609
+IP=3  vaic=106635.773506
+ 
+Number of channels = 7 with 2000 data points; MAR model order = 2.
+
+====================================================================================================
+                  MVAR RESIDURES TEST FOR WHITENESS
+----------------------------------------------------------------------------------------------------
+Good MAR model fitting! Residues white noise hypothesis NOT rejected.
+Pass = 0.0326531
+  st = 822.27
+
+====================================================================================================
+                         GRANGER CAUSALITY TEST
+----------------------------------------------------------------------------------------------------
+Connectivity matrix:
+   NaN     0     0     0     1     0     0
+     1   NaN     0     0     0     0     0
+     1     1   NaN     0     0     0     0
+     0     0     1   NaN     1     0     0
+     0     0     0     1   NaN     0     0
+     0     0     0     0     0   NaN     0
+     0     0     0     0     0     1   NaN
+
+Granger causality test p-values:
+       NaN    0.4417    0.3412    0.2500         0    0.0179    0.1530
+         0       NaN    0.7637    0.2434    0.4806    0.2889    0.9057
+         0         0       NaN    0.3723    0.8423    0.8798    0.2382
+    0.0163    0.0278         0       NaN         0    0.3314    0.2385
+    0.6271    0.4398    0.3949         0       NaN    0.4437    0.5462
+    0.1587    0.2266    0.4334    0.6082    0.0779       NaN    0.2865
+    0.0673    0.0727    0.8212    0.1421    0.8221         0       NaN
+
+
+
+====================================================================================================
+     COMPARING PDC2 RELATED ESTIMATES BETWEEN THE ORIGINAL AND FAA ROUTINES 
+====================================================================================================
+
+**  i. MVAR processing time:
+               MVAR = 0.008735 s.
+----------------------------------------------------------------------------------------------------
+
+** ii. Asymptotic routines processing times:
+           asymp_PDC =    5.61478 s;
+        FastAsympAlg =    0.15541 s;
+       Gain in speed =   36.13 times.
+----------------------------------------------------------------------------------------------------
+
+   tol = 1e-12; nFreqs = 128; α = 0.001.
+----------------------------------------------------------------------------------------------------
+
+** 1. Comparing PDC2 values: Fast x Original ASYMP routines:
+      * Maximum absolute difference of PDC2 estimates:           5.5511e-16. 
+
+** 2. Comparing threshod values for PDC2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of PDC2 threshold estimates: 9.2981e-16. 
+
+** 3. Comparing CI for PDC2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of PDC2 CI estimates:        6.6613e-16. 
+
+
+====================================================================================================
+     COMPARING gPDC2 RELATED ESTIMATES BETWEEN THE ORIGINAL AND FAA ROUTINES 
+====================================================================================================
+
+**  i. MVAR processing time:
+               MVAR = 0.008735 s.
+----------------------------------------------------------------------------------------------------
+
+** ii. Asymptotic routines processing times:
+           asymp_PDC =    6.81454 s;
+        FastAsympAlg =    0.11139 s;
+       Gain in speed =   61.18 times.
+----------------------------------------------------------------------------------------------------
+
+   tol = 1e-12; nFreqs = 128; α = 0.001.
+----------------------------------------------------------------------------------------------------
+
+** 1. Comparing gPDC2 values: Fast x Original ASYMP routines:
+      * Maximum absolute difference of gPDC2 estimates:           4.4409e-16. 
+
+** 2. Comparing threshod values for gPDC2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of gPDC2 threshold estimates: 8.9338e-16. 
+
+** 3. Comparing CI for gPDC2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of gPDC2 CI estimates:        3.3307e-15. 
+
+
+====================================================================================================
+     COMPARING iPDC2 RELATED ESTIMATES BETWEEN THE ORIGINAL AND FAA ROUTINES 
+====================================================================================================
+
+**  i. MVAR processing time:
+               MVAR = 0.008735 s.
+----------------------------------------------------------------------------------------------------
+
+** ii. Asymptotic routines processing times:
+           asymp_PDC =    6.74639 s;
+        FastAsympAlg =    0.10771 s;
+       Gain in speed =   62.64 times.
+----------------------------------------------------------------------------------------------------
+
+   tol = 1e-12; nFreqs = 128; α = 0.001.
+----------------------------------------------------------------------------------------------------
+
+** 1. Comparing iPDC2 values: Fast x Original ASYMP routines:
+      * Maximum absolute difference of iPDC2 estimates:           1.4433e-15. 
+
+** 2. Comparing threshod values for iPDC2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of iPDC2 threshold estimates: 8.9338e-16. 
+
+** 3. Comparing CI for iPDC2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of iPDC2 CI estimates:        1.4433e-15. 
+
+
+====================================================================================================
+     COMPARING DTF2 RELATED ESTIMATES BETWEEN THE ORIGINAL AND FAA ROUTINES 
+====================================================================================================
+
+**  i. MVAR processing time:
+               MVAR = 0.008735 s.
+----------------------------------------------------------------------------------------------------
+
+** ii. Asymptotic routines processing times:
+           asymp_DTF =    5.55297 s;
+        FastAsympAlg =    0.19450 s;
+       Gain in speed =   28.55 times.
+----------------------------------------------------------------------------------------------------
+
+   tol = 1e-12; nFreqs = 128; α = 0.001.
+----------------------------------------------------------------------------------------------------
+
+** 1. Comparing DTF2 values: Fast x Original ASYMP routines:
+      * Maximum absolute difference of DTF2 estimates:           1.2212e-15. 
+
+** 2. Comparing threshod values for DTF2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of DTF2 threshold estimates: 4.7184e-16. 
+
+** 3. Comparing CI for DTF2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of DTF2 CI estimates:        2.4425e-15. 
+
+
+====================================================================================================
+     COMPARING gDTF2 RELATED ESTIMATES BETWEEN THE ORIGINAL AND FAA ROUTINES 
+====================================================================================================
+
+**  i. MVAR processing time:
+               MVAR = 0.008735 s.
+----------------------------------------------------------------------------------------------------
+
+** ii. Asymptotic routines processing times:
+           asymp_DTF =    7.26641 s;
+        FastAsympAlg =    0.19115 s;
+       Gain in speed =   38.01 times.
+----------------------------------------------------------------------------------------------------
+
+   tol = 1e-12; nFreqs = 128; α = 0.001.
+----------------------------------------------------------------------------------------------------
+
+** 1. Comparing gDTF2 values: Fast x Original ASYMP routines:
+      * Maximum absolute difference of gDTF2 estimates:           1.2212e-15. 
+
+** 2. Comparing threshod values for gDTF2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of gDTF2 threshold estimates: 4.4409e-16. 
+
+** 3. Comparing CI for gDTF2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of gDTF2 CI estimates:        3.1086e-15. 
+
+
+====================================================================================================
+     COMPARING iDTF2 RELATED ESTIMATES BETWEEN THE ORIGINAL AND FAA ROUTINES 
+====================================================================================================
+
+**  i. MVAR processing time:
+               MVAR = 0.008735 s.
+----------------------------------------------------------------------------------------------------
+
+** ii. Asymptotic routines processing times:
+           asymp_DTF =    6.74713 s;
+        FastAsympAlg =    0.16093 s;
+       Gain in speed =   41.93 times.
+----------------------------------------------------------------------------------------------------
+
+   tol = 1e-12; nFreqs = 128; α = 0.001.
+----------------------------------------------------------------------------------------------------
+
+** 1. Comparing iDTF2 values: Fast x Original ASYMP routines:
+      * Maximum absolute difference of iDTF2 estimates:           1.5543e-15. 
+
+** 2. Comparing threshod values for iDTF2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of iDTF2 threshold estimates: 4.8572e-16. 
+
+** 3. Comparing CI for iDTF2: Fast x Original ASYMP routines:
+      * Maximum absolute difference of iDTF2 CI estimates:        1.7764e-15. 
+
+====================================================================================================

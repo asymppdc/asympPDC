@@ -7,9 +7,11 @@
 
 more off
 warning off
+close all; clear all;
 
-tic;
-
+t_init_runallexamples = tic;
+save temporary_file t_init_runallexamples
+clc
 %==========================================================================
 %Sunspot and melanoma data 1936 - 1972
 %     sunspot --> melanoma 
@@ -145,6 +147,23 @@ pause(5)
 % Example: Seven random independent variables 
 
 winterhalder2005_variant
+pause(5)
+
+%==========================================================================
+% This script test and compare the accuracy and speed of  the fast
+% asymptotic algorithm by Resaei et al. (2022) and
+%  the original implementation of asympPDC Package --- asymp_pdc and
+%       asymp_dtf routines using the test model
+%          7-dimension VAR[2] model with loop and feedback borrowed from
+%          Baccala & Sameshima (2001b). Overcoming the limitations of
+%          correlation analysis for many simultaneously processed neural
+%          structures, Progress in Brain Research, 130:33--47.
+%
+%                <http://dx.doi.org/10.1016/S0079-6123(01)30004-3>
+% to probe the algorithms.
+
+compare_original_x_FastAsympAlg_behavior
+pause(10)
 
 disp(repmat('=',1,100))
 disp(['=============== ALL EXAMPLES SUCCESSFULLY FINISHED ' repmat('=',1,49)])
@@ -165,7 +184,7 @@ disp(repmat('=',1,100))
 % guo2008_linear               
 % run_all_examples             
 % schelter2005                 
-% schelter2006                 
-     
+% schelter2006         
 
-elapsedtime = toc
+load temporary_file
+t_elapsed_runallexamples = toc(t_init_runallexamples)
